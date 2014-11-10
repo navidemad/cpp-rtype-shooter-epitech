@@ -26,3 +26,26 @@
 *.exe
 *.out
 *.app
+
+
+# QMake & Visual Studio
+*.vcx*
+*.sdf
+*sdf
+*.suo
+*.ilk
+*.pdb
+moc_*.cpp
+*.tlog
+*.sln
+*.log
+*.exp
+client.lib
+server.lib
+ui
+debug
+Makefile*
+*~
+*#
+Thumbs.db
+.DS_Store
