@@ -1,0 +1,280 @@
+
+
+
+
+Tasser Team                                                     S. Ninon
+Internet-Draft                                                   Epitech
+Intended status: Informational                         November 13, 2014
+Expires: May 17, 2015
+
+
+                      R-Type Network Game Protocol
+                               R-Type RFC
+
+Abstract
+
+   This memo presents the Network Game Protocol used for the R-Type.
+
+Conventions Used in This Document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on May 17, 2015.
+
+Copyright Notice
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+
+
+
+Ninon                     Expires May 17, 2015                  [Page 1]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+1.  Introduction
+
+2.  Transfert Description
+
+2.1.  TCP
+
+2.2.  UDP
+
+3.  Data Unit Dormat
+
+3.1.  Header
+
+3.2.  Data
+
+4.  TCP Commands
+
+4.1.  handshake
+
+4.1.1.  From Client
+
+4.1.2.  From Server
+
+4.2.  createGame
+
+4.2.1.  From Client
+
+4.2.2.  From Server
+
+4.3.  joinGame
+
+4.3.1.  From Client
+
+4.3.2.  From Server
+
+4.4.  observeGame
+
+4.4.1.  From Client
+
+4.4.2.  From Server
+
+
+
+
+
+
+
+
+
+Ninon                     Expires May 17, 2015                  [Page 2]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
+4.5.  showGame
+
+4.5.1.  From Client
+
+4.5.2.  From Server
+
+4.6.  leaveGame
+
+4.6.1.  From Client
+
+4.6.2.  From Server
+
+4.7.  deleteGame
+
+4.7.1.  From Client
+
+4.7.2.  From Server
+
+4.8.  listGames
+
+4.8.1.  From Client
+
+4.8.2.  From Server
+
+4.9.  listLevels
+
+4.9.1.  From Client
+
+4.9.2.  From Server
+
+4.10.  updatePseudo
+
+4.10.1.  From Client
+
+4.10.2.  From Server
+
+4.11.  disconnect
+
+4.11.1.  From Client
+
+4.11.2.  From Server
+
+4.12.  error
+
+4.12.1.  From Client
+
+4.12.2.  From Server
+
+
+
+
+Ninon                     Expires May 17, 2015                  [Page 3]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
+4.13.  endGame
+
+4.13.1.  From Client
+
+4.13.2.  From Server
+
+4.14.  showLevel
+
+4.14.1.  From Client
+
+4.14.2.  From Server
+
+5.  UDP Commands
+
+5.1.  move
+
+5.1.1.  From Client
+
+5.1.2.  From Server
+
+5.2.  fire
+
+5.2.1.  From Client
+
+5.2.2.  From Server
+
+5.3.  moveResource
+
+5.3.1.  From Client
+
+5.3.2.  From Server
+
+5.4.  destroyResource
+
+5.4.1.  From Client
+
+5.4.2.  From Server
+
+5.5.  playerScore
+
+5.5.1.  From Client
+
+5.5.2.  From Server
+
+5.6.  timeElapsedPing
+
+5.6.1.  From Client
+
+
+
+
+Ninon                     Expires May 17, 2015                  [Page 4]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
+5.6.2.  From Server
+
+6.  References
+
+   [RFC2629]  Rose, M., "Writing I-Ds and RFCs using XML", RFC 2629,
+              June 1999.
+
+Author's Address
+
+   Simon Ninon
+   Epitech
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ninon                     Expires May 17, 2015                  [Page 5]

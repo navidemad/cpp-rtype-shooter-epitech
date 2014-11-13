@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+	<!ENTITY rfc2629 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml'>
+]>
+<rfc docName="R-Type RFC" category="info">
+	<front>
+		<title>R-Type Network Game Protocol</title>
+		<author initials="S.N." surname="Ninon" fullname="Simon Ninon">
+			<organization abbrev="Epitech">Epitech</organization>
+		</author>
+		<date month="November" year="2014"></date>
+		<area>Game Network Protocol</area>
+		<workgroup>Tasser Team</workgroup>
+		<keyword>R-Type</keyword>
+		<keyword>RFC</keyword>
+		<abstract>
+			<t>This memo presents the Network Game Protocol used for the R-Type.</t>
+		</abstract>
+		<note title="Conventions Used in This Document">
+			<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119].</t>
+		</note>
+	</front>
+
+	<middle>
+		<section title="Introduction"></section>
+		<section title="Transfert Description">
+			<section title="TCP"></section>
+			<section title="UDP"></section>
+		</section>
+		<section title="Data Unit Dormat">
+			<section title="Header"></section>
+			<section title="Data"></section>
+		</section>
+		<section title="TCP Commands">
+			<section title="handshake">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="createGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="joinGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="observeGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="showGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="leaveGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="deleteGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="listGames">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="listLevels">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="updatePseudo">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="disconnect">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="error">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="endGame">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="showLevel">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+		</section>
+		<section title="UDP Commands">
+			<section title="move">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="fire">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="moveResource">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="destroyResource">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="playerScore">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+			<section title="timeElapsedPing">
+				<section title="From Client"></section>
+				<section title="From Server"></section>
+			</section>
+		</section>
+	</middle>
+
+	<back>
+		<references>&rfc2629;</references>
+  </back>
+</rfc>
