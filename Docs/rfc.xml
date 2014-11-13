@@ -22,71 +22,334 @@
 	</front>
 
 	<middle>
-		<section title="Introduction"></section>
+		<section title="Introduction">
+			<t>This document provides a full documentation for the Network Game Protocol of the R-Type Game.</t>
+			<t>It provides all the necessary information to understand how to communicate with a R-Type server and with a R-Type client: commands, protocols, packets format...</t>
+			<t>It also explains when to use the TCP and the UDP network protocols when you are communicating with a R-Type client or with a R-Type server.</t>
+		</section>
 		<section title="Transfert Description">
-			<section title="TCP"></section>
-			<section title="UDP"></section>
+			<t>The R-Type Network Communication Protocol is based on the TCP and UDP network protocols.</t>
+			<t>The R-Type Network Communication is a binary protocol.</t>
+			<section title="TCP">
+				<t>The TCP protocol is used for all the commands that are not related to a game action.</t>
+				<t>Basically, all the commands that are related to the client's menu (list games, create game, delete game, ...) must be sent by using the TCP network protocol.</t>
+				<t>This protocol has been chosen to provide a safe client-server communication for important commands</t>
+			</section>
+			<section title="UDP">
+				<t>The UDP protocol is used for all the commands that are related to a game action.</t>
+				<t>Basically, all movements informations are transmitted by using the UDP network protocol.</t>
+				<t>This protocol has been chosen to provide a fast and efficient client-server communication</t>
+			</section>
 		</section>
 		<section title="Data Unit Dormat">
-			<section title="Header"></section>
-			<section title="Data"></section>
+			<t>Each command is formatted by using the following diagram: a common header and a specific body.</t>
+			<t>This configuration must be implemented by both TCP and UDP communication.</t>
+			<figure>
+				<artwork>
+|-------------------------|
+| HEADER |      BODY      |
+|-------------------------|
+				</artwork>
+			</figure>
+			<section title="Header">
+				<t>The header is composed of a magic_code and of an instruction code.</t>
+				<figure>
+					<artwork>
+|-------------------------------|
+| magic_code | instruction_code |
+|   int32_t  |      int32_t     |
+|-------------------------------|
+					</artwork>
+				</figure>
+				<t>The magic_code must have a value of 0x150407CA. If it doesn't, the packet must be considered as invalid and the connection must be closed.</t>
+				<t>The instruction_code corresponds to a specific value depending of the command. It must be used to know what is the size of the packet's body.</t>
+			</section>
+			<section title="Body">
+				<t>The packet's body contains a c-structure data which depends of the command that has been sent.</t>
+				<t>Each command has its own structure with a different size and different fields.</t>
+			</section>
 		</section>
 		<section title="TCP Commands">
 			<section title="handshake">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x0A</t>
+				<section title="From Client">
+					<t>This command must be sent just after beeing connecting to the R-Type server.</t>
+					<t>It informs the server that you are a valid R-Type client.</t>
+					<t>Until you send this command, the other commands you'll send may not be treated by the server.</t>
+					<t>This command does not have a body.</t>
+				</section>
+				<section title="From Server">
+					<t>This command must be sent just after accepting a R-Type client.</t>
+					<t>It informs the client that you are a valid R-Type server.</t>
+					<t>Until you send this command, the other commands you'll send may not be treated by the client.</t>
+					<t>This command does not have a body.</t>
+				</section>
 			</section>
 			<section title="createGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x01</t>
+				<section title="From Client">
+					<t>This command is used to create a new game on the server.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|-------------------------------------------------|
+|   name   | levelName | nbPlayers | nbSpectators |
+| char[64] |  char[64] |   char    |     char     |
+|-------------------------------------------------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name you want to give to the created game.</t>
+					<t>The levelName attribute is the name of the level script you want to use.</t>
+					<t>The nbPlayers attribute is the maximum number of players who can play to the created game. This number must be between 1 and 4.</t>
+					<t>The nbSpectators attribute is the maximum number of spectators who can attend to the created game. This number must be between 1 and 4.</t>
+					<t>The server must answer with an error command packet.</t>
+					<t>In case of success, the client becomes the owner of the game and can delete it.</t>
+					<t>The ownership can not be given to an other client.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="joinGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to join a game as an active player.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|   name   |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name of the game you want to join.</t>
+					<t>The server must answer with an error command.</t>
+					<t>In case of success, the client joins the game and the server must send informations concerning players positions, bullets positions, current script execution time...</t>
+					<t>In case of success, the client can send UDP packets which stand for client actions (eg: move, fire).</t>
+					<t>In case of success, the server must notify the already connected players that a new client has joined.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="observeGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to join a game as an observer.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|   name   |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name of the game you want to join.</t>
+					<t>The server must answer with an error command.</t>
+					<t>In case of success, the client joins the game and the server must send informations concerning players positions, bullets positions, current script execution time...</t>
+					<t>In case of success, the client can not send UDP packets which stand for client actions (eg: move, fire).</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="showGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to ask for game informations.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|   name   |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name of the game which you want information.</t>
+					<t>The server must answer with an error command.</t>
+					<t>In case of success, the server must send a showGame command.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to send game information to a client.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------------------------------------------------------------|
+|   name |levelName|nbPlayers|maxPlayers|nbObservers|maxObservers|
+|char[64]| char[64]|   char  |   char   |    char   |    char    |
+|----------------------------------------------------------------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name of the game concerned by the information.</t>
+					<t>The levelName attribute is the name of the level script used in the game.</t>
+					<t>The nbPlayers attribute is the number of clients that are currently playing on the game.</t>
+					<t>The maxPlayers attribute is the maximum number of clients that can play on this game.</t>
+					<t>The nbObservers attribute is the number of clients that are currently observing the game.</t>
+					<t>The maxObservers attribute is the maximum number of clients that can observe the game.</t>
+				</section>
 			</section>
 			<section title="leaveGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to leave a game.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|   name   |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name of the game you want to leave.</t>
+					<t>The server must answer with an error command.</t>
+					<t>In case of success, the client leaves the game.</t>
+					<t>In case of success, the client can not send UDP packets which stand for game actions any more.</t>
+					<t>In case of success, the server must not send UDP packets which stand for game actions any more.</t>
+					<t>In case of success, the server must notify the other players that a client has left.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="deleteGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to delete a game.</t>
+					<t>This command can only succeed if you are the owner of the game.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|   name   |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The name attribute is the name of the game you want to delete.</t>
+					<t>The server must answer with an error command.</t>
+					<t>In case of success, the game is deleted.</t>
+					<t>In case of success, all the players and observers must be forced to leave the game and must be notified by the server.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="listGames">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to list all the games.</t>
+					<t>This command is composed of an empty body.</t>
+					<t>The server may answer with a loop of showGame commands.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="listLevels">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to list all the levels.</t>
+					<t>This command is composed of an empty body.</t>
+					<t>The server may answer with a loop of showLevel commands.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="updatePseudo">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to update the client's pseudo.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|  pseudo  |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The pseudo attribute is the pseudo you want to use.</t>
+					<t>The server must answer with an error command.</t>
+					<t>In case of success, the pseudo is updated.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="disconnect">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command is used to close the connection with the server.</t>
+					<t>This command is composed of an empty body.</t>
+					<t>The server must handle the disconnection and close the connection.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="error">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command has no equivalent client-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to notify a client if an error occured during the last received command treatment.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|-----------------------------|
+| instructionCode | errorCode |
+|     int32_t     |  int32_t  |
+|-----------------------------|
+						</artwork>
+					</figure>
+					<t>The instructionCode attribute is the code of the instruction concerned by the error packet.</t>
+					<t>The errorCode attribute is an error code corresponding to the state of the instruction excecution.</t>
+					<t>The errorCode must have one of the following values:</t>
+					<t>
+						<list style="symbols">
+							<t>OK: 0x00</t>
+							<t>KO: 0x01</t>
+						</list>
+					</t>
+				</section>
 			</section>
 			<section title="endGame">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command has no equivalent server-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to notify a client that the game has ended.</t>
+					<t>This command may be sent in different context: the game has been deleted, the player has been killed or the game has ended.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------|
+|   game   |
+| char[64] |
+|----------|
+						</artwork>
+					</figure>
+					<t>The game attribute is name of the concerned game.</t>
+					<t>After sending this command, the server must not send UDP packets which stand for game actions anymore.</t>
+					<t>After receiving this command, the client can not send UDP packets which stand for game actions anymore.</t>
+				</section>
 			</section>
 			<section title="showLevel">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<section title="From Client">
+					<t>This command has no equivalent server-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to send level script information to a client.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|-------------------------------------|
+| levelName | scriptSize |   script   |
+|  char[64] |   int32_t  | char[4096] |
+|-------------------------------------|
+						</artwork>
+					</figure>
+					<t>The levelName attribute is the name of the level script.</t>
+					<t>The scriptSize attribute is the size, in bytes, of the script contained by the script attribute.</t>
+					<t>The script attribute contains the level script data.</t>
+					<t>The server must send a showLevel command for all the available levels to a new client.</t>
+				</section>
 			</section>
 		</section>
 		<section title="UDP Commands">
