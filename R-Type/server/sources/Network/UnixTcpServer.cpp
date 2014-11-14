@@ -1,6 +1,7 @@
 #include "UnixTcpServer.hpp"
 #include "UnixTcpClient.hpp"
 #include "SocketException.hpp"
+#include "PortabilityBuilder.hpp"
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -67,7 +68,7 @@ std::shared_ptr<IClientSocket>	UnixTcpServer::getNewClient(void) {
 
 	acceptClient(clientFd, clientPort, clientAddr);
 
-	std::shared_ptr<IClientSocket> client(new UnixTcpClient);
+	std::shared_ptr<IClientSocket> client = PortabilityBuilder::getTcpClient();
 	client->initFromSocket(&clientFd, clientAddr, clientPort);
 
 	return client;

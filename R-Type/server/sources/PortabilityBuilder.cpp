@@ -31,11 +31,3 @@ std::shared_ptr<IServerSocket> PortabilityBuilder::getTcpServer(void) {
 	return std::shared_ptr<IServerSocket>(new WindowsTcpServer);
 #endif
 }
-
-std::shared_ptr<IThread> PortabilityBuilder::getThread(void) {
-#ifdef __unix__
-	return std::shared_ptr<IThread>(new ThreadUnix);
-#elif defined(_WIN32) || defined(WIN32)
-	return std::shared_ptr<IThread>(new ThreadWindows);
-#endif
-}	

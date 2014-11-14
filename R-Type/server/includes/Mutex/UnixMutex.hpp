@@ -24,6 +24,10 @@ class UnixMutex : public IMutex {
 		void	unlock(void);
 		void	trylock(void);
 
+	// 
+	public:
+	  enum : unsigned char { PTHREAD_MUTEX_SUCCESS = 0 };
+
 	// attributes
 	private:
 		pthread_mutex_t	mMutex;

@@ -2,18 +2,18 @@
 
 #include <memory>
 #include "IMutex.hpp"
-#include "Thread/IThread.hpp"
+#include "IThread.hpp"
 #include "IClientSocket.hpp"
 #include "IServerSocket.hpp"
 
 #ifdef __unix__
-# include "Thread/ThreadUnix.hpp"
+# include "UnixThread.hpp"
 # include "UnixMutex.hpp"
 # include "UnixTcpClient.hpp"
 # include "UnixTcpServer.hpp"
 # include "UnixUdpClient.hpp"
 #elif defined(_WIN32) || defined(WIN32)
-# include "Thread/ThreadWindows.hpp"
+# include "WindowsThread.hpp"
 # include "WindowsMutex.hpp"
 # include "WindowsTcpClient.hpp"
 # include "WindowsTcpServer.hpp"
@@ -26,6 +26,14 @@ namespace PortabilityBuilder {
 	std::shared_ptr<IClientSocket> 	getTcpClient(void);
 	std::shared_ptr<IClientSocket> 	getUdpClient(void);
 	std::shared_ptr<IServerSocket> 	getTcpServer(void);
-	std::shared_ptr<IThread> 				getThread(void);	
+	template <typename U, typename T>
+	std::shared_ptr<IThread<U, T>> getThread(void)
+	{
+		#ifdef __unix__
+			return std::shared_ptr<IThread<U, T>>(new UnixThread<U, T>);
+		#elif defined(_WIN32) || defined(WIN32)
+			return std::shared_ptr<IThread<U, T>>(new WindowsThread<U, T>);
+		#endif
+	}
 
 }

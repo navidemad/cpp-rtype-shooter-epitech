@@ -1,6 +1,8 @@
 #pragma once
 
 #include "IMutex.hpp"
+#include <windows.h>
+#include "MutexException.hpp"
 
 class WindowsMutex : public IMutex {
 
@@ -18,8 +20,8 @@ class WindowsMutex : public IMutex {
 
 	// interface implementation
 	public:
-		void	lock(void) {}
-		void	unlock(void) {}
-		void	trylock(void) {}
+		void	lock(void);
+		void	unlock(void);
+		void	trylock(void);
 
 };

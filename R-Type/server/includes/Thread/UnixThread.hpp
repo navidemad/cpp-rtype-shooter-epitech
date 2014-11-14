@@ -1,0 +1,61 @@
+#pragma once
+
+#include "IThread.hpp"
+#include <pthread.h>
+#include "ThreadException.hpp"
+
+template <typename U, typename T>
+class UnixThread : public IThread<U, T> {
+
+	// ctor dtor
+	public:
+		UnixThread(void) : mState(IThread<U, T>::State::NOT_CREATED) {}
+		~UnixThread(void);
+
+	// copy / move operators
+	public:
+		UnixThread(const UnixThread &) = delete;
+		UnixThread(const UnixThread &&) = delete;
+		const UnixThread &operator=(const UnixThread &) = delete;
+		const UnixThread &operator=(const UnixThread &&) = delete;
+
+	// enum ret value
+	public:
+		enum : unsigned char { PTHREAD_SUCCESS = 0 };
+
+	// interface implementation
+	public:
+		State getState(void) const {
+			return mState;
+		}
+
+		void create(U callObj, T fctParam) {
+			mCallObj  = callObj;
+			mFctParam = fctParam;
+
+			if (pthread_create(&mThread, NULL, start_thread_trampoline<U, T>, this) != UnixThread::PTHREAD_SUCCESS)
+				throw ThreadException("fail pthread_create()");
+
+			mState = IThread<U, T>::State::IN_EXECUTION;
+		}
+
+		void wait(void *retVal = NULL) {
+			if (pthread_join(mThread, &retVal) != UnixThread::PTHREAD_SUCCESS)
+				throw ThreadException("fail pthread_join()");
+
+			mState = IThread<U, T>::State::HAS_FINISHED;
+		}
+
+		void *start(void) {
+			(*mCallObj)(this->mFctParam);
+			return NULL;
+		}
+
+	// attributes
+	private:
+		pthread_t mThread;
+		State mState;
+		U mCallObj;
+		T mFctParam;
+
+};
