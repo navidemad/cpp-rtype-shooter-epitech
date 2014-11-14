@@ -111,6 +111,7 @@
 				</section>
 			</section>
 			<section title="joinGame">
+				<t>Instruction code: 0x02</t>
 				<section title="From Client">
 					<t>This command is used to join a game as an active player.</t>
 					<t>This command is composed of the following body:</t>
@@ -133,6 +134,7 @@
 				</section>
 			</section>
 			<section title="observeGame">
+				<t>Instruction code: 0x0E</t>
 				<section title="From Client">
 					<t>This command is used to join a game as an observer.</t>
 					<t>This command is composed of the following body:</t>
@@ -154,6 +156,7 @@
 				</section>
 			</section>
 			<section title="showGame">
+				<t>Instruction code: 0x03</t>
 				<section title="From Client">
 					<t>This command is used to ask for game informations.</t>
 					<t>This command is composed of the following body:</t>
@@ -189,6 +192,7 @@
 				</section>
 			</section>
 			<section title="leaveGame">
+				<t>Instruction code: 0x0F</t>
 				<section title="From Client">
 					<t>This command is used to leave a game.</t>
 					<t>This command is composed of the following body:</t>
@@ -212,6 +216,7 @@
 				</section>
 			</section>
 			<section title="deleteGame">
+				<t>Instruction code: 0x04</t>
 				<section title="From Client">
 					<t>This command is used to delete a game.</t>
 					<t>This command can only succeed if you are the owner of the game.</t>
@@ -234,6 +239,7 @@
 				</section>
 			</section>
 			<section title="listGames">
+				<t>Instruction code: 0x05</t>
 				<section title="From Client">
 					<t>This command is used to list all the games.</t>
 					<t>This command is composed of an empty body.</t>
@@ -244,6 +250,7 @@
 				</section>
 			</section>
 			<section title="listLevels">
+				<t>Instruction code: 0x10</t>
 				<section title="From Client">
 					<t>This command is used to list all the levels.</t>
 					<t>This command is composed of an empty body.</t>
@@ -254,6 +261,7 @@
 				</section>
 			</section>
 			<section title="updatePseudo">
+				<t>Instruction code: 0x06</t>
 				<section title="From Client">
 					<t>This command is used to update the client's pseudo.</t>
 					<t>This command is composed of the following body:</t>
@@ -274,6 +282,7 @@
 				</section>
 			</section>
 			<section title="disconnect">
+				<t>Instruction code: 0x07</t>
 				<section title="From Client">
 					<t>This command is used to close the connection with the server.</t>
 					<t>This command is composed of an empty body.</t>
@@ -284,6 +293,7 @@
 				</section>
 			</section>
 			<section title="error">
+				<t>Instruction code: 0x00</t>
 				<section title="From Client">
 					<t>This command has no equivalent client-side.</t>
 				</section>
@@ -310,6 +320,7 @@
 				</section>
 			</section>
 			<section title="endGame">
+				<t>Instruction code: 0x0B</t>
 				<section title="From Client">
 					<t>This command has no equivalent server-side.</t>
 				</section>
@@ -331,6 +342,7 @@
 				</section>
 			</section>
 			<section title="showLevel">
+				<t>Instruction code: 0x11</t>
 				<section title="From Client">
 					<t>This command has no equivalent server-side.</t>
 				</section>
@@ -354,28 +366,197 @@
 		</section>
 		<section title="UDP Commands">
 			<section title="move">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x08</t>
+				<section title="From Client">
+					<t>This command is used to notify the server that the player want to move in the given direction.</t>
+					<t>This command is composed  of the following body:</t>
+					<figure>
+						<artwork>
+|-----------|
+| direction |
+|    char   |
+|-----------|
+						</artwork>
+					</figure>
+					<t>The direction attribute is direction the player want to take. It must be one of the following value:</t>
+					<t>
+						<list style="symbols">
+							<t>LEFT: 0x00</t>
+							<t>RIGHT: 0x01</t>
+							<t>TOP: 0x02</t>
+							<t>BOTTOM: 0x03</t>
+						</list>
+					</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="fire">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x09</t>
+				<section title="From Client">
+					<t>This command is used to notify the server that the player want to fire a bullet.</t>
+					<t>This command is composed of an empty body.</t>
+				</section>
+				<section title="From Server">
+					<t>This command has no equivalent server-side.</t>
+				</section>
 			</section>
 			<section title="moveResource">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x0C</t>
+				<section title="From Client">
+					<t>This command has no equivalent client-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to notify a client that a resource has moved.</t>
+					<t>This command is composed  of the following body:</t>
+					<figure>
+						<artwork>
+|----------------------------------------|
+|    id   | type |   x   |   y   | angle |
+| int32_t | char | float | float | short |
+|----------------------------------------|
+						</artwork>
+					</figure>
+					<t>The id attribute is the id of the element. Each element has a unique id.</t>
+					<t>The type attribute is the type of the resource. The type must have one of the following value:</t>
+					<t>
+						<list style="symbols">
+							<t>PLAYER: 0x00</t>
+							<t>BULLER: 0x01</t>
+							<t>ENNEMY: 0x02</t>
+							<t>BONUS: 0x03</t>
+						</list>
+					</t>
+					<t>The x and y attributes give the new position of the resource on the map.</t>
+					<t>The angle attribute correspond to the direction of the resource.</t>
+				</section>
 			</section>
 			<section title="destroyResource">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x0D</t>
+				<section title="From Client">
+					<t>This command has no equivalent client-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to notify a client that a resource has been destroyed.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|----------------|
+|    id   | type |
+| int32_t | char |
+|----------------|
+						</artwork>
+					</figure>
+					<t>The id attribute is the unique id of the destroyed resource.</t>
+					<t>The type is the type of the destroyed resource. It must have one of the following values:</t>
+					<t>
+						<list style="symbols">
+							<t>PLAYER: 0x00</t>
+							<t>BULLER: 0x01</t>
+							<t>ENNEMY: 0x02</t>
+							<t>BONUS: 0x03</t>
+						</list>
+					</t>
+					<t>Once the resource has been destroyed, its unique id may be reused for a newly created resource.</t>
+				</section>
 			</section>
-			<section title="playerScore">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+			<section title="updateScore">
+				<t>Instruction code: 0x12</t>
+				<section title="From Client">
+					<t>This command has no equivalent client-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to notify a client about the score of a player.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|------------------------------|
+|    id   |  pseudo  |  score  |
+| int32_t | char[64] | int32_t |
+|------------------------------|
+						</artwork>
+					</figure>
+					<t>The id attribute is the id of the concerned player.</t>
+					<t>The pseudo attribute is the pseudo of the concerned player.</t>
+					<t>The score attribute is the score of the concerned player.</t>
+				</section>
 			</section>
 			<section title="timeElapsedPing">
-				<section title="From Client"></section>
-				<section title="From Server"></section>
+				<t>Instruction code: 0x13</t>
+				<section title="From Client">
+					<t>This command has no equivalent client-side.</t>
+				</section>
+				<section title="From Server">
+					<t>This command is used to notify a client about the current execution time of the script.</t>
+					<t>This command is composed of the following body:</t>
+					<figure>
+						<artwork>
+|-------------|
+| timeElapsed |
+|   int64_t   |
+|-------------|
+						</artwork>
+					</figure>
+					<t>The timeElapsed attribute is the time elapsed since the beginning of the game.</t>
+					<t>Even if the client must implement its own game loop, this command must be used by the client to adjust its intern game timer.</t>
+				</section>
+			</section>
+		</section>
+		<section title="Annex">
+			<section title="Instruction Code">
+					<t>
+						<list style="symbols">
+							<t>error: 0x00</t>
+							<t>createGame: 0x01</t>
+							<t>joinGame: 0x02</t>
+							<t>showGame: 0x03</t>
+							<t>deleteGame: 0x04</t>
+							<t>listGames: 0x05</t>
+							<t>updatePseudo: 0x06</t>
+							<t>disconnect: 0x07</t>
+							<t>move: 0x08</t>
+							<t>fire: 0x09</t>
+							<t>handshake: 0x0A</t>
+							<t>endGame: 0x0B</t>
+							<t>moveResource: 0x0C</t>
+							<t>destroyResource: 0x0D</t>
+							<t>observeGame: 0x0E</t>
+							<t>leaveGame: 0x0F</t>
+							<t>listLevels: 0x10</t>
+							<t>showLevel: 0x11</t>
+							<t>updateScore: 0x12</t>
+							<t>pingTimeElapsed: 0x13</t>
+						</list>
+					</t>
+			</section>
+			<section title="Error Code">
+				<t>
+					<list style="symbols">
+						<t>OK: 0x00</t>
+						<t>KO: 0x01</t>
+					</list>
+				</t>
+			</section>
+			<section title="enum Direction">
+				<t>
+					<list style="symbols">
+						<t>LEFT: 0x00</t>
+						<t>RIGHT: 0x01</t>
+						<t>TOP: 0x02</t>
+						<t>BOTTOM: 0x03</t>
+					</list>
+				</t>
+			</section>
+			<section title="enum ResourceType">
+				<t>
+					<list style="symbols">
+						<t>PLAYER: 0x00</t>
+						<t>BULLER: 0x01</t>
+						<t>ENNEMY: 0x02</t>
+						<t>BONUS: 0x03</t>
+					</list>
+				</t>
 			</section>
 		</section>
 	</middle>
