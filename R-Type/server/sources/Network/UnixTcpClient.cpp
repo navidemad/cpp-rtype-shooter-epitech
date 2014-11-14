@@ -6,11 +6,15 @@
 #include <errno.h>
 #include <arpa/inet.h> 
 #include <cstring>
+#include "ScopedLock.hpp"
+#include "PortabilityBuilder.hpp"
 #include "UnixTcpClient.hpp"
 #include "SocketException.hpp"
 
-UnixTcpClient::UnixTcpClient(void) : mSocketFd(-1), mAddr(""), mPort(-1), mListener(nullptr), mNetworkManager(NetworkManager::getInstance()) {
-}
+UnixTcpClient::UnixTcpClient(void)
+	: mSocketFd(-1), mAddr(""), mPort(-1),
+		mMutex(PortabilityBuilder::getMutex()), mListener(nullptr), mNetworkManager(NetworkManager::getInstance())
+{}
 
 UnixTcpClient::~UnixTcpClient(void) {
 }
@@ -56,6 +60,8 @@ void	UnixTcpClient::initFromSocket(void *socketFd, const std::string &addr, int 
 }
 
 void	UnixTcpClient::closeClient(void) {
+	ScopedLock ScopedLock(mMutex);
+
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
 		close(mSocketFd);
@@ -69,10 +75,14 @@ void	UnixTcpClient::closeClient(void) {
 }
 
 void	UnixTcpClient::send(const IClientSocket::Message &message) {
+	ScopedLock ScopedLock(mMutex);
+
 	mOutBuffer.insert(mOutBuffer.end(), message.msg.begin(), message.msg.end());
 }
 
 IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
+	ScopedLock ScopedLock(mMutex);
+	
 	if (sizeToRead > mInBuffer.size())
 		throw SocketException("Cannot read more than the internal buffer size");
 
@@ -86,6 +96,8 @@ IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	UnixTcpClient::nbBytesToRead(void) const {
+	ScopedLock ScopedLock(mMutex);
+	
 	return mInBuffer.size();
 }
 
@@ -105,23 +117,45 @@ void	UnixTcpClient::onSocketWritable(int) {
 	if (mOutBuffer.size() == 0)
 		return;
 
+	try {
+		int nbBytes = writeBufferInSocket();
+
+		if (mListener)
+			mListener->onBytesWritten(this, nbBytes);
+	}
+	catch (const SocketException &) {
+		onSocketClosed(mSocketFd);
+	}
+}
+
+int UnixTcpClient::writeBufferInSocket(void) {
+	ScopedLock ScopedLock(mMutex);
+
 	int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
 	int nbBytes = mNetworkManager->send(mSocketFd, mOutBuffer.data(), sizeToSend);
 	mOutBuffer.erase(mOutBuffer.begin(), mOutBuffer.begin() + nbBytes);
 
-	if (mListener)
-		mListener->onBytesWritten(this, nbBytes);
+	return nbBytes;
+}
+
+void UnixTcpClient::readSocket(void) {
+	ScopedLock ScopedLock(mMutex);
+
+	char buffer[1024];
+	int nbBytesRead = mNetworkManager->receive(mSocketFd, buffer, 1024);
+	mInBuffer.insert(mInBuffer.end(), buffer, buffer + nbBytesRead);
 }
 
 void	UnixTcpClient::onSocketReadable(int) {
-	char buffer[1024];
-	int nbBytesRead;
+	try {
+		readSocket();
 
-	nbBytesRead = mNetworkManager->receive(mSocketFd, buffer, 1024);
-	mInBuffer.insert(mInBuffer.end(), buffer, buffer + nbBytesRead);
-
-	if (mListener)
-		mListener->onSocketReadable(this, mInBuffer.size());
+		if (mListener)
+			mListener->onSocketReadable(this, nbBytesToRead());
+	}
+	catch (const SocketException &) {
+		onSocketClosed(mSocketFd);
+	}
 }
 
 void	UnixTcpClient::onSocketClosed(int) {

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "IMutex.hpp"
 #include "IClientSocket.hpp"
 #include "NetworkManager.hpp"
 
@@ -25,10 +26,12 @@ class UnixTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent
 		void	initFromSocket(void *socket, const std::string &addr, int port);
 		void	closeClient(void);
 
-	// internal init
+	// internal functions
 	private:
 		void	initSocket(void);
 		void	connectSocket(const std::string &addr, int port);
+		int 	writeBufferInSocket(void);
+		void	readSocket(void);
 
 	// recv / send
 	public:
@@ -58,6 +61,7 @@ class UnixTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent
 		int mPort;
 		std::vector<char> mInBuffer;
 		std::vector<char> mOutBuffer;
+		std::shared_ptr<IMutex> mMutex;
 		IClientSocket::OnSocketEvent *mListener;
 		std::shared_ptr<NetworkManager>	mNetworkManager;
 

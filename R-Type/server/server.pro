@@ -50,7 +50,8 @@ win32:HEADERS	+=		includes/Mutex/WindowsMutex.hpp						\
 
 SOURCES				+=	sources/main.cpp														\
 									sources/Network/NetworkManager.cpp					\
-									sources/PortabilityBuilder.cpp
+									sources/PortabilityBuilder.cpp							\
+									sources/Mutex/ScopedLock.cpp
 
 unix:SOURCES	+=	sources/Network/UnixTcpClient.cpp						\
 									sources/Network/UnixTcpServer.cpp						\

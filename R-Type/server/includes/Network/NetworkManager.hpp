@@ -65,10 +65,10 @@ class NetworkManager {
 
 	// attributes
 	private:
-		int 		mMaxFd;
-		fd_set	mReadFds;
-		fd_set	mWriteFds;
-
+		int mMaxFd;
+		fd_set mReadFds;
+		fd_set mWriteFds;
+		std::shared_ptr<IMutex> mMutex;
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>> mSockets;
 
 };

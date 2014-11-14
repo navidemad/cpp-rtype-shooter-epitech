@@ -1,12 +1,14 @@
 #include "NetworkManager.hpp"
 #include "SocketException.hpp"
+#include "PortabilityBuilder.hpp"
+#include "ScopedLock.hpp"
 #include <algorithm>
 #include <sys/types.h>
 #include <sys/socket.h>
 
 std::shared_ptr<NetworkManager> NetworkManager::mInstance = nullptr;
 
-NetworkManager::NetworkManager(void) : mMaxFd(-1) {
+NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::getMutex()) {
 }
 
 NetworkManager::~NetworkManager(void) {
@@ -17,9 +19,11 @@ std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator NetworkMana
 }
 
 void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *listener) {
+	ScopedLock scopedLock(mMutex);
+
 	if (socketFd == -1)
 		throw SocketException("Invalid socket cannot be under the NetworkManager control");
- 
+
 	if (findSocket(socketFd) != mSockets.end())
 		throw SocketException("Socket already under NetworkManager control");
 
@@ -33,6 +37,8 @@ void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *list
 }
 
 void	NetworkManager::removeSocket(int socketFd) {
+	ScopedLock scopedLock(mMutex);
+
 	auto socket = findSocket(socketFd);
 
 	if (socket == mSockets.end())
@@ -53,32 +59,24 @@ void 	NetworkManager::refreshMaxFd(void) {
 }
 
 std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
-	if (mInstance.get() != nullptr)
-		return mInstance;
+	if (mInstance.get() == nullptr)
+		mInstance = std::shared_ptr<NetworkManager>(new NetworkManager);
 
-	return std::shared_ptr<NetworkManager>(new NetworkManager);
+	return mInstance;
 }
 
 int	NetworkManager::receive(int socketFd, char *buffer, int sizeToRead) {
-	auto socket = findSocket(socketFd);
-
-	if (socket == mSockets.end())
-		throw SocketException("Socket is not under the NetworkManager control");
-
 	int nbBytesRead = ::recv(socketFd, buffer, sizeToRead, 0);
 
 	if (nbBytesRead == -1)
 		throw SocketException("fail recv()");
+	else if (nbBytesRead == 0)
+		throw SocketException("connection closed");
 
 	return nbBytesRead;
 }
 
 int	NetworkManager::send(int socketFd, char *buffer, int sizeToWrite) {
-	auto socket = findSocket(socketFd);
-
-	if (socket == mSockets.end())
-		throw SocketException("Socket is not under the NetworkManager control");
-
 	int nbBytesSent = ::send(socketFd, buffer, sizeToWrite, MSG_NOSIGNAL);
 
 	if (nbBytesSent == -1)
@@ -92,7 +90,7 @@ void	NetworkManager::run(void) {
 		initFds();
 
 		struct timeval tv;
-		tv.tv_sec = 0;
+		tv.tv_sec = 0; /* TO CHANGE */
 		tv.tv_usec = 0;
 		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) == -1)
 			throw SocketException("fail select()");
@@ -102,6 +100,8 @@ void	NetworkManager::run(void) {
 }
 
 void	NetworkManager::initFds(void) {
+	ScopedLock scopedLock(mMutex);
+
 	FD_ZERO(&mReadFds);
 	FD_ZERO(&mWriteFds);
 
@@ -112,16 +112,18 @@ void	NetworkManager::initFds(void) {
 }
 
 void	NetworkManager::checkFds(void) {
-	for (const auto &socket : mSockets) {
+	std::list<std::pair<int, NetworkManager::OnSocketEvent *>> sockets;
+	{
+		ScopedLock scopedLock(mMutex);
+		sockets = mSockets;
+	}
+
+	for (const auto &socket : sockets) {
 		if (socket.second == nullptr)
 			continue;
 
-		if (FD_ISSET(socket.first, &mReadFds)) {
-			if (stillConnected(socket))
-				socket.second->onSocketReadable(socket.first);
-			else
-				socket.second->onSocketClosed(socket.first);
-		}
+		if (FD_ISSET(socket.first, &mReadFds))
+			socket.second->onSocketReadable(socket.first);
 
 		if (FD_ISSET(socket.first, &mWriteFds))
 			socket.second->onSocketWritable(socket.first);
