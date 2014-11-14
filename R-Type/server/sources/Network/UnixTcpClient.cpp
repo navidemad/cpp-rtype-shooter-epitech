@@ -51,6 +51,8 @@ void	UnixTcpClient::initFromSocket(void *socketFd, const std::string &addr, int 
 	mSocketFd = *reinterpret_cast<int *>(socketFd);
 	mAddr = addr;
 	mPort = port;
+
+	mNetworkManager->addSocket(mSocketFd, this);
 }
 
 void	UnixTcpClient::closeClient(void) {
@@ -61,17 +63,30 @@ void	UnixTcpClient::closeClient(void) {
 		mSocketFd = -1;
 		mAddr = "";
 		mPort = -1;
+		mInBuffer.clear();
+		mOutBuffer.clear();
 	}
 }
 
 void	UnixTcpClient::send(const IClientSocket::Message &message) {
+	mOutBuffer.insert(mOutBuffer.end(), message.msg.begin(), message.msg.end());
 }
 
 IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
+	if (sizeToRead > mInBuffer.size())
+		throw SocketException("Cannot read more than the internal buffer size");
+
+	IClientSocket::Message message;
+
+	std::copy(mInBuffer.begin(), mInBuffer.begin() + sizeToRead, back_inserter(message.msg));
+	mInBuffer.erase(mInBuffer.begin(), mInBuffer.begin() + sizeToRead);
+	message.msgSize = sizeToRead;
+
+	return message;
 }
 
 unsigned int	UnixTcpClient::nbBytesToRead(void) const {
-	return mBuffer.size();
+	return mInBuffer.size();
 }
 
 const std::string &UnixTcpClient::getAddr(void) const {
@@ -86,17 +101,32 @@ void	UnixTcpClient::setOnSocketEventListener(IClientSocket::OnSocketEvent *liste
 	mListener = listener;
 }
 
-void	UnixTcpClient::onBytesWritten(int, unsigned int nbBytes) {
+void	UnixTcpClient::onSocketWritable(int) {
+	if (mOutBuffer.size() == 0)
+		return;
+
+	int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
+	int nbBytes = mNetworkManager->send(mSocketFd, mOutBuffer.data(), sizeToSend);
+	mOutBuffer.erase(mOutBuffer.begin(), mOutBuffer.begin() + nbBytes);
+
 	if (mListener)
 		mListener->onBytesWritten(this, nbBytes);
 }
 
 void	UnixTcpClient::onSocketReadable(int) {
+	char buffer[1024];
+	int nbBytesRead;
+
+	nbBytesRead = mNetworkManager->receive(mSocketFd, buffer, 1024);
+	mInBuffer.insert(mInBuffer.end(), buffer, buffer + nbBytesRead);
+
 	if (mListener)
-		mListener->onSocketReadable(this, mBuffer.size());
+		mListener->onSocketReadable(this, mInBuffer.size());
 }
 
 void	UnixTcpClient::onSocketClosed(int) {
+	closeClient();
+
 	if (mListener)
 		mListener->onSocketClosed(this);
 }

@@ -89,7 +89,7 @@ void	UnixTcpServer::acceptClient(int &clientFd, int &clientPort, std::string &cl
 	clientAddr = ipstr;
 }
 
-void	UnixTcpServer::onBytesWritten(int, unsigned int) {
+void	UnixTcpServer::onSocketWritable(int) {
 }
 
 void	UnixTcpServer::onSocketReadable(int) {

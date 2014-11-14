@@ -3,6 +3,10 @@
 #include <list>
 #include <utility>
 #include <memory>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 class NetworkManager {
 
@@ -11,8 +15,8 @@ class NetworkManager {
 		class OnSocketEvent {
 			public:
 				virtual	~OnSocketEvent(void) {}
-				virtual	void	onBytesWritten(int socketFd, unsigned int nbBytes) = 0;
 				virtual void	onSocketReadable(int socketFd) = 0;
+				virtual	void	onSocketWritable(int socketFd) = 0;
 				virtual void	onSocketClosed(int socketFd) = 0;
 		};
 
@@ -41,13 +45,29 @@ class NetworkManager {
 		void	addSocket(int socketFd, NetworkManager::OnSocketEvent *listener);
 		void	removeSocket(int socketFd);
 
-	// find socket
+	// send - receive
+	public:
+		int 	receive(int socketFd, char *buffer, int sizeToRead);
+		int		send(int socketFd, char *buffer, int sizeToWrite);
+
+	// internal tools
 	private:
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator findSocket(int socketFd);
-	
+		void  refreshMaxFd(void);
+	public: // A PASSER EN PRIVATE UNE FOIS LABSTRACT THREAD OK
+		void	run(void);
+	private:
+		void	initFds(void);
+		void	checkFds(void);
+		void	startThread(void);
+		bool	stillConnected(const std::pair<int, NetworkManager::OnSocketEvent *> &socket);
+
 	// attributes
 	private:
-		int mMaxFd;
+		int 		mMaxFd;
+		fd_set	mReadFds;
+		fd_set	mWriteFds;
+
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>> mSockets;
 
 };

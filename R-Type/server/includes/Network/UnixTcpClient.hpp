@@ -47,7 +47,7 @@ class UnixTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent
 
 	// NetworkManager callback methods
 	public:
-		void	onBytesWritten(int socketFd, unsigned int nbBytes);
+		void	onSocketWritable(int socketFd);
 		void	onSocketReadable(int socketFd);
 		void	onSocketClosed(int socketFd);
 
@@ -56,7 +56,8 @@ class UnixTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent
 		int mSocketFd;
 		std::string mAddr;
 		int mPort;
-		std::vector<char> mBuffer;
+		std::vector<char> mInBuffer;
+		std::vector<char> mOutBuffer;
 		IClientSocket::OnSocketEvent *mListener;
 		std::shared_ptr<NetworkManager>	mNetworkManager;
 

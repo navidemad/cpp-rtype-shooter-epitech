@@ -1,16 +1,17 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class IClientSocket {
 
 	// Message Data
 	public:
 		struct Message {
-			char				*msg;
-			int					msgSize;
-			std::string	host;
-			int					port;
+			std::vector<char>	msg;
+			int								msgSize;
+			std::string				host;
+			int								port;
 		};
 
 	// CallBack Interface

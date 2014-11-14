@@ -56,4 +56,4 @@ win32:LIBS		+= -L$$PWD/../shared/dependencies/libs -lpthreadVC2
 win32:DEFINES	+= _WIN32_WINNT=0x0501 _CRT_SECURE_NO_WARNINGS
 
 win32:LIBS		+=
-unix:LIBS			+=
+unix:LIBS			+= -lpthread

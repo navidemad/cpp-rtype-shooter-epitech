@@ -39,7 +39,7 @@ class UnixTcpServer : public IServerSocket, public NetworkManager::OnSocketEvent
 
 	// NetworkManager callback methods
 	public:
-		void	onBytesWritten(int socketFd, unsigned int nbBytes);
+		void	onSocketWritable(int socketFd);
 		void	onSocketReadable(int socketFd);
 		void	onSocketClosed(int socketFd);
 
