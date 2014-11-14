@@ -16,26 +16,34 @@ INCLUDEPATH			+=	.											\
 										includes							\
 										includes/Network 			\
 										includes/Exceptions		\
+										includes/Mutex				\
 										../shared/includes		\
 										dependencies/includes	\
 										build									\
 										build/ui							\
 										build/moc
 
-HEADERS				+=	includes/Network/NetworkManager.hpp					\
-									includes/Exceptions/SocketException.hpp			\
-								../shared/includes/Thread/IThread.hpp					\
-								../shared/includes/Thread/Thread.hpp
+HEADERS				+=		includes/Exceptions/MutexException.hpp		\
+										includes/Exceptions/SocketException.hpp		\
+										includes/Mutex/ScopedLock.hpp							\
+										includes/Network/NetworkManager.hpp				\
+										../shared/includes/IClientSocket.hpp			\
+										../shared/includes/IServerSocket.hpp			\
+										../shared/includes/IMutex.hpp							\
+										../shared/includes/Thread/IThread.hpp			\
+										../shared/includes/Thread/Thread.hpp
 
-unix:HEADERS	+=	includes/Network/UnixTcpClient.hpp					\
-									includes/Network/UnixTcpServer.hpp					\
-									includes/Network/UnixUdpClient.hpp					\
-									../shared/includes/Thread/ThreadUnix.hpp
+unix:HEADERS	+=		includes/Mutex/UnixMutex.hpp							\
+										includes/Network/UnixTcpClient.hpp				\
+										includes/Network/UnixTcpServer.hpp				\
+										includes/Network/UnixUdpClient.hpp				\
+										../shared/includes/Thread/ThreadUnix.hpp
 
-win32:HEADERS	+=	includes/Network/WindowsTcpServer.hpp				\
-									includes/Network/WindowsTcpClient.hpp				\
-									includes/Network/WindowsUdpClient.hpp				\
-									../shared/includes/Thread/ThreadWindows.hpp
+win32:HEADERS	+=		includes/Mutex/WindowsMutex.hpp						\
+										includes/Network/WindowsTcpClient.hpp			\
+										includes/Network/WindowsTcpServer.hpp			\
+										includes/Network/WindowsUdpClient.hpp			\
+										../shared/includes/Thread/ThreadWindows.hpp
 
 SOURCES				+=	sources/main.cpp														\
 									sources/Network/NetworkManager.cpp
@@ -43,17 +51,16 @@ SOURCES				+=	sources/main.cpp														\
 unix:SOURCES	+=	sources/Network/UnixTcpClient.cpp						\
 									sources/Network/UnixTcpServer.cpp						\
 									sources/Network/UnixUdpClient.cpp						\
-									../shared/sources/Thread/ThreadUnix.cpp
+									../shared/sources/Thread/ThreadUnix.cpp			\
+									sources/Mutex/UnixMutex.cpp
 
 win32:SOURCES	+=	sources/Network/WindowsTcpServer.cpp				\
 									sources/Network/WindowsTcpClient.cpp				\
 									sources/Network/WindowsUdpClient.cpp				\
-									../shared/sources/Thread/ThreadWindows.cpp
+									../shared/sources/Thread/ThreadWindows.cpp	\
+									sources/Mutex/WindowsMutex.cpp
 
-unix:LIBS			+= 
+unix:LIBS			+= -lpthread
 win32:LIBS		+= -L$$PWD/../shared/dependencies/libs -lpthreadVC2
 
 win32:DEFINES	+= _WIN32_WINNT=0x0501 _CRT_SECURE_NO_WARNINGS
-
-win32:LIBS		+=
-unix:LIBS			+= -lpthread
