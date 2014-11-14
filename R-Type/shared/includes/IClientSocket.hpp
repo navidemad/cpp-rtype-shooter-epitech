@@ -40,9 +40,9 @@ class IClientSocket {
 		virtual Message				receive(unsigned int sizeToRead) = 0;
 		virtual unsigned int	nbBytesToRead(void) const = 0;
 
-    // get host ip
-    public:
-        virtual const std::string &getAddr(void) const = 0;
+	// get host ip
+	public:
+		virtual const std::string &getAddr(void) const = 0;
 
 	// set listener
 	public:

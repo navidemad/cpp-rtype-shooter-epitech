@@ -31,7 +31,7 @@ HEADERS				+=		includes/Exceptions/MutexException.hpp		\
 										../shared/includes/IServerSocket.hpp			\
 										../shared/includes/IMutex.hpp							\
 										../shared/includes/Thread/IThread.hpp			\
-										../shared/includes/Thread/Thread.hpp
+										includes/PortabilityBuilder.hpp
 
 unix:HEADERS	+=		includes/Mutex/UnixMutex.hpp							\
 										includes/Network/UnixTcpClient.hpp				\
@@ -46,7 +46,8 @@ win32:HEADERS	+=		includes/Mutex/WindowsMutex.hpp						\
 										../shared/includes/Thread/ThreadWindows.hpp
 
 SOURCES				+=	sources/main.cpp														\
-									sources/Network/NetworkManager.cpp
+									sources/Network/NetworkManager.cpp					\
+									sources/PortabilityBuilder.cpp
 
 unix:SOURCES	+=	sources/Network/UnixTcpClient.cpp						\
 									sources/Network/UnixTcpServer.cpp						\

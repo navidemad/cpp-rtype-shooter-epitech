@@ -20,7 +20,7 @@ class IServerSocket {
 	// init
 	public:
 		virtual void	createServer(int port, int queueSize) = 0;
-		virtual void	closeServer() = 0;
+		virtual void	closeServer(void) = 0;
 
 	// listeners
 	public:

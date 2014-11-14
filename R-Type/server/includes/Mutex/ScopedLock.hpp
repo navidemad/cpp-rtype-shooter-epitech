@@ -1,12 +1,13 @@
 #pragma once
 
 #include "IMutex.hpp"
+#include <memory>
 
 class ScopedLock {
 
 	// ctor dtor
 	public:
-		ScopedLock(IMutex *);
+		ScopedLock(std::shared_ptr<IMutex> mutex);
 		~ScopedLock(void);
 
 	// copy / move operators
@@ -18,6 +19,6 @@ class ScopedLock {
 
 	// attributes
 	private:
-		IMutex	*mMutex;
+		std::shared_ptr<IMutex> mMutex;
 
 };

@@ -16,4 +16,17 @@ class WindowsTcpServer : public IServerSocket {
 		const WindowsTcpServer &operator=(const WindowsTcpServer &) = delete;
 		const WindowsTcpServer &operator=(const WindowsTcpServer &&) = delete;
 
+	// init
+	public:
+		void	createServer(int port, int queueSize);
+		void	closeServer(void);
+
+	// listeners
+	public:
+		void	setOnSocketEventListener(IServerSocket::OnSocketEvent *listener);
+
+	// handle clients
+	public:
+		std::shared_ptr<IClientSocket>	getNewClient(void);
+
 };

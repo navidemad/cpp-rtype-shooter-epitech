@@ -7,6 +7,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "IMutex.hpp"
 
 class NetworkManager {
 

@@ -1,9 +1,9 @@
 #include "ScopedLock.hpp"
 
-ScopedLock::ScopedLock(IMutex *mutex) : mMutex(mutex) {
-	mMutex->lock();
+ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex) : mMutex(mutex) {
+	mMutex.get()->lock();
 }
 
 ScopedLock::~ScopedLock(void) {
-	mMutex->unlock();
+	mMutex.get()->unlock();
 }
