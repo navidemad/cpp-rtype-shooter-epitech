@@ -3,9 +3,14 @@
 #include <list>
 #include <utility>
 #include <memory>
-#include <sys/types.h>
 #include "IThread.hpp"
 #include "IMutex.hpp"
+
+#ifdef __unix__
+# include <sys/types.h>
+#elif defined(_WIN32) || defined(WIN32)
+# include <Winsock2.h>
+#endif
 
 class NetworkManager {
 

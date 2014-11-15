@@ -6,7 +6,20 @@ class SocketException : public std::runtime_error {
 
 	// use std::runtime_error functions
 	public:
-	using std::runtime_error::runtime_error;
-		using std::runtime_error::what;
+		SocketException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
+		~SocketException(void) {}
+
+	// copy - move operators
+	public:
+		const SocketException &operator=(const SocketException &) throw() = delete;
+		const SocketException &operator=(const SocketException &&) throw() = delete;
+
+	// what
+	public:
+		const char *what(void) const throw() { return mWhat.c_str(); }
+
+	// attributes
+	private:
+		const std::string mWhat;
 
 };

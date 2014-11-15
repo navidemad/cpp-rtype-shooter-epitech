@@ -6,7 +6,20 @@ class MutexException : public std::runtime_error {
 
 	// use std::runtime_error functions
 	public:
-	using std::runtime_error::runtime_error;
-		using std::runtime_error::what;
+		MutexException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
+		~MutexException(void) {}
+
+	// copy - move operators
+	public:
+		const MutexException &operator=(const MutexException &) throw() = delete;
+		const MutexException &operator=(const MutexException &&) throw() = delete;
+
+	// what
+	public:
+		const char *what(void) const throw() { return mWhat.c_str(); }
+
+	// attributes
+	private:
+		const std::string mWhat;
 
 };

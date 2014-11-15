@@ -35,8 +35,8 @@ class WindowsThread : public IThread<U, T> {
             mThread = CreateThread(
                 NULL, 
                 0, 
-                reinterpret_cast<LPTHREAD_START_ROUTINE>(start_thread_trampoline<U, T>,
-                reinterpret_cast<LPVOID>(this)
+                reinterpret_cast<LPTHREAD_START_ROUTINE>(start_thread_trampoline<U, T>),
+                reinterpret_cast<LPVOID>(this),
                 0,
                 &mThread_ID);
 			if (mThread == NULL)
