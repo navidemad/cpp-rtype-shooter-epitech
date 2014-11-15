@@ -27,8 +27,8 @@ class IThread
 {
 public:
     virtual ~IThread() {}
-    virtual Thread::State getState(void) const;
-  	virtual void create(U callObj, T fctParam);
-  	virtual void wait(void *retVal);
-  	virtual void *start(void);
+    virtual Thread::State getState(void) const = 0;
+  	virtual void create(U callObj, T fctParam) = 0;
+  	virtual void wait(void *retVal) = 0;
+  	virtual void *start(void) = 0;
 };

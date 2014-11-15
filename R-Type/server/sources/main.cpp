@@ -12,6 +12,6 @@ class functor_test_1
 };
 
 int main(void) {
-	//PortabilityBuilder::getThread<functor_test_1, int>();
+	PortabilityBuilder::getThread<functor_test_1*, int>();
 	return 0;
 }

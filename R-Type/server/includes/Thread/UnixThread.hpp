@@ -10,7 +10,7 @@ class UnixThread : public IThread<U, T> {
 	// ctor dtor
 	public:
 		UnixThread(void) : mState(Thread::State::NOT_CREATED) {}
-		~UnixThread(void);
+		~UnixThread(void) {}
 
 	// copy / move operators
 	public:
