@@ -39,8 +39,8 @@ class UnixThread : public IThread<U, T> {
 			mState = Thread::State::IN_EXECUTION;
 		}
 
-		void wait(void *retVal = NULL) {
-			if (pthread_join(mThread, &retVal) != UnixThread::PTHREAD_SUCCESS)
+		void wait(void **retVal = NULL) {
+			if (pthread_join(mThread, retVal) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_join()");
 
 			mState = Thread::State::HAS_FINISHED;
@@ -50,6 +50,11 @@ class UnixThread : public IThread<U, T> {
 			(*mCallObj)(this->mFctParam);
 			return NULL;
 		}
+
+        void exit(void *status)
+        {
+            pthread_exit(status);
+        }
 
 	// attributes
 	private:

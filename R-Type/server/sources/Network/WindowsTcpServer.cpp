@@ -16,5 +16,5 @@ void	WindowsTcpServer::setOnSocketEventListener(IServerSocket::OnSocketEvent *) 
 }
 
 std::shared_ptr<IClientSocket>	WindowsTcpServer::getNewClient(void) {
-	return shared_ptr<IClientSocket>(nullptr);
+	return std::shared_ptr<IClientSocket>(nullptr);
 }

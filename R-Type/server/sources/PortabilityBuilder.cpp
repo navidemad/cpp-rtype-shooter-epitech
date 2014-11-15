@@ -4,7 +4,7 @@ std::shared_ptr<IMutex> PortabilityBuilder::getMutex(void) {
 #ifdef __unix__
 	return std::shared_ptr<IMutex>(new UnixMutex);
 #elif defined(_WIN32) || defined(WIN32)
-	return std::shared_ptr<IMutex>(new WindowMutex);
+	return std::shared_ptr<IMutex>(new WindowsMutex);
 #endif
 }
 

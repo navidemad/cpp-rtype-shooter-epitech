@@ -3,6 +3,7 @@
 #include "IMutex.hpp"
 #include <windows.h>
 #include "MutexException.hpp"
+#pragma comment(lib, "Ws2_32.lib")
 
 class WindowsMutex : public IMutex {
 
@@ -24,4 +25,7 @@ class WindowsMutex : public IMutex {
 		void	unlock(void);
 		void	trylock(void);
 
+    // attributes
+    private:
+        HANDLE	mMutex;
 };

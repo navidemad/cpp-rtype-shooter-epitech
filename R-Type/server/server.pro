@@ -56,13 +56,11 @@ SOURCES				+=	sources/main.cpp														\
 unix:SOURCES	+=	sources/Network/UnixTcpClient.cpp						\
 									sources/Network/UnixTcpServer.cpp						\
 									sources/Network/UnixUdpClient.cpp						\
-									sources/Thread/UnixThread.cpp			\
 									sources/Mutex/UnixMutex.cpp
 
 win32:SOURCES	+=	sources/Network/WindowsTcpServer.cpp				\
 									sources/Network/WindowsTcpClient.cpp				\
 									sources/Network/WindowsUdpClient.cpp				\
-									sources/Thread/WindowsThread.cpp	\
 									sources/Mutex/WindowsMutex.cpp
 
 unix:LIBS			+= -lpthread

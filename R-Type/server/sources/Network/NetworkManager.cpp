@@ -115,6 +115,8 @@ void *pthreadCallback(void *data) {
 }
 
 void	NetworkManager::startThread(void) {
+    //auto thread = PortabilityBuilder::getThread<void(*(void *)), void*>();
+    //thread->create(pthreadCallback, this);
 	pthread_t thread;
 	pthread_create(&thread, NULL, pthreadCallback, this);
 }
