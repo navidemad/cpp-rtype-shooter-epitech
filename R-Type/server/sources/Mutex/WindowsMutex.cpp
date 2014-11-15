@@ -12,7 +12,8 @@ WindowsMutex::~WindowsMutex(void) {
 
 void	WindowsMutex::lock(void) {
     DWORD ret = WaitForSingleObject(mMutex, INFINITE);
-    if (ret == WAIT_ABANDONED || ret == WAIT_OBJECT_0 || ret == WAIT_TIMEOUT || WAIT_FAILED)
+	
+	if (ret == WAIT_ABANDONED || ret == WAIT_TIMEOUT || ret == WAIT_FAILED)
         throw MutexException("fail WaitForSingleObject()");
 }
 
@@ -23,6 +24,7 @@ void	WindowsMutex::unlock(void) {
 
 void	WindowsMutex::trylock(void) {
     DWORD ret = WaitForSingleObject(mMutex, 0);
-    if (ret == WAIT_ABANDONED || ret == WAIT_OBJECT_0 || ret == WAIT_TIMEOUT || ret == WAIT_FAILED)
+
+    if (ret == WAIT_ABANDONED || ret == WAIT_TIMEOUT || ret == WAIT_FAILED)
         throw MutexException("fail WaitForSingleObject()");
 }

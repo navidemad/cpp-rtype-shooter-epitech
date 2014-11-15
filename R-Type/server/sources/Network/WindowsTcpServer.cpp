@@ -2,12 +2,15 @@
 #include "WindowsTcpClient.hpp"
 #include "SocketException.hpp"
 #include "PortabilityBuilder.hpp"
+#include "WindowsWSAHandler.hpp"
 #include <cstring>
 
 WindowsTcpServer::WindowsTcpServer(void) : mServerFd(-1), mListener(nullptr), mNetworkManager(NetworkManager::getInstance()) {
+	WindowsWSAHandler::init();
 }
 
 WindowsTcpServer::~WindowsTcpServer(void) {
+	WindowsWSAHandler::cleanup();
 	closeServer();
 }
 

@@ -34,9 +34,9 @@ namespace PortabilityBuilder {
     std::shared_ptr<IThread<U, T>> getThread(void)
     {
 #ifdef __unix__
-        return std::shared_ptr<IThread<U, T>>(new UnixThread<U, T>);
+		return std::make_shared<UnixThread<U, T>>();
 #elif defined(_WIN32) || defined(WIN32)
-        return std::shared_ptr<IThread<U, T>>(new WindowsThread<U, T>);
+		return std::make_shared<WindowsThread<U, T>>();
 #endif
     }
 
