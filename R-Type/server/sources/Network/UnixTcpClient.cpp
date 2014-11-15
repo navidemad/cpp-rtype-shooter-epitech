@@ -83,10 +83,10 @@ void	UnixTcpClient::send(const IClientSocket::Message &message) {
 IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
 	ScopedLock ScopedLock(mMutex);
 	
-	if (sizeToRead > mInBuffer.size())
-		throw SocketException("Cannot read more than the internal buffer size");
-
 	IClientSocket::Message message;
+
+	if (sizeToRead > mInBuffer.size())
+		sizeToRead = mInBuffer.size();
 
 	std::copy(mInBuffer.begin(), mInBuffer.begin() + sizeToRead, back_inserter(message.msg));
 	mInBuffer.erase(mInBuffer.begin(), mInBuffer.begin() + sizeToRead);
@@ -124,7 +124,10 @@ void	UnixTcpClient::onSocketWritable(int) {
 			mListener->onBytesWritten(this, nbBytes);
 	}
 	catch (const SocketException &) {
-		onSocketClosed(mSocketFd);
+		closeClient();
+
+		if (mListener)
+			mListener->onSocketClosed(this);
 	}
 }
 
@@ -164,13 +167,9 @@ void	UnixTcpClient::onSocketReadable(int) {
 			mListener->onSocketReadable(this, nbBytesToRead());
 	}
 	catch (const SocketException &) {
-		onSocketClosed(mSocketFd);
+		closeClient();
+
+		if (mListener)
+			mListener->onSocketClosed(this);
 	}
-}
-
-void	UnixTcpClient::onSocketClosed(int) {
-	closeClient();
-
-	if (mListener)
-		mListener->onSocketClosed(this);
 }

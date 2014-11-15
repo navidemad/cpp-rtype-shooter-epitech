@@ -18,7 +18,6 @@ class NetworkManager {
 				virtual	~OnSocketEvent(void) {}
 				virtual void	onSocketReadable(int socketFd) = 0;
 				virtual	void	onSocketWritable(int socketFd) = 0;
-				virtual void	onSocketClosed(int socketFd) = 0;
 		};
 
 	// ctor - dtor

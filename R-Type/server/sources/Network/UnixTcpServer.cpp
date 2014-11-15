@@ -40,7 +40,7 @@ void	UnixTcpServer::bindSocket(int port) {
 	serverAddr.sin_addr.s_addr = INADDR_ANY;
 	serverAddr.sin_port = htons(port);
 
-	if (bind(mServerFd, (struct sockaddr *) &serverAddr, sizeof(serverAddr)) < 0)
+	if (bind(mServerFd, reinterpret_cast<struct sockaddr *>(&serverAddr), sizeof(serverAddr)) < 0)
 		throw SocketException("fail bind()");
 }
 
@@ -96,7 +96,4 @@ void	UnixTcpServer::onSocketWritable(int) {
 void	UnixTcpServer::onSocketReadable(int) {
 	if (mListener)
 		mListener->onNewConnection(this);
-}
-
-void	UnixTcpServer::onSocketClosed(int) {
 }

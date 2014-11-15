@@ -9,7 +9,7 @@ class IClientSocket {
 	public:
 		struct Message {
 			std::vector<char>	msg;
-			int								msgSize;
+			unsigned int			msgSize;
 			std::string				host;
 			int								port;
 		};
