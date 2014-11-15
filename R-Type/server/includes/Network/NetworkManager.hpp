@@ -4,7 +4,7 @@
 #include <utility>
 #include <memory>
 #include <sys/types.h>
-#include "PortabilityBuilder.hpp"
+#include "IThread.hpp"
 #include "IMutex.hpp"
 
 class NetworkManager {
@@ -48,11 +48,10 @@ class NetworkManager {
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator findSocket(int socketFd);
 		void  refreshMaxFd(void);
 	public: // A PASSER EN PRIVATE UNE FOIS LABSTRACT THREAD OK
-		void	run(void);
+		void	operator()(void *);
 	private:
 		void	initFds(void);
 		void	checkFds(void);
-		void	startThread(void);
 
 	// attributes
 	private:
@@ -60,6 +59,7 @@ class NetworkManager {
 		fd_set mReadFds;
 		fd_set mWriteFds;
 		std::shared_ptr<IMutex> mMutex;
+		std::shared_ptr<IThread<NetworkManager *, void *>> mThread;
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>> mSockets;
 
 };

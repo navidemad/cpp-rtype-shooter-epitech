@@ -3,11 +3,10 @@
 #include <stdexcept>
 
 class MutexException : public std::runtime_error {
-public:
-    MutexException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) { }
-    const MutexException & operator = (const MutexException &) throw() = delete;
-    virtual ~MutexException(void) throw() {}
-    virtual const char *what(void) const throw() { return mWhat.c_str(); }
-private:
-    const std::string mWhat;
+
+	// use std::runtime_error functions
+	public:
+	using std::runtime_error::runtime_error;
+		using std::runtime_error::what;
+
 };

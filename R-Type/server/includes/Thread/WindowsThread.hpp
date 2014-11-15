@@ -9,7 +9,7 @@ class WindowsThread : public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		WindowsThread(void) : mState(Thread::State::NOT_CREATED) {}
+		WindowsThread(void) {}
 		~WindowsThread(void)
 		{
 			if (TerminateThread(mThread, -1) == 0)
@@ -28,10 +28,6 @@ class WindowsThread : public IThread<U, T> {
 
 	// interface implementation
 	public:
-		Thread::State getState(void) const {
-			return mState;
-		}
-
 		void create(U callObj, T fctParam) {
 			mCallObj  = callObj;
 			mFctParam = fctParam;
@@ -45,8 +41,6 @@ class WindowsThread : public IThread<U, T> {
                 &mThread_ID);
 			if (mThread == NULL)
 				throw ThreadException("fail CreateThread()");
-
-			mState = Thread::State::IN_EXECUTION;
 		}
 
 		void wait(void **retVal = NULL) {
@@ -56,8 +50,6 @@ class WindowsThread : public IThread<U, T> {
             GetExitCodeThread(mThread, &ret);
             if (ret && retVal)
                 *retVal = reinterpret_cast<void*>(ret);
-
-			mState = Thread::State::HAS_FINISHED;
 		}
 
 		void *start(void) {
@@ -65,17 +57,16 @@ class WindowsThread : public IThread<U, T> {
 			return NULL;
 		}
 
-        void exit(void *status)
-        {
-            if (mThread)
-                ExitThread(reinterpret_cast<DWORD>(status));
-        }
+    void exit(void *status)
+		{
+			if (mThread)
+					ExitThread(reinterpret_cast<DWORD>(status));
+		}
 
 	// attributes
 	private:
 		HANDLE mThread;
-        DWORD mThread_ID;
-		Thread::State mState;
+		DWORD mThread_ID;
 		U mCallObj;
 		T mFctParam;
 

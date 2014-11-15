@@ -6,7 +6,7 @@
 
 std::shared_ptr<NetworkManager> NetworkManager::mInstance = nullptr;
 
-NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::getMutex()) {
+NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::getMutex()), mThread(PortabilityBuilder::getThread<NetworkManager *, void*>()) {
 }
 
 NetworkManager::~NetworkManager(void) {
@@ -31,7 +31,7 @@ void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *list
 		mMaxFd = socketFd;
 
 	if (mSockets.size() == 1)
-		startThread();
+		mThread->create(this, NULL);
 }
 
 void	NetworkManager::removeSocket(int socketFd) {
@@ -63,12 +63,12 @@ std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
 	return mInstance;
 }
 
-void	NetworkManager::run(void) {
+void	NetworkManager::operator()(void *) {
 	while (mSockets.size() > 0) {
 		initFds();
 
 		struct timeval tv;
-		tv.tv_sec = 0; /* TO CHANGE */
+		tv.tv_sec = 0;
 		tv.tv_usec = 0;
 		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) == -1)
 			throw SocketException("fail select()");
@@ -106,17 +106,4 @@ void	NetworkManager::checkFds(void) {
 		if (FD_ISSET(socket.first, &mWriteFds))
 			socket.second->onSocketWritable(socket.first);
 	}
-}
-
-#include <pthread.h>
-void *pthreadCallback(void *data) {
-	reinterpret_cast<NetworkManager *>(data)->run();
-	pthread_exit(NULL);
-}
-
-void	NetworkManager::startThread(void) {
-    //auto thread = PortabilityBuilder::getThread<void(*(void *)), void*>();
-    //thread->create(pthreadCallback, this);
-	pthread_t thread;
-	pthread_create(&thread, NULL, pthreadCallback, this);
 }
