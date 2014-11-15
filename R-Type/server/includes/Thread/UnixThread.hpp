@@ -9,7 +9,7 @@ class UnixThread : public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		UnixThread(void) : mState(IThread<U, T>::State::NOT_CREATED) {}
+		UnixThread(void) : mState(Thread::State::NOT_CREATED) {}
 		~UnixThread(void);
 
 	// copy / move operators
@@ -25,7 +25,7 @@ class UnixThread : public IThread<U, T> {
 
 	// interface implementation
 	public:
-		State getState(void) const {
+		Thread::State getState(void) const {
 			return mState;
 		}
 
@@ -36,14 +36,14 @@ class UnixThread : public IThread<U, T> {
 			if (pthread_create(&mThread, NULL, start_thread_trampoline<U, T>, this) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_create()");
 
-			mState = IThread<U, T>::State::IN_EXECUTION;
+			mState = Thread::State::IN_EXECUTION;
 		}
 
 		void wait(void *retVal = NULL) {
 			if (pthread_join(mThread, &retVal) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_join()");
 
-			mState = IThread<U, T>::State::HAS_FINISHED;
+			mState = Thread::State::HAS_FINISHED;
 		}
 
 		void *start(void) {
@@ -54,7 +54,7 @@ class UnixThread : public IThread<U, T> {
 	// attributes
 	private:
 		pthread_t mThread;
-		State mState;
+		Thread::State mState;
 		U mCallObj;
 		T mFctParam;
 

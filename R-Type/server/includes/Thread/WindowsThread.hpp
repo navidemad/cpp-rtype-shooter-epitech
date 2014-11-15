@@ -9,7 +9,7 @@ class WindowsThread : public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		WindowsThread(void) : mState(IThread<U, T>::State::NOT_CREATED) {}
+		WindowsThread(void) : mState(Thread::State::NOT_CREATED) {}
 		~WindowsThread(void)
 		{
 			if (TerminateThread(mThread, -1) == 0)
@@ -28,7 +28,7 @@ class WindowsThread : public IThread<U, T> {
 
 	// interface implementation
 	public:
-		State getState(void) const {
+		IThread::State getState(void) const {
 			return mState;
 		}
 
@@ -40,13 +40,13 @@ class WindowsThread : public IThread<U, T> {
 			if (mThread == NULL)
 				throw ThreadException("fail CreateThread()");
 
-			mState = IThread<U, T>::State::IN_EXECUTION;
+			mState = Thread::State::IN_EXECUTION;
 		}
 
 		void wait(void *retVal = NULL) {
 			WaitForSingleObject(mThread, INFINITE);
 
-			mState = IThread<U, T>::State::HAS_FINISHED;
+			mState = Thread::State::HAS_FINISHED;
 		}
 
 		void *start(void) {
@@ -57,7 +57,7 @@ class WindowsThread : public IThread<U, T> {
 	// attributes
 	private:
 		HANDLE mThread;
-		State mState;
+		Thread::State mState;
 		U mCallObj;
 		T mFctParam;
 

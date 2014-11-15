@@ -22,7 +22,7 @@
 
 namespace PortabilityBuilder {
 
-	std::shared_ptr<IMutex>					getMutex(void);
+	std::shared_ptr<IMutex>			getMutex(void);
 	std::shared_ptr<IClientSocket> 	getTcpClient(void);
 	std::shared_ptr<IClientSocket> 	getUdpClient(void);
 	std::shared_ptr<IServerSocket> 	getTcpServer(void);

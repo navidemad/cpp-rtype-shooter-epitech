@@ -11,22 +11,23 @@ void *start_thread_trampoline(void *arg) {
   return 0;
 }
 
-enum class State;
+namespace Thread
+{
+  enum State
+  {
+      NOT_CREATED,
+      IN_EXECUTION,
+      HAS_FINISHED
+  };
+}
 
 // Thread Abstraction Template
 template <typename U, typename T>
 class IThread
 {
 public:
-  enum State : unsigned char 
-  {
-      NOT_CREATED,
-      IN_EXECUTION,
-      HAS_FINISHED
-  };
-public:
     virtual ~IThread() {}
-    virtual State getState(void) const;
+    virtual Thread::State getState(void) const;
   	virtual void create(U callObj, T fctParam);
   	virtual void wait(void *retVal);
   	virtual void *start(void);
