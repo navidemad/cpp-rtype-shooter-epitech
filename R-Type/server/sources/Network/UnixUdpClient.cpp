@@ -91,12 +91,15 @@ IClientSocket::Message	UnixUdpClient::receive(unsigned int sizeToRead) {
 		mInDatagrams.pop_front();
 	}
 	else {
-		IClientSocket::Message datagram = mInDatagrams.front();
+		IClientSocket::Message &datagram = mInDatagrams.front();
 
 		message.msg.insert(message.msg.end(), datagram.msg.begin(), datagram.msg.begin() + sizeToRead);		
 		message.msgSize = sizeToRead;
 		message.host = datagram.host;
 		message.port = datagram.port;
+
+		datagram.msg.erase(datagram.msg.begin(), datagram.msg.begin() + sizeToRead);
+		datagram.msgSize -= sizeToRead;
 	}
 
 	return message;
