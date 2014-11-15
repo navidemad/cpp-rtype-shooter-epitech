@@ -4,7 +4,7 @@
 #include "ICondVar.hpp"
 #include "CondVarException.hpp"
 
-#include <windows.h>
+# include <WinSock2.h>
 
 class WindowsCondVar : public ICondVar {
 

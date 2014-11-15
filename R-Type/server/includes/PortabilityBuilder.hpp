@@ -19,8 +19,7 @@
 # include "UnixCondVar.hpp"
 #elif defined(_WIN32) || defined(WIN32)
 # define sleep(t) Sleep(1000*(t))
-# include <windows.h>
-# include <winsock.h>
+# include <winsock2.h>
 # include <time.h>
 # include "WindowsThread.hpp"
 # include "WindowsMutex.hpp"
@@ -41,9 +40,9 @@ namespace PortabilityBuilder {
     std::shared_ptr<IThread<U, T>> getThread(void)
     {
 #ifdef __unix__
-        return std::shared_ptr<IThread<U, T>>(new UnixThread<U, T>);
+		return std::make_shared<UnixThread<U, T>>();
 #elif defined(_WIN32) || defined(WIN32)
-        return std::shared_ptr<IThread<U, T>>(new WindowsThread<U, T>);
+		return std::make_shared<WindowsThread<U, T>>();
 #endif
     }
 

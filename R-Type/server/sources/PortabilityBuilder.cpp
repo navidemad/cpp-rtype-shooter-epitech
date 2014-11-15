@@ -2,33 +2,33 @@
 
 std::shared_ptr<IMutex> PortabilityBuilder::getMutex(void) {
 #ifdef __unix__
-	return std::shared_ptr<IMutex>(new UnixMutex);
+	return std::make_shared<UnixMutex>();
 #elif defined(_WIN32) || defined(WIN32)
-	return std::shared_ptr<IMutex>(new WindowsMutex);
+	return std::make_shared<WindowsMutex>();
 #endif
 }
 
 std::shared_ptr<IClientSocket> PortabilityBuilder::getTcpClient(void) {
 #ifdef __unix__
-	return std::shared_ptr<IClientSocket>(new UnixTcpClient);
+	return std::make_shared<UnixTcpClient>();
 #elif defined(_WIN32) || defined(WIN32)
-	return std::shared_ptr<IClientSocket>(new WindowsTcpClient);
+	return std::make_shared<WindowsTcpClient>();
 #endif
 }
 
 std::shared_ptr<IClientSocket> PortabilityBuilder::getUdpClient(void) {
 #ifdef __unix__
-	return std::shared_ptr<IClientSocket>(new UnixUdpClient);
+	return std::make_shared<UnixUdpClient>();
 #elif defined(_WIN32) || defined(WIN32)
-	return std::shared_ptr<IClientSocket>(new WindowsUdpClient);
+	return std::make_shared<WindowsUdpClient>();
 #endif
 }
 
 std::shared_ptr<IServerSocket> PortabilityBuilder::getTcpServer(void) {
 #ifdef __unix__
-	return std::shared_ptr<IServerSocket>(new UnixTcpServer);
+	return std::make_shared<UnixTcpServer>();
 #elif defined(_WIN32) || defined(WIN32)
-	return std::shared_ptr<IServerSocket>(new WindowsTcpServer);
+	return std::make_shared<WindowsTcpServer>();
 #endif
 }
 

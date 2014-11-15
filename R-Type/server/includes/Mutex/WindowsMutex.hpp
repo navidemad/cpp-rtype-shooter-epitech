@@ -1,9 +1,9 @@
 #pragma once
 
 #include "IMutex.hpp"
-#include <windows.h>
+#include <WinSock2.h>
 #include "MutexException.hpp"
-#pragma comment(lib, "Ws2_32.lib")
+//#pragma comment(lib, "Ws2_32.lib")
 
 class WindowsMutex : public IMutex {
 

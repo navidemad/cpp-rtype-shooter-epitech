@@ -3,7 +3,7 @@
 #ifdef __unix__
 # include <pthread.h>
 #elif defined(_WIN32) || defined(WIN32)
-# include <windows.h>
+# include <WinSock2.h>
 #endif
 
 class IMutex {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IThread.hpp"
-#include <windows.h>
+# include <WinSock2.h>
 #include "ThreadException.hpp"
 
 template <typename U, typename T>
