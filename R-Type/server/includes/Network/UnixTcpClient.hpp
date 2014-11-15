@@ -52,7 +52,6 @@ class UnixTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent
 	public:
 		void	onSocketWritable(int socketFd);
 		void	onSocketReadable(int socketFd);
-		void	onSocketClosed(int socketFd);
 
 	// attributes
 	private:
