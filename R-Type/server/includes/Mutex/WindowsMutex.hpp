@@ -24,7 +24,7 @@ class WindowsMutex : public IMutex {
 		void	lock(void);
 		void	unlock(void);
 		void	trylock(void);
-        HANDLE getMutex(void) const;
+        HANDLE getMutex(void);
 
     // attributes
     private:

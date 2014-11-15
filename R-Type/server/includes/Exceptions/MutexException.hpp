@@ -12,7 +12,6 @@ class MutexException : public std::runtime_error {
 	// copy - move operators
 	public:
 		const MutexException &operator=(const MutexException &) throw() = delete;
-		const MutexException &operator=(const MutexException &&) throw() = delete;
 
 	// what
 	public:

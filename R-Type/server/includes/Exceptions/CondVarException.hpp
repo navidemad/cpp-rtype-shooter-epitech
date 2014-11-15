@@ -12,7 +12,6 @@ class CondVarException : public std::runtime_error {
 	// copy - move operators
 	public:
 		const CondVarException &operator=(const CondVarException &) throw() = delete;
-		const CondVarException &operator=(const CondVarException &&) throw() = delete;
 
 	// what
 	public:

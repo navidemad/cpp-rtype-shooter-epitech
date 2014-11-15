@@ -12,7 +12,6 @@ class SocketException : public std::runtime_error {
 	// copy - move operators
 	public:
 		const SocketException &operator=(const SocketException &) throw() = delete;
-		const SocketException &operator=(const SocketException &&) throw() = delete;
 
 	// what
 	public:

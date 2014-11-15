@@ -25,6 +25,6 @@ void	UnixMutex::trylock(void) {
     throw MutexException("fail pthread_mutex_trylock()");
 }
 
-pthread_mutex_t *UnixMutex::getMutex(void) const {
+pthread_mutex_t *UnixMutex::getMutex(void) {
   return &mMutex;
 }

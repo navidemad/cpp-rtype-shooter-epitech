@@ -11,7 +11,7 @@ RCC_DIR			=	build/rcc
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
-
+unix:QMAKE_CXX = clang++
 INCLUDEPATH		+=	.					\
 				includes				\
 				includes/Network 			\

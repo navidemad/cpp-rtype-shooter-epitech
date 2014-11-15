@@ -25,6 +25,6 @@ void	WindowsMutex::trylock(void) {
         throw MutexException("fail WaitForSingleObject()");
 }
 
-HANDLE WindowsMutex::getMutex(void) const {
+HANDLE WindowsMutex::getMutex(void) {
     return mMutex;
 }

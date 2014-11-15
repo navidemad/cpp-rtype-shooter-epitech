@@ -12,7 +12,6 @@ class ThreadException : public std::runtime_error {
 	// copy - move operators
 	public:
 		const ThreadException &operator=(const ThreadException &) throw() = delete;
-		const ThreadException &operator=(const ThreadException &&) throw() = delete;
 
 	// what
 	public:
