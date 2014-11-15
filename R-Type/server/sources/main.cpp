@@ -1,14 +1,21 @@
-#include "WindowsTcpClient.hpp"
-#include "WindowsTcpServer.hpp"
-#include <memory>
+#include "WindowsUdpClient.hpp"
 #include <iostream>
-
-class TestServer : public IServerSocket::OnSocketEvent, public IClientSocket::OnSocketEvent {
+/*
+class TestClient : public IClientSocket::OnSocketEvent {
 
 	public:
-		TestServer(void) {
-			server.createServer(4242, 1024);
-			server.setOnSocketEventListener(this);
+		TestClient(void) {
+			client.connect("127.0.0.1", 4243);
+			client.setOnSocketEventListener(this);
+
+			IClientSocket::Message message;
+			std::string str = "message received!";
+			message.msg.clear();
+			std::copy(str.begin(), str.end(), back_inserter(message.msg));
+			message.msgSize = str.size();
+			message.host = "127.0.0.1";
+			message.port = 4242;
+			client.send(message);
 		}
 
 		void	onBytesWritten(IClientSocket *, unsigned int nbBytes) {
@@ -19,7 +26,7 @@ class TestServer : public IServerSocket::OnSocketEvent, public IClientSocket::On
 			IClientSocket::Message message = socket->receive(1024);
 
 			message.msg.push_back('\0');
-			std::cout << "receive: " << message.msg.data() << std::endl;
+			std::cout << "receive msg from " << message.host << ":" << message.port << ": " << message.msg.data() << std::endl;
 
 			std::string str = "message received!";
 			message.msg.clear();
@@ -32,19 +39,17 @@ class TestServer : public IServerSocket::OnSocketEvent, public IClientSocket::On
 			std::cout << "socket closed" << std::endl;
 		}
 
-		void	onNewConnection(IServerSocket *socket) {
-			std::cout << "new connection" << std::endl;
-			client = socket->getNewClient();
-			client->setOnSocketEventListener(this);
-		}
-
-		std::shared_ptr<IClientSocket> client;
-		WindowsTcpServer server;
+		WindowsUdpClient client;
 
 };
 
 int main(void) {
-	TestServer server;
+	TestClient client;
 	while (1);
+	return 0;
+}
+*/
+
+int main(void) {
 	return 0;
 }
