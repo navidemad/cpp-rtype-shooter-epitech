@@ -16,7 +16,7 @@
 # include "UnixTcpServer.hpp"
 # include "UnixUdpClient.hpp"
 #elif defined(_WIN32) || defined(WIN32)
-# include <winsock.h>
+# include <winsock2.h>
 # include "WindowsThread.hpp"
 # include "WindowsMutex.hpp"
 # include "WindowsTcpClient.hpp"
