@@ -46,11 +46,6 @@ class NetworkManager {
 		void	addSocket(int socketFd, NetworkManager::OnSocketEvent *listener);
 		void	removeSocket(int socketFd);
 
-	// send - receive
-	public:
-		int 	receive(int socketFd, char *buffer, int sizeToRead);
-		int		send(int socketFd, char *buffer, int sizeToWrite);
-
 	// internal tools
 	private:
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator findSocket(int socketFd);
@@ -61,7 +56,6 @@ class NetworkManager {
 		void	initFds(void);
 		void	checkFds(void);
 		void	startThread(void);
-		bool	stillConnected(const std::pair<int, NetworkManager::OnSocketEvent *> &socket);
 
 	// attributes
 	private:

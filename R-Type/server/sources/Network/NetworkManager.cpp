@@ -3,8 +3,6 @@
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
 #include <algorithm>
-#include <sys/types.h>
-#include <sys/socket.h>
 
 std::shared_ptr<NetworkManager> NetworkManager::mInstance = nullptr;
 
@@ -65,26 +63,6 @@ std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
 	return mInstance;
 }
 
-int	NetworkManager::receive(int socketFd, char *buffer, int sizeToRead) {
-	int nbBytesRead = ::recv(socketFd, buffer, sizeToRead, 0);
-
-	if (nbBytesRead == -1)
-		throw SocketException("fail recv()");
-	else if (nbBytesRead == 0)
-		throw SocketException("connection closed");
-
-	return nbBytesRead;
-}
-
-int	NetworkManager::send(int socketFd, char *buffer, int sizeToWrite) {
-	int nbBytesSent = ::send(socketFd, buffer, sizeToWrite, MSG_NOSIGNAL);
-
-	if (nbBytesSent == -1)
-		throw SocketException("Fail send()");
-
-	return nbBytesSent;
-}
-
 void	NetworkManager::run(void) {
 	while (mSockets.size() > 0) {
 		initFds();
@@ -139,10 +117,4 @@ void *pthreadCallback(void *data) {
 void	NetworkManager::startThread(void) {
 	pthread_t thread;
 	pthread_create(&thread, NULL, pthreadCallback, this);
-}
-
-bool	NetworkManager::stillConnected(const std::pair<int, NetworkManager::OnSocketEvent *> &socket) {
-	char c;
-
-	return !!::recv(socket.first, &c, 1, MSG_PEEK);
 }

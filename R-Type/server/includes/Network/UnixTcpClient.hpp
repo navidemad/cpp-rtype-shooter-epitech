@@ -30,8 +30,8 @@ class UnixTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent
 	private:
 		void	initSocket(void);
 		void	connectSocket(const std::string &addr, int port);
-		int 	writeBufferInSocket(void);
-		void	readSocket(void);
+		int 	sendSocket(void);
+		void	recvSocket(void);
 
 	// recv / send
 	public:

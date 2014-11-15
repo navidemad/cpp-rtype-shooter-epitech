@@ -118,7 +118,7 @@ void	UnixTcpClient::onSocketWritable(int) {
 		return;
 
 	try {
-		int nbBytes = writeBufferInSocket();
+		int nbBytes = sendSocket();
 
 		if (mListener)
 			mListener->onBytesWritten(this, nbBytes);
@@ -128,27 +128,37 @@ void	UnixTcpClient::onSocketWritable(int) {
 	}
 }
 
-int UnixTcpClient::writeBufferInSocket(void) {
+int UnixTcpClient::sendSocket(void) {
 	ScopedLock ScopedLock(mMutex);
 
 	int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
-	int nbBytes = mNetworkManager->send(mSocketFd, mOutBuffer.data(), sizeToSend);
-	mOutBuffer.erase(mOutBuffer.begin(), mOutBuffer.begin() + nbBytes);
+	int nbBytesSent = ::send(mSocketFd, mOutBuffer.data(), sizeToSend, MSG_NOSIGNAL);
 
-	return nbBytes;
+	if (nbBytesSent == -1)
+		throw SocketException("Fail send()");
+
+	mOutBuffer.erase(mOutBuffer.begin(), mOutBuffer.begin() + nbBytesSent);
+
+	return nbBytesSent;
 }
 
-void UnixTcpClient::readSocket(void) {
+void UnixTcpClient::recvSocket(void) {
 	ScopedLock ScopedLock(mMutex);
 
 	char buffer[1024];
-	int nbBytesRead = mNetworkManager->receive(mSocketFd, buffer, 1024);
+	int nbBytesRead = ::recv(mSocketFd, buffer, 1024, 0);
+
+	if (nbBytesRead == -1)
+		throw SocketException("fail recv()");
+	else if (nbBytesRead == 0)
+		throw SocketException("connection closed");
+
 	mInBuffer.insert(mInBuffer.end(), buffer, buffer + nbBytesRead);
 }
 
 void	UnixTcpClient::onSocketReadable(int) {
 	try {
-		readSocket();
+		recvSocket();
 
 		if (mListener)
 			mListener->onSocketReadable(this, nbBytesToRead());
