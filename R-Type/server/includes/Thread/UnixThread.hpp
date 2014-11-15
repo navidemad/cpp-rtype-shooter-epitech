@@ -10,7 +10,9 @@ class UnixThread : public IThread<U, T> {
 	// ctor dtor
 	public:
 		UnixThread(void) {}
-		~UnixThread(void) {}
+		~UnixThread(void) {
+			cancel();
+		}
 
 	// copy / move operators
 	public:
@@ -43,10 +45,14 @@ class UnixThread : public IThread<U, T> {
 			return NULL;
 		}
 
-    void exit(void *status)
-    {
-        pthread_exit(status);
-    }
+        void cancel(void) {
+            if (pthread_cancel(mThread) != UnixThread::PTHREAD_SUCCESS)
+				throw ThreadException("fail pthread_cancel()");
+        }
+
+	    void exit(void *status) {
+	        pthread_exit(status);
+	    }
 
 	// attributes
 	private:

@@ -23,6 +23,7 @@ class UnixMutex : public IMutex {
 		void	lock(void);
 		void	unlock(void);
 		void	trylock(void);
+		pthread_mutex_t *getMutex(void) const;
 
 	// 
 	public:

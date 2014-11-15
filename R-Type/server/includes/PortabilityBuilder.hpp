@@ -3,6 +3,7 @@
 #include <memory>
 #include "IMutex.hpp"
 #include "IThread.hpp"
+#include "ICondVar.hpp"
 #include "IClientSocket.hpp"
 #include "IServerSocket.hpp"
 
@@ -15,13 +16,18 @@
 # include "UnixTcpClient.hpp"
 # include "UnixTcpServer.hpp"
 # include "UnixUdpClient.hpp"
+# include "UnixCondVar.hpp"
 #elif defined(_WIN32) || defined(WIN32)
+# define sleep(t) Sleep(1000*(t))
+# include <windows.h>
 # include <winsock.h>
+# include <time.h>
 # include "WindowsThread.hpp"
 # include "WindowsMutex.hpp"
 # include "WindowsTcpClient.hpp"
 # include "WindowsTcpServer.hpp"
 # include "WindowsUdpClient.hpp"
+# include "WindowsCondVar.hpp"
 #endif
 
 namespace PortabilityBuilder {
@@ -30,6 +36,7 @@ namespace PortabilityBuilder {
     std::shared_ptr<IClientSocket> 	getTcpClient(void);
     std::shared_ptr<IClientSocket> 	getUdpClient(void);
     std::shared_ptr<IServerSocket> 	getTcpServer(void);
+    std::shared_ptr<ICondVar>       getCondVar(void);
     template <typename U, typename T>
     std::shared_ptr<IThread<U, T>> getThread(void)
     {

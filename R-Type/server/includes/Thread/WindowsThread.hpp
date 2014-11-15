@@ -10,10 +10,8 @@ class WindowsThread : public IThread<U, T> {
 	// ctor dtor
 	public:
 		WindowsThread(void) {}
-		~WindowsThread(void)
-		{
-			if (TerminateThread(mThread, -1) == 0)
-				throw ThreadException("fail TerminateThread()");
+		~WindowsThread(void) {
+            cancel();
 		}
 
 	// copy / move operators
@@ -44,8 +42,10 @@ class WindowsThread : public IThread<U, T> {
 		}
 
 		void wait(void **retVal = NULL) {
-
-            WaitForSingleObject(mThread, INFINITE);
+            if (WaitForSingleObject(mThread, INFINITE) != WAIT_OBJECT_0)
+                throw ThreadException("fail WaitForSingleObject()");
+            else if (!CloseHandle(mThread))
+                throw ThreadException("fail CloseHandle()");
             DWORD ret;
             GetExitCodeThread(mThread, &ret);
             if (ret && retVal)
@@ -57,10 +57,14 @@ class WindowsThread : public IThread<U, T> {
 			return NULL;
 		}
 
-    void exit(void *status)
-		{
+        void cancel(void) {
+            if (TerminateThread(mThread, 0) == 0)
+                throw ThreadException("fail TerminateThread()");
+        }
+
+        void exit(void *status)	{
 			if (mThread)
-					ExitThread(reinterpret_cast<DWORD>(status));
+    			ExitThread(reinterpret_cast<DWORD>(status));
 		}
 
 	// attributes

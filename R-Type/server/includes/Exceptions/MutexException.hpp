@@ -20,6 +20,6 @@ class MutexException : public std::runtime_error {
 
 	// attributes
 	private:
-		const std::string mWhat;
+        const std::string& mWhat;
 
 };

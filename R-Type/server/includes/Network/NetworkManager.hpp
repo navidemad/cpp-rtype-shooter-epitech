@@ -9,7 +9,7 @@
 #ifdef __unix__
 # include <sys/types.h>
 #elif defined(_WIN32) || defined(WIN32)
-# include <Winsock2.h>
+// # include <Winsock2.h> // provoque des erreurs de compilation, et ça compile sans sur windows
 #endif
 
 class NetworkManager {

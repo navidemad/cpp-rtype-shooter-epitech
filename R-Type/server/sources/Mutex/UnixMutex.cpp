@@ -24,3 +24,7 @@ void	UnixMutex::trylock(void) {
   if(pthread_mutex_trylock(&mMutex) != UnixMutex::PTHREAD_MUTEX_SUCCESS)
     throw MutexException("fail pthread_mutex_trylock()");
 }
+
+pthread_mutex_t *UnixMutex::getMutex(void) const {
+  return &mMutex;
+}

@@ -31,3 +31,11 @@ std::shared_ptr<IServerSocket> PortabilityBuilder::getTcpServer(void) {
 	return std::shared_ptr<IServerSocket>(new WindowsTcpServer);
 #endif
 }
+
+std::shared_ptr<ICondVar> PortabilityBuilder::getCondVar(void) {
+#ifdef __unix__
+    return std::shared_ptr<ICondVar>(new UnixCondVar);
+#elif defined(_WIN32) || defined(WIN32)
+    return std::shared_ptr<ICondVar>(new WindowsCondVar);
+#endif
+}
