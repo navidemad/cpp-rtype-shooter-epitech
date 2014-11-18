@@ -28,6 +28,6 @@ class IServerSocket {
 
 	// handle clients
 	public:
-		virtual std::unique_ptr<IClientSocket>	getNewClient(void) = 0;
+		virtual std::shared_ptr<IClientSocket>	getNewClient(void) = 0;
 		
 };
