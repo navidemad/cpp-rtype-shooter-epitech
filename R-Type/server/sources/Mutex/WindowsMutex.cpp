@@ -26,5 +26,5 @@ void	WindowsMutex::trylock(void) {
 }
 
 void *WindowsMutex::getMutex(void) {
-    return &mMutex;
+    return mMutex;
 }

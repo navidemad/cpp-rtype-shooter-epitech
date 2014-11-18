@@ -20,7 +20,7 @@ class UnixCondVar : public ICondVar {
 
 	// interface implementation
 	public:
-		void wait(IMutex *);
+		void wait(std::shared_ptr<IMutex>);
 		void signal(void);
 		void broadcast(void);
 

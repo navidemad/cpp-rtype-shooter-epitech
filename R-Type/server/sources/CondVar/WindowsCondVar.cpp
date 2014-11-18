@@ -11,8 +11,8 @@ WindowsCondVar::~WindowsCondVar(void) {
 }
 
 void WindowsCondVar::wait(std::shared_ptr<IMutex> mutex) {
-    if (SignalObjectAndWait(*reinterpret_cast<HANDLE *>(mutex->getMutex()), mCondVar, INFINITE, FALSE) != WAIT_OBJECT_0 ||
-		WaitForSingleObject(*reinterpret_cast<HANDLE *>(mutex->getMutex()), INFINITE) != WAIT_OBJECT_0)
+    if (SignalObjectAndWait(reinterpret_cast<HANDLE>(mutex->getMutex()), mCondVar, INFINITE, FALSE) != WAIT_OBJECT_0 ||
+		WaitForSingleObject(reinterpret_cast<HANDLE>(mutex->getMutex()), INFINITE) != WAIT_OBJECT_0)
         throw CondVarException("fail WaitForSingleObject()");
 };
 

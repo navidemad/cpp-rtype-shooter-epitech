@@ -10,8 +10,8 @@ UnixCondVar::~UnixCondVar(void) {
     throw CondVarException("fail pthread_cond_destroy()");
 }
 
-void UnixCondVar::wait(IMutex *mutex) {
-  if (pthread_cond_wait(&mCondVar, *reinterpret_cast<pthread_mutex_t *>(mutex->getMutex())) != 0)
+void UnixCondVar::wait(std::shared_ptr<IMutex> mutex) {
+  if (pthread_cond_wait(&mCondVar, reinterpret_cast<pthread_mutex_t *>(mutex->getMutex())) != 0)
     throw CondVarException("fail pthread_cond_wait()");
 }
 
