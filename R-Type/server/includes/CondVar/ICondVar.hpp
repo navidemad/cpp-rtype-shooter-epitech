@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "IMutex.hpp"
 
 class ICondVar {
@@ -10,7 +11,7 @@ class ICondVar {
 
 	// interface implementation
 	public:
-		virtual void wait(IMutex *) = 0;
+		virtual void wait(std::shared_ptr<IMutex>) = 0;
 		virtual void signal(void) = 0;
 		virtual void broadcast(void) = 0;
 

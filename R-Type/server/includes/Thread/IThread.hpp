@@ -8,7 +8,7 @@ class IThread;
 template <typename U, typename T>
 void *start_thread_trampoline(void *arg) {
   reinterpret_cast<IThread<U, T> *>(arg)->start();
-  return NULL;
+  return nullptr;
 }
 
 // Thread Abstraction Template

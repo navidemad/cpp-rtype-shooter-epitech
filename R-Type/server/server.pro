@@ -28,39 +28,40 @@ INCLUDEPATH		+=	.					\
 				build/ui				\
 				build/moc
 
-HEADERS			+=	includes/Exceptions/MutexException.hpp	\
-				includes/Exceptions/SocketException.hpp	\
-				includes/Exceptions/ThreadException.hpp	\
-				includes/Exceptions/CondVarException.hpp\
-				includes/Mutex/ScopedLock.hpp		\
-				includes/Mutex/IMutex.hpp		\
-				includes/CondVar/ICondVar.hpp		\
-				includes/Network/NetworkManager.hpp     \
-				../shared/includes/Network/IClientSocket.hpp	\
-				../shared/includes/Network/IServerSocket.hpp	\
-                                ../shared/includes/Commands/ICommand.hpp        \
-                                ../shared/includes/Commands/CommandCreateGame.hpp\
-                                ../shared/includes/Commands/CommandDeleteGame.hpp\
-                                ../shared/includes/Commands/CommandDestroyResource.hpp\
-                                ../shared/includes/Commands/CommandDisconnect.hpp\
-                                ../shared/includes/Commands/CommandEndGame.hpp\
-                                ../shared/includes/Commands/CommandError.hpp\
-                                ../shared/includes/Commands/CommandFire.hpp\
-                                ../shared/includes/Commands/CommandHandshake.hpp\
-                                ../shared/includes/Commands/CommandJoinGame.hpp\
-                                ../shared/includes/Commands/CommandLeaveGame.hpp\
-                                ../shared/includes/Commands/CommandListGames.hpp\
-                                ../shared/includes/Commands/CommandListLevels.hpp\
-                                ../shared/includes/Commands/CommandMove.hpp\
-                                ../shared/includes/Commands/CommandMoveResource.hpp\
-                                ../shared/includes/Commands/CommandObserveGame.hpp\
-                                ../shared/includes/Commands/CommandShowGame.hpp\
-                                ../shared/includes/Commands/CommandShowLevel.hpp\
-                                ../shared/includes/Commands/CommandTimeElapsedPing.hpp\
-                                ../shared/includes/Commands/CommandUpdatePseudo.hpp\
-                                ../shared/includes/Commands/CommandUpdateScore.hpp\
-				includes/Mutex/IMutex.hpp		\
-				includes/Thread/IThread.hpp		\
+HEADERS			+=	includes/Exceptions/MutexException.hpp			\
+				includes/Exceptions/SocketException.hpp			\
+				includes/Exceptions/ThreadException.hpp			\
+				includes/Exceptions/CondVarException.hpp		\
+				includes/Mutex/ScopedLock.hpp				\
+				includes/Mutex/IMutex.hpp				\
+				includes/CondVar/ICondVar.hpp				\
+				includes/Network/NetworkManager.hpp     		\
+				../shared/includes/Network/IClientSocket.hpp		\
+				../shared/includes/Network/IServerSocket.hpp		\
+                                ../shared/includes/Commands/ICommand.hpp        	\
+                                ../shared/includes/Commands/CommandCreateGame.hpp	\
+                                ../shared/includes/Commands/CommandDeleteGame.hpp	\
+                                ../shared/includes/Commands/CommandDestroyResource.hpp	\
+                                ../shared/includes/Commands/CommandDisconnect.hpp	\
+                                ../shared/includes/Commands/CommandEndGame.hpp		\
+                                ../shared/includes/Commands/CommandError.hpp		\
+                                ../shared/includes/Commands/CommandFire.hpp		\
+                                ../shared/includes/Commands/CommandHandshake.hpp	\
+                                ../shared/includes/Commands/CommandJoinGame.hpp		\
+                                ../shared/includes/Commands/CommandLeaveGame.hpp	\
+                                ../shared/includes/Commands/CommandListGames.hpp	\
+                                ../shared/includes/Commands/CommandListLevels.hpp	\
+                                ../shared/includes/Commands/CommandMove.hpp		\
+                                ../shared/includes/Commands/CommandMoveResource.hpp	\
+                                ../shared/includes/Commands/CommandObserveGame.hpp	\
+                                ../shared/includes/Commands/CommandShowGame.hpp		\
+                                ../shared/includes/Commands/CommandShowLevel.hpp	\
+                                ../shared/includes/Commands/CommandTimeElapsedPing.hpp	\
+                                ../shared/includes/Commands/CommandUpdatePseudo.hpp	\
+                                ../shared/includes/Commands/CommandUpdateScore.hpp	\
+				includes/Mutex/IMutex.hpp				\
+				includes/Thread/IThread.hpp				\
+				includes/Thread/ThreadPool.hpp				\
 				includes/PortabilityBuilder.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp		\
@@ -82,6 +83,7 @@ SOURCES			+=	sources/main.cpp			\
 				sources/Network/NetworkManager.cpp	\
 				sources/PortabilityBuilder.cpp		\
 				sources/Mutex/ScopedLock.cpp            \
+				sources/Thread/ThreadPool.cpp		\
                                 ../shared/sources/Error/ErrorStatus.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp	\

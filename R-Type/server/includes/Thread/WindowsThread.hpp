@@ -10,9 +10,7 @@ class WindowsThread : public IThread<U, T> {
 	// ctor dtor
 	public:
 		WindowsThread(void) {}
-		~WindowsThread(void) {
-            cancel();
-		}
+		~WindowsThread(void) {}
 
 	// copy / move operators
 	public:
