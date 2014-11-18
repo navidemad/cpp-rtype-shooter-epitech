@@ -56,7 +56,7 @@ void	WindowsUdpClient::initFromSocket(void *socketFd, const std::string &addr, i
 }
 
 void	WindowsUdpClient::closeClient(void) {
-	ScopedLock ScopedLock(mMutex);
+    ScopedLock ScopedLock(mMutex);
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);

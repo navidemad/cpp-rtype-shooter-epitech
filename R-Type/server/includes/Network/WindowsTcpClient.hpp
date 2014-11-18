@@ -60,8 +60,8 @@ class WindowsTcpClient : public IClientSocket, public NetworkManager::OnSocketEv
 		int mPort;
 		std::vector<char> mInBuffer;
 		std::vector<char> mOutBuffer;
-		std::shared_ptr<IMutex> mMutex;
+        std::shared_ptr<IMutex> mMutex;
 		IClientSocket::OnSocketEvent *mListener;
-		std::shared_ptr<NetworkManager>	mNetworkManager;
+        std::shared_ptr<NetworkManager>	mNetworkManager;
 
 };

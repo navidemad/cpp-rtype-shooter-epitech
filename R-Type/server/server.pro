@@ -1,7 +1,7 @@
 TEMPLATE		=	app
 TARGET			=	server
 QT			+=	core network
-CONFIG			+=	console c++11
+CONFIG		+=	console
 
 DESTDIR			=	build
 OBJECTS_DIR		=	build/obj
@@ -36,6 +36,7 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
 				includes/Network/NetworkManager.hpp     		\
+				../shared/includes/Config.hpp		\
 				../shared/includes/Network/IClientSocket.hpp		\
 				../shared/includes/Network/IServerSocket.hpp		\
                                 ../shared/includes/Commands/ICommand.hpp        	\
@@ -69,7 +70,8 @@ unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp		\
 				includes/Network/UnixTcpServer.hpp	\
 				includes/Network/UnixUdpClient.hpp	\
 				includes/CondVar/UnixCondVar.hpp \
-				includes/Thread/UnixThread.hpp
+				includes/Thread/UnixThread.hpp \
+				includes/UnixPortabilityBuilder.hpp
 
 win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp		\
 				includes/Network/WindowsTcpClient.hpp	\
@@ -77,11 +79,11 @@ win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp		\
 				includes/Network/WindowsUdpClient.hpp	\
 				includes/Network/WindowsWSAHandler.hpp \
 				includes/CondVar/WindowsCondVar.hpp \
-				includes/Thread/WindowsThread.hpp
+				includes/Thread/WindowsThread.hpp \
+				includes/WindowsPortabilityBuilder.hpp
 
 SOURCES			+=	sources/main.cpp			\
 				sources/Network/NetworkManager.cpp	\
-				sources/PortabilityBuilder.cpp		\
 				sources/Mutex/ScopedLock.cpp            \
 				sources/Thread/ThreadPool.cpp		\
                                 ../shared/sources/Error/ErrorStatus.cpp
@@ -90,14 +92,16 @@ unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp	\
 				sources/Network/UnixTcpServer.cpp	\
 				sources/Network/UnixUdpClient.cpp	\
 				sources/CondVar/UnixCondVar.cpp \
-				sources/Mutex/UnixMutex.cpp
+				sources/Mutex/UnixMutex.cpp \
+				sources/UnixPortabilityBuilder.cpp
 
 win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp	\
 				sources/Network/WindowsTcpClient.cpp	\
 				sources/Network/WindowsUdpClient.cpp	\
 				sources/Network/WindowsWSAHandler.cpp \
 				sources/CondVar/WindowsCondVar.cpp \
-				sources/Mutex/WindowsMutex.cpp
+				sources/Mutex/WindowsMutex.cpp \
+				sources/WindowsPortabilityBuilder.cpp
 
 win32:LIBS	+= -lWs2_32
 unix:LIBS	+= -lpthread

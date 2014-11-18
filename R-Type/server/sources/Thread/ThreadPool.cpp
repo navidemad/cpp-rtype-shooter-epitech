@@ -17,7 +17,7 @@ ThreadPool::ThreadPool(unsigned int nbThreads)
 
 ThreadPool::~ThreadPool(void) {
 	{
-		ScopedLock scopedLock(mMutex);
+        ScopedLock scopedLock(mMutex);
 
 		mIsRunning = false;
 		mCondVar->broadcast();

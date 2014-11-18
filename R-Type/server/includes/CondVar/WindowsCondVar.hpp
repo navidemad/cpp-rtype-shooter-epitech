@@ -22,7 +22,7 @@ class WindowsCondVar : public ICondVar {
 
 	// interface implementation
 	public:
-		void wait(std::shared_ptr<IMutex>);
+        void wait(std::shared_ptr<IMutex>);
 		void signal(void);
 		void broadcast(void);
 

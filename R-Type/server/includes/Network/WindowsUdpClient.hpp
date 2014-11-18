@@ -58,8 +58,8 @@ class WindowsUdpClient : public IClientSocket, public NetworkManager::OnSocketEv
 		int mPort;
 		std::deque<Message> mInDatagrams;
 		std::deque<Message> mOutDatagrams;
-		std::shared_ptr<IMutex> mMutex;
+        std::shared_ptr<IMutex> mMutex;
 		IClientSocket::OnSocketEvent *mListener;
-		std::shared_ptr<NetworkManager>	mNetworkManager;
+        std::shared_ptr<NetworkManager>	mNetworkManager;
 
 };
