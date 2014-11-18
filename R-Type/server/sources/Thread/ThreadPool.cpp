@@ -20,7 +20,7 @@ ThreadPool::~ThreadPool(void) {
         ScopedLock scopedLock(mMutex);
 
 		mIsRunning = false;
-		mCondVar->broadcast();
+		mCondVar->notifyAll();
 	}
 
 	for (const auto &worker : mWorkers)
@@ -52,7 +52,7 @@ const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 	ScopedLock scopedLock(mMutex);
 
 	mTasks.push_back(task);
-	mCondVar->signal();
+	mCondVar->notifyOne();
 
 	return *this;
 }

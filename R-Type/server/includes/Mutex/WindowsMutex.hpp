@@ -3,7 +3,6 @@
 #include "IMutex.hpp"
 #include <WinSock2.h>
 #include "MutexException.hpp"
-//#pragma comment(lib, "Ws2_32.lib")
 
 class WindowsMutex : public IMutex {
 
@@ -28,5 +27,6 @@ class WindowsMutex : public IMutex {
 
     // attributes
     private:
-        HANDLE	mMutex;
+        CRITICAL_SECTION mMutex;
+        bool    mAlreadyLocked;
 };

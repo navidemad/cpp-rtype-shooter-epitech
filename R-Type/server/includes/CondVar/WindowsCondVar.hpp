@@ -6,6 +6,9 @@
 
 # include <WinSock2.h>
 
+# define _CONDITION_EVENT_ONE 0
+# define _CONDITION_EVENT_ALL 1
+
 class WindowsCondVar : public ICondVar {
 
 	// ctor dtor
@@ -23,10 +26,13 @@ class WindowsCondVar : public ICondVar {
 	// interface implementation
 	public:
         void wait(std::shared_ptr<IMutex>);
-		void signal(void);
-		void broadcast(void);
+		void notifyOne(void);
+		void notifyAll(void);
 
     // attributes
     private:
-        HANDLE mCondVar;
+    	void _wait();
+        HANDLE mEvents[2];
+    	unsigned int mWaitersCount;
+    	CRITICAL_SECTION mWaitersCountLock;
 };

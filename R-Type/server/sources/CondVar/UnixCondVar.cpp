@@ -15,12 +15,12 @@ void UnixCondVar::wait(IMutex *mutex) {
     throw CondVarException("fail pthread_cond_wait()");
 }
 
-void	UnixCondVar::signal(void) {
+void	UnixCondVar::notifyOne(void) {
   if (pthread_cond_signal(&mCondVar) != 0)
     throw CondVarException("fail pthread_cond_wait()");
 }
 
-void	UnixCondVar::broadcast(void) {
+void	UnixCondVar::notifyAll(void) {
   if (pthread_cond_broadcast(&mCondVar) != 0)
     throw CondVarException("fail pthread_cond_wait()");
 }

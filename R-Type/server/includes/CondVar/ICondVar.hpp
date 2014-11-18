@@ -12,7 +12,7 @@ class ICondVar {
 	// interface implementation
 	public:
         virtual void wait(std::shared_ptr<IMutex>) = 0;
-		virtual void signal(void) = 0;
-		virtual void broadcast(void) = 0;
+		virtual void notifyOne(void) = 0;
+        virtual void notifyAll(void) = 0;
 
 };
