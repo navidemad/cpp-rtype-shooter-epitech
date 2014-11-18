@@ -10,9 +10,7 @@ class UnixThread : public IThread<U, T> {
 	// ctor dtor
 	public:
 		UnixThread(void) {}
-		~UnixThread(void) {
-			cancel();
-		}
+		~UnixThread(void) {}
 
 	// copy / move operators
 	public:

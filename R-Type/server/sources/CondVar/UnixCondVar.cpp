@@ -11,7 +11,7 @@ UnixCondVar::~UnixCondVar(void) {
 }
 
 void UnixCondVar::wait(IMutex *mutex) {
-  if (pthread_cond_wait(&mCondVar, mutex->getMutex()) != 0)
+  if (pthread_cond_wait(&mCondVar, *reinterpret_cast<pthread_mutex_t *>(mutex->getMutex())) != 0)
     throw CondVarException("fail pthread_cond_wait()");
 }
 

@@ -17,9 +17,6 @@ class IMutex {
 		virtual void	lock(void) = 0;
 		virtual void	unlock(void) = 0;
 		virtual void	trylock(void) = 0;
-        #ifdef __unix__
-            virtual pthread_mutex_t	*getMutex(void) = 0;
-        #elif defined(_WIN32) || defined(WIN32)
-            virtual HANDLE getMutex(void) = 0;
-        #endif
+		virtual void	*getMutex(void) = 0;
+
 };
