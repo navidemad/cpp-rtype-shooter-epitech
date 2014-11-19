@@ -5,6 +5,7 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "GUI/IGraphic.hpp"
+#include "GUI/ContentManager.hpp"
 
 class SFMLGraphic : public IGraphic
 {
@@ -37,4 +38,5 @@ class SFMLGraphic : public IGraphic
 	private:
 		sf::Window							mWindow;
 		std::map<sf::Event, std::string>	mKeyEvents;
+		ContentManager						mContentManager;
 };

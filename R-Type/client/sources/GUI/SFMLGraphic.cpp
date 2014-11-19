@@ -37,6 +37,9 @@ void	SFMLGraphic::handleEvent()
 
 void	SFMLGraphic::init()
 {
+	mContentManager.loadTextures();
+	mContentManager.loadFonts();
+	mContentManager.loadSounds();
 }
 
 sf::Window const						&SFMLGraphic::getWindow() const

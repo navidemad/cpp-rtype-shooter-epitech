@@ -4,6 +4,7 @@
 #include <map>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "GUI/IResourceManager.hpp"
 
 class ContentManager
 {
@@ -29,7 +30,7 @@ class ContentManager
 
 	// attributes
 	private:
-		std::map<std::string, sf::Sprite>	mTextures;
-		std::map<std::string, sf::Font>		mFonts;
-		std::map<std::string, sf::Sound>	mSounds;
+		IResourceManager<std::map<std::string, sf::Sprite>>	*mTextures;
+		IResourceManager<std::map<std::string, sf::Font>>	*mFonts;
+		IResourceManager<std::map<std::string, sf::Sound>>	*mSounds;
 };
