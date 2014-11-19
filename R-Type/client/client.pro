@@ -79,7 +79,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandUpdatePseudo.hpp	\
 			../shared/includes/Commands/CommandUpdateScore.hpp	
 
-SOURCES		+=	sources/main.cpp							\
+SOURCES		+=	sources/main.cpp				\
 			sources/RTypeClient.cpp				\
 			sources/Audio/SoundManager.cpp			\
 			sources/Core/CollisionSystem.cpp		\
