@@ -44,7 +44,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/GUI/ContentManager.hpp				\
 			includes/GUI/FontManager.hpp				\
 			includes/GUI/IGraphic.hpp				\
-			includes/GUI/IRessourceManager.hpp			\
+			includes/GUI/IResourceManager.hpp			\
 			includes/GUI/SFMLGraphic.hpp				\
 			includes/GUI/TextureManager.hpp				\
 			includes/Network/INetworkManager.hpp			\

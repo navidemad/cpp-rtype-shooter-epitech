@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GUI/IResourceManager.hpp"
+
 class TextureManager
 {
 	// ctor - dtor
