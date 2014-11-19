@@ -1,6 +1,6 @@
 #pragma once
 
-template<class T>
+template<typename T>
 class IResourceManager
 {
 	public:
@@ -8,7 +8,7 @@ class IResourceManager
 
 	// virtual methods
 	public:
-		virtual void		loadResource() = 0;
-		virtual void		unloadResource() = 0;
-		virtual T const		&getResource() = 0;
+		virtual void		loadResources() = 0;
+		virtual void		unloadResources() = 0;
+		virtual T const		&getResources() const = 0;
 };
