@@ -53,7 +53,31 @@ HEADERS         +=  includes/RTypeClient.hpp					\
 					includes/Network/INetworkManager.hpp		\
 					includes/Network/ServerCommunication.hpp	\
 					includes/Network/TcpClient.hpp				\
-					includes/Network/UdpClient.hpp
+					includes/Network/UdpClient.hpp				\
+					../shared/includes/Config.hpp		\
+					../shared/includes/Network/IClientSocket.hpp		\
+					../shared/includes/Network/IServerSocket.hpp		\
+					../shared/includes/Commands/ICommand.hpp        	\
+                                ../shared/includes/Commands/CommandCreateGame.hpp	\
+                                ../shared/includes/Commands/CommandDeleteGame.hpp	\
+                                ../shared/includes/Commands/CommandDestroyResource.hpp	\
+                                ../shared/includes/Commands/CommandDisconnect.hpp	\
+                                ../shared/includes/Commands/CommandEndGame.hpp		\
+                                ../shared/includes/Commands/CommandError.hpp		\
+                                ../shared/includes/Commands/CommandFire.hpp		\
+                                ../shared/includes/Commands/CommandHandshake.hpp	\
+                                ../shared/includes/Commands/CommandJoinGame.hpp		\
+                                ../shared/includes/Commands/CommandLeaveGame.hpp	\
+                                ../shared/includes/Commands/CommandListGames.hpp	\
+                                ../shared/includes/Commands/CommandListLevels.hpp	\
+                                ../shared/includes/Commands/CommandMove.hpp		\
+                                ../shared/includes/Commands/CommandMoveResource.hpp	\
+                                ../shared/includes/Commands/CommandObserveGame.hpp	\
+                                ../shared/includes/Commands/CommandShowGame.hpp		\
+                                ../shared/includes/Commands/CommandShowLevel.hpp	\
+                                ../shared/includes/Commands/CommandTimeElapsedPing.hpp	\
+                                ../shared/includes/Commands/CommandUpdatePseudo.hpp	\
+                                ../shared/includes/Commands/CommandUpdateScore.hpp	\
 
 SOURCES         +=  sources/main.cpp							\
 					sources/RTypeClient.cpp						\
