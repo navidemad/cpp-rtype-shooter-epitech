@@ -2,9 +2,8 @@
 
 class IGraphic
 {
-public:
-	virtual ~IGraphic()	{}
+	public:
+		virtual ~IGraphic()	{}
 
-private:
-
+	private:
 };

@@ -2,12 +2,13 @@
 
 class Position
 {
-public:
-	Position();
-	Position(Position const &);
-	Position const	&operator=(Position const &);
-	~Position();
+	// ctor - dtor
+	public:
+		Position();
+		~Position();
 
-private:
-
+	// coplien form
+	private:
+		Position(Position const &) {}
+		Position const	&operator=(Position const &) { return *this; }
 };

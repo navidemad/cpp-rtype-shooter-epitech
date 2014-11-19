@@ -2,9 +2,8 @@
 
 class IClientSocket
 {
-public:
-	~IClientSocket() {}
+	public:
+		~IClientSocket() {}
 
-private:
-
+	private:
 };

@@ -2,12 +2,13 @@
 
 class TextureManager
 {
-public:
-	TextureManager();
-	TextureManager(TextureManager const &);
-	TextureManager const	&operator=(TextureManager const &);
-	~TextureManager();
+	// ctor - dtor
+	public:
+		TextureManager();
+		~TextureManager();
 
-private:
-
+	// coplien form
+	private:
+		TextureManager(TextureManager const &) {}
+		TextureManager const	&operator=(TextureManager const &) { return *this; }
 };

@@ -2,12 +2,13 @@
 
 class ContentManager
 {
-public:
-	ContentManager();
-	ContentManager(ContentManager const &);
-	ContentManager const	&operator=(ContentManager const &);
-	~ContentManager();
+	// ctor - dtor
+	public:
+		ContentManager();
+		~ContentManager();
 
-private:
-
+	// coplien form
+	private:
+		ContentManager(ContentManager const &) {}
+		ContentManager const	&operator=(ContentManager const &) { return *this; }
 };

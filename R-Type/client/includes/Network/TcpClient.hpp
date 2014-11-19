@@ -2,12 +2,13 @@
 
 class TcpClient
 {
-public:
-	TcpClient();
-	TcpClient(TcpClient const &);
-	TcpClient const	&operator=(TcpClient const &);
-	~TcpClient();
+	// ctor - dtor
+	public:
+		TcpClient();
+		~TcpClient();
 
-private:
-
+	// coplien form
+	private:
+		TcpClient(TcpClient const &) {}
+		TcpClient const	&operator=(TcpClient const &) { return *this; }
 };

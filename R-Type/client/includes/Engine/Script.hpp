@@ -2,12 +2,13 @@
 
 class Script
 {
-public:
-	Script();
-	Script(Script const &);
-	Script const	&operator=(Script const &);
-	~Script();
+	// ctor - dtor
+	public:
+		Script();
+		~Script();
 
-private:
-
+	// coplien form
+	private:
+		Script(Script const &) {}
+		Script const	&operator=(Script const &) { return *this; }
 };

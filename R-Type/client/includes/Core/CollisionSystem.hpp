@@ -2,12 +2,14 @@
 
 class CollisionSystem
 {
-public:
-	CollisionSystem();
-	CollisionSystem(CollisionSystem const &);
-	CollisionSystem const	&operator=(CollisionSystem const &);
-	~CollisionSystem();
+	// ctor - dtor
+	public:
+		CollisionSystem();
+		~CollisionSystem();
 
-private:
+	// coplien form
+	private:
+		CollisionSystem(CollisionSystem const &) {}
+		CollisionSystem const	&operator=(CollisionSystem const &) { return *this; }
 
 };

@@ -2,12 +2,13 @@
 
 class Component
 {
-public:
-	Component();
-	Component(Component const &);
-	Component const	&operator=(Component const &);
-	~Component();
+	// ctor - dtor
+	public:
+		Component();
+		~Component();
 
-private:
-
+	// coplien form
+	private:
+		Component(Component const &) {}
+		Component const	&operator=(Component const &) { return *this; }
 };

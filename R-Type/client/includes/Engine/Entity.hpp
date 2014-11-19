@@ -2,12 +2,13 @@
 
 class Entity
 {
-public:
-	Entity();
-	Entity(Entity const &);
-	Entity const	&operator=(Entity const &);
-	~Entity();
+	// ctor - dtor
+	public:
+		Entity();
+		~Entity();
 
-private:
-
+	// coplien form
+	private:
+		Entity(Entity const &) {}
+		Entity const	&operator=(Entity const &) { return *this; }
 };

@@ -2,12 +2,14 @@
 
 class CommandPacketBuilder
 {
-public:
-	CommandPacketBuilder();
-	CommandPacketBuilder(CommandPacketBuilder const &);
-	CommandPacketBuilder const	&operator=(CommandPacketBuilder const &);
-	~CommandPacketBuilder();
+	// ctor - dtor
+	public:
+		CommandPacketBuilder();
+		~CommandPacketBuilder();
 
-private:
+	// coplien form
+	private:
+		CommandPacketBuilder(CommandPacketBuilder const &) {}
+		CommandPacketBuilder const	&operator=(CommandPacketBuilder const &) { return *this; }
 
 };
