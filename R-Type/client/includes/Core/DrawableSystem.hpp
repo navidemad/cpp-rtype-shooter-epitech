@@ -2,12 +2,13 @@
 
 class DrawableSystem
 {
-public:
-	DrawableSystem();
-	DrawableSystem(DrawableSystem const &);
-	DrawableSystem const	&operator=(DrawableSystem const &);
-	~DrawableSystem();
+	// ctor - dtor
+	public:
+		DrawableSystem();
+		~DrawableSystem();
 
-private:
-
+	// coplien form
+	private:
+		DrawableSystem(DrawableSystem const &) {}
+		DrawableSystem const	&operator=(DrawableSystem const &) { return *this; }
 };

@@ -2,9 +2,8 @@
 
 class IRessourceManager
 {
-public:
-	virtual ~IRessourceManager() {}
+	public:
+		virtual ~IRessourceManager() {}
 
-private:
-
+	private:
 };

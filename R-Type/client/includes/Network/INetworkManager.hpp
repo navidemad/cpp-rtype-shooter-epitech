@@ -2,9 +2,8 @@
 
 class INetworkManager
 {
-public:
-	virtual ~INetworkManager() {}
+	public:
+		virtual ~INetworkManager() {}
 
-private:
-
+	private:
 };

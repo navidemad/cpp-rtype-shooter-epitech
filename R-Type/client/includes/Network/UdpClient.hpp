@@ -1,13 +1,14 @@
 #pragma once
 
-class UcpClient
+class UdpClient
 {
-public:
-	UcpClient();
-	UcpClient(UcpClient const &);
-	UcpClient const	&operator=(UcpClient const &);
-	~UcpClient();
+	// ctor - dtor
+	public:
+		UdpClient();
+		~UdpClient();
 
-private:
-
+	// coplien form
+	private:
+		UdpClient(UdpClient const &) {}
+		UdpClient const	&operator=(UdpClient const &) { return *this; }
 };

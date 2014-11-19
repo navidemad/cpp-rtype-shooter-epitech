@@ -2,12 +2,13 @@
 
 class ECSManager
 {
-public:
-	ECSManager();
-	ECSManager(ECSManager const &);
-	ECSManager const	&operator=(ECSManager const &);
-	~ECSManager();
+	// ctor - dtor
+	public:
+		ECSManager();
+		~ECSManager();
 
-private:
-
+	// coplien form
+	private:
+		ECSManager(ECSManager const &);
+		ECSManager const	&operator=(ECSManager const &);
 };

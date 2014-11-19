@@ -2,12 +2,13 @@
 
 class Controllable
 {
-public:
-	Controllable();
-	Controllable(Controllable const &);
-	Controllable const	&operator=(Controllable const &);
-	~Controllable();
+	// ctor - dtor
+	public:
+		Controllable();
+		~Controllable();
 
-private:
-
+	// coplien form
+	private:
+		Controllable(Controllable const &) {}
+		Controllable const	&operator=(Controllable const &) { return *this; }
 };

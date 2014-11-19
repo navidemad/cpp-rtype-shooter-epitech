@@ -2,12 +2,13 @@
 
 class SFMLGraphic
 {
-public:
-	SFMLGraphic();
-	SFMLGraphic(SFMLGraphic const &);
-	SFMLGraphic const	&operator=(SFMLGraphic const &);
-	~SFMLGraphic();
+	// ctor - dtor
+	public:
+		SFMLGraphic();
+		~SFMLGraphic();
 
-private:
-
+	// coplien form
+	private:
+		SFMLGraphic(SFMLGraphic const &) {}
+		SFMLGraphic const	&operator=(SFMLGraphic const &) { return *this; }
 };

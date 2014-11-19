@@ -2,12 +2,13 @@
 
 class FontManager
 {
-public:
-	FontManager();
-	FontManager(FontManager const &);
-	FontManager const	&operator=(FontManager const &);
-	~FontManager();
+	// ctor - dtor
+	public:
+		FontManager();
+		~FontManager();
 
-private:
-
+	// coplien form
+	private:
+		FontManager(FontManager const &) {}
+		FontManager const	&operator=(FontManager const &) { return *this; }
 };

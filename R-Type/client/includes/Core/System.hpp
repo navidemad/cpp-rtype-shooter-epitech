@@ -2,12 +2,13 @@
 
 class System
 {
-public:
-	System();
-	System(System const &);
-	System const	&operator=(System const &);
-	~System();
+	// ctor - dtor
+	public:
+		System();
+		~System();
 
-private:
-
+	// coplien form
+	private:
+		System(System const &) {}
+		System const	&operator=(System const &) { return *this; }
 };

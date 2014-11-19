@@ -2,12 +2,13 @@
 
 class SoundManager
 {
-public:
-	SoundManager();
-	SoundManager(SoundManager const &);
-	SoundManager const	&operator=(SoundManager const &);
-	~SoundManager();
+	// ctor - dtor
+	public:
+		SoundManager();
+		~SoundManager();
 
-private:
-
+	// coplien form
+	private:
+		SoundManager(SoundManager const &) {}
+		SoundManager const	&operator=(SoundManager const &) { return *this; }
 };
