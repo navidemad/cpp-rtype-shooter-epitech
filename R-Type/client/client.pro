@@ -1,7 +1,7 @@
 TEMPLATE        =       app
 TARGET          =       client
 QT              +=      core widgets gui network
-CONFIG		+=	console
+CONFIG			+=		console
 
 DESTDIR         =       build
 OBJECTS_DIR     =       build/obj
@@ -10,7 +10,7 @@ UI_DIR          =       build/ui
 RCC_DIR         =       build/rcc
 
 win32:RC_ICONS 	+= 	
-ICON 		= 	
+ICON 			= 	
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /MP
 unix:QMAKE_CXXFLAGS		+=	-Wall -std=c++11 -g -Wno-write-strings
@@ -47,28 +47,38 @@ HEADERS         +=  includes/RTypeClient.hpp					\
 					includes/GUI/IRessourceManager.hpp			\
 					includes/GUI/SFMLGraphic.hpp				\
 					includes/GUI/TextureManager.hpp				\
-					includes/Network/INetworkManager.hpp
+					includes/Network/INetworkManager.hpp		\
+					includes/Network/CommandPacketBuilder.hpp	\
+					includes/Network/IClientSocket.hpp			\
+					includes/Network/INetworkManager.hpp		\
+					includes/Network/ServerCommunication.hpp	\
+					includes/Network/TcpClient.hpp				\
+					includes/Network/UdpClient.hpp
 
-SOURCES         +=  sources/main.cpp						\
-					sources/RTypeClient.cpp					\
-					sources/Audio/SoundManager.cpp			\
-					sources/Core/CollisionSystem.cpp		\
-					sources/Core/DamageSystem.cpp			\
-					sources/Core/DrawableSystem.cpp			\
-					sources/Core/MovementSystem.cpp			\
-					sources/Core/System.cpp					\
-					sources/Engine/Collision.cpp			\
-					sources/Engine/Component.cpp			\
-					sources/Engine/Controllable.cpp			\
-					sources/Engine/Drawable.cpp				\
-					sources/Engine/ECSManager.cpp			\
-					sources/Engine/Entity.cpp				\
-					sources/Engine/Position.cpp				\
-					sources/Engine/Script.cpp				\
-					sources/GUI/ContentManager.cpp			\
-					sources/GUI/FontManager.cpp				\
-					sources/GUI/SFMLGraphic.cpp				\
-					sources/GUI/TextureManager.cpp
+SOURCES         +=  sources/main.cpp							\
+					sources/RTypeClient.cpp						\
+					sources/Audio/SoundManager.cpp				\
+					sources/Core/CollisionSystem.cpp			\
+					sources/Core/DamageSystem.cpp				\
+					sources/Core/DrawableSystem.cpp				\
+					sources/Core/MovementSystem.cpp				\
+					sources/Core/System.cpp						\
+					sources/Engine/Collision.cpp				\
+					sources/Engine/Component.cpp				\
+					sources/Engine/Controllable.cpp				\
+					sources/Engine/Drawable.cpp					\
+					sources/Engine/ECSManager.cpp				\
+					sources/Engine/Entity.cpp					\
+					sources/Engine/Position.cpp					\
+					sources/Engine/Script.cpp					\
+					sources/GUI/ContentManager.cpp				\
+					sources/GUI/FontManager.cpp					\
+					sources/GUI/SFMLGraphic.cpp					\
+					sources/GUI/TextureManager.cpp				\
+					sources/Network/CommandPacketBuilder.cpp	\
+					sources/Network/ServerCommunication.cpp		\
+					sources/Network/TcpClient.cpp				\
+					sources/Network/UdpClient.cpp
 
 CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
 
