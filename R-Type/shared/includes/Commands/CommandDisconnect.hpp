@@ -25,9 +25,9 @@ class CommandDisconnect : public ICommand {
 
 	// public pure methods
 	public:
-		ICommand::Instruction		getInstruction(void) const;
+		ICommand::Instruction	getInstruction(void) const;
 		IClientSocket::Message	getMessage(void) const;
-		unsigned int						getSizeToRead(void) const;
-		void										initFromMessage(const IClientSocket::Message &message);
+		unsigned int			getSizeToRead(void) const;
+		void					initFromMessage(const IClientSocket::Message &message);
 
 };
