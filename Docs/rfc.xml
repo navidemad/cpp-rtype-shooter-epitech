@@ -323,7 +323,7 @@
 			<section title="endGame">
 				<t>Instruction code: 0x0B</t>
 				<section title="From Client">
-					<t>This command has no equivalent server-side.</t>
+					<t>This command has no equivalent client-side.</t>
 				</section>
 				<section title="From Server">
 					<t>This command is used to notify a client that the game has ended.</t>
@@ -345,7 +345,7 @@
 			<section title="showLevel">
 				<t>Instruction code: 0x11</t>
 				<section title="From Client">
-					<t>This command has no equivalent server-side.</t>
+					<t>This command has no equivalent client-side.</t>
 				</section>
 				<section title="From Server">
 					<t>This command is used to send level script information to a client.</t>
