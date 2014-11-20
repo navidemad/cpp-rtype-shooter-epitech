@@ -14,9 +14,9 @@ SpriteManager::~SpriteManager()
 
 std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
 {
-	if (mInstance == nullptr)
-		mInstance = std::shared_ptr<SpriteManager>();
-	return mInstance;
+    if (mInstance == nullptr)
+        mInstance = std::shared_ptr<SpriteManager>(new SpriteManager);
+    return mInstance;
 }
 
 

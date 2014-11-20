@@ -9,9 +9,10 @@
 class SpriteManager : public IResourceManager<std::vector<SpriteModel>>
 {
 	// ctor - dtor
-	private:
-		SpriteManager();
-		~SpriteManager();
+    private:
+        explicit SpriteManager();
+    public:
+        ~SpriteManager();
 
 	private:
 		SpriteManager(SpriteManager const &) = delete;
