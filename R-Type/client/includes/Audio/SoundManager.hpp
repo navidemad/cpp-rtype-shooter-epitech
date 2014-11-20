@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <map>
 #include <SFML/Audio.hpp>
@@ -8,14 +9,25 @@
 class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
 {
 	// ctor - dtor
+	private:
+		explicit SoundManager();
 	public:
-		SoundManager();
 		~SoundManager();
 
-	// coplien form
+	// coplien forms
+	public:
+		SoundManager(SoundManager const *) {}
 	private:
-		SoundManager(SoundManager const &) {}
-		SoundManager const	&operator=(SoundManager const &) { return *this; }
+		SoundManager(SoundManager const &) = delete;
+		SoundManager(SoundManager const &&) = delete;
+		SoundManager const	&operator=(SoundManager const &) = delete;
+		SoundManager const	&operator=(SoundManager const &&) = delete;
+
+	// instance
+	public:
+		static std::shared_ptr<SoundManager>	getInstance();
+	private:
+		static std::shared_ptr<SoundManager>	mInstance;
 
 	// methods
 	public:
@@ -25,5 +37,5 @@ class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
 
 	// attributes
 	private:
-		std::map<std::string, sf::Sound>	mListResources;
+		std::map<std::string, sf::Sound>		mListResources;
 };

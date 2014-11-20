@@ -1,5 +1,7 @@
 #include "GUI/FontManager.hpp"
 
+std::shared_ptr<FontManager>	FontManager::mInstance = nullptr;
+
 FontManager::FontManager()
 {
 
@@ -8,6 +10,13 @@ FontManager::FontManager()
 FontManager::~FontManager()
 {
 
+}
+
+std::shared_ptr<FontManager>	FontManager::getInstance()
+{
+	if (mInstance == nullptr)
+		mInstance = std::shared_ptr<FontManager>();
+	return mInstance;
 }
 
 void	FontManager::loadResources()
