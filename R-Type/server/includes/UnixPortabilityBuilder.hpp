@@ -19,10 +19,10 @@
 namespace PortabilityBuilder {
 
     std::shared_ptr<IMutex>			getMutex(void);
-    std::unique_ptr<IClientSocket> 	getTcpClient(void);
-    std::unique_ptr<IClientSocket> 	getUdpClient(void);
-    std::unique_ptr<IServerSocket> 	getTcpServer(void);
-    std::unique_ptr<ICondVar>       getCondVar(void);
+    std::shared_ptr<IClientSocket> 	getTcpClient(void);
+    std::shared_ptr<IClientSocket> 	getUdpClient(void);
+    std::shared_ptr<IServerSocket> 	getTcpServer(void);
+    std::shared_ptr<ICondVar>       getCondVar(void);
     template <typename U, typename T>
     std::shared_ptr<IThread<U, T>>  getThread(void)
     {
