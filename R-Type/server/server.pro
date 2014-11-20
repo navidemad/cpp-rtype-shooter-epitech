@@ -63,7 +63,8 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Mutex/IMutex.hpp				\
 				includes/Thread/IThread.hpp				\
 				includes/Thread/ThreadPool.hpp				\
-				includes/PortabilityBuilder.hpp
+				includes/PortabilityBuilder.hpp				\
+				includes/Observer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp		\
 				includes/Network/UnixTcpClient.hpp	\

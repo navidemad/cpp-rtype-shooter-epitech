@@ -59,14 +59,14 @@ void	WindowsTcpServer::setOnSocketEventListener(IServerSocket::OnSocketEvent *li
 	mListener = listener;
 }
 
-std::unique_ptr<IClientSocket>	WindowsTcpServer::getNewClient(void) {
+std::shared_ptr<IClientSocket>	WindowsTcpServer::getNewClient(void) {
 	int clientFd;
 	int clientPort;
 	std::string clientAddr;
 
 	acceptClient(clientFd, clientPort, clientAddr);
 
-    std::unique_ptr<IClientSocket> client = PortabilityBuilder::getTcpClient();
+	std::shared_ptr<IClientSocket> client = PortabilityBuilder::getTcpClient();
 	client->initFromSocket(&clientFd, clientAddr, clientPort);
 
 	return client;

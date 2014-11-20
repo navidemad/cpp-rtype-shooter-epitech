@@ -4,18 +4,18 @@ std::shared_ptr<IMutex> PortabilityBuilder::getMutex(void) {
 	return std::make_shared<UnixMutex>();
 }
 
-std::unique_ptr<IClientSocket> PortabilityBuilder::getTcpClient(void) {
-	return Utils::make_unique<UnixTcpClient>();
+std::shared_ptr<IClientSocket> PortabilityBuilder::getTcpClient(void) {
+	return std::make_shared<UnixTcpClient>();
 }
 
-std::unique_ptr<IClientSocket> PortabilityBuilder::getUdpClient(void) {
-	return Utils::make_unique<UnixUdpClient>();
+std::shared_ptr<IClientSocket> PortabilityBuilder::getUdpClient(void) {
+	return std::make_shared<UnixUdpClient>();
 }
 
-std::unique_ptr<IServerSocket> PortabilityBuilder::getTcpServer(void) {
-	return Utils::make_unique<UnixTcpServer>();
+std::shared_ptr<IServerSocket> PortabilityBuilder::getTcpServer(void) {
+	return std::make_shared<UnixTcpServer>();
 }
 
-std::unique_ptr<ICondVar> PortabilityBuilder::getCondVar(void) {
-    return Utils::make_unique<UnixCondVar>();
+std::shared_ptr<ICondVar> PortabilityBuilder::getCondVar(void) {
+    return std::make_shared<UnixCondVar>();
 }

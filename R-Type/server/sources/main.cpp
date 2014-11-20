@@ -1,5 +1,6 @@
 #include <iostream>
 #include "ThreadPool.hpp"
+#include "Observer.hpp"
 
 void fct(void) {
 	std::cout << "work done" << std::endl;

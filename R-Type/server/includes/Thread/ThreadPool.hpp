@@ -33,6 +33,6 @@ class ThreadPool {
 		std::vector<std::shared_ptr<IThread<ThreadPool *, void *>>> mWorkers;
 		std::deque<std::function<void()>> mTasks;
         std::shared_ptr<IMutex> mMutex;
-		std::unique_ptr<ICondVar> mCondVar;
+		std::shared_ptr<ICondVar> mCondVar;
 
 };

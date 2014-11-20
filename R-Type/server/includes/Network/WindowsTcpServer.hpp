@@ -35,7 +35,7 @@ class WindowsTcpServer : public IServerSocket, public NetworkManager::OnSocketEv
 
 	// handle clients
 	public:
-		std::unique_ptr<IClientSocket>	getNewClient(void);
+		std::shared_ptr<IClientSocket>	getNewClient(void);
 
 	// NetworkManager callback methods
 	public:
