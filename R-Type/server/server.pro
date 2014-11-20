@@ -64,7 +64,11 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Thread/IThread.hpp				\
 				includes/Thread/ThreadPool.hpp				\
 				includes/PortabilityBuilder.hpp				\
-				includes/Observer.hpp
+				includes/Observer.hpp					\
+				includes/Network/ClientManager.hpp			\
+				includes/Network/Client.hpp				\
+				includes/Network/ClientPacketBuilder.hpp		\
+				includes/Network/PlayerPacketBuilder.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp		\
 				includes/Network/UnixTcpClient.hpp	\
@@ -87,7 +91,11 @@ SOURCES			+=	sources/main.cpp			\
 				sources/Network/NetworkManager.cpp	\
 				sources/Mutex/ScopedLock.cpp            \
 				sources/Thread/ThreadPool.cpp		\
-                                ../shared/sources/Error/ErrorStatus.cpp
+                                ../shared/sources/Error/ErrorStatus.cpp	\
+				sources/Network/ClientManager.cpp	\
+				sources/Network/Client.cpp		\
+				sources/Network/ClientPacketBuilder.cpp	\
+				sources/Network/PlayerPacketBuilder.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp	\
 				sources/Network/UnixTcpServer.cpp	\

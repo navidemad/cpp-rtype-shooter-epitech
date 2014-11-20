@@ -13,7 +13,7 @@ class Observer {
 		~Observer(void) {}
 
 	// move - copy operators
-	private:
+	public:
 		Observer(const Observer &) = delete;
 		Observer(const Observer &&) = delete;
 		const Observer &operator=(const Observer &) = delete;
