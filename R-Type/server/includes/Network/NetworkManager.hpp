@@ -1,15 +1,12 @@
 #pragma once
 
+#include "Config.hpp"
 #include "IThread.hpp"
 #include "IMutex.hpp"
 
 #include <list>
 #include <utility>
 #include <memory>
-
-#ifdef __OS_LINUX__
-# include <sys/types.h>
-#endif
 
 class NetworkManager {
 
