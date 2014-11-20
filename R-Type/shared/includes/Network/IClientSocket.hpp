@@ -9,9 +9,9 @@ class IClientSocket {
 	public:
 		struct Message {
 			std::vector<char>	msg;
-			unsigned int			msgSize;
-			std::string				host;
-			int								port;
+			unsigned int		msgSize;
+			std::string			host;
+			int					port;
 		};
 
 	// CallBack Interface

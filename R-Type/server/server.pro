@@ -36,7 +36,7 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
 				includes/Network/NetworkManager.hpp     		\
-				../shared/includes/Config.hpp		\
+				../shared/includes/Config.hpp				\
 				../shared/includes/Network/IClientSocket.hpp		\
 				../shared/includes/Network/IServerSocket.hpp		\
                                 ../shared/includes/Commands/ICommand.hpp        	\
@@ -68,48 +68,93 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Network/ClientManager.hpp			\
 				includes/Network/Client.hpp				\
 				includes/Network/ClientPacketBuilder.hpp		\
-				includes/Network/PlayerPacketBuilder.hpp
+				includes/Network/PlayerPacketBuilder.hpp		\
+				../shared/includes/Commands/CommandFactory.hpp		\
+				../shared/includes/Commands/CommandException.hpp	\
+				includes/IResource.hpp
 
-unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp		\
-				includes/Network/UnixTcpClient.hpp	\
-				includes/Network/UnixTcpServer.hpp	\
-				includes/Network/UnixUdpClient.hpp	\
-				includes/CondVar/UnixCondVar.hpp \
-				includes/Thread/UnixThread.hpp \
+unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
+				includes/Network/UnixTcpClient.hpp			\
+				includes/Network/UnixTcpServer.hpp			\
+				includes/Network/UnixUdpClient.hpp			\
+				includes/CondVar/UnixCondVar.hpp 			\
+				includes/Thread/UnixThread.hpp 				\
 				includes/UnixPortabilityBuilder.hpp
 
-win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp		\
-				includes/Network/WindowsTcpClient.hpp	\
-				includes/Network/WindowsTcpServer.hpp	\
-				includes/Network/WindowsUdpClient.hpp	\
-				includes/Network/WindowsWSAHandler.hpp \
-				includes/CondVar/WindowsCondVar.hpp \
-				includes/Thread/WindowsThread.hpp \
+win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
+				includes/Network/WindowsTcpClient.hpp			\
+				includes/Network/WindowsTcpServer.hpp			\
+				includes/Network/WindowsUdpClient.hpp			\
+				includes/Network/WindowsWSAHandler.hpp 			\
+				includes/CondVar/WindowsCondVar.hpp 			\
+				includes/Thread/WindowsThread.hpp 			\
 				includes/WindowsPortabilityBuilder.hpp
 
-SOURCES			+=	sources/main.cpp			\
-				sources/Network/NetworkManager.cpp	\
-				sources/Mutex/ScopedLock.cpp            \
-				sources/Thread/ThreadPool.cpp		\
-                                ../shared/sources/Error/ErrorStatus.cpp	\
-				sources/Network/ClientManager.cpp	\
-				sources/Network/Client.cpp		\
-				sources/Network/ClientPacketBuilder.cpp	\
-				sources/Network/PlayerPacketBuilder.cpp
+SOURCES			+=	sources/main.cpp						\
+				sources/Network/NetworkManager.cpp				\
+				sources/Mutex/ScopedLock.cpp            			\
+				sources/Thread/ThreadPool.cpp					\
+                                ../shared/sources/Error/ErrorStatus.cpp				\
+				sources/Network/ClientManager.cpp				\
+				sources/Network/Client.cpp					\
+				sources/Network/ClientPacketBuilder.cpp				\
+				sources/Network/PlayerPacketBuilder.cpp				\
+				../shared/sources/Commands/CommandFactory.cpp			\
+                                ../shared/sources/Commands/ICommand.cpp        			\
+                                ../shared/sources/Commands/SharedCommandCreateGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandDeleteGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandDestroyResource.cpp	\
+                                ../shared/sources/Commands/SharedCommandDisconnect.cpp		\
+                                ../shared/sources/Commands/SharedCommandEndGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandError.cpp		\
+                                ../shared/sources/Commands/SharedCommandFire.cpp		\
+                                ../shared/sources/Commands/SharedCommandHandshake.cpp		\
+                                ../shared/sources/Commands/SharedCommandJoinGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandLeaveGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandListGames.cpp		\
+                                ../shared/sources/Commands/SharedCommandListLevels.cpp		\
+                                ../shared/sources/Commands/SharedCommandMove.cpp		\
+                                ../shared/sources/Commands/SharedCommandMoveResource.cpp	\
+                                ../shared/sources/Commands/SharedCommandObserveGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandShowGame.cpp		\
+                                ../shared/sources/Commands/SharedCommandShowLevel.cpp		\
+                                ../shared/sources/Commands/SharedCommandTimeElapsedPing.cpp	\
+                                ../shared/sources/Commands/SharedCommandUpdatePseudo.cpp	\
+                                ../shared/sources/Commands/SharedCommandUpdateScore.cpp		\
+                                sources/Commands/CommandCreateGame.cpp				\
+                                sources/Commands/CommandDeleteGame.cpp				\
+                                sources/Commands/CommandDestroyResource.cpp			\
+                                sources/Commands/CommandDisconnect.cpp				\
+                                sources/Commands/CommandEndGame.cpp				\
+                                sources/Commands/CommandError.cpp				\
+                                sources/Commands/CommandFire.cpp				\
+                                sources/Commands/CommandHandshake.cpp				\
+                                sources/Commands/CommandJoinGame.cpp				\
+                                sources/Commands/CommandLeaveGame.cpp				\
+                                sources/Commands/CommandListGames.cpp				\
+                                sources/Commands/CommandListLevels.cpp				\
+                                sources/Commands/CommandMove.cpp				\
+                                sources/Commands/CommandMoveResource.cpp			\
+                                sources/Commands/CommandObserveGame.cpp				\
+                                sources/Commands/CommandShowGame.cpp				\
+                                sources/Commands/CommandShowLevel.cpp				\
+                                sources/Commands/CommandTimeElapsedPing.cpp			\
+                                sources/Commands/CommandUpdatePseudo.cpp			\
+                                sources/Commands/CommandUpdateScore.cpp
 
-unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp	\
-				sources/Network/UnixTcpServer.cpp	\
-				sources/Network/UnixUdpClient.cpp	\
-				sources/CondVar/UnixCondVar.cpp \
-				sources/Mutex/UnixMutex.cpp \
+unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
+				sources/Network/UnixTcpServer.cpp			\
+				sources/Network/UnixUdpClient.cpp			\
+				sources/CondVar/UnixCondVar.cpp 			\
+				sources/Mutex/UnixMutex.cpp 				\
 				sources/UnixPortabilityBuilder.cpp
 
-win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp	\
-				sources/Network/WindowsTcpClient.cpp	\
-				sources/Network/WindowsUdpClient.cpp	\
-				sources/Network/WindowsWSAHandler.cpp \
-				sources/CondVar/WindowsCondVar.cpp \
-				sources/Mutex/WindowsMutex.cpp \
+win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
+				sources/Network/WindowsTcpClient.cpp			\
+				sources/Network/WindowsUdpClient.cpp			\
+				sources/Network/WindowsWSAHandler.cpp 			\
+				sources/CondVar/WindowsCondVar.cpp 			\
+				sources/Mutex/WindowsMutex.cpp	 			\
 				sources/WindowsPortabilityBuilder.cpp
 
 win32:LIBS	+= -lWs2_32
