@@ -1,0 +1,12 @@
+<resources>
+	<starship>
+		<file>r-typesheet5.gif</file>
+		<row>16</row>
+		<line>1</line>
+	</starship>
+	<robot>
+		<file>r-typesheet7.gif</file>
+		<row>6</row>
+		<line></line>
+	</robot>
+</resources>

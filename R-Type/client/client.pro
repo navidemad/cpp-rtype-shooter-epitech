@@ -46,6 +46,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/GUI/IGraphic.hpp				\
 			includes/GUI/IResourceManager.hpp			\
 			includes/GUI/SFMLGraphic.hpp				\
+			includes/GUI/SpriteManager.hpp				\
+			includes/GUI/SpriteModel.hpp				\
 			includes/GUI/TextureManager.hpp				\
 			includes/Network/INetworkManager.hpp			\
 			includes/Network/CommandPacketBuilder.hpp		\
@@ -98,6 +100,8 @@ SOURCES		+=	sources/main.cpp				\
 			sources/GUI/ContentManager.cpp			\
 			sources/GUI/FontManager.cpp			\
 			sources/GUI/SFMLGraphic.cpp			\
+			sources/GUI/SpriteManager.cpp			\
+			sources/GUI/SpriteModel.cpp			\
 			sources/GUI/TextureManager.cpp			\
 			sources/Network/CommandPacketBuilder.cpp	\
 			sources/Network/ServerCommunication.cpp		\
