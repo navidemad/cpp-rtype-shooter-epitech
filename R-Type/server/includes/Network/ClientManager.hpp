@@ -2,12 +2,12 @@
 
 class ClientManager {
 
-	// ctor dtor
+	// ctor / dtor
 	public:
-		ClientManager(void);
+        explicit ClientManager(void);
 		~ClientManager(void);
 
-	// move copy operators
+	// copy / move operators
 	public:
 		ClientManager(const ClientManager &) = delete;
 		ClientManager(const ClientManager &&) = delete;
