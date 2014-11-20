@@ -1,15 +1,14 @@
 #pragma once
 
-#include <list>
-#include <utility>
-#include <memory>
 #include "IThread.hpp"
 #include "IMutex.hpp"
 
-#ifdef __unix__
+#include <list>
+#include <utility>
+#include <memory>
+
+#ifdef __OS_LINUX__
 # include <sys/types.h>
-#elif defined(_WIN32) || defined(WIN32)
-// # include <Winsock2.h> // provoque des erreurs de compilation, et ça compile sans sur windows
 #endif
 
 class NetworkManager {

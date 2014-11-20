@@ -12,10 +12,10 @@ void GamesManager::run(void) {
 
 }
 
-void GamesManager::createGame(const Game::GameProperties& properties) {
-    properties;
+void GamesManager::createGame(const Game::GameProperties&) {
+
 }
 
-void GamesManager::removeGame(const std::string& gameName) {
-    gameName;
+void GamesManager::removeGame(const std::string&) {
+
 }

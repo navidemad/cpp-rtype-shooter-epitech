@@ -8,8 +8,8 @@ ScriptLoader::~ScriptLoader(void) {
 
 }
 
-void ScriptLoader::loadScript(const std::string& filename) {
-    filename;
+void ScriptLoader::loadScript(const std::string&) {
+
 }
 
 void ScriptLoader::loadAll(void) {

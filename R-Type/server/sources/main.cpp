@@ -14,6 +14,8 @@ int	main(void) {
         std::cerr << e.what() << std::endl;
         ret = - 1;
     }
-    system("PAUSE>NUL");
+    #if defined(__OS_WINDOWS__)
+        system("PAUSE>NUL");
+    #endif
     return ret;
 }
