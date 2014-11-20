@@ -7,12 +7,7 @@
 #include "IClientSocket.hpp"
 #include "IServerSocket.hpp"
 
-# include "WindowsThread.hpp"
-# include "WindowsMutex.hpp"
-# include "WindowsTcpClient.hpp"
-# include "WindowsTcpServer.hpp"
-# include "WindowsUdpClient.hpp"
-# include "WindowsCondVar.hpp"
+#include "WindowsThread.hpp"
 
 #include <memory>
 

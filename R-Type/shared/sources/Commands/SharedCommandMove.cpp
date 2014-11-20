@@ -1,6 +1,6 @@
 #include "CommandMove.hpp"
 
-CommandMove::CommandMove(void) : mDirection(IResource::Direction::UNKNWON) {
+CommandMove::CommandMove(void) : mDirection(IResource::Direction::UNKNOWN) {
 }
 
 CommandMove::~CommandMove(void) {

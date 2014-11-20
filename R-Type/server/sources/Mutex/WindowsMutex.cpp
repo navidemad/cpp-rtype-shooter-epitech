@@ -10,18 +10,17 @@ WindowsMutex::~WindowsMutex(void) {
 
 void	WindowsMutex::lock(void) {
     EnterCriticalSection(&mMutex);
-    while (mAlreadyLocked) Sleep(1000);
     mAlreadyLocked = true;
 }
 
 void	WindowsMutex::unlock(void) {
-    mAlreadyLocked = false;
     LeaveCriticalSection(&mMutex);
+    mAlreadyLocked = false;
 }
 
 void	WindowsMutex::trylock(void) {
     if (TryEnterCriticalSection(&mMutex) && mAlreadyLocked)
-    LeaveCriticalSection(&mMutex);
+        LeaveCriticalSection(&mMutex);
 }
 
 void *WindowsMutex::getMutex(void) {

@@ -1,5 +1,11 @@
 #include "PortabilityBuilder.hpp"
 
+# include "WindowsMutex.hpp"
+# include "WindowsTcpClient.hpp"
+# include "WindowsTcpServer.hpp"
+# include "WindowsUdpClient.hpp"
+# include "WindowsCondVar.hpp"
+
 std::shared_ptr<IMutex> PortabilityBuilder::getMutex(void) {
 	return std::make_shared<WindowsMutex>();
 }

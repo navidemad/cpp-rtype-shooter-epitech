@@ -10,7 +10,7 @@ namespace IResource {
 		RIGHT	= 0x01,
 		TOP		= 0x02,
 		BOTTOM	= 0x03,
-		UNKNWON
+        UNKNOWN
 	};
 
 	enum class Type {
@@ -18,7 +18,7 @@ namespace IResource {
 		BULLET	= 0x01,
 		ENNEMY	= 0x02,
 		BONUS	= 0x03,
-		UNKNWON
+        UNKNOWN
 	};
 
 }

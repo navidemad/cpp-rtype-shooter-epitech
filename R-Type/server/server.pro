@@ -11,7 +11,7 @@ RCC_DIR			=	build/rcc
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
-unix:QMAKE_CXX = clang++
+
 INCLUDEPATH		+=	.					\
 				includes				\
 				includes/Network 			\
@@ -180,4 +180,5 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 win32:LIBS	+= -lWs2_32
 unix:LIBS	+= -lpthread
 
-win32:DEFINES	+= _CRT_SECURE_NO_WARNINGS
+win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
+unix : DEFINES += __OS_LINUX__
