@@ -8,23 +8,22 @@ WindowsCondVar::WindowsCondVar(void) : mWaitersCount(0), mWaitersCountLock(Porta
         FALSE, // auto-reset event
         FALSE, // non-signaled initially
         NULL) // unnamed
-        ) == 0) throw CondVarException("fail CreateEvent()");
+        ) == 0) throw CondVarException("fail CreateEvent(SIGNAL)");
 
     if ((mEvents[WindowsCondVar::Event::BROADCAST] = CreateEvent(NULL,  // no security
         TRUE,  // manual-reset
         FALSE, // non-signaled initially
         NULL) // unnamed
-        ) == 0) throw CondVarException("fail CreateEvent()");
+        ) == 0) throw CondVarException("fail CreateEvent(BROADCAST)");
 }
 
 WindowsCondVar::~WindowsCondVar(void) {
-    if (CloseHandle(mEvents[WindowsCondVar::Event::SIGNAL]) == 0)
-        throw CondVarException("fail CloseHandle() for Event::ONE");
 
-    if (CloseHandle(mEvents[WindowsCondVar::Event::BROADCAST]) == 0)
-        throw CondVarException("fail CloseHandle() for Event::ALL");
+    if (mEvents[WindowsCondVar::Event::SIGNAL] && !CloseHandle(mEvents[WindowsCondVar::Event::SIGNAL]))
+        throw CondVarException("fail CloseHandle(SIGNAL)");
 
-    CloseHandle(mEvents[WindowsCondVar::Event::BROADCAST]);
+    if (mEvents[WindowsCondVar::Event::BROADCAST] && !CloseHandle(mEvents[WindowsCondVar::Event::BROADCAST]))
+        throw CondVarException("fail CloseHandle(BROADCAST)");
 }
 
 void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
@@ -34,7 +33,10 @@ void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
 
     externalMutex->unlock();
 
-    int result = WaitForMultipleObjects(WindowsCondVar::Event::MAX_EVENTS, mEvents, FALSE, INFINITE);
+    int result;
+    if ((result = WaitForMultipleObjects(WindowsCondVar::Event::MAX_EVENTS, mEvents, FALSE, INFINITE)) == WAIT_FAILED)
+        throw CondVarException("fail WaitForMultipleObjects()");
+
     bool lastWaiter;
 
     { ScopedLock scopedLock(mWaitersCountLock);
@@ -42,10 +44,13 @@ void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
         lastWaiter = result == WAIT_OBJECT_0 + WindowsCondVar::Event::BROADCAST && mWaitersCount == 0;
     }
 
-    if (lastWaiter)
-        ResetEvent(mEvents[WindowsCondVar::Event::BROADCAST]);
+    if (lastWaiter && !ResetEvent(mEvents[WindowsCondVar::Event::BROADCAST]))
+       throw CondVarException("fail ResetEvent()");
 
     externalMutex->lock();
+
+    if (result == WAIT_TIMEOUT)
+        throw CondVarException("fail win32 wait failed");
 };
 
 void	WindowsCondVar::notifyOne(void) {
@@ -56,8 +61,8 @@ void	WindowsCondVar::notifyOne(void) {
         haveWaiters = (mWaitersCount > 0);
     }
 
-    if (haveWaiters && SetEvent(mEvents[WindowsCondVar::Event::SIGNAL]) == 0)
-            throw CondVarException("fail SetEvent()");
+    if (haveWaiters && !SetEvent(mEvents[WindowsCondVar::Event::SIGNAL]))
+        throw CondVarException("fail SetEvent()");
 }
 
 void	WindowsCondVar::notifyAll(void) {
@@ -68,6 +73,6 @@ void	WindowsCondVar::notifyAll(void) {
     haveWaiters = (mWaitersCount > 0);
     }
 
-    if (haveWaiters && SetEvent(mEvents[WindowsCondVar::Event::BROADCAST]) == 0)
+    if (haveWaiters && !SetEvent(mEvents[WindowsCondVar::Event::BROADCAST]))
         throw CondVarException("fail SetEvent()");
 }
