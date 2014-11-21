@@ -6,6 +6,7 @@
 #include "ICondVar.hpp"
 #include "IClientSocket.hpp"
 #include "IServerSocket.hpp"
+#include "IDynLib.hpp"
 
 #include "WindowsThread.hpp"
 
@@ -18,7 +19,8 @@ namespace PortabilityBuilder {
 	std::shared_ptr<IClientSocket> 	getUdpClient(void);
 	std::shared_ptr<IServerSocket> 	getTcpServer(void);
 	std::shared_ptr<ICondVar>       getCondVar(void);
- 
+    std::shared_ptr<IDynLib>        getDynLib(void);
+
 	template <typename U, typename T>
     std::shared_ptr<IThread<U, T>>  getThread(void) {
 		return std::make_shared<WindowsThread<U, T>>();

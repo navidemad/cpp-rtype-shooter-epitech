@@ -21,6 +21,7 @@ INCLUDEPATH		+=	.					\
 				includes/CondVar			\
 				includes/Game			\
 				includes/Script			\
+				includes/DynLib			\
 				../shared/includes			\
 				../shared/includes/Network		\
 				../shared/includes/Commands		\
@@ -35,11 +36,13 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Exceptions/ThreadException.hpp			\
 				includes/Exceptions/CondVarException.hpp		\
 				includes/Exceptions/GameException.hpp		\
+				includes/Exceptions/DynLibException.hpp		\
 				includes/Exceptions/GamesManagerException.hpp		\
 				includes/Exceptions/ScriptException.hpp		\
 				includes/Mutex/ScopedLock.hpp				\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
+				includes/DynLib/IDynLib.hpp				\
 				includes/Network/NetworkManager.hpp     		\
 				../shared/includes/Config.hpp				\
 				../shared/includes/Utils.hpp				\
@@ -92,6 +95,7 @@ unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixUdpClient.hpp			\
 				includes/CondVar/UnixCondVar.hpp 			\
 				includes/Thread/UnixThread.hpp 				\
+				includes/DynLib/UnixDynLib.hpp				\
 				includes/UnixPortabilityBuilder.hpp
 
 win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
@@ -101,6 +105,7 @@ win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
 				includes/Network/WindowsWSAHandler.hpp 			\
 				includes/CondVar/WindowsCondVar.hpp 			\
 				includes/Thread/WindowsThread.hpp 			\
+				includes/DynLib/WindowsDynLib.hpp				\
 				includes/WindowsPortabilityBuilder.hpp
 
 SOURCES			+=	sources/main.cpp						\
@@ -167,6 +172,7 @@ unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixUdpClient.cpp			\
 				sources/CondVar/UnixCondVar.cpp 			\
 				sources/Mutex/UnixMutex.cpp 				\
+				sources/DynLib/UnixDynLib.cpp				\
 				sources/UnixPortabilityBuilder.cpp
 
 win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
@@ -175,10 +181,11 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 				sources/Network/WindowsWSAHandler.cpp 			\
 				sources/CondVar/WindowsCondVar.cpp 			\
 				sources/Mutex/WindowsMutex.cpp	 			\
+				sources/DynLib/WindowsDynLib.cpp			\
 				sources/WindowsPortabilityBuilder.cpp
 
 win32:LIBS	+= -lWs2_32
-unix:LIBS	+= -lpthread
+unix:LIBS	+= -lpthread -ldl
 
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__

@@ -5,6 +5,7 @@
 # include "WindowsTcpServer.hpp"
 # include "WindowsUdpClient.hpp"
 # include "WindowsCondVar.hpp"
+# include "WindowsDynLib.hpp"
 
 std::shared_ptr<IMutex> PortabilityBuilder::getMutex(void) {
 	return std::make_shared<WindowsMutex>();
@@ -23,5 +24,9 @@ std::shared_ptr<IServerSocket> PortabilityBuilder::getTcpServer(void) {
 }
 
 std::shared_ptr<ICondVar> PortabilityBuilder::getCondVar(void) {
-	return std::make_shared<WindowsCondVar>();
+    return std::make_shared<WindowsCondVar>();
+}
+
+std::shared_ptr<IDynLib> PortabilityBuilder::getDynLib(void) {
+    return std::make_shared<WindowsDynLib>();
 }
