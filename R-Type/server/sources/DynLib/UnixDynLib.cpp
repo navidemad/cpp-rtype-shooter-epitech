@@ -3,7 +3,7 @@
 
 void    UnixDynLib::libraryLoad(std::string& libraryName) {
 
-    if (!(mHandle = dlopen(std::string(libName + EXT).c_str(), RTLD_LAZY)))
+    if (!(mHandle = dlopen(std::string(libraryName + EXT).c_str(), RTLD_LAZY)))
       throw DynLibException(dlerror());
     dlerror();
 }
