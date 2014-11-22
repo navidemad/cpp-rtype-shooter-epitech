@@ -8,15 +8,15 @@ class WindowsUdpClient : public IClientSocket, public NetworkManager::OnSocketEv
 
 	// ctor - dtor
 	public:
-		WindowsUdpClient(void);
+		explicit WindowsUdpClient(void);
 		~WindowsUdpClient(void);
 
 	// copy / move operators
 	public:
 		WindowsUdpClient(const WindowsUdpClient &) = delete;
-		WindowsUdpClient(const WindowsUdpClient &&) = delete;
+		WindowsUdpClient(WindowsUdpClient &&) = delete;
 		const WindowsUdpClient &operator=(const WindowsUdpClient &) = delete;
-		const WindowsUdpClient &operator=(const WindowsUdpClient &&) = delete;
+		const WindowsUdpClient &operator=(WindowsUdpClient &&) = delete;
 
 	// start - stop
 	public:

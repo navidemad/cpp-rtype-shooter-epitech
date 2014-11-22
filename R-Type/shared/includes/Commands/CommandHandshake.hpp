@@ -18,15 +18,15 @@ class CommandHandshake : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandHandshake(void);
+		explicit CommandHandshake(void);
 		~CommandHandshake(void);
 
 	// copy / move operators
 	public:
 		CommandHandshake(const CommandHandshake &) = delete;
-		CommandHandshake(const CommandHandshake &&) = delete;
+		CommandHandshake(CommandHandshake &&) = delete;
 		const CommandHandshake &operator=(const CommandHandshake &) = delete;
-		const CommandHandshake &operator=(const CommandHandshake &&) = delete;
+		const CommandHandshake &operator=(CommandHandshake &&) = delete;
 
 	// public pure methods
 	public:

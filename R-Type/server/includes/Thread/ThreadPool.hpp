@@ -12,15 +12,15 @@ class ThreadPool {
 
 	// ctor dtor
 	public:
-		ThreadPool(unsigned int nbThread);
+		explicit ThreadPool(unsigned int nbThread);
 		~ThreadPool(void);
 
 	// copy / move operators
 	public:
 		ThreadPool(const ThreadPool &) = delete;
-		ThreadPool(const ThreadPool &&) = delete;
+		ThreadPool(ThreadPool &&) = delete;
 		const ThreadPool &operator=(const ThreadPool &) = delete;
-		const ThreadPool &operator=(const ThreadPool &&) = delete;
+		const ThreadPool &operator=(ThreadPool &&) = delete;
 
 	// handle tasks
 	public:

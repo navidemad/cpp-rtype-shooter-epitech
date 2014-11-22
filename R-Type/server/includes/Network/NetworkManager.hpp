@@ -25,16 +25,16 @@ class NetworkManager {
 
 	// ctor - dtor
 	private:
-		NetworkManager(void);
+		explicit NetworkManager(void);
 	public:
 		~NetworkManager(void);
 
 	// copy / move operators
 	public:
 		NetworkManager(const NetworkManager &) = delete;
-		NetworkManager(const NetworkManager &&) = delete;
+		NetworkManager(NetworkManager &&) = delete;
 		const NetworkManager &operator=(const NetworkManager &) = delete;
-		const NetworkManager &operator=(const NetworkManager &&) = delete;
+		const NetworkManager &operator=(NetworkManager &&) = delete;
 
 
 	// singleton handle instance

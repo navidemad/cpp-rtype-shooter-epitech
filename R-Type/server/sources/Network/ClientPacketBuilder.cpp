@@ -3,7 +3,7 @@
 #include "CommandException.hpp"
 #include <iostream>
 
-ClientPacketBuilder::ClientPacketBuilder(std::shared_ptr<IClientSocket> client)
+ClientPacketBuilder::ClientPacketBuilder(const std::shared_ptr<IClientSocket> &client)
 	: mState(ClientPacketBuilder::State::HEADER), mCurrentCommand(nullptr), mClient(client)
 {
 	mClient->setOnSocketEventListener(this);
@@ -11,6 +11,10 @@ ClientPacketBuilder::ClientPacketBuilder(std::shared_ptr<IClientSocket> client)
 
 ClientPacketBuilder::~ClientPacketBuilder(void) {
 	mClient->closeClient();
+}
+
+ClientPacketBuilder::ClientPacketBuilder(ClientPacketBuilder &&clientPacketBuilder) : mClient(clientPacketBuilder.mClient) {
+	clientPacketBuilder.mClient = nullptr;
 }
 
 void	ClientPacketBuilder::onBytesWritten(IClientSocket *, unsigned int) {

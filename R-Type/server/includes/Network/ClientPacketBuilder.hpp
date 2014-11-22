@@ -9,15 +9,15 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 
 	// ctor dtor
 	public:
-		ClientPacketBuilder(std::shared_ptr<IClientSocket> client);
+		explicit ClientPacketBuilder(const std::shared_ptr<IClientSocket> &client);
 		~ClientPacketBuilder(void);
 
 	// copy move operators
 	public:
 		ClientPacketBuilder(const ClientPacketBuilder &) = delete;
-		ClientPacketBuilder(const ClientPacketBuilder &&) = delete;
+		ClientPacketBuilder(ClientPacketBuilder &&);
 		const ClientPacketBuilder &operator=(const ClientPacketBuilder &) = delete;
-		const ClientPacketBuilder &operator=(const ClientPacketBuilder &&) = delete;
+		const ClientPacketBuilder &operator=(ClientPacketBuilder &&) = delete;
 
 	// interface implementation
 	public:

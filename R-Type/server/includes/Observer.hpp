@@ -9,15 +9,15 @@ class Observer {
 
 	// ctor - dtor
 	public:
-		Observer(void) {}
+		explicit Observer(void) {}
 		~Observer(void) {}
 
 	// move - copy operators
 	public:
 		Observer(const Observer &) = delete;
-		Observer(const Observer &&) = delete;
+		Observer(Observer &&) = delete;
 		const Observer &operator=(const Observer &) = delete;
-		const Observer &operator=(const Observer &&) = delete;
+		const Observer &operator=(Observer &&) = delete;
 
 	// handle observers
 	public:

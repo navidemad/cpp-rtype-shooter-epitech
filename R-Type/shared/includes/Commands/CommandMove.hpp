@@ -16,15 +16,15 @@ class CommandMove : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandMove(void);
+		explicit CommandMove(void);
 		~CommandMove(void);
 
 	// copy / move operators
 	public:
 		CommandMove(const CommandMove &) = delete;
-		CommandMove(const CommandMove &&) = delete;
+		CommandMove(CommandMove &&) = delete;
 		const CommandMove &operator=(const CommandMove &) = delete;
-		const CommandMove &operator=(const CommandMove &&) = delete;
+		const CommandMove &operator=(CommandMove &&) = delete;
 
 	// getter - setters
 	public:

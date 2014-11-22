@@ -17,15 +17,15 @@ class CommandUpdateScore : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandUpdateScore(void);
+		explicit CommandUpdateScore(void);
 		~CommandUpdateScore(void);
 
 	// copy / move operators
 	public:
 		CommandUpdateScore(const CommandUpdateScore &) = delete;
-		CommandUpdateScore(const CommandUpdateScore &&) = delete;
+		CommandUpdateScore(CommandUpdateScore &&) = delete;
 		const CommandUpdateScore &operator=(const CommandUpdateScore &) = delete;
-		const CommandUpdateScore &operator=(const CommandUpdateScore &&) = delete;
+		const CommandUpdateScore &operator=(CommandUpdateScore &&) = delete;
 
 	// getter - setters
 	public:

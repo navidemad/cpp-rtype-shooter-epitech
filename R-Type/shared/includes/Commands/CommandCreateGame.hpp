@@ -18,15 +18,15 @@ class CommandCreateGame : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandCreateGame(void);
+		explicit CommandCreateGame(void);
 		~CommandCreateGame(void);
 
 	// copy / move operators
 	public:
 		CommandCreateGame(const CommandCreateGame &) = delete;
-		CommandCreateGame(const CommandCreateGame &&) = delete;
+		CommandCreateGame(CommandCreateGame &&) = delete;
 		const CommandCreateGame &operator=(const CommandCreateGame &) = delete;
-		const CommandCreateGame &operator=(const CommandCreateGame &&) = delete;
+		const CommandCreateGame &operator=(CommandCreateGame &&) = delete;
 
 	// getter - setters
 	public:

@@ -13,15 +13,15 @@ class CommandListGames : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandListGames(void);
+		explicit CommandListGames(void);
 		~CommandListGames(void);
 
 	// copy / move operators
 	public:
 		CommandListGames(const CommandListGames &) = delete;
-		CommandListGames(const CommandListGames &&) = delete;
+		CommandListGames(CommandListGames &&) = delete;
 		const CommandListGames &operator=(const CommandListGames &) = delete;
-		const CommandListGames &operator=(const CommandListGames &&) = delete;
+		const CommandListGames &operator=(CommandListGames &&) = delete;
 
 	// public pure methods
 	public:

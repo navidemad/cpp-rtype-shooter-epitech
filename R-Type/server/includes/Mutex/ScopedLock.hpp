@@ -7,15 +7,15 @@ class ScopedLock {
 
 	// ctor dtor
 	public:
-        ScopedLock(std::shared_ptr<IMutex> mutex);
+		explicit ScopedLock(std::shared_ptr<IMutex> mutex);
 		~ScopedLock(void);
 
 	// copy / move operators
 	public:
 		ScopedLock(const ScopedLock &) = delete;
-		ScopedLock(const ScopedLock &&) = delete;
+		ScopedLock(ScopedLock &&) = delete;
 		const ScopedLock &operator=(const ScopedLock &) = delete;
-		const ScopedLock &operator=(const ScopedLock &&) = delete;
+		const ScopedLock &operator=(ScopedLock &&) = delete;
 
 	// attributes
 	private:

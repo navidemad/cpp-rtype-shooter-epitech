@@ -15,15 +15,15 @@ class CommandUpdatePseudo : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandUpdatePseudo(void);
+		explicit CommandUpdatePseudo(void);
 		~CommandUpdatePseudo(void);
 
 	// copy / move operators
 	public:
 		CommandUpdatePseudo(const CommandUpdatePseudo &) = delete;
-		CommandUpdatePseudo(const CommandUpdatePseudo &&) = delete;
+		CommandUpdatePseudo(CommandUpdatePseudo &&) = delete;
 		const CommandUpdatePseudo &operator=(const CommandUpdatePseudo &) = delete;
-		const CommandUpdatePseudo &operator=(const CommandUpdatePseudo &&) = delete;
+		const CommandUpdatePseudo &operator=(CommandUpdatePseudo &&) = delete;
 
 	// getter - setters
 	public:

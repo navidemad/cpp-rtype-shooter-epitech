@@ -6,7 +6,7 @@ class CondVarException : public std::runtime_error {
 
 	// use std::runtime_error functions
 	public:
-		CondVarException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
+		explicit CondVarException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
 		~CondVarException(void) {}
 
 	// copy - move operators

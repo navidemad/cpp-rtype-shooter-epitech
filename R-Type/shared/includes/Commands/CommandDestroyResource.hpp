@@ -14,15 +14,15 @@ class CommandDestroyResource : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandDestroyResource(void);
+		explicit CommandDestroyResource(void);
 		~CommandDestroyResource(void);
 
 	// copy / move operators
 	public:
 		CommandDestroyResource(const CommandDestroyResource &) = delete;
-		CommandDestroyResource(const CommandDestroyResource &&) = delete;
+		CommandDestroyResource(CommandDestroyResource &&) = delete;
 		const CommandDestroyResource &operator=(const CommandDestroyResource &) = delete;
-		const CommandDestroyResource &operator=(const CommandDestroyResource &&) = delete;
+		const CommandDestroyResource &operator=(CommandDestroyResource &&) = delete;
 
 	// getter - setters
 	public:

@@ -1,17 +1,31 @@
 #pragma once
 
-class ClientManager {
+#include <list>
+#include <memory>
+#include "Client.hpp"
+#include "IServerSocket.hpp"
+
+class ClientManager : public IServerSocket::OnSocketEvent {
 
 	// ctor dtor
 	public:
-		ClientManager(void);
+		explicit ClientManager(void);
 		~ClientManager(void);
 
 	// move copy operators
 	public:
 		ClientManager(const ClientManager &) = delete;
-		ClientManager(const ClientManager &&) = delete;
+		ClientManager(ClientManager &&) = delete;
 		const ClientManager &operator=(const ClientManager &) = delete;
-		const ClientManager &operator=(const ClientManager &&) = delete;
+		const ClientManager &operator=(ClientManager &&) = delete;
+
+	// interface implementation
+	public:
+		void	onNewConnection(IServerSocket *socket);
+
+	// attributes
+	private:
+		std::list<Client> mClients;
+		std::shared_ptr<IServerSocket> mServer;
 
 };
