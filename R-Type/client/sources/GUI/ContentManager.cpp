@@ -1,11 +1,15 @@
+#include <memory>
 #include "GUI/TextureManager.hpp"
 #include "GUI/SpriteManager.hpp"
 #include "GUI/FontManager.hpp"
 #include "Audio/SoundManager.hpp"
 #include "GUI/ContentManager.hpp"
 
-ContentManager::ContentManager()
-	: mTextures(&TextureManager()), mSprites(&SpriteManager()), mFonts(&FontManager()), mSounds(&SoundManager())
+ContentManager::ContentManager() :
+	mTextures(TextureManager::getInstance()), 
+	mSprites(SpriteManager::getInstance()), 
+	mFonts(FontManager::getInstance()), 
+	mSounds(SoundManager::getInstance())
 {
 }
 

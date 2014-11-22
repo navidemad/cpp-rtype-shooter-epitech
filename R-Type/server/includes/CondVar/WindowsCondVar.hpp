@@ -2,14 +2,16 @@
 
 #include "IMutex.hpp"
 #include "ICondVar.hpp"
-#include "CondVarException.hpp"
-
-# include <WinSock2.h>
-
-# define _CONDITION_EVENT_ONE 0
-# define _CONDITION_EVENT_ALL 1
 
 class WindowsCondVar : public ICondVar {
+
+    // enum events
+    public:
+        enum Event {
+            SIGNAL = 0,
+            BROADCAST = 1,
+            MAX_EVENTS = 2
+        };
 
 	// ctor dtor
 	public:
@@ -31,8 +33,7 @@ class WindowsCondVar : public ICondVar {
 
     // attributes
     private:
-    	void _wait();
-        HANDLE mEvents[2];
-    	unsigned int mWaitersCount;
-    	CRITICAL_SECTION mWaitersCountLock;
+        HANDLE                      mEvents[WindowsCondVar::Event::MAX_EVENTS];
+    	unsigned int                mWaitersCount;
+    	std::shared_ptr<IMutex>     mWaitersCountLock;
 };

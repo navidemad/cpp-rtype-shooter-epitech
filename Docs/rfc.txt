@@ -4,8 +4,8 @@
 
 Tasser Team                                                     S. Ninon
 Internet-Draft                                                   Epitech
-Intended status: Informational                         November 14, 2014
-Expires: May 18, 2015
+Intended status: Informational                         November 16, 2014
+Expires: May 20, 2015
 
 
                       R-Type Network Game Protocol
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 18, 2015.
+   This Internet-Draft will expire on May 20, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 1]
+Ninon                     Expires May 20, 2015                  [Page 1]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 2]
+Ninon                     Expires May 20, 2015                  [Page 2]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -165,7 +165,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 3]
+Ninon                     Expires May 20, 2015                  [Page 3]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -221,7 +221,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 4]
+Ninon                     Expires May 20, 2015                  [Page 4]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -277,7 +277,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 5]
+Ninon                     Expires May 20, 2015                  [Page 5]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -333,7 +333,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 6]
+Ninon                     Expires May 20, 2015                  [Page 6]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -389,7 +389,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 7]
+Ninon                     Expires May 20, 2015                  [Page 7]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -445,7 +445,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 8]
+Ninon                     Expires May 20, 2015                  [Page 8]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -501,7 +501,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                  [Page 9]
+Ninon                     Expires May 20, 2015                  [Page 9]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -557,7 +557,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 10]
+Ninon                     Expires May 20, 2015                 [Page 10]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -613,7 +613,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 11]
+Ninon                     Expires May 20, 2015                 [Page 11]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -660,7 +660,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 4.13.1.  From Client
 
-   This command has no equivalent server-side.
+   This command has no equivalent client-side.
 
 4.13.2.  From Server
 
@@ -669,7 +669,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 12]
+Ninon                     Expires May 20, 2015                 [Page 12]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -698,7 +698,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 4.14.1.  From Client
 
-   This command has no equivalent server-side.
+   This command has no equivalent client-side.
 
 4.14.2.  From Server
 
@@ -725,7 +725,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 13]
+Ninon                     Expires May 20, 2015                 [Page 13]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -781,7 +781,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 14]
+Ninon                     Expires May 20, 2015                 [Page 14]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -837,7 +837,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 15]
+Ninon                     Expires May 20, 2015                 [Page 15]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -893,7 +893,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 16]
+Ninon                     Expires May 20, 2015                 [Page 16]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -949,7 +949,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 17]
+Ninon                     Expires May 20, 2015                 [Page 17]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -1005,7 +1005,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 18]
+Ninon                     Expires May 20, 2015                 [Page 18]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -1061,4 +1061,4 @@ Author's Address
 
 
 
-Ninon                     Expires May 18, 2015                 [Page 19]
+Ninon                     Expires May 20, 2015                 [Page 19]

@@ -1,21 +1,30 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
 
 class TextureManager : public IResourceManager<std::map<std::string, sf::Sprite>>
 {
-	// ctor - dtor
-	public:
+	// ctor, coplien form
+	private:
 		TextureManager();
+		TextureManager(TextureManager const &) = delete;
+		TextureManager(TextureManager const &&) = delete;
+		TextureManager const	&operator=(TextureManager const &) = delete;
+		TextureManager const	&operator=(TextureManager const &&) = delete;
+
+	// dtor
+	public:
 		~TextureManager();
 
-	// coplien form
+	// instance
+	public:
+		static std::shared_ptr<TextureManager>	getInstance(void);
 	private:
-		TextureManager(TextureManager const &) {}
-		TextureManager const	&operator=(TextureManager const &) { return *this; }
+		static std::shared_ptr<TextureManager>	mInstance;
 
 	// methods
 	public:

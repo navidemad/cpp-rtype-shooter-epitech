@@ -1,6 +1,6 @@
 #include "CommandMoveResource.hpp"
 
-CommandMoveResource::CommandMoveResource(void) : mId(0), mType(IResource::Type::UNKNWON), mX(0), mY(0), mAngle(0) {
+CommandMoveResource::CommandMoveResource(void) : mId(0), mType(IResource::Type::UNKNOWN), mX(0), mY(0), mAngle(0) {
 }
 
 CommandMoveResource::~CommandMoveResource(void) {

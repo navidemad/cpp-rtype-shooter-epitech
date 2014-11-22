@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <map>
 #include <SFML/Graphics.hpp>
@@ -8,14 +9,23 @@
 class FontManager : public IResourceManager<std::map<std::string, sf::Font>>
 {
 	// ctor - dtor
-	public:
+	private:
 		FontManager();
+	public:
 		~FontManager();
 
-	// coplien form
+	// coplien forms
 	private:
-		FontManager(FontManager const &) {}
-		FontManager const	&operator=(FontManager const &) { return *this; }
+		FontManager(FontManager const &) = delete;
+		FontManager(FontManager const &&) = delete;
+		FontManager const	&operator=(FontManager const &) = delete;
+		FontManager const	&operator=(FontManager const &&) = delete;
+
+	// instance
+	public:
+		static std::shared_ptr<FontManager>		getInstance();
+	private:
+		static std::shared_ptr<FontManager>		mInstance;
 
 	// methods
 	public:

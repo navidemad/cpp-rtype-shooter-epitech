@@ -1,11 +1,5 @@
 #pragma once
 
-#ifdef __unix__
-# include <pthread.h>
-#elif defined(_WIN32) || defined(WIN32)
-# include <WinSock2.h>
-#endif
-
 class IMutex {
 
 	// ctor dtor

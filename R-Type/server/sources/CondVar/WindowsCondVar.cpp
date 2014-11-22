@@ -1,82 +1,78 @@
+#include "PortabilityBuilder.hpp"
 #include "WindowsCondVar.hpp"
+#include "CondVarException.hpp"
+#include "ScopedLock.hpp"
 
-WindowsCondVar::WindowsCondVar(void) : mWaitersCount(0) {
-    if ((mEvents[_CONDITION_EVENT_ONE] = CreateEvent(NULL, FALSE, FALSE, NULL)) == 0)
-        throw CondVarException("fail CreateEvent()");
+WindowsCondVar::WindowsCondVar(void) : mWaitersCount(0), mWaitersCountLock(PortabilityBuilder::getMutex()) {
+    if ((mEvents[WindowsCondVar::Event::SIGNAL] = CreateEvent(NULL,  // no security
+        FALSE, // auto-reset event
+        FALSE, // non-signaled initially
+        NULL) // unnamed
+        ) == 0) throw CondVarException("fail CreateEvent(SIGNAL)");
 
-    if ((mEvents[_CONDITION_EVENT_ALL] = CreateEvent(NULL, TRUE, FALSE, NULL)) == 0)
-        throw CondVarException("fail CreateEvent()");
-    
-    // Initialize the critical section
-    InitializeCriticalSection(&mWaitersCountLock);
+    if ((mEvents[WindowsCondVar::Event::BROADCAST] = CreateEvent(NULL,  // no security
+        TRUE,  // manual-reset
+        FALSE, // non-signaled initially
+        NULL) // unnamed
+        ) == 0) throw CondVarException("fail CreateEvent(BROADCAST)");
 }
 
 WindowsCondVar::~WindowsCondVar(void) {
-    if (CloseHandle(mEvents[_CONDITION_EVENT_ONE]) == 0)
-        throw CondVarException("fail CloseHandle()");
 
-    if (CloseHandle(mEvents[_CONDITION_EVENT_ALL]) == 0)
-        throw CondVarException("fail CloseHandle()");
-    CloseHandle(mEvents[_CONDITION_EVENT_ALL]);
+    if (mEvents[WindowsCondVar::Event::SIGNAL] && !CloseHandle(mEvents[WindowsCondVar::Event::SIGNAL]))
+        throw CondVarException("fail CloseHandle(SIGNAL)");
 
-    // Release resources used by the critical section object.
-    DeleteCriticalSection(&mWaitersCountLock);
+    if (mEvents[WindowsCondVar::Event::BROADCAST] && !CloseHandle(mEvents[WindowsCondVar::Event::BROADCAST]))
+        throw CondVarException("fail CloseHandle(BROADCAST)");
 }
 
-void WindowsCondVar::wait(std::shared_ptr<IMutex> mutex) {
-    // Request ownership of the critical section.
-    EnterCriticalSection(&mWaitersCountLock);
+void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
 
-    ++mWaitersCount;
+    { ScopedLock scopedLock(mWaitersCountLock); 
+        ++mWaitersCount; }
 
-    // Release ownership of the critical section.
-    LeaveCriticalSection(&mWaitersCountLock);
+    externalMutex->unlock();
 
-    // Release the mutex while waiting for the condition (will decrease the number of waiters when done)
-    mutex->unlock();
-    _wait();
-    mutex->lock();
+    int result;
+    if ((result = WaitForMultipleObjects(WindowsCondVar::Event::MAX_EVENTS, mEvents, FALSE, INFINITE)) == WAIT_FAILED)
+        throw CondVarException("fail WaitForMultipleObjects()");
+
+    bool lastWaiter;
+
+    { ScopedLock scopedLock(mWaitersCountLock);
+        --mWaitersCount;
+        lastWaiter = result == WAIT_OBJECT_0 + WindowsCondVar::Event::BROADCAST && mWaitersCount == 0;
+    }
+
+    if (lastWaiter && !ResetEvent(mEvents[WindowsCondVar::Event::BROADCAST]))
+       throw CondVarException("fail ResetEvent()");
+
+    externalMutex->lock();
+
+    if (result == WAIT_TIMEOUT)
+        throw CondVarException("fail win32 wait failed");
 };
 
-void WindowsCondVar::_wait(void) {
-    int result = WaitForMultipleObjects(2, mEvents, FALSE, INFINITE);
-
-    // Request ownership of the critical section.
-    EnterCriticalSection(&mWaitersCountLock);
-
-    --mWaitersCount;
-    bool lastWaiter = (result == (WAIT_OBJECT_0 + _CONDITION_EVENT_ALL)) &&
-                    (mWaitersCount == 0);
-
-    // Release ownership of the critical section.
-    LeaveCriticalSection(&mWaitersCountLock);
-
-    if (lastWaiter)
-        ResetEvent(mEvents[_CONDITION_EVENT_ALL]);
-}
-
 void	WindowsCondVar::notifyOne(void) {
-    // Request ownership of the critical section.
-    EnterCriticalSection(&mWaitersCountLock);
 
-    bool haveWaiters = (mWaitersCount > 0);
+    bool haveWaiters;
 
-    // Release ownership of the critical section.
-    LeaveCriticalSection(&mWaitersCountLock);
+    { ScopedLock scopedLock(mWaitersCountLock);
+        haveWaiters = (mWaitersCount > 0);
+    }
 
-    if (haveWaiters && SetEvent(mEvents[_CONDITION_EVENT_ONE]) == 0)
-            throw CondVarException("fail SetEvent()");
+    if (haveWaiters && !SetEvent(mEvents[WindowsCondVar::Event::SIGNAL]))
+        throw CondVarException("fail SetEvent()");
 }
 
 void	WindowsCondVar::notifyAll(void) {
-    // Request ownership of the critical section.
-    EnterCriticalSection(&mWaitersCountLock);
 
-    bool haveWaiters = (mWaitersCount > 0);
+    bool haveWaiters;
 
-    // Release ownership of the critical section.
-    LeaveCriticalSection(&mWaitersCountLock);
+    { ScopedLock scopedLock(mWaitersCountLock);
+    haveWaiters = (mWaitersCount > 0);
+    }
 
-    if (haveWaiters && SetEvent(mEvents[_CONDITION_EVENT_ALL]) == 0)
+    if (haveWaiters && !SetEvent(mEvents[WindowsCondVar::Event::BROADCAST]))
         throw CondVarException("fail SetEvent()");
 }

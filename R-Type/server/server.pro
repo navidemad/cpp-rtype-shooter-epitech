@@ -11,7 +11,7 @@ RCC_DIR			=	build/rcc
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
-unix:QMAKE_CXX = clang++
+unix:QMAKE = clang++
 INCLUDEPATH		+=	.					\
 				includes				\
 				includes/Network 			\
@@ -19,6 +19,9 @@ INCLUDEPATH		+=	.					\
 				includes/Mutex				\
 				includes/Thread				\
 				includes/CondVar			\
+				includes/Game			\
+				includes/Script			\
+				includes/DynLib			\
 				../shared/includes			\
 				../shared/includes/Network		\
 				../shared/includes/Commands		\
@@ -32,11 +35,17 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Exceptions/SocketException.hpp			\
 				includes/Exceptions/ThreadException.hpp			\
 				includes/Exceptions/CondVarException.hpp		\
+				includes/Exceptions/GameException.hpp		\
+				includes/Exceptions/DynLibException.hpp		\
+				includes/Exceptions/GamesManagerException.hpp		\
+				includes/Exceptions/ScriptException.hpp		\
 				includes/Mutex/ScopedLock.hpp				\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
+				includes/DynLib/IDynLib.hpp				\
 				includes/Network/NetworkManager.hpp     		\
 				../shared/includes/Config.hpp				\
+				../shared/includes/Utils.hpp				\
 				../shared/includes/Network/IClientSocket.hpp		\
 				../shared/includes/Network/IServerSocket.hpp		\
                                 ../shared/includes/Commands/ICommand.hpp        	\
@@ -71,7 +80,14 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Network/PlayerPacketBuilder.hpp		\
 				../shared/includes/Commands/CommandFactory.hpp		\
 				../shared/includes/Commands/CommandException.hpp	\
-				includes/IResource.hpp
+				includes/IResource.hpp	\
+				includes/RTypeServer.hpp	\
+				includes/Script/Script.hpp	\
+				includes/Script/ScriptLoader.hpp	\
+				includes/Script//ScriptParser.hpp	\
+				includes/Game/Game.hpp \
+				includes/Game/GamesManager.hpp \
+				includes/Game/Timer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\
@@ -79,6 +95,7 @@ unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixUdpClient.hpp			\
 				includes/CondVar/UnixCondVar.hpp 			\
 				includes/Thread/UnixThread.hpp 				\
+				includes/DynLib/UnixDynLib.hpp				\
 				includes/UnixPortabilityBuilder.hpp
 
 win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
@@ -88,6 +105,7 @@ win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
 				includes/Network/WindowsWSAHandler.hpp 			\
 				includes/CondVar/WindowsCondVar.hpp 			\
 				includes/Thread/WindowsThread.hpp 			\
+				includes/DynLib/WindowsDynLib.hpp				\
 				includes/WindowsPortabilityBuilder.hpp
 
 SOURCES			+=	sources/main.cpp						\
@@ -140,13 +158,21 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Commands/CommandShowLevel.cpp				\
                                 sources/Commands/CommandTimeElapsedPing.cpp			\
                                 sources/Commands/CommandUpdatePseudo.cpp			\
-                                sources/Commands/CommandUpdateScore.cpp
+                                sources/Commands/CommandUpdateScore.cpp 			\
+                                sources/RTypeServer.cpp 			\
+                                sources/Script/Script.cpp 			\
+                                sources/Script/ScriptLoader.cpp 			\
+                                sources/Script/ScriptParser.cpp	\
+								sources/Game/Game.cpp \
+								sources/Game/GamesManager.cpp \
+								sources/Game/Timer.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixTcpServer.cpp			\
 				sources/Network/UnixUdpClient.cpp			\
 				sources/CondVar/UnixCondVar.cpp 			\
 				sources/Mutex/UnixMutex.cpp 				\
+				sources/DynLib/UnixDynLib.cpp				\
 				sources/UnixPortabilityBuilder.cpp
 
 win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
@@ -155,9 +181,11 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 				sources/Network/WindowsWSAHandler.cpp 			\
 				sources/CondVar/WindowsCondVar.cpp 			\
 				sources/Mutex/WindowsMutex.cpp	 			\
+				sources/DynLib/WindowsDynLib.cpp			\
 				sources/WindowsPortabilityBuilder.cpp
 
 win32:LIBS	+= -lWs2_32
-unix:LIBS	+= -lpthread
+unix:LIBS	+= -lpthread -ldl
 
-win32:DEFINES	+= _CRT_SECURE_NO_WARNINGS
+win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
+unix : DEFINES += __OS_LINUX__

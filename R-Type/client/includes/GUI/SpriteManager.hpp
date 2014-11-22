@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
@@ -8,14 +9,22 @@
 class SpriteManager : public IResourceManager<std::vector<SpriteModel>>
 {
 	// ctor - dtor
-	public:
-		SpriteManager();
-		~SpriteManager();
+    private:
+        explicit SpriteManager();
+    public:
+        ~SpriteManager();
 
-	// coplien form
 	private:
-		SpriteManager(SpriteManager const &);
-		SpriteManager const	&operator=(SpriteManager const &);
+		SpriteManager(SpriteManager const &) = delete;
+		SpriteManager(SpriteManager const &&) = delete;
+		SpriteManager const	&operator=(SpriteManager const &) = delete;
+		SpriteManager const	&operator=(SpriteManager const &&) = delete;
+
+	// instance
+	public:
+		static std::shared_ptr<SpriteManager>	getInstance();
+	private:
+		static std::shared_ptr<SpriteManager>	mInstance;
 
 	// methods
 	public:

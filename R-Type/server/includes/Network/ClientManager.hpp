@@ -7,12 +7,12 @@
 
 class ClientManager : public IServerSocket::OnSocketEvent {
 
-	// ctor dtor
+	// ctor / dtor
 	public:
-		explicit ClientManager(void);
+        explicit ClientManager(void);
 		~ClientManager(void);
 
-	// move copy operators
+	// copy / move operators
 	public:
 		ClientManager(const ClientManager &) = delete;
 		ClientManager(ClientManager &&) = delete;
