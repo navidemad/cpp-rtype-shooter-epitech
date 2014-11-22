@@ -4,7 +4,7 @@
 #include <iostream>
 
 ClientPacketBuilder::ClientPacketBuilder(const std::shared_ptr<IClientSocket> &client)
-	: mState(ClientPacketBuilder::State::HEADER), mCurrentCommand(nullptr), mClient(client)
+	: mState(ClientPacketBuilder::State::HEADER), mCurrentCommand(nullptr), mListener(nullptr), mClient(client)
 {
 	mClient->setOnSocketEventListener(this);
 }
@@ -26,7 +26,8 @@ void	ClientPacketBuilder::fetchHeader(void) {
 
 	if (header.magicCode != ICommand::MAGIC_CODE || mCurrentCommand.get() == nullptr) {
 		mClient->closeClient();
-		mObserver.notifyObservers(ClientPacketBuilder::Event::DISCONNECTED);
+		if (mListener)
+			mListener->onSocketClosed(*this);
 		return;
 	}
 
@@ -46,11 +47,13 @@ void	ClientPacketBuilder::fetchBody(void) {
 	catch (const CommandException &e) {
 		std::cerr << "CommandException error caught: " << e.what() << std::endl;
 		mClient->closeClient();
-		mObserver.notifyObservers(ClientPacketBuilder::Event::DISCONNECTED);
+		if (mListener)
+			mListener->onSocketClosed(*this);
 		return;
 	}
 
-	mObserver.notifyObservers(ClientPacketBuilder::Event::PACKET_AVAILABLE);
+	if (mListener)
+		mListener->onPacketAvailable(*this, mCurrentCommand);
 
 	mState = ClientPacketBuilder::State::HEADER;
 	fetchHeader();
@@ -64,11 +67,12 @@ void	ClientPacketBuilder::onSocketReadable(IClientSocket *, unsigned int) {
 }
 
 void	ClientPacketBuilder::onSocketClosed(IClientSocket *) {
-	mObserver.notifyObservers(ClientPacketBuilder::Event::DISCONNECTED);
+	if (mListener)
+		mListener->onSocketClosed(*this);
 }
 
-void	ClientPacketBuilder::registerObserver(ClientPacketBuilder::Event e, const std::function<void()> &fct) {
-	mObserver.registerObserver(e, fct);
+void	ClientPacketBuilder::setListener(ClientPacketBuilder::OnClientPacketBuilderEvent *listener) {
+	mListener = listener;
 }
 
 void	ClientPacketBuilder::sendCommand(const ICommand *command) {
@@ -83,4 +87,8 @@ void	ClientPacketBuilder::sendCommand(const ICommand *command) {
 	message.msgSize = sizeof(ICommand::Header) + bodyMessage.msgSize;
 
 	mClient->send(message);
+}
+
+const std::shared_ptr<ICommand> &ClientPacketBuilder::getCommand(void) const {
+	return mCurrentCommand;
 }

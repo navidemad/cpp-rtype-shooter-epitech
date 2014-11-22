@@ -1,11 +1,10 @@
 #pragma once
 
 #include <memory>
-#include "Observer.hpp"
 #include "IClientSocket.hpp"
 #include "ClientPacketBuilder.hpp"
 
-class Client {
+class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
 
 	// ctor dtor
 	public:
@@ -19,19 +18,41 @@ class Client {
 		const Client &operator=(const Client &) = delete;
 		const Client &operator=(Client &&) = delete;
 
-	// events
-	public:
-		enum class Event {
-			DISCONNECTION
+	// ptr tab
+	private:
+		struct CommandExec {
+			ICommand::Instruction	instruction;
+			void					(Client::*ftPtr)(const std::shared_ptr<ICommand> &command);
 		};
 
-		void	registerObserver(Client::Event e, const std::function<void()> fct);
-		void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder);
-		void	onDisconnection(const ClientPacketBuilder &clientPacketBuilder);
+		static const Client::CommandExec commandExecTab[];
+
+		void	recvCreateGame(const std::shared_ptr<ICommand> &command);
+		void	recvJoinGame(const std::shared_ptr<ICommand> &command);
+		void	recvShowGame(const std::shared_ptr<ICommand> &command);
+		void	recvDeleteGame(const std::shared_ptr<ICommand> &command);
+		void	recvListGames(const std::shared_ptr<ICommand> &command);
+		void	recvListLevels(const std::shared_ptr<ICommand> &command);
+		void	recvDisconnect(const std::shared_ptr<ICommand> &command);
+		void	recvHandshake(const std::shared_ptr<ICommand> &command);
+		void	recvObserveGame(const std::shared_ptr<ICommand> &command);
+		void	recvLeaveGame(const std::shared_ptr<ICommand> &command);
+		void	recvUpdatePseudo(const std::shared_ptr<ICommand> &command);
+
+	// events
+	public:
+		class OnClientEvent {
+			public:
+				virtual void	onClientDisconnected(const Client &) = 0;
+		};
+
+		void	setListener(Client::OnClientEvent *mListener);
+		void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command);
+		void	onSocketClosed(const ClientPacketBuilder &clientPacketBuilder);
 
 	// attributes
 	private:
-		Observer<Client::Event> mObserver;
+		Client::OnClientEvent *mListener;
 		ClientPacketBuilder mClientPacketBuilder;
 
 };

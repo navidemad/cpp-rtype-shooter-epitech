@@ -13,7 +13,7 @@ void ClientManager::onNewConnection(IServerSocket *socket) {
 	Utils::logInfo("new client connected");
 
 	std::shared_ptr<Client> client(new Client(socket->getNewClient()));
-	client->registerObserver(Client::Event::DISCONNECTION, std::bind(&ClientManager::onClientDisconnected, this, client));
+	client->setListener(this);
 	mClients.push_back(client);
 }
 
@@ -22,7 +22,9 @@ void ClientManager::run(void) {
 	mServer->setOnSocketEventListener(this);
 }
 
-void	ClientManager::onClientDisconnected(const std::shared_ptr<Client> &client) {
+#include <iostream>
+void	ClientManager::onClientDisconnected(const Client &client) {
 	Utils::logInfo("client disconnected");
-	mClients.remove_if([&](const std::shared_ptr<Client> &it) { return it.get() == client.get(); });
+	mClients.remove_if([&](const std::shared_ptr<Client> &it) { return it.get() == &client; });
+	std::cout << mClients.size() << std::endl;
 }

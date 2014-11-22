@@ -2,7 +2,6 @@
 
 #include <memory>
 #include "ICommand.hpp"
-#include "Observer.hpp"
 #include "IClientSocket.hpp"
 
 class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
@@ -27,16 +26,18 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 
 	// events
 	public:
-		enum class Event {
-			PACKET_AVAILABLE,
-			DISCONNECTED
+		class OnClientPacketBuilderEvent {
+			public:
+				virtual void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command) = 0;
+				virtual void	onSocketClosed(const ClientPacketBuilder &clientPacketBuilder) = 0;
 		};
 
-		void	registerObserver(ClientPacketBuilder::Event e, const std::function<void()> &fct);
+		void	setListener(ClientPacketBuilder::OnClientPacketBuilderEvent *listener);
 
-	// send command
+	// handle commands
 	public:
 		void	sendCommand(const ICommand *command);
+		const std::shared_ptr<ICommand> &getCommand(void) const;
 
 	// handle build state
 	private:
@@ -52,7 +53,7 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 	private:
 		State mState;
 		std::shared_ptr<ICommand> mCurrentCommand;
-		Observer<Event> mObserver;
+		ClientPacketBuilder::OnClientPacketBuilderEvent *mListener;
 		std::shared_ptr<IClientSocket>	mClient;
 
 };

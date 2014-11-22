@@ -5,7 +5,7 @@
 #include "Client.hpp"
 #include "IServerSocket.hpp"
 
-class ClientManager : public IServerSocket::OnSocketEvent {
+class ClientManager : public IServerSocket::OnSocketEvent, public Client::OnClientEvent {
 
 	// ctor / dtor
 	public:
@@ -26,7 +26,7 @@ class ClientManager : public IServerSocket::OnSocketEvent {
 	// events
 	public:
 		void	onNewConnection(IServerSocket *socket);
-		void	onClientDisconnected(const std::shared_ptr<Client> &client);
+		void	onClientDisconnected(const Client &client);
 
 	// attributes
 	private:
