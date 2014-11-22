@@ -87,7 +87,8 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Script//ScriptParser.hpp	\
 				includes/Game/Game.hpp \
 				includes/Game/GamesManager.hpp \
-				includes/Game/Timer.hpp
+				includes/Game/Timer.hpp                                 \
+                                includes/Utils.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\
@@ -165,7 +166,8 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Script/ScriptParser.cpp	\
 								sources/Game/Game.cpp \
 								sources/Game/GamesManager.cpp \
-								sources/Game/Timer.cpp
+								sources/Game/Timer.cpp          \
+                                sources/Utils.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixTcpServer.cpp			\
@@ -189,3 +191,4 @@ unix:LIBS	+= -lpthread -ldl
 
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
+DEFINES        += _DEBUG

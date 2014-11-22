@@ -29,5 +29,8 @@ class GamesManager {
 
     // attributes
     private:
-        std::unique_ptr<ThreadPool> mThreadPool;
+        ThreadPool mThreadPool;
+	
+	static const int THREAD_POOL_SIZE = 6;
+
 };
