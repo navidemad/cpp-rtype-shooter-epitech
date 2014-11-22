@@ -10,17 +10,17 @@ ClientPacketBuilder::ClientPacketBuilder(const std::shared_ptr<IClientSocket> &c
 }
 
 ClientPacketBuilder::~ClientPacketBuilder(void) {
-	mClient->closeClient();
-}
-
-ClientPacketBuilder::ClientPacketBuilder(ClientPacketBuilder &&clientPacketBuilder) : mClient(clientPacketBuilder.mClient) {
-	clientPacketBuilder.mClient = nullptr;
+	if (mClient.get())
+		mClient->closeClient();
 }
 
 void	ClientPacketBuilder::onBytesWritten(IClientSocket *, unsigned int) {
 }
 
 void	ClientPacketBuilder::fetchHeader(void) {
+	if (mClient.get() == nullptr)
+		return;
+
 	if (mClient->nbBytesToRead() < ICommand::HEADER_SIZE)
 		return;
 
@@ -31,6 +31,7 @@ void	ClientPacketBuilder::fetchHeader(void) {
 	if (header.magicCode != ICommand::MAGIC_CODE || mCurrentCommand.get() == nullptr) {
 		mClient->closeClient();
 		mObserver.notifyObservers(ClientPacketBuilder::Event::DISCONNECTED);
+		return;
 	}
 
 	mState = ClientPacketBuilder::State::BODY;
@@ -38,6 +39,9 @@ void	ClientPacketBuilder::fetchHeader(void) {
 }
 
 void	ClientPacketBuilder::fetchBody(void) {
+	if (mClient.get() == nullptr)
+		return;
+
 	if (mClient->nbBytesToRead() < mCurrentCommand->getSizeToRead())
 		return;
 
@@ -50,6 +54,7 @@ void	ClientPacketBuilder::fetchBody(void) {
 		std::cerr << "CommandException error caught: " << e.what() << std::endl;
 		mClient->closeClient();
 		mObserver.notifyObservers(ClientPacketBuilder::Event::DISCONNECTED);
+		return;
 	}
 
 	mObserver.notifyObservers(ClientPacketBuilder::Event::PACKET_AVAILABLE);

@@ -19,13 +19,21 @@ class ClientManager : public IServerSocket::OnSocketEvent {
 		const ClientManager &operator=(const ClientManager &) = delete;
 		const ClientManager &operator=(ClientManager &&) = delete;
 
-	// interface implementation
+	// handle client manager
+	public:
+		void	run(void);
+
+	// events
 	public:
 		void	onNewConnection(IServerSocket *socket);
+		void	onClientDisconnected(const std::shared_ptr<Client> &client);
 
 	// attributes
 	private:
-		std::list<Client> mClients;
+		std::list<std::shared_ptr<Client>> mClients;
 		std::shared_ptr<IServerSocket> mServer;
+
+		static const int SERVER_TCP_PORT = 4242;
+		static const int SERVER_TCP_QUEUE = 1024;
 
 };

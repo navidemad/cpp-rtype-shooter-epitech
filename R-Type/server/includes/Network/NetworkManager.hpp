@@ -48,7 +48,7 @@ class NetworkManager {
 	private:
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator findSocket(int socketFd);
 		void  refreshMaxFd(void);
-	public: // A PASSER EN PRIVATE UNE FOIS LABSTRACT THREAD OK
+	public:
 		void	operator()(void *);
 	private:
 		void	initFds(void);

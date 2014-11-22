@@ -15,7 +15,7 @@ int	main(void) {
         ret = - 1;
     }
     #if defined(__OS_WINDOWS__)
-        system("PAUSE>NUL");
+        system("PAUSE");
     #endif
     return ret;
 }

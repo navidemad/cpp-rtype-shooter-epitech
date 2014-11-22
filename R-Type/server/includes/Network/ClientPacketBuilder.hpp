@@ -15,7 +15,7 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 	// copy move operators
 	public:
 		ClientPacketBuilder(const ClientPacketBuilder &) = delete;
-		ClientPacketBuilder(ClientPacketBuilder &&);
+		ClientPacketBuilder(ClientPacketBuilder &&) = delete;
 		const ClientPacketBuilder &operator=(const ClientPacketBuilder &) = delete;
 		const ClientPacketBuilder &operator=(ClientPacketBuilder &&) = delete;
 
