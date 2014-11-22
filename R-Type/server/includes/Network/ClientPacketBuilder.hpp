@@ -34,7 +34,11 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 
 		void	registerObserver(ClientPacketBuilder::Event e, const std::function<void()> &fct);
 
-		// handle build state
+	// send command
+	public:
+		void	sendCommand(const ICommand *command);
+
+	// handle build state
 	private:
 		enum class State {
 			HEADER,

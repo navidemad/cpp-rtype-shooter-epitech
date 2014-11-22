@@ -10,7 +10,7 @@ class CommandUpdateScore : public ICommand {
 		#pragma pack(push, 1)
 		struct PacketFromServer {
 			int32_t	id;
-			char		pseudo[64];
+			char	pseudo[64];
 			int32_t score;
 		};
 		#pragma pack(pop)

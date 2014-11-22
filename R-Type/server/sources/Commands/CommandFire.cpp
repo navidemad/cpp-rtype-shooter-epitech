@@ -1,13 +1,12 @@
 #include "CommandFire.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandFire::getMessage(void) const {
-	IClientSocket::Message message;
-
-	return message;
+	throw CommandException("This command can not be sent by the server");
 }
 
 unsigned int CommandFire::getSizeToRead(void) const {
-	return 0;
+	return sizeof(CommandFire::PacketFromClient);
 }
 
 void CommandFire::initFromMessage(const IClientSocket::Message &) {

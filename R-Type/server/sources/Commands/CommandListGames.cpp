@@ -2,12 +2,13 @@
 
 IClientSocket::Message CommandListGames::getMessage(void) const {
 	IClientSocket::Message message;
+	message.msgSize = 0;
 
 	return message;
 }
 
 unsigned int CommandListGames::getSizeToRead(void) const {
-	return 0;
+	return sizeof(CommandListGames::PacketFromClient);
 }
 
 void CommandListGames::initFromMessage(const IClientSocket::Message &) {

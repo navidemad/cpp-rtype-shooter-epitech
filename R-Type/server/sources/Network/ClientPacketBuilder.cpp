@@ -70,3 +70,17 @@ void	ClientPacketBuilder::onSocketClosed(IClientSocket *) {
 void	ClientPacketBuilder::registerObserver(ClientPacketBuilder::Event e, const std::function<void()> &fct) {
 	mObserver.registerObserver(e, fct);
 }
+
+void	ClientPacketBuilder::sendCommand(const ICommand *command) {
+	ICommand::Header header;
+	header.instructionCode = static_cast<int>(command->getInstruction());
+	header.magicCode = ICommand::MAGIC_CODE;
+
+	IClientSocket::Message message;
+	IClientSocket::Message bodyMessage = command->getMessage();
+	message.msg.assign(reinterpret_cast<char *>(&header), reinterpret_cast<char *>(&header + 1));
+	message.msg.insert(message.msg.end(), bodyMessage.msg.begin(), bodyMessage.msg.end());
+	message.msgSize = sizeof(ICommand::Header) + bodyMessage.msgSize;
+
+	mClient->send(message);
+}

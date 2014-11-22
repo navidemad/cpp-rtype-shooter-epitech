@@ -1,5 +1,5 @@
 #include "Client.hpp"
-
+#include "CommandUpdateScore.hpp"
 Client::Client(const std::shared_ptr<IClientSocket> &client) : mClientPacketBuilder(client) {
 	mClientPacketBuilder.registerObserver(ClientPacketBuilder::Event::PACKET_AVAILABLE, std::bind(&Client::onPacketAvailable, this, std::ref(mClientPacketBuilder)));
 	mClientPacketBuilder.registerObserver(ClientPacketBuilder::Event::DISCONNECTED, std::bind(&Client::onDisconnection, this, std::ref(mClientPacketBuilder)));

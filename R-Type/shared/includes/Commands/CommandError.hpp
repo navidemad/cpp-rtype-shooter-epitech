@@ -10,7 +10,7 @@ class CommandError : public ICommand {
 		#pragma pack(push, 1)
 		struct PacketFromServer {
 			ICommand::Instruction 	instructionCode;
-			ErrorStatus::Error 			errorCode;
+			ErrorStatus::Error 		errorCode;
 		};
 		#pragma pack(pop)
 
