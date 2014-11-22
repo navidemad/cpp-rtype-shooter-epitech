@@ -10,17 +10,13 @@ ClientPacketBuilder::ClientPacketBuilder(const std::shared_ptr<IClientSocket> &c
 }
 
 ClientPacketBuilder::~ClientPacketBuilder(void) {
-	if (mClient.get())
-		mClient->closeClient();
+	mClient->closeClient();
 }
 
 void	ClientPacketBuilder::onBytesWritten(IClientSocket *, unsigned int) {
 }
 
 void	ClientPacketBuilder::fetchHeader(void) {
-	if (mClient.get() == nullptr)
-		return;
-
 	if (mClient->nbBytesToRead() < ICommand::HEADER_SIZE)
 		return;
 
@@ -39,9 +35,6 @@ void	ClientPacketBuilder::fetchHeader(void) {
 }
 
 void	ClientPacketBuilder::fetchBody(void) {
-	if (mClient.get() == nullptr)
-		return;
-
 	if (mClient->nbBytesToRead() < mCurrentCommand->getSizeToRead())
 		return;
 
