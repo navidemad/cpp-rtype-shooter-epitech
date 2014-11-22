@@ -73,7 +73,6 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Thread/IThread.hpp				\
 				includes/Thread/ThreadPool.hpp				\
 				includes/PortabilityBuilder.hpp				\
-				includes/Observer.hpp					\
 				includes/Network/ClientManager.hpp			\
 				includes/Network/Client.hpp				\
 				includes/Network/ClientPacketBuilder.hpp		\

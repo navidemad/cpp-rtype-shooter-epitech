@@ -52,7 +52,8 @@ class NetworkManager {
 		void	operator()(void *);
 	private:
 		void	initFds(void);
-		void	checkFds(void);
+		void	checkFdsReadable(void);
+		void	checkFdsWritable(void);
 
 	// attributes
 	private:
