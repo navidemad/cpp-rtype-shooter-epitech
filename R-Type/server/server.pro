@@ -86,8 +86,7 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Script//ScriptParser.hpp	\
 				includes/Game/Game.hpp \
 				includes/Game/GamesManager.hpp \
-				includes/Game/Timer.hpp                                 \
-                                includes/Utils.hpp
+				includes/Game/Timer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\
@@ -117,6 +116,7 @@ SOURCES			+=	sources/main.cpp						\
 				sources/Network/Client.cpp					\
 				sources/Network/ClientPacketBuilder.cpp				\
 				sources/Network/PlayerPacketBuilder.cpp				\
+				../shared/sources/Utils.cpp				\
 				../shared/sources/Commands/CommandFactory.cpp			\
                                 ../shared/sources/Commands/ICommand.cpp        			\
                                 ../shared/sources/Commands/SharedCommandCreateGame.cpp		\
@@ -165,8 +165,7 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Script/ScriptParser.cpp	\
 								sources/Game/Game.cpp \
 								sources/Game/GamesManager.cpp \
-								sources/Game/Timer.cpp          \
-                                sources/Utils.cpp
+								sources/Game/Timer.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixTcpServer.cpp			\

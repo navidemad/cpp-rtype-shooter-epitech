@@ -27,35 +27,35 @@ void	ClientManager::onClientDisconnected(const Client &client) {
 	mClients.remove_if([&](const std::shared_ptr<Client> &it) { return it.get() == &client; });
 }
 
-void	ClientManager::onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
+void	ClientManager::onClientCreateGame(const Client & /*client*/, const std::string & /*name*/, const std::string & /*levelName*/, int /*nbPlayers*/, int /*nbObservers*/) {
 }
 
-void	ClientManager::onClientJoinGame(const Client &client, const std::string &name) {
+void	ClientManager::onClientJoinGame(const Client & /*client*/, const std::string & /*name*/) {
 }
 
-void	ClientManager::onClientShowGame(const Client &client, const std::string &name) {
+void	ClientManager::onClientShowGame(const Client & /*client*/, const std::string & /*name*/) {
 }
 
-void	ClientManager::onClientDeleteGame(const Client &client, const std::string &name) {
+void	ClientManager::onClientDeleteGame(const Client & /*client*/, const std::string & /*name*/) {
 }
 
-void	ClientManager::onClientListGames(const Client &client) {
+void	ClientManager::onClientListGames(const Client & /*client*/) {
 }
 
-void	ClientManager::onClientListLevels(const Client &client) {
+void	ClientManager::onClientListLevels(const Client & /*client*/) {
 }
 
-void	ClientManager::onClientDisconnect(const Client &client) {
+void	ClientManager::onClientDisconnect(const Client & /*client*/) {
 }
 
-void	ClientManager::onClientHandshake(const Client &client) {
+void	ClientManager::onClientHandshake(const Client & /*client*/) {
 }
 
-void	ClientManager::onClientObserverGame(const Client &client, const std::string &name) {
+void	ClientManager::onClientObserverGame(const Client & /*client*/, const std::string & /*name*/) {
 }
 
-void	ClientManager::onClientLeaveGame(const Client &client, const std::string &name) {
+void	ClientManager::onClientLeaveGame(const Client & /*client*/, const std::string & /*name*/) {
 }
 
-void	ClientManager::onClientUpdatePseudo(const Client &client, const std::string &pseudo) {
+void	ClientManager::onClientUpdatePseudo(const Client & /*client*/, const std::string & /*pseudo*/) {
 }

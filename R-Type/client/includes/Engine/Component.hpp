@@ -1,14 +1,22 @@
 #pragma once
 
+#include "ComponentType.h"
+
 class Component
 {
 	// ctor - dtor
 	public:
-		Component();
+		Component(ComponentType::Type);
 		~Component();
 
 	// coplien form
 	private:
-		Component(Component const &) {}
-		Component const	&operator=(Component const &) { return *this; }
+//		Component(Component const &) : mCompenentId(ComponentType::INVALID) {}
+//		Component const	&operator=(Component const &) { return *this; }
+
+	public:
+		const ComponentType::Type	getComponentId() const;
+
+	private:
+		const ComponentType::Type mCompenentId;
 };
