@@ -15,15 +15,15 @@ class CommandEndGame : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandEndGame(void);
+		explicit CommandEndGame(void);
 		~CommandEndGame(void);
 
 	// copy / move operators
 	public:
 		CommandEndGame(const CommandEndGame &) = delete;
-		CommandEndGame(const CommandEndGame &&) = delete;
+		CommandEndGame(CommandEndGame &&) = delete;
 		const CommandEndGame &operator=(const CommandEndGame &) = delete;
-		const CommandEndGame &operator=(const CommandEndGame &&) = delete;
+		const CommandEndGame &operator=(CommandEndGame &&) = delete;
 
 	// getter - setters
 	public:

@@ -7,15 +7,15 @@ class WindowsTcpServer : public IServerSocket, public NetworkManager::OnSocketEv
 
 	// ctor - dtor
 	public:
-		WindowsTcpServer(void);
+		explicit WindowsTcpServer(void);
 		~WindowsTcpServer(void);
 
 	// copy / move operators
 	public:
 		WindowsTcpServer(const WindowsTcpServer &) = delete;
-		WindowsTcpServer(const WindowsTcpServer &&) = delete;
+		WindowsTcpServer(WindowsTcpServer &&) = delete;
 		const WindowsTcpServer &operator=(const WindowsTcpServer &) = delete;
-		const WindowsTcpServer &operator=(const WindowsTcpServer &&) = delete;
+		const WindowsTcpServer &operator=(WindowsTcpServer &&) = delete;
 
 	// init
 	public:

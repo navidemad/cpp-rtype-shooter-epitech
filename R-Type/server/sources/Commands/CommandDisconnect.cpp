@@ -1,9 +1,8 @@
 #include "CommandDisconnect.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandDisconnect::getMessage(void) const {
-	IClientSocket::Message message;
-
-	return message;
+	throw CommandException("This command can not be sent by the server");
 }
 
 unsigned int CommandDisconnect::getSizeToRead(void) const {

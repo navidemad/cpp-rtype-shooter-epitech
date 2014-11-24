@@ -36,8 +36,8 @@ class IClientSocket {
 
 	// recv / send
 	public:
-		virtual void					send(const Message &message) = 0;
-		virtual Message				receive(unsigned int sizeToRead) = 0;
+		virtual void			send(const Message &message) = 0;
+		virtual Message			receive(unsigned int sizeToRead) = 0;
 		virtual unsigned int	nbBytesToRead(void) const = 0;
 
 	// get host ip

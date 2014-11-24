@@ -51,7 +51,6 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/GUI/TextureManager.hpp				\
 			includes/Network/INetworkManager.hpp			\
 			includes/Network/CommandPacketBuilder.hpp		\
-			includes/Network/IClientSocket.hpp			\
 			includes/Network/INetworkManager.hpp			\
 			includes/Network/ServerCommunication.hpp		\
 			includes/Network/TcpClient.hpp				\

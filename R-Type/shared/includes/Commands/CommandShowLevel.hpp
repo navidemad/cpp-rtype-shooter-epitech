@@ -17,15 +17,15 @@ class CommandShowLevel : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandShowLevel(void);
+		explicit CommandShowLevel(void);
 		~CommandShowLevel(void);
 
 	// copy / move operators
 	public:
 		CommandShowLevel(const CommandShowLevel &) = delete;
-		CommandShowLevel(const CommandShowLevel &&) = delete;
+		CommandShowLevel(CommandShowLevel &&) = delete;
 		const CommandShowLevel &operator=(const CommandShowLevel &) = delete;
-		const CommandShowLevel &operator=(const CommandShowLevel &&) = delete;
+		const CommandShowLevel &operator=(CommandShowLevel &&) = delete;
 
 	// getter - setters
 	public:

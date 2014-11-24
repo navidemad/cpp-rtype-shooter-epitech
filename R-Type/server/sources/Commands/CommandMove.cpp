@@ -1,14 +1,18 @@
 #include "CommandMove.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandMove::getMessage(void) const {
-	IClientSocket::Message message;
-
-	return message;
+	throw CommandException("This command can not be sent by the server");
 }
 
 unsigned int CommandMove::getSizeToRead(void) const {
-	return 0;
+	return sizeof(CommandMove::PacketFromClient);
 }
 
-void CommandMove::initFromMessage(const IClientSocket::Message &) {
+void CommandMove::initFromMessage(const IClientSocket::Message &message) {
+	if (message.msgSize != sizeof(CommandMove::PacketFromClient))
+		throw CommandException("Packet has an invalid size");
+
+	auto packet = *reinterpret_cast<const CommandMove::PacketFromClient *>(message.msg.data());
+	mDirection = static_cast<IResource::Direction>(packet.direction);
 }

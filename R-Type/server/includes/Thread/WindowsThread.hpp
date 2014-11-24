@@ -9,15 +9,15 @@ class WindowsThread : public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		WindowsThread(void) {}
+		explicit WindowsThread(void) {}
 		~WindowsThread(void) {}
 
 	// copy / move operators
 	public:
 		WindowsThread(const WindowsThread &) = delete;
-		WindowsThread(const WindowsThread &&) = delete;
+		WindowsThread(WindowsThread &&) = delete;
 		const WindowsThread &operator=(const WindowsThread &) = delete;
-		const WindowsThread &operator=(const WindowsThread &&) = delete;
+		const WindowsThread &operator=(WindowsThread &&) = delete;
 
 	// enum ret value
 	public:

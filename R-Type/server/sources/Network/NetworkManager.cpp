@@ -73,7 +73,8 @@ void	NetworkManager::operator()(void *) {
 		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) == -1)
 			throw SocketException("fail select()");
 
-		checkFds();
+		checkFdsReadable();
+		checkFdsWritable();
 	}
 }
 
@@ -89,21 +90,26 @@ void	NetworkManager::initFds(void) {
 	}
 }
 
-void	NetworkManager::checkFds(void) {
+void	NetworkManager::checkFdsReadable(void) {
 	std::list<std::pair<int, NetworkManager::OnSocketEvent *>> sockets;
 	{
 		ScopedLock scopedLock(mMutex);
 		sockets = mSockets;
 	}
 
-	for (const auto &socket : sockets) {
-		if (socket.second == nullptr)
-			continue;
-
-		if (FD_ISSET(socket.first, &mReadFds))
+	for (const auto &socket : sockets)
+		if (socket.second && FD_ISSET(socket.first, &mReadFds))
 			socket.second->onSocketReadable(socket.first);
+}
 
-		if (FD_ISSET(socket.first, &mWriteFds))
-			socket.second->onSocketWritable(socket.first);
+void	NetworkManager::checkFdsWritable(void) {
+	std::list<std::pair<int, NetworkManager::OnSocketEvent *>> sockets;
+	{
+		ScopedLock scopedLock(mMutex);
+		sockets = mSockets;
 	}
+
+	for (const auto &socket : sockets)
+		if (socket.second && FD_ISSET(socket.first, &mWriteFds))
+			socket.second->onSocketWritable(socket.first);
 }

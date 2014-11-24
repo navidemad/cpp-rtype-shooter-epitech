@@ -10,21 +10,21 @@ class CommandError : public ICommand {
 		#pragma pack(push, 1)
 		struct PacketFromServer {
 			ICommand::Instruction 	instructionCode;
-			ErrorStatus::Error 			errorCode;
+			ErrorStatus::Error 		errorCode;
 		};
 		#pragma pack(pop)
 
 	// ctor / dtor
 	public:
-		CommandError(void);
+		explicit CommandError(void);
 		~CommandError(void);
 
 	// copy / move operators
 	public:
 		CommandError(const CommandError &) = delete;
-		CommandError(const CommandError &&) = delete;
+		CommandError(CommandError &&) = delete;
 		const CommandError &operator=(const CommandError &) = delete;
-		const CommandError &operator=(const CommandError &&) = delete;
+		const CommandError &operator=(CommandError &&) = delete;
 
 	// getter - setters
 	public:

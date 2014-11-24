@@ -15,15 +15,15 @@ class CommandJoinGame : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandJoinGame(void);
+		explicit CommandJoinGame(void);
 		~CommandJoinGame(void);
 
 	// copy / move operators
 	public:
 		CommandJoinGame(const CommandJoinGame &) = delete;
-		CommandJoinGame(const CommandJoinGame &&) = delete;
+		CommandJoinGame(CommandJoinGame &&) = delete;
 		const CommandJoinGame &operator=(const CommandJoinGame &) = delete;
-		const CommandJoinGame &operator=(const CommandJoinGame &&) = delete;
+		const CommandJoinGame &operator=(CommandJoinGame &&) = delete;
 
 	// getter - setters
 	public:

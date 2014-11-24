@@ -8,15 +8,15 @@ class WindowsMutex : public IMutex {
 
 	// ctor dtor
 	public:
-		WindowsMutex(void);
+		explicit WindowsMutex(void);
 		~WindowsMutex(void);
 
 	// copy / move operators
 	public:
 		WindowsMutex(const WindowsMutex &) = delete;
-		WindowsMutex(const WindowsMutex &&) = delete;
+		WindowsMutex(WindowsMutex &&) = delete;
 		const WindowsMutex &operator=(const WindowsMutex &) = delete;
-		const WindowsMutex &operator=(const WindowsMutex &&) = delete;
+		const WindowsMutex &operator=(WindowsMutex &&) = delete;
 
 	// interface implementation
 	public:

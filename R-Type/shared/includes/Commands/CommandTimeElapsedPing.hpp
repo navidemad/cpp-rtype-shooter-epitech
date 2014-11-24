@@ -14,15 +14,15 @@ class CommandTimeElapsedPing : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandTimeElapsedPing(void);
+		explicit CommandTimeElapsedPing(void);
 		~CommandTimeElapsedPing(void);
 
 	// copy / move operators
 	public:
 		CommandTimeElapsedPing(const CommandTimeElapsedPing &) = delete;
-		CommandTimeElapsedPing(const CommandTimeElapsedPing &&) = delete;
+		CommandTimeElapsedPing(CommandTimeElapsedPing &&) = delete;
 		const CommandTimeElapsedPing &operator=(const CommandTimeElapsedPing &) = delete;
-		const CommandTimeElapsedPing &operator=(const CommandTimeElapsedPing &&) = delete;
+		const CommandTimeElapsedPing &operator=(CommandTimeElapsedPing &&) = delete;
 
 	// getter - setters
 	public:

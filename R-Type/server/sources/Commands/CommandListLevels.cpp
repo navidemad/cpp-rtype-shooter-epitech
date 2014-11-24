@@ -2,12 +2,13 @@
 
 IClientSocket::Message CommandListLevels::getMessage(void) const {
 	IClientSocket::Message message;
+	message.msgSize = 0;
 
 	return message;
 }
 
 unsigned int CommandListLevels::getSizeToRead(void) const {
-	return 0;
+	return sizeof(CommandListLevels::PacketFromClient);
 }
 
 void CommandListLevels::initFromMessage(const IClientSocket::Message &) {

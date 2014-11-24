@@ -13,15 +13,15 @@ class CommandListLevels : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandListLevels(void);
+		explicit CommandListLevels(void);
 		~CommandListLevels(void);
 
 	// copy / move operators
 	public:
 		CommandListLevels(const CommandListLevels &) = delete;
-		CommandListLevels(const CommandListLevels &&) = delete;
+		CommandListLevels(CommandListLevels &&) = delete;
 		const CommandListLevels &operator=(const CommandListLevels &) = delete;
-		const CommandListLevels &operator=(const CommandListLevels &&) = delete;
+		const CommandListLevels &operator=(CommandListLevels &&) = delete;
 
 	// public pure methods
 	public:

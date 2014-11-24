@@ -13,15 +13,15 @@ class CommandFire : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandFire(void);
+		explicit CommandFire(void);
 		~CommandFire(void);
 
 	// copy / move operators
 	public:
 		CommandFire(const CommandFire &) = delete;
-		CommandFire(const CommandFire &&) = delete;
+		CommandFire(CommandFire &&) = delete;
 		const CommandFire &operator=(const CommandFire &) = delete;
-		const CommandFire &operator=(const CommandFire &&) = delete;
+		const CommandFire &operator=(CommandFire &&) = delete;
 
 	// public pure methods
 	public:

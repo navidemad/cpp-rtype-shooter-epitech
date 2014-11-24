@@ -21,16 +21,16 @@ class NetworkManager {
 
 	// ctor - dtor
 	private:
-		NetworkManager(void);
+		explicit NetworkManager(void);
 	public:
 		~NetworkManager(void);
 
 	// copy / move operators
 	public:
 		NetworkManager(const NetworkManager &) = delete;
-		NetworkManager(const NetworkManager &&) = delete;
+		NetworkManager(NetworkManager &&) = delete;
 		const NetworkManager &operator=(const NetworkManager &) = delete;
-		const NetworkManager &operator=(const NetworkManager &&) = delete;
+		const NetworkManager &operator=(NetworkManager &&) = delete;
 
 
 	// singleton handle instance
@@ -48,11 +48,12 @@ class NetworkManager {
 	private:
 		std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator findSocket(int socketFd);
 		void  refreshMaxFd(void);
-	public: // A PASSER EN PRIVATE UNE FOIS LABSTRACT THREAD OK
+	public:
 		void	operator()(void *);
 	private:
 		void	initFds(void);
-		void	checkFds(void);
+		void	checkFdsReadable(void);
+		void	checkFdsWritable(void);
 
 	// attributes
 	private:

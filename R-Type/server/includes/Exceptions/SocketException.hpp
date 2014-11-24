@@ -6,7 +6,7 @@ class SocketException : public std::runtime_error {
 
 	// use std::runtime_error functions
 	public:
-		SocketException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
+		explicit SocketException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
 		~SocketException(void) {}
 
 	// copy - move operators

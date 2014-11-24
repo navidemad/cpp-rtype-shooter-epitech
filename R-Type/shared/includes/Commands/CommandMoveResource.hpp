@@ -20,15 +20,15 @@ class CommandMoveResource : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandMoveResource(void);
+		explicit CommandMoveResource(void);
 		~CommandMoveResource(void);
 
 	// copy / move operators
 	public:
 		CommandMoveResource(const CommandMoveResource &) = delete;
-		CommandMoveResource(const CommandMoveResource &&) = delete;
+		CommandMoveResource(CommandMoveResource &&) = delete;
 		const CommandMoveResource &operator=(const CommandMoveResource &) = delete;
-		const CommandMoveResource &operator=(const CommandMoveResource &&) = delete;
+		const CommandMoveResource &operator=(CommandMoveResource &&) = delete;
 
 	// getter - setters
 	public:

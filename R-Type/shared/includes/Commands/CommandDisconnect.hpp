@@ -13,15 +13,15 @@ class CommandDisconnect : public ICommand {
 
 	// ctor / dtor
 	public:
-		CommandDisconnect(void);
+		explicit CommandDisconnect(void);
 		~CommandDisconnect(void);
 
 	// copy / move operators
 	public:
 		CommandDisconnect(const CommandDisconnect &) = delete;
-		CommandDisconnect(const CommandDisconnect &&) = delete;
+		CommandDisconnect(CommandDisconnect &&) = delete;
 		const CommandDisconnect &operator=(const CommandDisconnect &) = delete;
-		const CommandDisconnect &operator=(const CommandDisconnect &&) = delete;
+		const CommandDisconnect &operator=(CommandDisconnect &&) = delete;
 
 	// public pure methods
 	public:

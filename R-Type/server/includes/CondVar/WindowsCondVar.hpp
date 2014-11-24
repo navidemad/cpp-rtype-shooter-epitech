@@ -15,15 +15,15 @@ class WindowsCondVar : public ICondVar {
 
 	// ctor dtor
 	public:
-		WindowsCondVar(void);
+		explicit WindowsCondVar(void);
 		~WindowsCondVar(void);
 
 	// copy / move operators
 	public:
 		WindowsCondVar(const WindowsCondVar &) = delete;
-		WindowsCondVar(const WindowsCondVar &&) = delete;
+		WindowsCondVar(WindowsCondVar &&) = delete;
 		const WindowsCondVar &operator=(const WindowsCondVar &) = delete;
-		const WindowsCondVar &operator=(const WindowsCondVar &&) = delete;
+		const WindowsCondVar &operator=(WindowsCondVar &&) = delete;
 
 	// interface implementation
 	public:
