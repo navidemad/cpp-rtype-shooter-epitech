@@ -16,8 +16,6 @@ class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
 
 	// coplien forms
 	public:
-		SoundManager(SoundManager const *) {}
-	private:
 		SoundManager(SoundManager const &) = delete;
 		SoundManager(SoundManager const &&) = delete;
 		SoundManager const	&operator=(SoundManager const &) = delete;
@@ -31,9 +29,9 @@ class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
 
 	// methods
 	public:
-		void									loadResources();
-		void									unloadResources();
-		std::map<std::string, sf::Sound> const	&getResources() const;
+		virtual void									loadResources();
+		virtual void									unloadResources();
+		virtual std::map<std::string, sf::Sound> const	&getResources() const;
 
 	// attributes
 	private:

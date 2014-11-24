@@ -6,15 +6,16 @@
 #include "GUI/IResourceManager.hpp"
 #include "GUI/SpriteModel.hpp"
 
-class SpriteManager : public IResourceManager<std::vector<SpriteModel>>
+class SpriteManager : public IResourceManager<std::vector<std::shared_ptr<SpriteModel>>>
 {
 	// ctor - dtor
     private:
-        explicit SpriteManager();
+        SpriteManager();
     public:
-        ~SpriteManager();
+        virtual ~SpriteManager();
 
-	private:
+	// coplien form
+	public:
 		SpriteManager(SpriteManager const &) = delete;
 		SpriteManager(SpriteManager const &&) = delete;
 		SpriteManager const	&operator=(SpriteManager const &) = delete;
@@ -28,11 +29,11 @@ class SpriteManager : public IResourceManager<std::vector<SpriteModel>>
 
 	// methods
 	public:
-		void							loadResources();
-		void							unloadResources();
-		std::vector<SpriteModel> const	&getResources() const;
+		void											loadResources();
+		void											unloadResources();
+		std::vector<std::shared_ptr<SpriteModel>> const	&getResources() const;
 
 	// attributes
 	private:
-		std::vector<SpriteModel>	mListResources;
+		std::vector<std::shared_ptr<SpriteModel>>		mListResources;
 };

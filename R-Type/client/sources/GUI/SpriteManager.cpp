@@ -19,10 +19,10 @@ std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
     return mInstance;
 }
 
-
 void							SpriteManager::loadResources()
 {
-
+	std::shared_ptr<SpriteModel> model(new SpriteModel("assets/sprites/r-typesheet7.gif"));
+	mListResources.push_back(model);
 }
 
 void							SpriteManager::unloadResources()
@@ -30,7 +30,7 @@ void							SpriteManager::unloadResources()
 
 }
 
-std::vector<SpriteModel> const	&SpriteManager::getResources() const
+std::vector<std::shared_ptr<SpriteModel>> const	&SpriteManager::getResources() const
 {
 	return mListResources;
 }

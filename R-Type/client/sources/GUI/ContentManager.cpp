@@ -24,7 +24,7 @@ void	ContentManager::loadTextures()
 
 void	ContentManager::loadSprites()
 {
-	mTextures->loadResources();
+	mSprites->loadResources();
 }
 
 void	ContentManager::loadFonts()
@@ -42,8 +42,7 @@ std::map<std::string, sf::Sprite> const	&ContentManager::getTextures() const
 	return mTextures->getResources();
 }
 
-
-std::vector<SpriteModel> const	&ContentManager::getSprites() const
+std::vector<std::shared_ptr<SpriteModel>> const	&ContentManager::getSprites() const
 {
 	return mSprites->getResources();
 }

@@ -8,17 +8,18 @@
 
 class TextureManager : public IResourceManager<std::map<std::string, sf::Sprite>>
 {
-	// ctor, coplien form
+	// ctor - dtor
 	private:
-		TextureManager();
+		explicit TextureManager();
+	public:
+		~TextureManager();
+
+	// coplien form
+	public:
 		TextureManager(TextureManager const &) = delete;
 		TextureManager(TextureManager const &&) = delete;
 		TextureManager const	&operator=(TextureManager const &) = delete;
 		TextureManager const	&operator=(TextureManager const &&) = delete;
-
-	// dtor
-	public:
-		~TextureManager();
 
 	// instance
 	public:
@@ -28,9 +29,9 @@ class TextureManager : public IResourceManager<std::map<std::string, sf::Sprite>
 
 	// methods
 	public:
-		void									loadResources();
-		void									unloadResources();
-		std::map<std::string, sf::Sprite> const	&getResources() const;
+		virtual void									loadResources();
+		virtual void									unloadResources();
+		virtual std::map<std::string, sf::Sprite> const	&getResources() const;
 
 	// attributes
 	private:

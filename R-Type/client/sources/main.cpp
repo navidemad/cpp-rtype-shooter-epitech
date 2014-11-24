@@ -1,9 +1,16 @@
+#include <iostream>
 #include "GUI/SFMLGraphic.hpp"
 
 int		main(void)
 {
 /*	sf::RenderWindow window(sf::VideoMode(856, 480), "\\o/");
 	sf::CircleShape shape(240.f);
+	sf::Texture	texture;
+	sf::Sprite sprite;
+
+	if (!texture.loadFromFile("assets/sprites/r-typesheet7.gif"))
+		throw std::exception("NOOOOOO ...");
+	sprite.setTexture(texture);
 	shape.setFillColor(sf::Color::Blue);
 
 	while (window.isOpen())
@@ -16,11 +23,14 @@ int		main(void)
 		}
 
 		window.clear();
-		window.draw(shape);
+		window.draw(sprite);
 		window.display();
 	}*/
 	SFMLGraphic	sg;
 
+	sg.clear();
+	sg.drawSprite(0, 0, 0);
+	sg.show();
 	system("pause");
 	return (0);
 }
