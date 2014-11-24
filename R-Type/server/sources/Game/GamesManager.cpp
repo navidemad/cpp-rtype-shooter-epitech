@@ -1,6 +1,6 @@
 #include "GamesManager.hpp"
 
-GamesManager::GamesManager(void) : mThreadPool(GamesManager::THREAD_POOL_SIZE) {
+GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()) {
 
 }
 

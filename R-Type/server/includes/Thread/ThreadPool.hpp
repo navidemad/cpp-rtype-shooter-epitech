@@ -10,9 +10,10 @@
 
 class ThreadPool {
 
-	// ctor dtor
+	// ctor - dtor
+	private:
+		explicit ThreadPool(unsigned int nbThreads);
 	public:
-		explicit ThreadPool(unsigned int nbThread);
 		~ThreadPool(void);
 
 	// copy / move operators
@@ -21,6 +22,14 @@ class ThreadPool {
 		ThreadPool(ThreadPool &&) = delete;
 		const ThreadPool &operator=(const ThreadPool &) = delete;
 		const ThreadPool &operator=(ThreadPool &&) = delete;
+
+	// singleton handle instance
+	public:
+		static std::shared_ptr<ThreadPool> getInstance(void);
+
+	// nb threads
+	public:
+		static const unsigned int NB_THREADS = 6;
 
 	// handle tasks
 	public:

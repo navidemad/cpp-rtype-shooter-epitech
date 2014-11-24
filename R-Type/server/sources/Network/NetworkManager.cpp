@@ -4,8 +4,6 @@
 #include "ScopedLock.hpp"
 #include <algorithm>
 
-std::shared_ptr<NetworkManager> NetworkManager::mInstance = nullptr;
-
 NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::getMutex()), mThread(PortabilityBuilder::getThread<NetworkManager *, void*>()) {
 }
 
@@ -57,10 +55,9 @@ void 	NetworkManager::refreshMaxFd(void) {
 }
 
 std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
-	if (mInstance.get() == nullptr)
-		mInstance = std::shared_ptr<NetworkManager>(new NetworkManager);
+	static std::shared_ptr<NetworkManager> instance(new NetworkManager);
 
-	return mInstance;
+	return instance;
 }
 
 void	NetworkManager::operator()(void *) {

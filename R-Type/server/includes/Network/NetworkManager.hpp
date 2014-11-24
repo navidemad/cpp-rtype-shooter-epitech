@@ -36,8 +36,6 @@ class NetworkManager {
 	// singleton handle instance
 	public:
 		static std::shared_ptr<NetworkManager> getInstance(void);
-	private:
-		static std::shared_ptr<NetworkManager> mInstance;
 
 	// handle sockets
 	public:
