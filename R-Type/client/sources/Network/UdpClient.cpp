@@ -47,7 +47,7 @@ IClientSocket::Message	UdpClient::receive(unsigned int sizeToRead) {
 	IClientSocket::Message message;
 	QHostAddress host;
 	quint16 port;
-	char *buffer;
+	std::shared_ptr<char> buffer(new char[sizeToRead]);
 	int ret;
 
 	if (nbBytesToRead() == 0) {
@@ -56,18 +56,16 @@ IClientSocket::Message	UdpClient::receive(unsigned int sizeToRead) {
 		return message;
 	}
 
-	buffer = new char[sizeToRead];
-	ret = mQUdpSocket->readDatagram(buffer, sizeToRead, &host, &port);
+	ret = mQUdpSocket->readDatagram(buffer.get(), sizeToRead, &host, &port);
 	if (ret == -1)
 		throw std::string("fail QUdpSocket::read");
 
 	message.msgSize = ret;
-	message.msg.insert(message.msg.end(), buffer, buffer + message.msgSize);
+	message.msg.insert(message.msg.end(), buffer.get(), buffer.get() + message.msgSize);
 	message.host = host.toString().toStdString();
 	message.port = port;
 	mIsReadable = false;
 
-	delete buffer;
 	return message;
 }
 
