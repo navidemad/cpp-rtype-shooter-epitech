@@ -52,8 +52,9 @@ void	TcpClient::send(const IClientSocket::Message &message) {
 
 IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
 	IClientSocket::Message message;
-	char buffer[sizeToRead + 1];
+	char *buffer;
 	int ret;
+
 
 	if (nbBytesToRead() == 0) {
 		message.msgSize = 0;
@@ -61,6 +62,7 @@ IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
 		return message;
 	}
 
+	buffer = new char[sizeToRead];
 	ret = mQTcpSocket->read(buffer, sizeToRead);
 	if (ret == -1)
 		throw std::string("fail QTcpSocket::read");
@@ -70,6 +72,7 @@ IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
     message.host = (mQTcpSocket->peerAddress()).toString().toStdString();
 	message.port = mQTcpSocket->peerPort();
 
+	delete buffer;
 	return message;
 }
 
