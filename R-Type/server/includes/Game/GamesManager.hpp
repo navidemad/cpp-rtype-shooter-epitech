@@ -29,7 +29,7 @@ class GamesManager {
 
     // attributes
     private:
-        ThreadPool mThreadPool;
+        std::shared_ptr<ThreadPool> mThreadPool;
 	
 	static const int THREAD_POOL_SIZE = 6;
 

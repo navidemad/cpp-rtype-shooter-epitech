@@ -52,7 +52,7 @@ void	TcpClient::send(const IClientSocket::Message &message) {
 
 IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
 	IClientSocket::Message message;
-	char buffer[1024];
+	char buffer[sizeToRead + 1];
 	int ret;
 
 	if (nbBytesToRead() == 0) {
