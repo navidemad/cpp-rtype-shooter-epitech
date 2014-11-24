@@ -51,7 +51,6 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/GUI/TextureManager.hpp				\
 			includes/Network/INetworkManager.hpp			\
 			includes/Network/CommandPacketBuilder.hpp		\
-			includes/Network/IClientSocket.hpp			\
 			includes/Network/INetworkManager.hpp			\
 			includes/Network/ServerCommunication.hpp		\
 			includes/Network/TcpClient.hpp				\
@@ -108,13 +107,14 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Network/TcpClient.cpp			\
 			sources/Network/UdpClient.cpp
 
-CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
+CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics  -lsfml-network -lsfml-window -lsfml-system
 
 win32:LIBS	+=	-ldependencies/libs/sfml-audio		\
 			-ldependencies/libs/sfml-graphics	\
 			-ldependencies/libs/sfml-main		\
 			-ldependencies/libs/sfml-network	\
 			-ldependencies/libs/sfml-system		\
-			-ldependencies/libs/sfml-window
+                        -ldependencies/libs/sfml-window         \
+                        -lsfml-main
 
 unix:LIBS	+=     	

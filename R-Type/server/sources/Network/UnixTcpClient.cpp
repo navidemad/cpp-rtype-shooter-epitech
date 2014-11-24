@@ -52,7 +52,7 @@ void	UnixTcpClient::connectSocket(const std::string &addr, int port) {
 }
 
 void	UnixTcpClient::initFromSocket(void *socketFd, const std::string &addr, int port) {
-	mSocketFd = *reinterpret_cast<int *>(socketFd);
+	mSocketFd = std::shared_ptr(reinterpret_cast<int *>(socketFd));
 	mAddr = addr;
 	mPort = port;
 
