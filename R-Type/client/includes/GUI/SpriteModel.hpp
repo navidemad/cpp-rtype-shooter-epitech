@@ -9,7 +9,7 @@ class SpriteModel
 {
 	// ctor - dtor
 	public:
-		SpriteModel(std::string const &filename);
+		SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns);
 		~SpriteModel();
 
 	// coplien form
@@ -23,9 +23,9 @@ class SpriteModel
 		bool				isLoop() const;
 		std::string const	&getFileName() const;
 		sf::Sprite const	&getSprite() const;
+		sf::IntRect const	&getIntRect() const;
 
 		void				setAnims(uint32_t begin, uint32_t end);
-		void				setAnims(std::vector<sf::Sprite>::iterator begin, std::vector<sf::Sprite>::iterator end);
 		void				setCurrentIndex(uint32_t currentIndex);
 		void				setLoop(bool enable = true);
 	private:
@@ -33,12 +33,16 @@ class SpriteModel
 
 	// attributes
 	private:
-		std::vector<sf::Sprite>	mSprites;
-		bool					mLoop;
-		std::string				mFileName;
-		uint32_t				mCurrentIndex;
-		uint32_t				mBegin;
-		uint32_t				mEnd;
-		sf::Texture				mTexture;
-		sf::Sprite				mSprite;
+		sf::Texture					mTexture;
+		sf::Sprite					mSprite;
+		std::vector<sf::IntRect>	mFrames;
+		bool						mLoop;
+		std::string					mFileName;
+		uint32_t					mCurrentIndex;
+		uint32_t					mBegin;
+		uint32_t					mEnd;
+		uint32_t					mLines;
+		uint32_t					mColumns;
+		uint32_t					mPosX;
+		uint32_t					mPosY;
 };

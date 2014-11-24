@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Engine/System.hpp"
+
 class DrawableSystem
 {
 	// ctor - dtor
