@@ -6,9 +6,47 @@
 
 class Game {
 
+    // game properties
+    public:
+        class GameProperties {
+
+        // ctor / dtor
+        public:
+            GameProperties(void);
+            ~GameProperties(void);
+
+        // copy / move operators
+        public:
+            GameProperties(const GameProperties &) = delete;
+            GameProperties(const GameProperties &&) = delete;
+            const GameProperties &operator=(const GameProperties &) = delete;
+            const GameProperties &operator=(const GameProperties &&) = delete;
+
+        // setters
+        public:
+            void setName(const std::string&);
+            void setLevelName(const std::string&);
+            void setNbPlayers(int);
+            void setNbSpectators(int);
+
+        // getters
+        public:
+            const std::string& getName(void) const;
+            const std::string& getLevelName(void) const;
+            int getNbPlayers(void) const;
+            int getNbSpectators(void) const;
+
+        // attributes
+        private:
+            std::string mName;
+            std::string mLevelName;
+            int mNbPlayers;
+            int mNbSpectators;
+        };
+
     // ctor / dtor
     public:
-        explicit Game(void);
+        explicit Game(const Game::GameProperties& properties);
         ~Game(void);
 
     // copy / move operators
@@ -26,46 +64,11 @@ class Game {
         void addPlayer(void);
         void delPlayer(void);
         void terminateGame(void);
+        const Game::GameProperties& getProperties(void) const;
 
     // attributes
     private:
         Timer mTimer;
+        const Game::GameProperties& mProperties;
 
-    // game properties
-    public:
-        class GameProperties {
-
-            // ctor / dtor
-            public:
-                GameProperties(void);
-                ~GameProperties(void);
-
-            // copy / move operators
-            public:
-                GameProperties(const GameProperties &) = delete;
-                GameProperties(const GameProperties &&) = delete;
-                const GameProperties &operator=(const GameProperties &) = delete;
-                const GameProperties &operator=(const GameProperties &&) = delete;
-
-            // setters
-            public:
-                inline void setName(const std::string&);
-                inline void setLevelName(const std::string&);
-                inline void setNbPlayers(int);
-                inline void setNbSpectators(int);
-
-            // getters
-            public:
-                inline const std::string& getName(void) const;
-                inline const std::string& getLevelName(void) const;
-                inline int getNbPlayers(void) const;
-                inline int getNbSpectators(void) const;
-
-            // attributes
-            private:
-                std::string mName;
-                std::string mLevelName;
-                int mNbPlayers;
-                int mNbSpectators;
-       };
 };

@@ -11,7 +11,6 @@ RTypeServer::~RTypeServer(void) {
 
 int RTypeServer::run(void) {
 	mClientManager.run();
-	while (1);//à supprimer. permet de laisser le thread principal tourner pendant que le thread network est lancé.
-	
+    mGamesManager.run();	
 	return 0;
 }
