@@ -1,4 +1,4 @@
-#include "Engine/Collision.hpp"
+#include "Engine/Compenent/Collision.hpp"
 
 Collision::Collision()
 {
