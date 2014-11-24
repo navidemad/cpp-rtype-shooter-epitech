@@ -11,12 +11,14 @@ SFMLGraphic::~SFMLGraphic()
 
 }
 
-bool	SFMLGraphic::drawSprite()
+bool	SFMLGraphic::drawSprite(uint32_t id, uint32_t /*posX*/, uint32_t /*posY*/)
 {
+	if (!mContentManager.getSprites().empty() && id < mContentManager.getSprites().size())
+		mWindow.draw(mContentManager.getSprites()[id]->getSprite());
 	return true;
 }
 
-bool	SFMLGraphic::drawFont()
+bool	SFMLGraphic::drawFont(uint32_t /*id*/, uint32_t /*posX*/, uint32_t /*posY*/)
 {
 	return true;
 }
@@ -35,9 +37,20 @@ void	SFMLGraphic::handleEvent()
 {
 }
 
+void	SFMLGraphic::show()
+{
+	mWindow.display();
+}
+
+void	SFMLGraphic::clear()
+{
+	mWindow.clear();
+}
+
 void	SFMLGraphic::init()
 {
 	mContentManager.loadTextures();
+	mContentManager.loadSprites();
 	mContentManager.loadFonts();
 	mContentManager.loadSounds();
 }

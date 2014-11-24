@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 class IGraphic
 {
 	public:
@@ -7,8 +9,8 @@ class IGraphic
 
 	// public methods
 	public:
-		virtual bool	drawSprite() = 0;
-		virtual bool	drawFont() = 0;
+		virtual bool	drawSprite(uint32_t id, uint32_t posX, uint32_t posY) = 0;
+		virtual bool	drawFont(uint32_t id, uint32_t posX, uint32_t posY) = 0;
 		virtual bool	playSound(bool onLoop = false) = 0;
 		virtual bool	isOpen() const = 0;
 		virtual void	handleEvent() = 0;

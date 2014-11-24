@@ -15,7 +15,7 @@ class FontManager : public IResourceManager<std::map<std::string, sf::Font>>
 		~FontManager();
 
 	// coplien forms
-	private:
+	public:
 		FontManager(FontManager const &) = delete;
 		FontManager(FontManager const &&) = delete;
 		FontManager const	&operator=(FontManager const &) = delete;
@@ -29,9 +29,9 @@ class FontManager : public IResourceManager<std::map<std::string, sf::Font>>
 
 	// methods
 	public:
-		void									loadResources();
-		void									unloadResources();
-		std::map<std::string, sf::Font> const	&getResources() const;
+		virtual void									loadResources();
+		virtual void									unloadResources();
+		virtual std::map<std::string, sf::Font> const	&getResources() const;
 
 	// attributes
 	private:

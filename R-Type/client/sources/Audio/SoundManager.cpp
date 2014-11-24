@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include "Audio/SoundManager.hpp"
 
@@ -15,7 +16,7 @@ SoundManager::~SoundManager()
 
 std::shared_ptr<SoundManager>	SoundManager::getInstance()
 {
-    if (mInstance == nullptr)
+    if (mInstance.get() == nullptr)
         mInstance = std::shared_ptr<SoundManager>(new SoundManager);
     return mInstance;
 }
