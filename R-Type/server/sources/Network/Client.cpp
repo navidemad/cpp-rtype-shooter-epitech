@@ -92,12 +92,12 @@ void	Client::recvListLevels(const std::shared_ptr<ICommand> &) {
 		mListener->onClientListLevels(*this);
 }
 
-void	Client::recvDisconnect(const std::shared_ptr<ICommand> &command) {
+void	Client::recvDisconnect(const std::shared_ptr<ICommand> & /*command*/) {
 	if (mListener)
 		mListener->onClientDisconnect(*this);
 }
 
-void	Client::recvHandshake(const std::shared_ptr<ICommand> &command) {
+void	Client::recvHandshake(const std::shared_ptr<ICommand> & /*command*/) {
 	if (mListener)
 		mListener->onClientHandshake(*this);
 }
