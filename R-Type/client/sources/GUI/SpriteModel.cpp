@@ -27,8 +27,6 @@ SpriteModel::~SpriteModel()
 
 void		SpriteModel::init()
 {
-	mFrames.clear();
-
 	// load file image
 	if (!mTexture.loadFromFile(mFileName))
 		throw std::exception("Failed on load from file");
@@ -41,12 +39,14 @@ void		SpriteModel::init()
 	sf::Vector2u size = mTexture.getSize();
 	int rectWidth = size.x / mColumns;
 	int rectHeight = size.y / mLines;
+
 	for (uint32_t i = 0; i < mLines * mColumns; ++i)
 	{
-		sf::IntRect rect(i % rectWidth, i / rectWidth, rectWidth, rectHeight);
+		sf::IntRect rect((i % rectWidth) * rectWidth, (i / rectWidth) * rectHeight, rectWidth, rectHeight);
 		mFrames.push_back(rect);
 	}
 	//mSprite.scale(sf::Vector2f(2.0, 2.0));
+	mSprite.setTextureRect(mFrames[0]);
 }
 
 uint32_t		SpriteModel::getCurrentIndex() const
