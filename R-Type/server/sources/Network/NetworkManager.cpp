@@ -4,14 +4,14 @@
 #include "ScopedLock.hpp"
 #include <algorithm>
 
-NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::getMutex()), mThread(PortabilityBuilder::getThread<NetworkManager *, void*>()) {
+NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::getMutex()), mThreadPool(ThreadPool::getInstance()) {
 }
 
 NetworkManager::~NetworkManager(void) {
 }
 
-std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator NetworkManager::findSocket(int socketFd) {
-	return std::find_if(mSockets.begin(), mSockets.end(), [&](const std::pair<int, NetworkManager::OnSocketEvent *> &socket) { return socket.first == socketFd; });
+std::list<NetworkManager::Socket>::iterator NetworkManager::findSocket(int socketFd) {
+	return std::find_if(mSockets.begin(), mSockets.end(), [&](const NetworkManager::Socket &socket) { return socket.fd == socketFd; });
 }
 
 void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *listener) {
@@ -23,13 +23,13 @@ void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *list
 	if (findSocket(socketFd) != mSockets.end())
 		throw SocketException("Socket already under NetworkManager control");
 
-	mSockets.push_back(std::pair<int, NetworkManager::OnSocketEvent *>(socketFd, listener));
+	mSockets.push_back(Socket(socketFd, listener));
 
 	if (socketFd > mMaxFd)
 		mMaxFd = socketFd;
 
 	if (mSockets.size() == 1)
-		mThread->create(this, NULL);
+		*mThreadPool << std::bind(&NetworkManager::doSelect, this);
 }
 
 void	NetworkManager::removeSocket(int socketFd) {
@@ -50,8 +50,8 @@ void 	NetworkManager::refreshMaxFd(void) {
 	mMaxFd = -1;
 
 	for (const auto &socket : mSockets)
-		if (socket.first > mMaxFd)
-			mMaxFd = socket.first;
+		if (socket.fd > mMaxFd)
+			mMaxFd = socket.fd;
 }
 
 std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
@@ -60,7 +60,7 @@ std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
 	return instance;
 }
 
-void	NetworkManager::operator()(void *) {
+void	NetworkManager::doSelect(void) {
 	while (mSockets.size() > 0) {
 		initFds();
 
@@ -70,8 +70,7 @@ void	NetworkManager::operator()(void *) {
 		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) == -1)
 			throw SocketException("fail select()");
 
-		checkFdsReadable();
-		checkFdsWritable();
+		checkFds();
 	}
 }
 
@@ -82,31 +81,71 @@ void	NetworkManager::initFds(void) {
 	FD_ZERO(&mWriteFds);
 
 	for (const auto &socket : mSockets) {
-		FD_SET(socket.first, &mReadFds);
-		FD_SET(socket.first, &mWriteFds);
+		FD_SET(socket.fd, &mReadFds);
+		FD_SET(socket.fd, &mWriteFds);
 	}
 }
 
-void	NetworkManager::checkFdsReadable(void) {
-	std::list<std::pair<int, NetworkManager::OnSocketEvent *>> sockets;
-	{
-		ScopedLock scopedLock(mMutex);
-		sockets = mSockets;
-	}
+void	NetworkManager::checkFds(void) {
+	ScopedLock scopedLock(mMutex);
 
-	for (const auto &socket : sockets)
-		if (socket.second && FD_ISSET(socket.first, &mReadFds))
-			socket.second->onSocketReadable(socket.first);
+	for (auto &socket : mSockets) {
+		if (!socket.isCurrentlyNotifyRead && socket.listener && FD_ISSET(socket.fd, &mReadFds)) {
+			socket.isCurrentlyNotifyRead = true;
+			*mThreadPool << std::bind(&NetworkManager::onSocketReadable, this, socket.fd);
+		}
+
+		if (!socket.isCurrentlyNotifyWrite && socket.listener && FD_ISSET(socket.fd, &mWriteFds)) {
+			socket.isCurrentlyNotifyWrite = true;
+			*mThreadPool << std::bind(&NetworkManager::onSocketWritable, this, socket.fd);
+		}
+	}
 }
 
-void	NetworkManager::checkFdsWritable(void) {
-	std::list<std::pair<int, NetworkManager::OnSocketEvent *>> sockets;
+void	NetworkManager::onSocketReadable(int socketFd) {
+	std::list<NetworkManager::Socket>::iterator socket;
+
 	{
 		ScopedLock scopedLock(mMutex);
-		sockets = mSockets;
+
+		socket = findSocket(socketFd);
+		if (socket == mSockets.end())
+			return;
 	}
 
-	for (const auto &socket : sockets)
-		if (socket.second && FD_ISSET(socket.first, &mWriteFds))
-			socket.second->onSocketWritable(socket.first);
+	socket->listener->onSocketReadable(socket->fd);
+
+	{
+		ScopedLock scopedLock(mMutex);
+
+		socket = findSocket(socketFd);
+		if (socket == mSockets.end())
+			return;
+
+		socket->isCurrentlyNotifyRead = false;
+	}
+}
+
+void	NetworkManager::onSocketWritable(int socketFd) {
+	std::list<NetworkManager::Socket>::iterator socket;
+
+	{
+		ScopedLock scopedLock(mMutex);
+
+		socket = findSocket(socketFd);
+		if (socket == mSockets.end())
+			return;
+	}
+
+	socket->listener->onSocketWritable(socket->fd);
+
+	{
+		ScopedLock scopedLock(mMutex);
+
+		socket = findSocket(socketFd);
+		if (socket == mSockets.end())
+			return;
+
+		socket->isCurrentlyNotifyWrite = false;
+	}
 }

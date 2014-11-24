@@ -114,13 +114,10 @@ void	UnixTcpClient::setOnSocketEventListener(IClientSocket::OnSocketEvent *liste
 }
 
 void	UnixTcpClient::onSocketWritable(int) {
-	if (mOutBuffer.size() == 0)
-		return;
-
 	try {
 		int nbBytes = sendSocket();
 
-		if (mListener)
+        if (mListener && nbBytes)
 			mListener->onBytesWritten(this, nbBytes);
 	}
 	catch (const SocketException &) {
@@ -134,7 +131,10 @@ void	UnixTcpClient::onSocketWritable(int) {
 int UnixTcpClient::sendSocket(void) {
 	ScopedLock ScopedLock(mMutex);
 
-	int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
+    if (mOutBuffer.size() == 0)
+        return 0;
+
+    int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
 	int nbBytesSent = ::send(mSocketFd, mOutBuffer.data(), sizeToSend, MSG_NOSIGNAL);
 
 	if (nbBytesSent == -1)

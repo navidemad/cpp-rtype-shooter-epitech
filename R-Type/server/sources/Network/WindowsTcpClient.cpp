@@ -8,8 +8,7 @@
 #include "SocketException.hpp"
 
 WindowsTcpClient::WindowsTcpClient(void)
-: mSocketFd(-1), mAddr(""), mPort(-1),
-mMutex(PortabilityBuilder::getMutex()), mListener(nullptr), mNetworkManager(NetworkManager::getInstance())
+	: mSocketFd(-1), mAddr(""), mPort(-1), mMutex(PortabilityBuilder::getMutex()), mListener(nullptr), mNetworkManager(NetworkManager::getInstance())
 {
 	WindowsWSAHandler::init();
 }
@@ -114,13 +113,10 @@ void	WindowsTcpClient::setOnSocketEventListener(IClientSocket::OnSocketEvent *li
 }
 
 void	WindowsTcpClient::onSocketWritable(int) {
-	if (mOutBuffer.size() == 0)
-		return;
-
 	try {
 		int nbBytes = sendSocket();
 
-		if (mListener)
+		if (mListener && nbBytes)
 			mListener->onBytesWritten(this, nbBytes);
 	}
 	catch (const SocketException &) {
@@ -133,6 +129,9 @@ void	WindowsTcpClient::onSocketWritable(int) {
 
 int WindowsTcpClient::sendSocket(void) {
 	ScopedLock ScopedLock(mMutex);
+
+	if (mOutBuffer.size() == 0)
+		return 0;
 
 	int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
 	WSABUF buf = { sizeToSend, mOutBuffer.data() };
