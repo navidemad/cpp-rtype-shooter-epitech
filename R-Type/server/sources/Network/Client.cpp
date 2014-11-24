@@ -1,4 +1,15 @@
 #include "Client.hpp"
+#include "CommandCreateGame.hpp"
+#include "CommandJoinGame.hpp"
+#include "CommandShowGame.hpp"
+#include "CommandDeleteGame.hpp"
+#include "CommandListGames.hpp"
+#include "CommandListLevels.hpp"
+#include "CommandDisconnect.hpp"
+#include "CommandObserveGame.hpp"
+#include "CommandHandshake.hpp"
+#include "CommandLeaveGame.hpp"
+#include "CommandUpdatePseudo.hpp"
 
 const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::CREATE_GAME,	&Client::recvCreateGame		},
@@ -40,34 +51,77 @@ void	Client::setListener(Client::OnClientEvent *listener) {
 }
 
 void	Client::recvCreateGame(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandCreateGame> commandCreateGame = std::static_pointer_cast<CommandCreateGame>(command);
+
+		mListener->onClientCreateGame(*this, commandCreateGame->getName(), commandCreateGame->getLevelName(), commandCreateGame->getNbPlayers(), commandCreateGame->getNbSpectators());
+	}
 }
 
 void	Client::recvJoinGame(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandJoinGame> commandJoinGame = std::static_pointer_cast<CommandJoinGame>(command);
+
+		mListener->onClientJoinGame(*this, commandJoinGame->getName());
+	}
 }
 
 void	Client::recvShowGame(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandShowGame> commandShowGame = std::static_pointer_cast<CommandShowGame>(command);
+
+		mListener->onClientShowGame(*this, commandShowGame->getName());
+	}
 }
 
 void	Client::recvDeleteGame(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandDeleteGame> commandDeleteGame = std::static_pointer_cast<CommandDeleteGame>(command);
+
+		mListener->onClientDeleteGame(*this, commandDeleteGame->getName());
+	}
 }
 
-void	Client::recvListGames(const std::shared_ptr<ICommand> &command) {
+void	Client::recvListGames(const std::shared_ptr<ICommand> &) {
+	if (mListener)
+		mListener->onClientListGames(*this);
 }
 
-void	Client::recvListLevels(const std::shared_ptr<ICommand> &command) {
+void	Client::recvListLevels(const std::shared_ptr<ICommand> &) {
+	if (mListener)
+		mListener->onClientListLevels(*this);
 }
 
 void	Client::recvDisconnect(const std::shared_ptr<ICommand> &command) {
+	if (mListener)
+		mListener->onClientDisconnect(*this);
 }
 
 void	Client::recvHandshake(const std::shared_ptr<ICommand> &command) {
+	if (mListener)
+		mListener->onClientHandshake(*this);
 }
 
 void	Client::recvObserveGame(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandObserveGame> commandObserveGame = std::static_pointer_cast<CommandObserveGame>(command);
+
+		mListener->onClientObserverGame(*this, commandObserveGame->getName());
+	}
 }
 
 void	Client::recvLeaveGame(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandLeaveGame> commandLeaveGame = std::static_pointer_cast<CommandLeaveGame>(command);
+
+		mListener->onClientLeaveGame(*this, commandLeaveGame->getName());
+	}
 }
 
 void	Client::recvUpdatePseudo(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandUpdatePseudo> commandUpdatePseudo = std::static_pointer_cast<CommandUpdatePseudo>(command);
+
+		mListener->onClientUpdatePseudo(*this, commandUpdatePseudo->getPseudo());
+	}
 }

@@ -43,7 +43,18 @@ class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
 	public:
 		class OnClientEvent {
 			public:
-				virtual void	onClientDisconnected(const Client &) = 0;
+				virtual void	onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
+				virtual void	onClientJoinGame(const Client &client, const std::string &name) = 0;
+				virtual void	onClientShowGame(const Client &client, const std::string &name) = 0;
+				virtual void	onClientDeleteGame(const Client &client, const std::string &name) = 0;
+				virtual void	onClientListGames(const Client &client) = 0;
+				virtual void	onClientListLevels(const Client &client) = 0;
+				virtual void	onClientDisconnect(const Client &client) = 0;
+				virtual void	onClientHandshake(const Client &client) = 0;
+				virtual void	onClientObserverGame(const Client &client, const std::string &name) = 0;
+				virtual void	onClientLeaveGame(const Client &client, const std::string &name) = 0;
+				virtual void	onClientUpdatePseudo(const Client &client, const std::string &pseudo) = 0;
+				virtual void	onClientDisconnected(const Client &client) = 0;
 		};
 
 		void	setListener(Client::OnClientEvent *mListener);

@@ -27,6 +27,17 @@ class ClientManager : public IServerSocket::OnSocketEvent, public Client::OnClie
 	public:
 		void	onNewConnection(IServerSocket *socket);
 		void	onClientDisconnected(const Client &client);
+		void	onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers);
+		void	onClientJoinGame(const Client &client, const std::string &name);
+		void	onClientShowGame(const Client &client, const std::string &name);
+		void	onClientDeleteGame(const Client &client, const std::string &name);
+		void	onClientListGames(const Client &client);
+		void	onClientListLevels(const Client &client);
+		void	onClientDisconnect(const Client &client);
+		void	onClientHandshake(const Client &client);
+		void	onClientObserverGame(const Client &client, const std::string &name);
+		void	onClientLeaveGame(const Client &client, const std::string &name);
+		void	onClientUpdatePseudo(const Client &client, const std::string &pseudo);
 
 	// attributes
 	private:
