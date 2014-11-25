@@ -1,12 +1,12 @@
 #pragma once
 
 #include <memory>
-#include <vector>
+#include <map>
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
 #include "GUI/SpriteModel.hpp"
 
-class SpriteManager : public IResourceManager<std::vector<std::shared_ptr<SpriteModel>>>
+class SpriteManager : public IResourceManager<SpriteModel>
 {
     // ctor - dtor
     private:
@@ -18,8 +18,8 @@ class SpriteManager : public IResourceManager<std::vector<std::shared_ptr<Sprite
     public:
         SpriteManager(const SpriteManager &) = delete;
         SpriteManager(SpriteManager &&) = delete;
-        const SpriteManager &operator=(const SpriteManager &) = delete;
-        const SpriteManager &operator=(SpriteManager &&) = delete;
+		const SpriteManager &operator=(const SpriteManager &) = delete;
+		const SpriteManager &operator=(SpriteManager &&) = delete;
 
 	// instance
 	public:
@@ -29,11 +29,11 @@ class SpriteManager : public IResourceManager<std::vector<std::shared_ptr<Sprite
 
 	// methods
 	public:
-		void											loadResources();
-		void											unloadResources();
-		std::vector<std::shared_ptr<SpriteModel>> const	&getResources() const;
+		void				loadResources();
+		void				unloadResources();
+		SpriteModel const	&getResource(std::string const &key) const;
 
 	// attributes
 	private:
-		std::vector<std::shared_ptr<SpriteModel>>		mListResources;
+		std::map<std::string, SpriteModel>	mListResources;
 };

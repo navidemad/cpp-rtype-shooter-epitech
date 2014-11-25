@@ -10,14 +10,80 @@ SpriteModel::SpriteModel(std::string const &filename, uint32_t lines, uint32_t c
 	mEnd(0), 
 	mLines(lines), 
 	mColumns(columns), 
-	mPosX(0),
-	mPosY(0)
+	mX(0),
+	mY(0)
 {
-	if (mLines == 0)
-		mLines = 1;
-	if (mColumns == 0)
-		mColumns = 1;
+	if (mLines & 0)
+		mLines |= 1;
+	if (mColumns & 0)
+		mColumns |= 1;
 	init();
+}
+
+SpriteModel::SpriteModel(const SpriteModel &sm)
+{
+	mTexture = sm.getTexture();
+	mSprite = sm.getSprite();
+	mLoop = sm.isLoop();
+	mFileName = sm.getFileName();
+	mCurrentIndex = sm.getCurrentIndex();
+	mBegin = sm.getBegin();
+	mEnd = sm.getEnd();
+	mLines = sm.getLines();
+	mColumns = sm.getColumns();
+	mX = sm.getX();
+	mY = sm.getY();
+	init();
+}
+
+SpriteModel::SpriteModel(SpriteModel &&sm)
+{
+	mTexture = sm.getTexture();
+	mSprite = sm.getSprite();
+	mLoop = sm.isLoop();
+	mFileName = sm.getFileName();
+	mCurrentIndex = sm.getCurrentIndex();
+	mBegin = sm.getBegin();
+	mEnd = sm.getEnd();
+	mLines = sm.getLines();
+	mColumns = sm.getColumns();
+	mX = sm.getX();
+	mY = sm.getY();
+	init();
+}
+
+const SpriteModel &SpriteModel::operator=(const SpriteModel &sm)
+{
+	mTexture = sm.getTexture();
+	mSprite = sm.getSprite();
+	mLoop = sm.isLoop();
+	mFileName = sm.getFileName();
+	mCurrentIndex = sm.getCurrentIndex();
+	mBegin = sm.getBegin();
+	mEnd = sm.getEnd();
+	mLines = sm.getLines();
+	mColumns = sm.getColumns();
+	mX = sm.getX();
+	mY = sm.getY();
+	init();
+	return *this;
+}
+
+const SpriteModel &SpriteModel::operator=(SpriteModel &&sm)
+{
+	mTexture = sm.getTexture();
+	mSprite = sm.getSprite();
+	mLoop = sm.isLoop();
+	mFileName = sm.getFileName();
+	mCurrentIndex = sm.getCurrentIndex();
+	mBegin = sm.getBegin();
+	mEnd = sm.getEnd();
+	mLines = sm.getLines();
+	mColumns = sm.getColumns();
+	mX = sm.getX();
+	mY = sm.getY();
+	init();
+	return *this;
 }
 
 SpriteModel::~SpriteModel()
@@ -40,22 +106,35 @@ void		SpriteModel::init()
 	int rectWidth = size.x / mColumns;
 	int rectHeight = size.y / mLines;
 
+	// frame generator
 	for (uint32_t i = 0; i < mLines * mColumns; ++i)
 	{
 		sf::IntRect rect((i % rectWidth) * rectWidth, (i / rectWidth) * rectHeight, rectWidth, rectHeight);
 		mFrames.push_back(rect);
 	}
+
+	// set sprite
 	mTexture.setSmooth(true);
-	mSprite.scale(sf::Vector2f(4.0, 4.0));
 	mSprite.setTextureRect(mFrames[0]);
 }
 
-uint32_t		SpriteModel::getCurrentIndex() const
+// GETTER FUNCTIONS : BEGIN
+sf::Texture const	&SpriteModel::getTexture() const
 {
-	return mCurrentIndex;
+	return mTexture;
 }
 
-bool	SpriteModel::isLoop() const
+sf::Sprite const	&SpriteModel::getSprite() const
+{
+	return mSprite;
+}
+
+sf::IntRect const	&SpriteModel::getFrame(uint32_t index) const
+{
+	return mFrames[index];
+}
+
+bool				SpriteModel::isLoop() const
 {
 	return mLoop;
 }
@@ -65,15 +144,41 @@ std::string const	&SpriteModel::getFileName() const
 	return mFileName;
 }
 
-sf::Sprite const	&SpriteModel::getSprite() const
+uint32_t			SpriteModel::getCurrentIndex() const
 {
-	return (mSprite);
+	return mCurrentIndex;
 }
 
-sf::IntRect const	&SpriteModel::getFrame(uint32_t index) const
+uint32_t			SpriteModel::getBegin() const
 {
-	return mFrames[index];
+	return mBegin;
 }
+
+uint32_t			SpriteModel::getEnd() const
+{
+	return mEnd;
+}
+
+uint32_t			SpriteModel::getLines() const
+{
+	return mLines;
+}
+
+uint32_t			SpriteModel::getColumns() const
+{
+	return mColumns;
+}
+
+uint32_t			SpriteModel::getX() const
+{
+	return mX;
+}
+
+uint32_t			SpriteModel::getY() const
+{
+	return mY;
+}
+// GETTER FUNCTIONS : END
 
 void	SpriteModel::setAnims(uint32_t begin, uint32_t end)
 {

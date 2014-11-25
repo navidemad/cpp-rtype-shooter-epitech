@@ -29,7 +29,7 @@ void	FontManager::unloadResources()
 
 }
 
-std::map<std::string, sf::Font> const	&FontManager::getResources() const
+sf::Font const	&FontManager::getResource(std::string const &key) const
 {
-	return mListResources;
+	return mListResources.at(key);
 }

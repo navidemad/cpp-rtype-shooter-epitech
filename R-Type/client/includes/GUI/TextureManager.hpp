@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
 
-class TextureManager : public IResourceManager<std::map<std::string, sf::Sprite>>
+class TextureManager : public IResourceManager<sf::Texture>
 {
     // ctor - dtor
     private:
@@ -29,11 +29,11 @@ class TextureManager : public IResourceManager<std::map<std::string, sf::Sprite>
 
 	// methods
 	public:
-		virtual void									loadResources();
-		virtual void									unloadResources();
-		virtual std::map<std::string, sf::Sprite> const	&getResources() const;
+		void				loadResources();
+		void				unloadResources();
+		sf::Texture const	&getResource(std::string const &key) const;
 
 	// attributes
 	private:
-		std::map<std::string, sf::Sprite>	mListResources;
+		std::map<std::string, sf::Texture>	mListResources;
 };

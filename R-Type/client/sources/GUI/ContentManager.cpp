@@ -33,22 +33,22 @@ void	ContentManager::loadSounds()
 	mSounds->loadResources();
 }
 
-std::map<std::string, sf::Sprite> const	&ContentManager::getTextures() const
+std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTextures() const
 {
-	return mTextures->getResources();
+	return mTextures;
 }
 
-std::vector<std::shared_ptr<SpriteModel>> const	&ContentManager::getSprites() const
+std::shared_ptr<IResourceManager<SpriteModel>> const	&ContentManager::getSprites() const
 {
-	return mSprites->getResources();
+	return mSprites;
 }
 
-std::map<std::string, sf::Font> const	&ContentManager::getFonts() const
+std::shared_ptr<IResourceManager<sf::Font>> const		&ContentManager::getFonts() const
 {
-	return mFonts->getResources();
+	return mFonts;
 }
 
-std::map<std::string, sf::Sound> const	&ContentManager::getSounds() const
+std::shared_ptr<IResourceManager<sf::Sound>> const		&ContentManager::getSounds() const
 {
-	return mSounds->getResources();
+	return mSounds;
 }

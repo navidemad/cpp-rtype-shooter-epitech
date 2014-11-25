@@ -10,10 +10,14 @@ SFMLGraphic::~SFMLGraphic()
 
 }
 
-bool	SFMLGraphic::drawSprite(uint32_t id, float /*delta*/, uint32_t /*x*/, uint32_t /*y*/)
+bool	SFMLGraphic::drawSprite(uint32_t /*id*/, float /*delta*/, uint32_t /*x*/, uint32_t /*y*/)
 {
-	if (!mContentManager.getSprites().empty() && id < mContentManager.getSprites().size())
-		mWindow.draw(mContentManager.getSprites()[id]->getSprite());
+	sf::Texture texture(mContentManager.getSprites()->getResource("1").getTexture());
+	sf::IntRect rect(mContentManager.getSprites()->getResource("1").getFrame(1));
+	sf::Sprite sprite(texture, rect);
+	texture.setSmooth(true);
+	sprite.setScale(sf::Vector2f(4, 4));
+	mWindow.draw(sprite);
 	return true;
 }
 
