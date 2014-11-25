@@ -1,5 +1,6 @@
 #include "RTypeServer.hpp"
 #include "PortabilityBuilder.hpp"
+#include "GamesManagerException.hpp"
 
 RTypeServer::RTypeServer(void) {
 	mClientManager.setListener(this);
@@ -35,7 +36,9 @@ void RTypeServer::onClientJoinGame(const std::string &, const std::string &, con
 void RTypeServer::onClientShowGame(const std::string &, const std::string &) {
 }
 
-void RTypeServer::onClientDeleteGame(const std::string &, const std::string &) {
+void RTypeServer::onClientDeleteGame(const std::string &, const std::string &name) {
+    try { mGamesManager.removeGame(name); }
+    catch (const GamesManagerException& e) { Utils::logError(e.what()); }    
 }
 
 void RTypeServer::onClientListGames(const std::string &) {
