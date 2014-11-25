@@ -1,9 +1,8 @@
 #include "GUI/SFMLGraphic.hpp"
 
 SFMLGraphic::SFMLGraphic()
-	: mWindow(sf::VideoMode::getDesktopMode(), "toto")
+: mWindow(sf::VideoMode::getDesktopMode(), "R-type"), mInputManager(this)
 {
-	init();
 }
 
 SFMLGraphic::~SFMLGraphic()
@@ -46,9 +45,15 @@ void	SFMLGraphic::show()
 	mWindow.display();
 }
 
+void	SFMLGraphic::update()
+{
+	mInputManager.update();
+}
+
 void	SFMLGraphic::clear()
 {
 	mWindow.clear();
+	mInputManager.clear();
 }
 
 void	SFMLGraphic::init()
@@ -59,12 +64,14 @@ void	SFMLGraphic::init()
 	mContentManager.loadSounds();
 }
 
-sf::Window const						&SFMLGraphic::getWindow() const
+sf::RenderWindow						&SFMLGraphic::getWindow()
 {
 	return mWindow;
 }
 
+/*
 std::map<sf::Event, std::string> const	&SFMLGraphic::getKeyEvents() const
 {
 	return mKeyEvents;
 }
+*/

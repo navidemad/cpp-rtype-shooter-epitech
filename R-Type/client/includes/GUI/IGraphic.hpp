@@ -15,4 +15,6 @@ class IGraphic
 		virtual bool	isOpen() const = 0;
 		virtual void	handleEvent() = 0;
 		virtual void	init() = 0;
+		virtual void	update() = 0;
+		virtual void	clear() = 0;
 };
