@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "GUI/IGraphic.hpp"
 #include "GUI/ContentManager.hpp"
+#include "Core/InputManager.hpp"
 
 class SFMLGraphic : public IGraphic
 {
@@ -23,7 +24,8 @@ class SFMLGraphic : public IGraphic
 
 	// public methods
 	public:
-		bool	drawSprite(uint32_t id, float delta, uint32_t x, uint32_t y);
+		bool	drawSprite(std::string const &key, float delta, uint32_t x, uint32_t y);
+		void	update();
 		bool	drawFont(uint32_t id, uint32_t posX, uint32_t posY);
 		bool	playSound(bool onLoop = false);
 		bool	isOpen() const;
@@ -31,8 +33,7 @@ class SFMLGraphic : public IGraphic
 		void	show();
 		void	clear();
 
-		sf::Window const						&getWindow() const;
-		std::map<sf::Event, std::string> const	&getKeyEvents() const;
+		sf::RenderWindow						&getWindow();
 
 	// public method
 	public:
@@ -43,4 +44,5 @@ class SFMLGraphic : public IGraphic
 		sf::RenderWindow					mWindow;
 		std::map<sf::Event, std::string>	mKeyEvents;
 		ContentManager						mContentManager;
+		InputManager						mInputManager;
 };
