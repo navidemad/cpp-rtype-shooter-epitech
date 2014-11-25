@@ -19,18 +19,18 @@ std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
     return mInstance;
 }
 
-void							SpriteManager::loadResources()
+void			SpriteManager::loadResources()
 {
-	std::shared_ptr<SpriteModel> model(new SpriteModel("assets/sprites/r-typesheet7.gif", 2, 6));
-	mListResources.push_back(model);
+	SpriteModel model("assets/sprites/r-typesheet7.gif", 2, 6);
+	mListResources.insert(std::pair<std::string, SpriteModel>("1", model));
 }
 
-void							SpriteManager::unloadResources()
+void			SpriteManager::unloadResources()
 {
 
 }
 
-std::vector<std::shared_ptr<SpriteModel>> const	&SpriteManager::getResources() const
+SpriteModel const	&SpriteManager::getResource(std::string const &key) const
 {
-	return mListResources;
+	return mListResources.at(key);
 }

@@ -10,5 +10,5 @@ class IResourceManager
 	public:
 		virtual void		loadResources() = 0;
 		virtual void		unloadResources() = 0;
-		virtual T const		&getResources() const = 0;
+		virtual T const		&getResource(std::string const &key) const = 0;
 };

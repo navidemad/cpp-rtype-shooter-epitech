@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
 
-class FontManager : public IResourceManager<std::map<std::string, sf::Font>>
+class FontManager : public IResourceManager<sf::Font>
 {
 	// ctor - dtor
 	private:
@@ -29,9 +29,9 @@ class FontManager : public IResourceManager<std::map<std::string, sf::Font>>
 
 	// methods
 	public:
-		virtual void									loadResources();
-		virtual void									unloadResources();
-		virtual std::map<std::string, sf::Font> const	&getResources() const;
+		void			loadResources();
+		void			unloadResources();
+		sf::Font const	&getResource(std::string const &key) const;
 
 	// attributes
 	private:

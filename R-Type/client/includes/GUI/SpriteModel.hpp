@@ -14,18 +14,25 @@ class SpriteModel
 
     // copy operators
     public:
-        SpriteModel(const SpriteModel &) = delete;
-        SpriteModel(SpriteModel &&) = delete;
-        const SpriteModel &operator=(const SpriteModel &) = delete;
-        const SpriteModel &operator=(SpriteModel &&) = delete;
+        SpriteModel(const SpriteModel &);
+        SpriteModel(SpriteModel &&);
+        const SpriteModel &operator=(const SpriteModel &);
+        const SpriteModel &operator=(SpriteModel &&);
 
 	// methods
 	public:
-		uint32_t			getCurrentIndex() const;
-		bool				isLoop() const;
-		std::string const	&getFileName() const;
+		sf::Texture const	&getTexture() const;
 		sf::Sprite const	&getSprite() const;
 		sf::IntRect const	&getFrame(uint32_t index) const;
+		bool				isLoop() const;
+		std::string const	&getFileName() const;
+		uint32_t			getCurrentIndex() const;
+		uint32_t			getBegin() const;
+		uint32_t			getEnd() const;
+		uint32_t			getLines() const;
+		uint32_t			getColumns() const;
+		uint32_t			getX() const;
+		uint32_t			getY() const;
 
 		void				setAnims(uint32_t begin, uint32_t end);
 		void				setCurrentIndex(uint32_t currentIndex);
@@ -45,6 +52,6 @@ class SpriteModel
 		uint32_t					mEnd;
 		uint32_t					mLines;
 		uint32_t					mColumns;
-		uint32_t					mPosX;
-		uint32_t					mPosY;
+		uint32_t					mX;
+		uint32_t					mY;
 };

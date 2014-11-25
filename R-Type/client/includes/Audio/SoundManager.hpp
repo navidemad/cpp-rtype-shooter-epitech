@@ -6,7 +6,7 @@
 #include <SFML/Audio.hpp>
 #include "GUI/IResourceManager.hpp"
 
-class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
+class SoundManager : public IResourceManager<sf::Sound>
 {
 	// ctor - dtor
 	private:
@@ -29,9 +29,9 @@ class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
 
 	// methods
 	public:
-		virtual void									loadResources();
-		virtual void									unloadResources();
-		virtual std::map<std::string, sf::Sound> const	&getResources() const;
+		void			loadResources();
+		void			unloadResources();
+		sf::Sound const	&getResource(std::string const &key) const;
 
 	// attributes
 	private:

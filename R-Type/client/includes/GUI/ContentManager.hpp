@@ -33,15 +33,15 @@ class ContentManager
 		void	loadFonts();
 		void	loadSounds();
 
-		std::map<std::string, sf::Sprite> const			&getTextures() const;
-		std::vector<std::shared_ptr<SpriteModel>> const	&getSprites() const;
-		std::map<std::string, sf::Font> const			&getFonts() const;
-		std::map<std::string, sf::Sound> const			&getSounds() const;
+		std::shared_ptr<IResourceManager<sf::Texture>> const	&getTextures() const;
+		std::shared_ptr<IResourceManager<SpriteModel>> const	&getSprites() const;
+		std::shared_ptr<IResourceManager<sf::Font>> const		&getFonts() const;
+		std::shared_ptr<IResourceManager<sf::Sound>> const		&getSounds() const;
 
 	// attributes
 	private:
-		std::shared_ptr<IResourceManager<std::map<std::string, sf::Sprite>>>	mTextures;
-		std::shared_ptr<IResourceManager<std::vector<std::shared_ptr<SpriteModel>>>>	mSprites;
-		std::shared_ptr<IResourceManager<std::map<std::string, sf::Font>>>		mFonts;
-		std::shared_ptr<IResourceManager<std::map<std::string, sf::Sound>>>		mSounds;
+		std::shared_ptr<IResourceManager<sf::Texture>>	mTextures;
+		std::shared_ptr<IResourceManager<SpriteModel>>	mSprites;
+		std::shared_ptr<IResourceManager<sf::Font>>		mFonts;
+		std::shared_ptr<IResourceManager<sf::Sound>>	mSounds;
 };
