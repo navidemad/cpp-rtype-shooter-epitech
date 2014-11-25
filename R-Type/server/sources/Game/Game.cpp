@@ -8,10 +8,6 @@ Game::~Game(void) {
 
 }
 
-void Game::updateTimer(void) {
-
-}
-
 void Game::updatePositions(void) {
 
 }
@@ -37,6 +33,7 @@ const Game::GameProperties& Game::getProperties(void) const {
 }
 
 Game::GameProperties::GameProperties(void) : mName(""), mLevelName(""), mNbPlayers(0), mNbSpectators(0) {
+
 }
 
 Game::GameProperties::~GameProperties(void) {

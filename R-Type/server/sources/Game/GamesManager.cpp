@@ -16,7 +16,6 @@ GamesManager::~GamesManager(void) {
 
 void GamesManager::run(void) {
     for (;;) for (const auto &game : mGames) {
-        game->updateTimer();
         game->updatePositions();
         game->checkRessources();
     }

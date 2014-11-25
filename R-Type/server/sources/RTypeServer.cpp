@@ -18,7 +18,15 @@ int RTypeServer::run(void) {
 void RTypeServer::onClientDisconnected(const std::string &) {
 }
 
-void RTypeServer::onClientCreateGame(const std::string &, const std::string &, const std::string &, int, int) {
+void RTypeServer::onClientCreateGame(const std::string &, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
+    Game::GameProperties properties;
+
+    properties.setName(name);
+    properties.setLevelName(levelName);
+    properties.setNbPlayers(nbPlayers);
+    properties.setNbSpectators(nbObservers);
+
+    mGamesManager.createGame(properties);
 }
 
 void RTypeServer::onClientJoinGame(const std::string &, const std::string &, const std::string &) {

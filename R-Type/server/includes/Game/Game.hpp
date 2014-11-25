@@ -58,7 +58,6 @@ class Game {
 
     // internal functions
     public:
-        void updateTimer(void);
         void updatePositions(void);
         void checkRessources(void);
         void addPlayer(void);
