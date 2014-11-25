@@ -26,7 +26,7 @@ class GamesManager {
     // internal functions
     public:
         void run(void);
-        void createGame(const Game::GameProperties&);
+        void createGame(const Game::GameProperties&, const std::string&);
         std::vector<std::shared_ptr<Game>>::iterator findGame(const std::string& name);
         void removeGame(const std::string&);
 

@@ -11,6 +11,7 @@ RTypeServer::~RTypeServer(void) {
 }
 
 int RTypeServer::run(void) {
+    mScriptLoader.loadAll();
 	mClientManager.run();
     mGamesManager.run();	
 	return 0;
@@ -19,7 +20,7 @@ int RTypeServer::run(void) {
 void RTypeServer::onClientDisconnected(const std::string &) {
 }
 
-void RTypeServer::onClientCreateGame(const std::string &, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
+void RTypeServer::onClientCreateGame(const std::string &host, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
     Game::GameProperties properties;
 
     properties.setName(name);
@@ -27,7 +28,7 @@ void RTypeServer::onClientCreateGame(const std::string &, const std::string &nam
     properties.setNbPlayers(nbPlayers);
     properties.setNbSpectators(nbObservers);
 
-    mGamesManager.createGame(properties);
+    mGamesManager.createGame(properties, host);
 }
 
 void RTypeServer::onClientJoinGame(const std::string &, const std::string &, const std::string &) {

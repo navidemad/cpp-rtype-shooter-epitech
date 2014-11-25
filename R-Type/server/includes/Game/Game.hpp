@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Timer.hpp"
+#include "Client.hpp"
 
 #include <string>
+#include <memory>
+#include <list>
 
 class Game {
 
@@ -46,7 +49,7 @@ class Game {
 
     // ctor / dtor
     public:
-        explicit Game(const Game::GameProperties& properties);
+        explicit Game(const Game::GameProperties& properties, const std::string& hostOwner);
         ~Game(void);
 
     // copy / move operators
@@ -60,8 +63,8 @@ class Game {
     public:
         void updatePositions(void);
         void checkRessources(void);
-        void addPlayer(void);
-        void delPlayer(void);
+        void addPlayer(const std::string& ipAddress);
+        void delPlayer(const std::string& ipAddress);
         void terminateGame(void);
         const Game::GameProperties& getProperties(void) const;
 
@@ -69,5 +72,7 @@ class Game {
     private:
         Timer mTimer;
         const Game::GameProperties& mProperties;
+        std::list<std::string> mPlayersAddress;
+        bool isRunning;
 
 };
