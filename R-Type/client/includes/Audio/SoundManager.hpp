@@ -12,14 +12,14 @@ class SoundManager : public IResourceManager<std::map<std::string, sf::Sound>>
 	private:
 		explicit SoundManager();
 	public:
-		~SoundManager();
+		virtual ~SoundManager();
 
-	// coplien forms
+    // copy operators
 	public:
-		SoundManager(SoundManager const &) = delete;
-		SoundManager(SoundManager const &&) = delete;
-		SoundManager const	&operator=(SoundManager const &) = delete;
-		SoundManager const	&operator=(SoundManager const &&) = delete;
+        SoundManager(const SoundManager &) = delete;
+        SoundManager(SoundManager &&) = delete;
+        const SoundManager &operator=(const SoundManager &) = delete;
+        const SoundManager &operator=(SoundManager &&) = delete;
 
 	// instance
 	public:

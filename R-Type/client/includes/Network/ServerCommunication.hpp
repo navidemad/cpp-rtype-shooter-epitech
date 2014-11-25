@@ -2,13 +2,15 @@
 
 class ServerCommunication
 {
-	// ctor - dtor
-	public:
-		ServerCommunication();
-		~ServerCommunication();
+    // ctor - dtor
+    public:
+        explicit ServerCommunication();
+        ~ServerCommunication();
 
-	// coplien form
-	private:
-		ServerCommunication(ServerCommunication const &) {}
-		ServerCommunication const	&operator=(ServerCommunication const &) { return *this; }
+    // copy operators
+    public:
+        ServerCommunication(const ServerCommunication &) = delete;
+        ServerCommunication(ServerCommunication &&) = delete;
+        const ServerCommunication &operator=(const ServerCommunication &) = delete;
+        const ServerCommunication &operator=(ServerCommunication &&) = delete;
 };

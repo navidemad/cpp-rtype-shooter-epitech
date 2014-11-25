@@ -18,7 +18,7 @@ void	UdpClient::connect(const std::string &/*addr*/, int port) {
 	QObject::connect(mQUdpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
 }
 
-void	UdpClient::initFromSocket(void *socket) {
+void	UdpClient::initFromSocket(void *socket, const std::string & /*addr*/, int /*port*/) {
 	mQUdpSocket = std::shared_ptr<QUdpSocket>(reinterpret_cast<QUdpSocket *>(socket));
 
 	QObject::connect(mQUdpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));

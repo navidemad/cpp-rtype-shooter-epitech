@@ -4,18 +4,20 @@
 
 class Component
 {
-	// ctor - dtor
-	public:
-		Component(ComponentType::Type);
-		~Component();
+    // ctor - dtor
+    public:
+        explicit Component(ComponentType::Type);
+        ~Component();
 
-	// coplien form
-	private:
-//		Component(Component const &) : mCompenentId(ComponentType::INVALID) {}
-//		Component const	&operator=(Component const &) { return *this; }
+    // copy operators
+    public:
+        Component(const Component &) = delete;
+        Component(Component &&) = delete;
+        const Component &operator=(const Component &) = delete;
+        const Component &operator=(Component &&) = delete;
 
 	public:
-		const ComponentType::Type	getComponentId() const;
+		ComponentType::Type	getComponentId() const;
 
 	private:
 		const ComponentType::Type mCompenentId;

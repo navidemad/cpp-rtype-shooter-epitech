@@ -48,6 +48,7 @@ void ThreadPool::operator()(void *) {
 	}
 }
 
+#include <iostream>
 const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 	ScopedLock scopedLock(mMutex);
 

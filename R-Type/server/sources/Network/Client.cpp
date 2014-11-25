@@ -26,7 +26,7 @@ const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::UNKNOWN,		nullptr						}
 };
 
-Client::Client(const std::shared_ptr<IClientSocket> &client) : mListener(nullptr), mClientPacketBuilder(client) {
+Client::Client(const std::shared_ptr<IClientSocket> &client) : mHost(client->getAddr()), mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client) {
 	mClientPacketBuilder.setListener(this);
 }
 
@@ -92,12 +92,12 @@ void	Client::recvListLevels(const std::shared_ptr<ICommand> &) {
 		mListener->onClientListLevels(*this);
 }
 
-void	Client::recvDisconnect(const std::shared_ptr<ICommand> & /*command*/) {
+void	Client::recvDisconnect(const std::shared_ptr<ICommand> &) {
 	if (mListener)
 		mListener->onClientDisconnect(*this);
 }
 
-void	Client::recvHandshake(const std::shared_ptr<ICommand> & /*command*/) {
+void	Client::recvHandshake(const std::shared_ptr<ICommand> &) {
 	if (mListener)
 		mListener->onClientHandshake(*this);
 }
@@ -106,16 +106,13 @@ void	Client::recvObserveGame(const std::shared_ptr<ICommand> &command) {
 	if (mListener) {
 		const std::shared_ptr<CommandObserveGame> commandObserveGame = std::static_pointer_cast<CommandObserveGame>(command);
 
-		mListener->onClientObserverGame(*this, commandObserveGame->getName());
+		mListener->onClientObserveGame(*this, commandObserveGame->getName());
 	}
 }
 
-void	Client::recvLeaveGame(const std::shared_ptr<ICommand> &command) {
-	if (mListener) {
-		const std::shared_ptr<CommandLeaveGame> commandLeaveGame = std::static_pointer_cast<CommandLeaveGame>(command);
-
-		mListener->onClientLeaveGame(*this, commandLeaveGame->getName());
-	}
+void	Client::recvLeaveGame(const std::shared_ptr<ICommand> &) {
+	if (mListener)
+		mListener->onClientLeaveGame(*this);
 }
 
 void	Client::recvUpdatePseudo(const std::shared_ptr<ICommand> &command) {
@@ -124,4 +121,30 @@ void	Client::recvUpdatePseudo(const std::shared_ptr<ICommand> &command) {
 
 		mListener->onClientUpdatePseudo(*this, commandUpdatePseudo->getPseudo());
 	}
+}
+
+const std::string &Client::getHost(void) const {
+	return mHost;
+}
+
+const std::string &Client::getPseudo(void) const {
+	return mPseudo;
+}
+
+void Client::setPseudo(const std::string &pseudo) {
+	mPseudo = pseudo;
+}
+
+bool Client::isAuthenticated(void) const {
+	return mIsAuthenticated;
+}
+
+void Client::setIsAuthenticated(bool isAuthenticated) {
+	mIsAuthenticated = isAuthenticated;
+}
+
+void Client::handshake(void) {
+	CommandHandshake commandHandShake;
+
+	mClientPacketBuilder.sendCommand(&commandHandShake);
 }

@@ -2,13 +2,15 @@
 
 class MovementSystem
 {
-	// ctor - dtor
-	public:
-		MovementSystem();
-		~MovementSystem();
+    // ctor - dtor
+    public:
+        explicit MovementSystem();
+        ~MovementSystem();
 
-	// coplien form
-	private:
-		MovementSystem(MovementSystem const &) {}
-		MovementSystem const	&operator=(MovementSystem const &) { return *this; }
+    // copy operators
+    public:
+        MovementSystem(const MovementSystem &) = delete;
+        MovementSystem(MovementSystem &&) = delete;
+        const MovementSystem &operator=(const MovementSystem &) = delete;
+        const MovementSystem &operator=(MovementSystem &&) = delete;
 };

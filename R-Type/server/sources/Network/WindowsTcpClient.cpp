@@ -14,6 +14,7 @@ WindowsTcpClient::WindowsTcpClient(void)
 }
 
 WindowsTcpClient::~WindowsTcpClient(void) {
+	closeClient();
 	WindowsWSAHandler::cleanup();
 }
 

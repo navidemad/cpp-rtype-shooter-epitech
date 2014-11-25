@@ -14,7 +14,7 @@ ECSManager::~ECSManager()
 
 }
 
-inline const unsigned int	ECSManager::getCurrentId() const
+inline unsigned int	ECSManager::getCurrentId() const
 {
 	return	mCurrentId;
 }

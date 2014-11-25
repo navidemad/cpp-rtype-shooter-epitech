@@ -25,20 +25,11 @@ class CommandLeaveGame : public ICommand {
 		const CommandLeaveGame &operator=(const CommandLeaveGame &) = delete;
 		const CommandLeaveGame &operator=(CommandLeaveGame &&) = delete;
 
-	// getter - setters
-	public:
-		const std::string &getName(void) const;
-		void setName(const std::string &name);
-
 	// public pure methods
 	public:
 		ICommand::Instruction	getInstruction(void) const;
 		IClientSocket::Message	getMessage(void) const;
 		unsigned int			getSizeToRead(void) const;
 		void					initFromMessage(const IClientSocket::Message &message);
-
-	// attributes
-	private:
-		std::string mName;
 
 };

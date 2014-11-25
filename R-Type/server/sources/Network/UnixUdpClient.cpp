@@ -17,6 +17,7 @@ UnixUdpClient::UnixUdpClient(void)
 {}
 
 UnixUdpClient::~UnixUdpClient(void) {
+	closeClient();
 }
 
 void	UnixUdpClient::connect(const std::string &addr, int port) {

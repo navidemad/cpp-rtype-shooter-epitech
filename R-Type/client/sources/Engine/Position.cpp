@@ -12,12 +12,12 @@ Position::~Position()
 
 }
 
-inline const int	Position::getX() const
+inline int	Position::getX() const
 {
 	return mX;
 }
 
-inline const int	Position::getY() const
+inline int	Position::getY() const
 {
 	return mY;
 }

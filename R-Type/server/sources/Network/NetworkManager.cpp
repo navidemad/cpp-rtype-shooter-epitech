@@ -38,7 +38,7 @@ void	NetworkManager::removeSocket(int socketFd) {
 	auto socket = findSocket(socketFd);
 
 	if (socket == mSockets.end())
-		throw SocketException("Socket is not under the NetworkManager control");
+		return;
 
 	mSockets.erase(socket);
 
@@ -66,11 +66,9 @@ void	NetworkManager::doSelect(void) {
 
 		struct timeval tv;
 		tv.tv_sec = 0;
-		tv.tv_usec = 0;
-		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) == -1)
-			throw SocketException("fail select()");
-
-		checkFds();
+		tv.tv_usec = 500;
+		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) > 0)
+			checkFds();
 	}
 }
 
@@ -90,62 +88,36 @@ void	NetworkManager::checkFds(void) {
 	ScopedLock scopedLock(mMutex);
 
 	for (auto &socket : mSockets) {
-		if (!socket.isCurrentlyNotifyRead && socket.listener && FD_ISSET(socket.fd, &mReadFds)) {
-			socket.isCurrentlyNotifyRead = true;
-			*mThreadPool << std::bind(&NetworkManager::onSocketReadable, this, socket.fd);
-		}
+		bool readable = FD_ISSET(socket.fd, &mReadFds);
+		bool writable = FD_ISSET(socket.fd, &mWriteFds);
 
-		if (!socket.isCurrentlyNotifyWrite && socket.listener && FD_ISSET(socket.fd, &mWriteFds)) {
-			socket.isCurrentlyNotifyWrite = true;
-			*mThreadPool << std::bind(&NetworkManager::onSocketWritable, this, socket.fd);
+		if ((readable || writable) && !socket.isCallbackRunning && socket.listener) {
+			socket.isCallbackRunning = true;
+			*mThreadPool << std::bind(&NetworkManager::socketCallback, this, socket.fd, readable, writable);
 		}
 	}
 }
 
-void	NetworkManager::onSocketReadable(int socketFd) {
+void	NetworkManager::socketCallback(int socketFd, bool readable, bool writable) {
 	std::list<NetworkManager::Socket>::iterator socket;
-
 	{
 		ScopedLock scopedLock(mMutex);
 
 		socket = findSocket(socketFd);
-		if (socket == mSockets.end())
-			return;
 	}
 
-	socket->listener->onSocketReadable(socket->fd);
+	if (readable && stillUnderControl(socketFd))
+		socket->listener->onSocketReadable(socket->fd);
 
-	{
-		ScopedLock scopedLock(mMutex);
+	if (writable && stillUnderControl(socketFd))
+		socket->listener->onSocketWritable(socket->fd);
 
-		socket = findSocket(socketFd);
-		if (socket == mSockets.end())
-			return;
-
-		socket->isCurrentlyNotifyRead = false;
-	}
+	if (stillUnderControl(socketFd))
+		socket->isCallbackRunning = false;
 }
 
-void	NetworkManager::onSocketWritable(int socketFd) {
-	std::list<NetworkManager::Socket>::iterator socket;
+bool NetworkManager::stillUnderControl(int socketFd) {
+	ScopedLock scopedLock(mMutex);
 
-	{
-		ScopedLock scopedLock(mMutex);
-
-		socket = findSocket(socketFd);
-		if (socket == mSockets.end())
-			return;
-	}
-
-	socket->listener->onSocketWritable(socket->fd);
-
-	{
-		ScopedLock scopedLock(mMutex);
-
-		socket = findSocket(socketFd);
-		if (socket == mSockets.end())
-			return;
-
-		socket->isCurrentlyNotifyWrite = false;
-	}
+	return findSocket(socketFd) != mSockets.end();
 }

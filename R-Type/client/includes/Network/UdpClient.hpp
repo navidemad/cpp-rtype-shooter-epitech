@@ -21,7 +21,7 @@ class UdpClient : public QObject, public IClientSocket{
 		// start-stop
 	public:
 		void	connect(const std::string &addr, int port);
-		void	initFromSocket(void *socket);
+		void	initFromSocket(void *socket, const std::string &addr, int port);
 		void	closeClient(void);
 
     // get host ip

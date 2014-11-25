@@ -16,8 +16,8 @@ class Position : public Component
 		Position const	&operator=(Position const &) { return *this; }
 
 	public:
-		inline const int	getX() const;
-		inline const int	getY() const;
+		inline int	getX() const;
+		inline int	getY() const;
 		inline void			setX(int);
 		inline void			setY(int);
 

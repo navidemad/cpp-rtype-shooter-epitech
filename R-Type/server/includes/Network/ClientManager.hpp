@@ -25,6 +25,21 @@ class ClientManager : public IServerSocket::OnSocketEvent, public Client::OnClie
 
 	// events
 	public:
+		class OnClientManagerEvent {
+			public:
+				virtual ~OnClientManagerEvent(void) {}
+				virtual void onClientDisconnected(const std::string &host) = 0;
+				virtual void onClientCreateGame(const std::string &host, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
+				virtual void onClientJoinGame(const std::string &host, const std::string &name, const std::string &pseudo) = 0;
+				virtual void onClientShowGame(const std::string &host, const std::string &name) = 0;
+				virtual void onClientDeleteGame(const std::string &host, const std::string &name) = 0;
+				virtual void onClientListGames(const std::string &host) = 0;
+				virtual void onClientListLevels(const std::string &host) = 0;
+				virtual void onClientObserveGame(const std::string &host, const std::string &name) = 0;
+				virtual void onClientLeaveGame(const std::string &host) = 0;
+				virtual void onClientUpdatePseudo(const std::string &host, const std::string &pseudo) = 0;
+		};
+
 		void	onNewConnection(IServerSocket *socket);
 		void	onClientDisconnected(const Client &client);
 		void	onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers);
@@ -34,13 +49,16 @@ class ClientManager : public IServerSocket::OnSocketEvent, public Client::OnClie
 		void	onClientListGames(const Client &client);
 		void	onClientListLevels(const Client &client);
 		void	onClientDisconnect(const Client &client);
-		void	onClientHandshake(const Client &client);
-		void	onClientObserverGame(const Client &client, const std::string &name);
-		void	onClientLeaveGame(const Client &client, const std::string &name);
-		void	onClientUpdatePseudo(const Client &client, const std::string &pseudo);
+		void	onClientHandshake(Client &client);
+		void	onClientObserveGame(const Client &client, const std::string &name);
+		void	onClientLeaveGame(const Client &client);
+		void	onClientUpdatePseudo(Client &client, const std::string &pseudo);
+
+		void	setListener(ClientManager::OnClientManagerEvent *listener);
 
 	// attributes
 	private:
+		ClientManager::OnClientManagerEvent *mListener;
 		std::list<std::shared_ptr<Client>> mClients;
 		std::shared_ptr<IServerSocket> mServer;
 

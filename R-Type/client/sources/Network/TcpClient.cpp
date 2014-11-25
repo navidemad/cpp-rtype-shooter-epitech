@@ -21,7 +21,7 @@ void	TcpClient::connect(const std::string &addr, int port) {
 	QObject::connect(mQTcpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
 }
 
-void	TcpClient::initFromSocket(void *socket) {
+void	TcpClient::initFromSocket(void *socket, const std::string & /*addr*/, int /*port*/) {
 	mQTcpSocket = std::shared_ptr<QTcpSocket>(reinterpret_cast<QTcpSocket *>(socket));
 
 	QObject::connect(mQTcpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
