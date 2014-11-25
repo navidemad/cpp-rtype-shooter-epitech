@@ -43,6 +43,7 @@ class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
 	public:
 		class OnClientEvent {
 			public:
+				virtual ~OnClientEvent(void) {}
 				virtual void	onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
 				virtual void	onClientJoinGame(const Client &client, const std::string &name) = 0;
 				virtual void	onClientShowGame(const Client &client, const std::string &name) = 0;
@@ -50,10 +51,10 @@ class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
 				virtual void	onClientListGames(const Client &client) = 0;
 				virtual void	onClientListLevels(const Client &client) = 0;
 				virtual void	onClientDisconnect(const Client &client) = 0;
-				virtual void	onClientHandshake(const Client &client) = 0;
-				virtual void	onClientObserverGame(const Client &client, const std::string &name) = 0;
-				virtual void	onClientLeaveGame(const Client &client, const std::string &name) = 0;
-				virtual void	onClientUpdatePseudo(const Client &client, const std::string &pseudo) = 0;
+				virtual void	onClientHandshake(Client &client) = 0;
+				virtual void	onClientObserveGame(const Client &client, const std::string &name) = 0;
+				virtual void	onClientLeaveGame(const Client &client) = 0;
+				virtual void	onClientUpdatePseudo(Client &client, const std::string &pseudo) = 0;
 				virtual void	onClientDisconnected(const Client &client) = 0;
 		};
 
@@ -61,8 +62,23 @@ class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
 		void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command);
 		void	onSocketClosed(const ClientPacketBuilder &clientPacketBuilder);
 
+	// handshake
+	public:
+		void	handshake(void);
+
+	// getters setters
+	public:
+		const std::string &getHost(void) const;
+		const std::string &getPseudo(void) const;
+		bool isAuthenticated(void) const;
+		void setIsAuthenticated(bool isAuthenticated);
+		void setPseudo(const std::string &pseudo);
+
 	// attributes
 	private:
+		std::string mHost;
+		std::string mPseudo;
+		bool mIsAuthenticated;
 		Client::OnClientEvent *mListener;
 		ClientPacketBuilder mClientPacketBuilder;
 

@@ -66,11 +66,9 @@ void	NetworkManager::doSelect(void) {
 
 		struct timeval tv;
 		tv.tv_sec = 0;
-		tv.tv_usec = 0;
-		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) == -1)
-			throw SocketException("fail select()");
-
-		checkFds();
+		tv.tv_usec = 500;
+		if (select(mMaxFd + 1, &mReadFds, &mWriteFds, NULL, &tv) > 0)
+			checkFds();
 	}
 }
 
