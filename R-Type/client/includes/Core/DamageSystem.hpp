@@ -2,13 +2,15 @@
 
 class DamageSystem
 {
-	// ctor - dtor
-	public:
-		DamageSystem();
-		~DamageSystem();
+    // ctor - dtor
+    public:
+        explicit DamageSystem();
+        ~DamageSystem();
 
-	// coplien form
-	private:
-		DamageSystem(DamageSystem const &) {}
-		DamageSystem const	&operator=(DamageSystem const &) { return *this; }
+    // copy operators
+    public:
+        DamageSystem(const DamageSystem &) = delete;
+        DamageSystem(DamageSystem &&) = delete;
+        const DamageSystem &operator=(const DamageSystem &) = delete;
+        const DamageSystem &operator=(DamageSystem &&) = delete;
 };

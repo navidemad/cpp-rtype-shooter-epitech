@@ -4,13 +4,15 @@
 
 class DrawableSystem
 {
-	// ctor - dtor
-	public:
-		DrawableSystem();
-		~DrawableSystem();
+    // ctor - dtor
+    public:
+        explicit DrawableSystem();
+        ~DrawableSystem();
 
-	// coplien form
-	private:
-		DrawableSystem(DrawableSystem const &) {}
-		DrawableSystem const	&operator=(DrawableSystem const &) { return *this; }
+    // copy operators
+    public:
+        DrawableSystem(const DrawableSystem &) = delete;
+        DrawableSystem(DrawableSystem &&) = delete;
+        const DrawableSystem &operator=(const DrawableSystem &) = delete;
+        const DrawableSystem &operator=(DrawableSystem &&) = delete;
 };

@@ -14,7 +14,7 @@ class FontManager : public IResourceManager<std::map<std::string, sf::Font>>
 	public:
 		~FontManager();
 
-	// coplien forms
+    // copy operators
 	public:
 		FontManager(FontManager const &) = delete;
 		FontManager(FontManager const &&) = delete;

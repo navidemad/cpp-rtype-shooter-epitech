@@ -10,15 +10,17 @@
 
 class ContentManager
 {
-	// ctor - dtor
-	public:
-		ContentManager();
-		~ContentManager();
+    // ctor - dtor
+    public:
+        explicit ContentManager();
+        ~ContentManager();
 
-	// coplien form
-	private:
-		ContentManager(ContentManager const &) {}
-		ContentManager const	&operator=(ContentManager const &) { return *this; }
+    // copy operators
+    public:
+        ContentManager(const ContentManager &) = delete;
+        ContentManager(ContentManager &&) = delete;
+        const ContentManager &operator=(const ContentManager &) = delete;
+        const ContentManager &operator=(ContentManager &&) = delete;
 
 	// methods
 	public:

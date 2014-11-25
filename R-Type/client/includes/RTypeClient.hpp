@@ -2,13 +2,15 @@
 
 class RTypeClient
 {
-	// ctor - dtor
-	public:
-		RTypeClient();
-		~RTypeClient();
+    // ctor - dtor
+    public:
+        explicit RTypeClient();
+        ~RTypeClient();
 
-	// coplien form
-	private:
-		RTypeClient(RTypeClient const &) {}
-		RTypeClient const	&operator=(RTypeClient const &) { return *this; }
+    // copy operators
+    public:
+        RTypeClient(const RTypeClient &) = delete;
+        RTypeClient(RTypeClient &&) = delete;
+        const RTypeClient &operator=(const RTypeClient &) = delete;
+        const RTypeClient &operator=(RTypeClient &&) = delete;
 };

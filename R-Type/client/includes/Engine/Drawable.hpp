@@ -2,13 +2,15 @@
 
 class Drawable
 {
-	// ctor - dtor
-	public:
-		Drawable();
-		~Drawable();
+    // ctor - dtor
+    public:
+        explicit Drawable();
+        ~Drawable();
 
-	// coplien form
-	private:
-		Drawable(Drawable const &) {}
-		Drawable const	&operator=(Drawable const &) { return *this; }
+    // copy operators
+    public:
+        Drawable(const Drawable &) = delete;
+        Drawable(Drawable &&) = delete;
+        const Drawable &operator=(const Drawable &) = delete;
+        const Drawable &operator=(Drawable &&) = delete;
 };

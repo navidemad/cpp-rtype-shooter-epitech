@@ -2,13 +2,15 @@
 
 class Position
 {
-	// ctor - dtor
-	public:
-		Position();
-		~Position();
+    // ctor - dtor
+    public:
+        explicit Position();
+        ~Position();
 
-	// coplien form
-	private:
-		Position(Position const &) {}
-		Position const	&operator=(Position const &) { return *this; }
+    // copy operators
+    public:
+        Position(const Position &) = delete;
+        Position(Position &&) = delete;
+        const Position &operator=(const Position &) = delete;
+        const Position &operator=(Position &&) = delete;
 };

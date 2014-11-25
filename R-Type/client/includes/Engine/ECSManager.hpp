@@ -10,13 +10,17 @@ class RTypeClient;
 
 class ECSManager
 {
-	// ctor - dtor
-	public:
-		ECSManager(RTypeClient *);
-		~ECSManager();
+    // ctor - dtor
+    public:
+        explicit ECSManager(RTypeClient *);
+        ~ECSManager();
 
-		ECSManager(ECSManager const &) = delete;
-		ECSManager const	&operator=(ECSManager const &) = delete;
+    // copy operators
+    public:
+        ECSManager(const ECSManager &) = delete;
+        ECSManager(ECSManager &&) = delete;
+        const ECSManager &operator=(const ECSManager &) = delete;
+        const ECSManager &operator=(ECSManager &&) = delete;
 
 	// getter
 	private:

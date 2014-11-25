@@ -2,13 +2,15 @@
 
 class System
 {
-	// ctor - dtor
-	public:
-		System();
-		~System();
+    // ctor - dtor
+    public:
+        explicit System();
+        ~System();
 
-	// coplien form
-	private:
-		System(System const &) {}
-		System const	&operator=(System const &) { return *this; }
+    // copy operators
+    public:
+        System(const System &) = delete;
+        System(System &&) = delete;
+        const System &operator=(const System &) = delete;
+        const System &operator=(System &&) = delete;
 };

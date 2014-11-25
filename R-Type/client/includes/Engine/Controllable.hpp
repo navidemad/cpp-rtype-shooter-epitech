@@ -2,13 +2,15 @@
 
 class Controllable
 {
-	// ctor - dtor
-	public:
-		Controllable();
-		~Controllable();
+    // ctor - dtor
+    public:
+        explicit Controllable();
+        ~Controllable();
 
-	// coplien form
-	private:
-		Controllable(Controllable const &) {}
-		Controllable const	&operator=(Controllable const &) { return *this; }
+    // copy operators
+    public:
+        Controllable(const Controllable &) = delete;
+        Controllable(Controllable &&) = delete;
+        const Controllable &operator=(const Controllable &) = delete;
+        const Controllable &operator=(Controllable &&) = delete;
 };

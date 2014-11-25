@@ -8,18 +8,18 @@
 
 class SpriteManager : public IResourceManager<std::vector<std::shared_ptr<SpriteModel>>>
 {
-	// ctor - dtor
+    // ctor - dtor
     private:
-        SpriteManager();
+        explicit SpriteManager();
     public:
         virtual ~SpriteManager();
 
-	// coplien form
-	public:
-		SpriteManager(SpriteManager const &) = delete;
-		SpriteManager(SpriteManager const &&) = delete;
-		SpriteManager const	&operator=(SpriteManager const &) = delete;
-		SpriteManager const	&operator=(SpriteManager const &&) = delete;
+    // copy operators
+    public:
+        SpriteManager(const SpriteManager &) = delete;
+        SpriteManager(SpriteManager &&) = delete;
+        const SpriteManager &operator=(const SpriteManager &) = delete;
+        const SpriteManager &operator=(SpriteManager &&) = delete;
 
 	// instance
 	public:

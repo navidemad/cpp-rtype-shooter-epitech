@@ -9,15 +9,17 @@ class TcpClient : public QObject, public IClientSocket{
 
 	Q_OBJECT
 
-	// ctor - dtor
-	public:
-		TcpClient();
-		~TcpClient();
+    // ctor - dtor
+    public:
+        explicit TcpClient();
+        ~TcpClient();
 
-	// coplien form
-	private:
-		TcpClient(TcpClient const &) {}
-		TcpClient const	&operator=(TcpClient const &) { return *this; }
+    // copy operators
+    public:
+        TcpClient(const TcpClient &) = delete;
+        TcpClient(TcpClient &&) = delete;
+        const TcpClient &operator=(const TcpClient &) = delete;
+        const TcpClient &operator=(TcpClient &&) = delete;
 
 	// start
 	public:
