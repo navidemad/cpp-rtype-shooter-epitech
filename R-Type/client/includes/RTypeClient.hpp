@@ -2,6 +2,7 @@
 
 
 #include "Engine/ECSManager.hpp"
+#include "GUI/IGraphic.hpp"
 
 class ECSManager;
 
@@ -35,5 +36,6 @@ public:
 	// Attribute
 	private:
 		unsigned int	mCurrentId;
-		ECSManager		Engine;
+		ECSManager		mEngine;
+		IGraphic		*mGui;
 };

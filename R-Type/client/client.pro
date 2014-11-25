@@ -109,7 +109,7 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Network/TcpClient.cpp			\
 			sources/Network/UdpClient.cpp
 
-CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
+#CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
 
 win32:LIBS	+=	-ldependencies/libs/sfml-audio-d	\
@@ -126,7 +126,11 @@ win32:LIBS	+=	-ldependencies/libs/sfml-audio-d	\
 #			-ldependencies/libs/sfml-system		\
 #			-ldependencies/libs/sfml-window
 
-unix:LIBS	+=     	
+unix:LIBS	+=	-lsfml-audio 		\
+				-lsfml-graphics 	\
+				-lsfml-network 		\
+				-lsfml-window 		\
+				-lsfml-system	
 
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
