@@ -45,7 +45,8 @@ void		SpriteModel::init()
 		sf::IntRect rect((i % rectWidth) * rectWidth, (i / rectWidth) * rectHeight, rectWidth, rectHeight);
 		mFrames.push_back(rect);
 	}
-	//mSprite.scale(sf::Vector2f(2.0, 2.0));
+	mTexture.setSmooth(true);
+	mSprite.scale(sf::Vector2f(4.0, 4.0));
 	mSprite.setTextureRect(mFrames[0]);
 }
 
@@ -69,9 +70,9 @@ sf::Sprite const	&SpriteModel::getSprite() const
 	return (mSprite);
 }
 
-sf::IntRect const	&SpriteModel::getIntRect() const
+sf::IntRect const	&SpriteModel::getFrame(uint32_t index) const
 {
-	return mFrames[0];
+	return mFrames[index];
 }
 
 void	SpriteModel::setAnims(uint32_t begin, uint32_t end)

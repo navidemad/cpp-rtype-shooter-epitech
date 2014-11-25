@@ -21,7 +21,7 @@ class SFMLGraphic : public IGraphic
 
 	// public methods
 	public:
-		bool	drawSprite(uint32_t id, uint32_t posX, uint32_t posY);
+		bool	drawSprite(uint32_t id, float delta, uint32_t x, uint32_t y);
 		bool	drawFont(uint32_t id, uint32_t posX, uint32_t posY);
 		bool	playSound(bool onLoop = false);
 		bool	isOpen() const;
@@ -32,8 +32,8 @@ class SFMLGraphic : public IGraphic
 		sf::Window const						&getWindow() const;
 		std::map<sf::Event, std::string> const	&getKeyEvents() const;
 
-	// private method
-	private:
+	// public method
+	public:
 		void	init();
 
 	// attributes

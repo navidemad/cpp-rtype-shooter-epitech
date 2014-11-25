@@ -23,7 +23,7 @@ class SpriteModel
 		bool				isLoop() const;
 		std::string const	&getFileName() const;
 		sf::Sprite const	&getSprite() const;
-		sf::IntRect const	&getIntRect() const;
+		sf::IntRect const	&getFrame(uint32_t index) const;
 
 		void				setAnims(uint32_t begin, uint32_t end);
 		void				setCurrentIndex(uint32_t currentIndex);

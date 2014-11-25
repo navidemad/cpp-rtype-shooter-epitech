@@ -1,8 +1,4 @@
 #include <memory>
-#include "GUI/TextureManager.hpp"
-#include "GUI/SpriteManager.hpp"
-#include "GUI/FontManager.hpp"
-#include "Audio/SoundManager.hpp"
 #include "GUI/ContentManager.hpp"
 
 ContentManager::ContentManager() :

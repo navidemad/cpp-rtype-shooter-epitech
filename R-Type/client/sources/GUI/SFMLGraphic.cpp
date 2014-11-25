@@ -11,7 +11,7 @@ SFMLGraphic::~SFMLGraphic()
 
 }
 
-bool	SFMLGraphic::drawSprite(uint32_t id, uint32_t /*posX*/, uint32_t /*posY*/)
+bool	SFMLGraphic::drawSprite(uint32_t id, float /*delta*/, uint32_t /*x*/, uint32_t /*y*/)
 {
 	if (!mContentManager.getSprites().empty() && id < mContentManager.getSprites().size())
 		mWindow.draw(mContentManager.getSprites()[id]->getSprite());
