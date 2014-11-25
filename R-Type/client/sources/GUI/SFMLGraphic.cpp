@@ -11,13 +11,13 @@ SFMLGraphic::~SFMLGraphic()
 
 }
 
-bool	SFMLGraphic::drawSprite(uint32_t /*id*/, float /*delta*/, uint32_t /*x*/, uint32_t /*y*/)
+bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, uint32_t /*x*/, uint32_t /*y*/)
 {
-	sf::Texture texture(mContentManager.getSprites()->getResource("1").getTexture());
-	sf::IntRect rect(mContentManager.getSprites()->getResource("1").getFrame(1));
+	sf::Texture texture(mContentManager.getSprites()->getResource(key).getTexture());
+	sf::IntRect rect(mContentManager.getSprites()->getResource(key).getFrame(1));
 	sf::Sprite sprite(texture, rect);
 	texture.setSmooth(true);
-	sprite.setScale(sf::Vector2f(4, 4));
+	sprite.setScale(sf::Vector2f(16, 16));
 	mWindow.draw(sprite);
 	return true;
 }
