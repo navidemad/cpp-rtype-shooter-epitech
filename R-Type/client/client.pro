@@ -20,7 +20,7 @@ INCLUDEPATH	+=	.					\
 			../shared/includes			\
 			../shared/includes/Network		\
 			../shared/includes/Commands		\
-			../shared/includes/Error        	\
+			../shared/includes/Error		\
 			dependencies/includes			\
 			build					\
 			build/ui				\
@@ -31,6 +31,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
+			includes/Core/InputManager.hpp				\
 			includes/Core/MovementSystem.hpp			\
 			includes/Core/System.hpp				\
 			includes/Engine/Collision.hpp				\
@@ -86,6 +87,7 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Core/CollisionSystem.cpp		\
 			sources/Core/DamageSystem.cpp			\
 			sources/Core/DrawableSystem.cpp			\
+			sources/Core/InputManager.cpp			\
 			sources/Core/MovementSystem.cpp			\
 			sources/Core/System.cpp				\
 			sources/Engine/Collision.cpp			\
