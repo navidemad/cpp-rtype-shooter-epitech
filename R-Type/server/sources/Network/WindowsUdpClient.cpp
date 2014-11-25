@@ -14,6 +14,7 @@ mMutex(PortabilityBuilder::getMutex()), mListener(nullptr), mNetworkManager(Netw
 }
 
 WindowsUdpClient::~WindowsUdpClient(void) {
+	closeClient();
 	WindowsWSAHandler::cleanup();
 }
 
@@ -125,13 +126,10 @@ void	WindowsUdpClient::setOnSocketEventListener(IClientSocket::OnSocketEvent *li
 }
 
 void	WindowsUdpClient::onSocketWritable(int) {
-	if (mOutDatagrams.size() == 0)
-		return;
-
 	try {
 		int nbBytes = sendSocket();
 
-		if (mListener)
+		if (mListener && nbBytes)
 			mListener->onBytesWritten(this, nbBytes);
 	}
 	catch (const SocketException &) {
@@ -140,6 +138,9 @@ void	WindowsUdpClient::onSocketWritable(int) {
 
 int WindowsUdpClient::sendSocket(void) {
 	ScopedLock ScopedLock(mMutex);
+
+	if (mOutDatagrams.size() == 0)
+		return 0;
 
 	IClientSocket::Message message = mOutDatagrams.front();
 	mOutDatagrams.pop_front();

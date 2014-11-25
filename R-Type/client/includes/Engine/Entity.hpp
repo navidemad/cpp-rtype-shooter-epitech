@@ -11,17 +11,15 @@ class Entity
 {
 	// ctor - dtor
 	public:
-		Entity(unsigned int, ECSManager *);
+		explicit Entity(unsigned int, ECSManager *);
 		~Entity();
 
-	// coplien form
-	private:
-//		Entity(Entity const &/* */) : mId(0) {}
-//		Entity const	&operator=(Entity const &) { return *this; }
+    // copy operators
+	public:
 
 	// getter
 	public:
-		inline const unsigned int	getId() const;
+		inline unsigned int	getId() const;
 
 	public:
 		inline bool										addComponent(Component *);

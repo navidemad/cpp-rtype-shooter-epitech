@@ -28,6 +28,7 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 	public:
 		class OnClientPacketBuilderEvent {
 			public:
+				virtual ~OnClientPacketBuilderEvent(void) {}
 				virtual void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command) = 0;
 				virtual void	onSocketClosed(const ClientPacketBuilder &clientPacketBuilder) = 0;
 		};
@@ -37,7 +38,7 @@ class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
 	// handle commands
 	public:
 		void	sendCommand(const ICommand *command);
-		const std::shared_ptr<ICommand> &getCommand(void) const;
+		const	std::shared_ptr<ICommand> &getCommand(void) const;
 
 	// handle build state
 	private:

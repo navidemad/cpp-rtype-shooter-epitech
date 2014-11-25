@@ -1,11 +1,10 @@
 #pragma once
 
 #include "Config.hpp"
-#include "IThread.hpp"
+#include "ThreadPool.hpp"
 #include "IMutex.hpp"
 
 #include <list>
-#include <utility>
 #include <memory>
 
 class NetworkManager {
@@ -17,6 +16,17 @@ class NetworkManager {
 				virtual	~OnSocketEvent(void) {}
 				virtual void	onSocketReadable(int socketFd) = 0;
 				virtual	void	onSocketWritable(int socketFd) = 0;
+		};
+
+	// socket struct
+	private:
+		struct Socket {
+			Socket(int pFd = -1, NetworkManager::OnSocketEvent *pListener = nullptr, bool pIsCallbackRunning = false)
+				: fd(pFd), listener(pListener), isCallbackRunning(pIsCallbackRunning) {}
+
+			int fd;
+			NetworkManager::OnSocketEvent *listener;
+			bool isCallbackRunning;
 		};
 
 	// ctor - dtor
@@ -44,14 +54,13 @@ class NetworkManager {
 
 	// internal tools
 	private:
-		std::list<std::pair<int, NetworkManager::OnSocketEvent *>>::iterator findSocket(int socketFd);
-		void  refreshMaxFd(void);
-	public:
-		void	operator()(void *);
-	private:
+		std::list<NetworkManager::Socket>::iterator findSocket(int socketFd);
+		void	refreshMaxFd(void);
+		void	doSelect(void);
 		void	initFds(void);
-		void	checkFdsReadable(void);
-		void	checkFdsWritable(void);
+		void	checkFds(void);
+		void	socketCallback(int socketFd, bool readable, bool writable);
+		bool	stillUnderControl(int socketFd);
 
 	// attributes
 	private:
@@ -59,7 +68,7 @@ class NetworkManager {
 		fd_set mReadFds;
 		fd_set mWriteFds;
 		std::shared_ptr<IMutex> mMutex;
-		std::shared_ptr<IThread<NetworkManager *, void *>> mThread;
-		std::list<std::pair<int, NetworkManager::OnSocketEvent *>> mSockets;
+		std::shared_ptr<ThreadPool> mThreadPool;
+		std::list<NetworkManager::Socket> mSockets;
 
 };

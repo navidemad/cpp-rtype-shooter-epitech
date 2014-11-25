@@ -29,7 +29,7 @@ void		SpriteModel::init()
 {
 	// load file image
 	if (!mTexture.loadFromFile(mFileName))
-		throw std::exception("Failed on load from file");
+		throw std::exception(); // faire une class SpriteModelException
 
 	// set params and sprite
 	mTexture.setSmooth(true);

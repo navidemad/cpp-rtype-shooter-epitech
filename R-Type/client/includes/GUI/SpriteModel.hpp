@@ -7,15 +7,17 @@
 
 class SpriteModel
 {
-	// ctor - dtor
-	public:
-		SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns);
-		~SpriteModel();
+    // ctor - dtor
+    public:
+        explicit SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns);
+        ~SpriteModel();
 
-	// coplien form
-	public:
-		SpriteModel(SpriteModel const &) {}
-		SpriteModel const	&operator=(SpriteModel const &) { return *this; }
+    // copy operators
+    public:
+        SpriteModel(const SpriteModel &) = delete;
+        SpriteModel(SpriteModel &&) = delete;
+        const SpriteModel &operator=(const SpriteModel &) = delete;
+        const SpriteModel &operator=(SpriteModel &&) = delete;
 
 	// methods
 	public:

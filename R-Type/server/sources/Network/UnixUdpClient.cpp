@@ -17,6 +17,7 @@ UnixUdpClient::UnixUdpClient(void)
 {}
 
 UnixUdpClient::~UnixUdpClient(void) {
+	closeClient();
 }
 
 void	UnixUdpClient::connect(const std::string &addr, int port) {
@@ -127,13 +128,10 @@ void	UnixUdpClient::setOnSocketEventListener(IClientSocket::OnSocketEvent *liste
 }
 
 void	UnixUdpClient::onSocketWritable(int) {
-	if (mOutDatagrams.size() == 0)
-		return;
-
 	try {
 		int nbBytes = sendSocket();
 
-		if (mListener)
+        if (mListener && nbBytes)
 			mListener->onBytesWritten(this, nbBytes);
 	}
 	catch (const SocketException &) {
@@ -142,6 +140,9 @@ void	UnixUdpClient::onSocketWritable(int) {
 
 int UnixUdpClient::sendSocket(void) {
 	ScopedLock ScopedLock(mMutex);
+
+    if (mOutDatagrams.size() == 0)
+        return 0;
 
   IClientSocket::Message message = mOutDatagrams.front();
 	mOutDatagrams.pop_front();

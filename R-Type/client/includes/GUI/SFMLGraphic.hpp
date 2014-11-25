@@ -9,15 +9,17 @@
 
 class SFMLGraphic : public IGraphic
 {
-	// ctor - dtor
-	public:
-		SFMLGraphic();
-		~SFMLGraphic();
+    // ctor - dtor
+    public:
+        explicit SFMLGraphic();
+        ~SFMLGraphic();
 
-	// coplien form
-	private:
-		SFMLGraphic(SFMLGraphic const &) {}
-		SFMLGraphic const	&operator=(SFMLGraphic const &) { return *this; }
+    // copy operators
+    public:
+        SFMLGraphic(const SFMLGraphic &) = delete;
+        SFMLGraphic(SFMLGraphic &&) = delete;
+        const SFMLGraphic &operator=(const SFMLGraphic &) = delete;
+        const SFMLGraphic &operator=(SFMLGraphic &&) = delete;
 
 	// public methods
 	public:

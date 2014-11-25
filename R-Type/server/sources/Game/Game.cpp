@@ -1,14 +1,10 @@
 #include "Game.hpp"
 
-Game::Game(const Game::GameProperties& properties) : mProperties(properties) {
-
+Game::Game(const Game::GameProperties& properties, const std::string& hostOwner) : mProperties(properties), isRunning(true) {
+    addPlayer(hostOwner);
 }
 
 Game::~Game(void) {
-
-}
-
-void Game::updateTimer(void) {
 
 }
 
@@ -20,16 +16,16 @@ void Game::checkRessources(void) {
 
 }
 
-void Game::addPlayer(void) {
-
+void Game::addPlayer(const std::string& ipAddress) {
+    mPlayersAddress.push_back(ipAddress);
 }
 
-void Game::delPlayer(void) {
-
+void Game::delPlayer(const std::string& ipAddress) {
+    mPlayersAddress.remove_if([&ipAddress](const std::string& it) { return it == ipAddress; });
 }
 
 void Game::terminateGame(void) {
-
+    isRunning = false;
 }
 
 const Game::GameProperties& Game::getProperties(void) const {
@@ -37,6 +33,7 @@ const Game::GameProperties& Game::getProperties(void) const {
 }
 
 Game::GameProperties::GameProperties(void) : mName(""), mLevelName(""), mNbPlayers(0), mNbSpectators(0) {
+
 }
 
 Game::GameProperties::~GameProperties(void) {

@@ -19,6 +19,6 @@ class GamesManagerException : public std::runtime_error {
 
 	// attributes
 	private:
-        const std::string& mWhat;
+		std::string mWhat;
 
 };

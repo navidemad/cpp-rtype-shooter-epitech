@@ -10,8 +10,8 @@ WindowsTcpServer::WindowsTcpServer(void) : mServerFd(-1), mListener(nullptr), mN
 }
 
 WindowsTcpServer::~WindowsTcpServer(void) {
-	WindowsWSAHandler::cleanup();
 	closeServer();
+	WindowsWSAHandler::cleanup();
 }
 
 void	WindowsTcpServer::createServer(int port, int queueSize) {

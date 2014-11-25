@@ -2,13 +2,15 @@
 
 class Script
 {
-	// ctor - dtor
-	public:
-		Script();
-		~Script();
+    // ctor - dtor
+    public:
+        explicit Script();
+        ~Script();
 
-	// coplien form
-	private:
-		Script(Script const &) {}
-		Script const	&operator=(Script const &) { return *this; }
+    // copy operators
+    public:
+        Script(const Script &) = delete;
+        Script(Script &&) = delete;
+        const Script &operator=(const Script &) = delete;
+        const Script &operator=(Script &&) = delete;
 };

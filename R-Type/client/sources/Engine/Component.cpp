@@ -12,7 +12,7 @@ Component::~Component()
 
 }
 
-const ComponentType::Type Component::getComponentId() const
+ComponentType::Type Component::getComponentId() const
 {
 	return mCompenentId;
 }

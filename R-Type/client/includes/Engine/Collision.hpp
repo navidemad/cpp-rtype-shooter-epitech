@@ -2,14 +2,15 @@
 
 class Collision
 {
-	// ctor - dtor
-	public:
-		Collision();
-		~Collision();
+    // ctor - dtor
+    public:
+        explicit Collision();
+        ~Collision();
 
-	// coplien form
-	private:
-		Collision(Collision const &) {}
-		Collision const	&operator=(Collision const &) { return *this; }
-
+    // copy operators
+    public:
+        Collision(const Collision &) = delete;
+        Collision(Collision &&) = delete;
+        const Collision &operator=(const Collision &) = delete;
+        const Collision &operator=(Collision &&) = delete;
 };
