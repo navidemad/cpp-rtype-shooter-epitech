@@ -21,13 +21,12 @@ class NetworkManager {
 	// socket struct
 	private:
 		struct Socket {
-			Socket(int pFd = -1, NetworkManager::OnSocketEvent *pListener = nullptr, bool pIsCurrentlyNotifyRead = false, bool pIsCurrentlyNotifyWrite = false)
-				: fd(pFd), listener(pListener), isCurrentlyNotifyRead(pIsCurrentlyNotifyRead), isCurrentlyNotifyWrite(pIsCurrentlyNotifyWrite) {}
+			Socket(int pFd = -1, NetworkManager::OnSocketEvent *pListener = nullptr, bool pIsCallbackRunning = false)
+				: fd(pFd), listener(pListener), isCallbackRunning(pIsCallbackRunning) {}
 
 			int fd;
 			NetworkManager::OnSocketEvent *listener;
-			bool isCurrentlyNotifyRead;
-			bool isCurrentlyNotifyWrite;
+			bool isCallbackRunning;
 		};
 
 	// ctor - dtor
@@ -60,8 +59,8 @@ class NetworkManager {
 		void	doSelect(void);
 		void	initFds(void);
 		void	checkFds(void);
-		void	onSocketReadable(int socketFd);
-		void	onSocketWritable(int socketFd);
+		void	socketCallback(int socketFd, bool readable, bool writable);
+		bool	stillUnderControl(int socketFd);
 
 	// attributes
 	private:

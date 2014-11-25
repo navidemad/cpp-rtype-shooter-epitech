@@ -28,10 +28,10 @@ void ClientManager::run(void) {
 void	ClientManager::onClientDisconnected(const Client &client) {
 	Utils::logInfo("client disconnected");
 
-	mClients.remove_if([&](const std::shared_ptr<Client> &it) { return it.get() == &client; });
-
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientDisconnected(client.getHost());
+
+	mClients.remove_if([&](const std::shared_ptr<Client> &it) { return it.get() == &client; });
 }
 
 void	ClientManager::onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {

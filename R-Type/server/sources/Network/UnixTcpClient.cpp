@@ -17,6 +17,7 @@ UnixTcpClient::UnixTcpClient(void)
 {}
 
 UnixTcpClient::~UnixTcpClient(void) {
+	closeClient();
 }
 
 void	UnixTcpClient::connect(const std::string &addr, int port) {
