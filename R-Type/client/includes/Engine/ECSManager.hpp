@@ -25,7 +25,7 @@ class ECSManager
 	// getter
 	private:
 		inline RTypeClient			&getClient() const;
-		inline const unsigned int	getCurrentId() const;
+		inline unsigned int	getCurrentId() const;
 
 	// Entity Manager
 	public:

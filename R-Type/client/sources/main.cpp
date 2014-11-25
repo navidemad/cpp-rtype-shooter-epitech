@@ -31,6 +31,8 @@ int		main(void)
 	sg.clear();
 	sg.drawSprite(0, 0, 0);
 	sg.show();
-	system("pause");
+    #if defined(__OS_WINDOWS__)
+        system("PAUSE");
+    #endif
 	return (0);
 }

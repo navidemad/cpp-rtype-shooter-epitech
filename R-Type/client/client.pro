@@ -12,7 +12,7 @@ RCC_DIR		=	build/rcc
 win32:RC_ICONS 	+= 	
 ICON 		= 	
 
-win32:QMAKE_CXXFLAGS	+=	-Wall /MP
+win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
 
 INCLUDEPATH	+=	.					\
@@ -125,3 +125,7 @@ win32:LIBS	+=	-ldependencies/libs/sfml-audio-d	\
 #			-ldependencies/libs/sfml-window
 
 unix:LIBS	+=     	
+
+win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
+unix : DEFINES += __OS_LINUX__
+DEFINES        += _DEBUG

@@ -17,7 +17,7 @@ class System
 		System const	&operator=(System const &) { return *this; }
 
 	public:
-		inline const bool	System::haveComponentNeeded(const std::bitset<ComponentType::LIMIT> &component) const {
+		inline bool	haveComponentNeeded(const std::bitset<ComponentType::LIMIT> &component) const {
 			const size_t limit = component.size();
 
 			for (size_t i = 0; i != limit; ++i)

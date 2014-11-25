@@ -16,12 +16,10 @@ class Entity
 
     // copy operators
 	public:
-        const Entity &operator=(const Entity &) = delete;
-        const Entity &operator=(Entity &&) = delete;
 
 	// getter
 	public:
-		inline const unsigned int	getId() const;
+		inline unsigned int	getId() const;
 
 	public:
 		inline bool										addComponent(Component *);

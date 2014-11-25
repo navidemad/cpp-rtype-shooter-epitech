@@ -17,7 +17,7 @@ class Component
         const Component &operator=(Component &&) = delete;
 
 	public:
-		const ComponentType::Type	getComponentId() const;
+		ComponentType::Type	getComponentId() const;
 
 	private:
 		const ComponentType::Type mCompenentId;

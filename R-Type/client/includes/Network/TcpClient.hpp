@@ -24,7 +24,7 @@ class TcpClient : public QObject, public IClientSocket{
 	// start
 	public:
 		void	connect(const std::string &addr, int port);
-		void	initFromSocket(void *socket);
+		void	initFromSocket(void *socket, const std::string &addr, int port);
 
 	// close
 	public slots:
