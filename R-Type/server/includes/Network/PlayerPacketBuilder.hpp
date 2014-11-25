@@ -9,7 +9,7 @@ class PlayerPacketBuilder : public IClientSocket::OnSocketEvent {
 
 	// ctor dtor
 	public:
-		explicit PlayerPacketBuilder(void);
+		explicit PlayerPacketBuilder(int port);
 		~PlayerPacketBuilder(void);
 
 	// move copy operators
@@ -32,9 +32,9 @@ class PlayerPacketBuilder : public IClientSocket::OnSocketEvent {
 	// events
 	public:
 		class OnPlayerPacketBuilderEvent {
-		public:
-			virtual ~OnPlayerPacketBuilderEvent(void) {}
-			virtual void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const std::string &host, int port) = 0;
+			public:
+				virtual ~OnPlayerPacketBuilderEvent(void) {}
+				virtual void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const std::string &host, int port) = 0;
 		};
 
 		void	setListener(PlayerPacketBuilder::OnPlayerPacketBuilderEvent *listener);
@@ -63,7 +63,5 @@ class PlayerPacketBuilder : public IClientSocket::OnSocketEvent {
 		std::shared_ptr<IClientSocket> mClient;
 		std::deque<IClientSocket::Message> mDatagrams;
 		PlayerPacketBuilder::OnPlayerPacketBuilderEvent *mListener;
-
-		static const int UDP_PORT = 4242;
 
 };

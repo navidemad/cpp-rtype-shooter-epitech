@@ -22,8 +22,7 @@ const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::HANDSHAKE,		&Client::recvHandshake		},
 	{ ICommand::Instruction::OBSERVE_GAME,	&Client::recvObserveGame	},
 	{ ICommand::Instruction::LEAVE_GAME,	&Client::recvLeaveGame		},
-	{ ICommand::Instruction::UPDATE_PSEUDO, &Client::recvUpdatePseudo	},
-	{ ICommand::Instruction::UNKNOWN,		nullptr						}
+	{ ICommand::Instruction::UPDATE_PSEUDO, &Client::recvUpdatePseudo	}
 };
 
 Client::Client(const std::shared_ptr<IClientSocket> &client) : mHost(client->getAddr()), mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client) {
@@ -37,7 +36,7 @@ void	Client::onPacketAvailable(const ClientPacketBuilder &, const std::shared_pt
 	for (const auto &cmdExec : commandExecTab)
 		if (cmdExec.instruction == command->getInstruction()) {
 			(this->*cmdExec.ftPtr)(command);
-			break;
+			return;
 		}
 }
 

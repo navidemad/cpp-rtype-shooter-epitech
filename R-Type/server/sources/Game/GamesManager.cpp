@@ -7,7 +7,7 @@
 #include <iostream>
 
 GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMutex(PortabilityBuilder::getMutex()) {
-
+	mPlayerCommunicationManager.setListener(this);
 }
 
 GamesManager::~GamesManager(void) {
@@ -55,4 +55,10 @@ void GamesManager::removeGame(const std::string& name) {
         throw GamesManagerException("Try to delete an undefined game");
 
     mGames.erase(game);
+}
+
+void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const std::string &, int) {
+}
+
+void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const std::string &, int) {
 }

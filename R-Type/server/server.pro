@@ -35,15 +35,16 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Exceptions/SocketException.hpp			\
 				includes/Exceptions/ThreadException.hpp			\
 				includes/Exceptions/CondVarException.hpp		\
-				includes/Exceptions/GameException.hpp		\
-				includes/Exceptions/DynLibException.hpp		\
+				includes/Exceptions/GameException.hpp			\
+				includes/Exceptions/DynLibException.hpp			\
 				includes/Exceptions/GamesManagerException.hpp		\
-				includes/Exceptions/ScriptException.hpp		\
+				includes/Exceptions/ScriptException.hpp			\
 				includes/Mutex/ScopedLock.hpp				\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
 				includes/DynLib/IDynLib.hpp				\
 				includes/Network/NetworkManager.hpp     		\
+				includes/Network/PlayerCommunicationManager.hpp		\
 				../shared/includes/Config.hpp				\
 				../shared/includes/Utils.hpp				\
 				../shared/includes/Network/IClientSocket.hpp		\
@@ -79,13 +80,13 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
 				includes/Network/PlayerPacketBuilder.hpp		\
 				../shared/includes/Commands/CommandFactory.hpp		\
 				../shared/includes/Commands/CommandException.hpp	\
-				includes/IResource.hpp	\
-				includes/RTypeServer.hpp	\
-				includes/Script/Script.hpp	\
-				includes/Script/ScriptLoader.hpp	\
-				includes/Script//ScriptParser.hpp	\
-				includes/Game/Game.hpp \
-				includes/Game/GamesManager.hpp \
+				includes/IResource.hpp					\
+				includes/RTypeServer.hpp				\
+				includes/Script/Script.hpp				\
+				includes/Script/ScriptLoader.hpp			\
+				includes/Script//ScriptParser.hpp			\
+				includes/Game/Game.hpp 					\
+				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
@@ -116,7 +117,8 @@ SOURCES			+=	sources/main.cpp						\
 				sources/Network/Client.cpp					\
 				sources/Network/ClientPacketBuilder.cpp				\
 				sources/Network/PlayerPacketBuilder.cpp				\
-				../shared/sources/Utils.cpp				\
+				sources/Network/PlayerCommunicationManager.cpp			\
+				../shared/sources/Utils.cpp					\
 				../shared/sources/Commands/CommandFactory.cpp			\
                                 ../shared/sources/Commands/ICommand.cpp        			\
                                 ../shared/sources/Commands/SharedCommandCreateGame.cpp		\
@@ -159,13 +161,13 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Commands/CommandTimeElapsedPing.cpp			\
                                 sources/Commands/CommandUpdatePseudo.cpp			\
                                 sources/Commands/CommandUpdateScore.cpp 			\
-                                sources/RTypeServer.cpp 			\
-                                sources/Script/Script.cpp 			\
-                                sources/Script/ScriptLoader.cpp 			\
-                                sources/Script/ScriptParser.cpp	\
-								sources/Game/Game.cpp \
-								sources/Game/GamesManager.cpp \
-								sources/Game/Timer.cpp
+                                sources/RTypeServer.cpp 					\
+                                sources/Script/Script.cpp 					\
+                                sources/Script/ScriptLoader.cpp 				\
+                                sources/Script/ScriptParser.cpp					\
+				sources/Game/Game.cpp 						\
+				sources/Game/GamesManager.cpp 					\
+				sources/Game/Timer.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixTcpServer.cpp			\

@@ -4,12 +4,13 @@
 #include "ThreadPool.hpp"
 #include "IMutex.hpp"
 #include "Utils.hpp"
+#include "PlayerCommunicationManager.hpp"
 
 #include <string>
 #include <memory>
 #include <vector>
 
-class GamesManager {
+class GamesManager : public PlayerCommunicationManager::OnPlayerCommunicationManagerEvent {
 
     // ctor / dtor
     public:
@@ -30,11 +31,17 @@ class GamesManager {
         std::vector<std::shared_ptr<Game>>::iterator findGame(const std::string& name);
         void removeGame(const std::string&);
 
+	// player communication manager events
+	public:
+		void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const std::string &host, int port);
+		void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const std::string &host, int port);
+
     // attributes
     private:
         std::shared_ptr<ThreadPool> mThreadPool;
         std::vector<std::shared_ptr<Game>> mGames;
         std::shared_ptr<IMutex> mMutex;
+		PlayerCommunicationManager mPlayerCommunicationManager;
 	
 	static const int THREAD_POOL_SIZE = 6;
 

@@ -4,8 +4,10 @@
 #include "CommandFactory.hpp"
 #include "CommandException.hpp"
 
-PlayerPacketBuilder::PlayerPacketBuilder(void) : mCurrentHost(""), mCurrentPort(0), mCurrentState(PlayerPacketBuilder::State::HEADER), mCurrentCommand(nullptr), mClient(PortabilityBuilder::getUdpClient()), mListener(nullptr) {
-	mClient->connect("127.0.0.1", PlayerPacketBuilder::UDP_PORT);
+PlayerPacketBuilder::PlayerPacketBuilder(int port)
+	: mCurrentHost(""), mCurrentPort(0), mCurrentState(PlayerPacketBuilder::State::HEADER), mCurrentCommand(nullptr), mClient(PortabilityBuilder::getUdpClient()), mListener(nullptr)
+{
+	mClient->connect("127.0.0.1", port);
 	mClient->setOnSocketEventListener(this);
 }
 
