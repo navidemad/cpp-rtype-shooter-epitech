@@ -21,7 +21,10 @@ std::shared_ptr<FontManager>	FontManager::getInstance()
 
 void	FontManager::loadResources()
 {
+	sf::Font font;
 
+	font.loadFromFile("./assets/fonts/RemachineScript_Personal_Use.ttf");
+	mListResources.insert(std::pair<std::string, sf::Font>("0", font));
 }
 
 void	FontManager::unloadResources()

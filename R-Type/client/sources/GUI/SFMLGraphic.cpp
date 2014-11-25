@@ -21,8 +21,14 @@ bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, uint32_t /
 	return true;
 }
 
-bool	SFMLGraphic::drawFont(uint32_t /*id*/, uint32_t /*posX*/, uint32_t /*posY*/)
+bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, uint32_t /*posX*/, uint32_t /*posY*/)
 {
+	sf::Text text;
+
+	text.setFont(mContentManager.getFonts()->getResource(key));
+	text.setString(str);
+	text.setCharacterSize(128);
+	mWindow.draw(text);
 	return true;
 }
 
