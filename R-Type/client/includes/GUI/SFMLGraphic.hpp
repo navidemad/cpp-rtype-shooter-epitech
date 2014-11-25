@@ -24,9 +24,9 @@ class SFMLGraphic : public IGraphic
 
 	// public methods
 	public:
-		bool	drawSprite(std::string const &key, float delta, uint32_t x, uint32_t y);
+		bool	drawSprite(std::string const &key, float delta, float x, float y);
 		void	update();
-		bool	drawFont(uint32_t id, uint32_t posX, uint32_t posY);
+		bool	drawFont(std::string const &key, std::string const &str, float x, float y);
 		bool	playSound(bool onLoop = false);
 		bool	isOpen() const;
 		void	handleEvent();

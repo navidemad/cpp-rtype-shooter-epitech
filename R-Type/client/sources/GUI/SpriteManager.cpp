@@ -22,7 +22,7 @@ std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
 void			SpriteManager::loadResources()
 {
 	SpriteModel model("assets/sprites/r-typesheet7.gif", 2, 6);
-	mListResources.insert(std::pair<std::string, SpriteModel>("1", model));
+	mListResources.insert(std::pair<std::string, SpriteModel>("0", model));
 }
 
 void			SpriteManager::unloadResources()
