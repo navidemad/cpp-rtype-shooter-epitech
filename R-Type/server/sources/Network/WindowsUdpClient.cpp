@@ -14,6 +14,7 @@ mMutex(PortabilityBuilder::getMutex()), mListener(nullptr), mNetworkManager(Netw
 }
 
 WindowsUdpClient::~WindowsUdpClient(void) {
+	closeClient();
 	WindowsWSAHandler::cleanup();
 }
 
