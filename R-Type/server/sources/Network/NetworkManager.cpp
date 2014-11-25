@@ -88,8 +88,8 @@ void	NetworkManager::checkFds(void) {
 	ScopedLock scopedLock(mMutex);
 
 	for (auto &socket : mSockets) {
-		bool readable = FD_ISSET(socket.fd, &mReadFds);
-		bool writable = FD_ISSET(socket.fd, &mWriteFds);
+		bool readable = FD_ISSET(socket.fd, &mReadFds) != 0;
+		bool writable = FD_ISSET(socket.fd, &mWriteFds) != 0;
 
 		if ((readable || writable) && !socket.isCallbackRunning && socket.listener) {
 			socket.isCallbackRunning = true;
