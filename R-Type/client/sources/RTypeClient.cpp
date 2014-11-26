@@ -9,7 +9,7 @@
 #include "Engine/Compenent/Font.hpp"
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::MENU), mEngine(this), mGui(new SFMLGraphic)
+	: mCurrentId(RTypeClient::MENU), mEngine(this), mGui(SFMLGraphic::getInstance())
 {
 }
 
