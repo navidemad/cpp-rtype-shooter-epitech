@@ -44,7 +44,7 @@ void			SpriteManager::unloadResources()
 
 }
 
-SpriteModel const	&SpriteManager::getResource(std::string const &key) const
+SpriteModel		&SpriteManager::getResource(std::string const &key)
 {
 	return mListResources.at(key);
 }

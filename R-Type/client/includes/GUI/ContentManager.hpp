@@ -34,7 +34,7 @@ class ContentManager
 		void	loadSounds();
 
 		std::shared_ptr<IResourceManager<sf::Texture>> const	&getTextures() const;
-		std::shared_ptr<IResourceManager<SpriteModel>> const	&getSprites() const;
+		std::shared_ptr<IResourceManager<SpriteModel>> 			&getSprites(); // Sprite must be modifiable
 		std::shared_ptr<IResourceManager<sf::Font>> const		&getFonts() const;
 		std::shared_ptr<IResourceManager<sf::Sound>> const		&getSounds() const;
 

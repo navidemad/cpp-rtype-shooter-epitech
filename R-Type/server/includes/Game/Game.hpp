@@ -18,33 +18,32 @@ class Game {
             GameProperties(void);
             ~GameProperties(void);
 
-        // copy / move operators
-        public:
-            GameProperties(const GameProperties &) = delete;
-            GameProperties(const GameProperties &&) = delete;
-            const GameProperties &operator=(const GameProperties &) = delete;
-            const GameProperties &operator=(const GameProperties &&) = delete;
-
         // setters
         public:
             void setName(const std::string&);
             void setLevelName(const std::string&);
             void setNbPlayers(int);
+			void setMaxPlayers(int);
             void setNbSpectators(int);
+			void setMaxSpectators(int);
 
         // getters
         public:
             const std::string& getName(void) const;
             const std::string& getLevelName(void) const;
             int getNbPlayers(void) const;
+			int getMaxPlayers(void) const;
             int getNbSpectators(void) const;
+			int getMaxSpectators(void) const;
 
         // attributes
         private:
             std::string mName;
             std::string mLevelName;
             int mNbPlayers;
+			int mMaxPlayers;
             int mNbSpectators;
+			int mMaxSpectators;
         };
 
     // ctor / dtor
@@ -71,7 +70,7 @@ class Game {
     // attributes
     private:
         Timer mTimer;
-        const Game::GameProperties& mProperties;
+        Game::GameProperties mProperties;
         std::list<std::string> mPlayersAddress;
         bool isRunning;
 

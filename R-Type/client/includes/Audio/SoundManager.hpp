@@ -29,9 +29,9 @@ class SoundManager : public IResourceManager<sf::Sound>
 
 	// methods
 	public:
-		void			loadResources();
-		void			unloadResources();
-		sf::Sound const	&getResource(std::string const &key) const;
+		void		loadResources();
+		void		unloadResources();
+		sf::Sound	&getResource(std::string const &key);
 
 	// attributes
 	private:

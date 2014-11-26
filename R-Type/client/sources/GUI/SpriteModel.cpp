@@ -13,17 +13,16 @@ SpriteModel::SpriteModel(std::string const &filename, uint32_t lines, uint32_t c
 	mX(0),
 	mY(0)
 {
-	if (mLines & 0)
-		mLines |= 1;
-	if (mColumns & 0)
-		mColumns |= 1;
+	if (mLines == 0)
+		++mLines;
+	if (mColumns == 0)
+		++mColumns;
 	init();
 }
 
 SpriteModel::SpriteModel(const SpriteModel &sm)
 {
 	mTexture = sm.getTexture();
-	mSprite = sm.getSprite();
 	mLoop = sm.isLoop();
 	mFileName = sm.getFileName();
 	mCurrentIndex = sm.getCurrentIndex();
@@ -39,7 +38,6 @@ SpriteModel::SpriteModel(const SpriteModel &sm)
 SpriteModel::SpriteModel(SpriteModel &&sm)
 {
 	mTexture = sm.getTexture();
-	mSprite = sm.getSprite();
 	mLoop = sm.isLoop();
 	mFileName = sm.getFileName();
 	mCurrentIndex = sm.getCurrentIndex();
@@ -55,7 +53,6 @@ SpriteModel::SpriteModel(SpriteModel &&sm)
 const SpriteModel &SpriteModel::operator=(const SpriteModel &sm)
 {
 	mTexture = sm.getTexture();
-	mSprite = sm.getSprite();
 	mLoop = sm.isLoop();
 	mFileName = sm.getFileName();
 	mCurrentIndex = sm.getCurrentIndex();
@@ -72,7 +69,6 @@ const SpriteModel &SpriteModel::operator=(const SpriteModel &sm)
 const SpriteModel &SpriteModel::operator=(SpriteModel &&sm)
 {
 	mTexture = sm.getTexture();
-	mSprite = sm.getSprite();
 	mLoop = sm.isLoop();
 	mFileName = sm.getFileName();
 	mCurrentIndex = sm.getCurrentIndex();
@@ -106,16 +102,16 @@ void		SpriteModel::init()
 	int rectWidth = size.x / mColumns;
 	int rectHeight = size.y / mLines;
 
-	// frame generator
+	// sprite generator
 	for (uint32_t i = 0; i < mLines * mColumns; ++i)
 	{
 		sf::IntRect rect((i % rectWidth) * rectWidth, (i / rectWidth) * rectHeight, rectWidth, rectHeight);
-		mFrames.push_back(rect);
+		sf::Sprite sprite(mTexture, rect);
+		mSprites.push_back(sprite);
 	}
 
 	// set sprite
 	mTexture.setSmooth(true);
-	mSprite.setTextureRect(mFrames[0]);
 }
 
 // GETTER FUNCTIONS : BEGIN
@@ -124,9 +120,9 @@ sf::Texture const	&SpriteModel::getTexture() const
 	return mTexture;
 }
 
-sf::Sprite const	&SpriteModel::getSprite() const
+sf::Sprite			&SpriteModel::getSprite(uint32_t index)
 {
-	return mSprite;
+	return mSprites[index];
 }
 
 sf::IntRect const	&SpriteModel::getFrame(uint32_t index) const

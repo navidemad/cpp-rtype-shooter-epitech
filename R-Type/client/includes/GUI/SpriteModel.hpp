@@ -22,7 +22,7 @@ class SpriteModel
 	// methods
 	public:
 		sf::Texture const	&getTexture() const;
-		sf::Sprite const	&getSprite() const;
+		sf::Sprite			&getSprite(uint32_t index);
 		sf::IntRect const	&getFrame(uint32_t index) const;
 		bool				isLoop() const;
 		std::string const	&getFileName() const;
@@ -45,6 +45,7 @@ class SpriteModel
 		sf::Texture					mTexture;
 		sf::Sprite					mSprite;
 		std::vector<sf::IntRect>	mFrames;
+		std::vector<sf::Sprite>		mSprites;
 		bool						mLoop;
 		std::string					mFileName;
 		uint32_t					mCurrentIndex;

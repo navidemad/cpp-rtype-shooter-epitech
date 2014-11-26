@@ -179,21 +179,12 @@ void WindowsUdpClient::recvSocket(void) {
 	if (ipstr == NULL)
 		throw SocketException("fail inet_ntoa()");
 
-	std::string host = ipstr;
-	int port = ntohs(addr.sin_port);
-
-	if (mInDatagrams.size() == 0 || mInDatagrams.back().host != host || mInDatagrams.back().port != port) {
-		IClientSocket::Message message;
-
-		message.msgSize = 0;
-		message.host = host;
-		message.port = port;
-
-		mInDatagrams.push_back(message);
-	}
-
-	mInDatagrams.back().msg.insert(mInDatagrams.back().msg.end(), buffer, buffer + nbBytesRead);
-	mInDatagrams.back().msgSize += nbBytesRead;
+	IClientSocket::Message message;
+	message.msgSize = nbBytesRead;
+	message.msg.insert(mInDatagrams.back().msg.end(), buffer, buffer + nbBytesRead);
+	message.host = ipstr;
+	message.port = ntohs(addr.sin_port);
+	mInDatagrams.push_back(message);
 }
 
 void	WindowsUdpClient::onSocketReadable(int) {

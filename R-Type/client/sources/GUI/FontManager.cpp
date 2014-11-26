@@ -33,7 +33,7 @@ void	FontManager::unloadResources()
 
 }
 
-sf::Font const	&FontManager::getResource(std::string const &key) const
+sf::Font	&FontManager::getResource(std::string const &key)
 {
 	return mListResources.at(key);
 }

@@ -33,7 +33,7 @@ void		TextureManager::unloadResources()
 	mListResources.clear();
 }
 
-sf::Texture const		&TextureManager::getResource(std::string const &key) const
+sf::Texture	&TextureManager::getResource(std::string const &key)
 {
 	return mListResources.at(key);
 }

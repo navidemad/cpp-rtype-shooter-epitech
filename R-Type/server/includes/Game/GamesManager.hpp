@@ -37,6 +37,15 @@ class GamesManager : public PlayerCommunicationManager::OnPlayerCommunicationMan
 		void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const std::string &host, int port);
 		void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const std::string &host, int port);
 
+	// network workflow utils functions
+	public:
+		void	joinGame(const std::string &host, const std::string &name, const std::string &pseudo);
+		void	observeGame(const std::string &host, const std::string &name);
+		void	leaveGame(const std::string &host);
+		void	updatePseudo(const std::string &host, const std::string &pseudo);
+		const Game::GameProperties &getGameProperties(const std::string &name) const;
+		const std::list<Game::GameProperties> &getGamesProperties(void) const;
+
     // attributes
     private:
 		ScriptLoader mScriptLoader;
@@ -44,7 +53,5 @@ class GamesManager : public PlayerCommunicationManager::OnPlayerCommunicationMan
         std::vector<std::shared_ptr<Game>> mGames;
         std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager mPlayerCommunicationManager;
-	
-	static const int THREAD_POOL_SIZE = 6;
 
 };

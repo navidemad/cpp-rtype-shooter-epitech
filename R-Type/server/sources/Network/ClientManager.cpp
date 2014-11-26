@@ -86,7 +86,12 @@ void	ClientManager::onClientLeaveGame(const Client &client) {
 }
 
 void	ClientManager::onClientUpdatePseudo(Client &client, const std::string &pseudo) {
-	client.setPseudo(pseudo);
+	if (client.isAuthenticated()) {
+		client.setPseudo(pseudo);
+
+		if (mListener)
+			mListener->onClientUpdatePseudo(client.getHost(), pseudo);
+	}
 }
 
 void	ClientManager::setListener(ClientManager::OnClientManagerEvent *listener) {
