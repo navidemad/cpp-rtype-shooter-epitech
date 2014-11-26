@@ -18,8 +18,12 @@ void	ErrorStatus::setErrorCode(ErrorStatus::Error error) {
 	mError = error;
 }
 
-ErrorStatus::ErrorStatus(const ErrorStatus &) {
+ErrorStatus::ErrorStatus(const ErrorStatus &errorStatus) {
+	mError = errorStatus.mError;
 }
 
-const ErrorStatus &ErrorStatus::operator=(const ErrorStatus &) {
+const ErrorStatus &ErrorStatus::operator=(const ErrorStatus &errorStatus) {
+	mError = errorStatus.mError;
+
+	return *this;
 }

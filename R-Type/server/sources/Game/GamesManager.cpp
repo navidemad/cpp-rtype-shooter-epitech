@@ -54,7 +54,7 @@ void GamesManager::removeGame(const std::string& name) {
     auto game = findGame(name);
 
     if (game == mGames.end())
-        throw GamesManagerException("Try to delete an undefined game");
+        throw GamesManagerException("Try to delete an undefined game", ErrorStatus(ErrorStatus::Error::KO));
 
     mGames.erase(game);
 }
@@ -63,4 +63,30 @@ void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const std::s
 }
 
 void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const std::string &, int) {
+}
+
+void GamesManager::joinGame(const std::string &, const std::string &, const std::string &) {
+}
+
+void GamesManager::observeGame(const std::string &, const std::string &) {
+}
+
+void GamesManager::leaveGame(const std::string &) {
+}
+
+void GamesManager::updatePseudo(const std::string &, const std::string &) {
+}
+
+const Game::GameProperties &GamesManager::getGameProperties(const std::string &) const {
+	/* LOLILOL */
+	Game::GameProperties *p = new Game::GameProperties;
+	return *p; // osef ça compile
+	/* LOLILOL */
+}
+
+const std::list<Game::GameProperties> &GamesManager::getGamesProperties(void) const {
+	/* LOLILOL */
+	const auto *a = new std::list<Game::GameProperties>{Game::GameProperties()};
+	return  *a;// osef ça compile
+	/* LOLILOL */
 }

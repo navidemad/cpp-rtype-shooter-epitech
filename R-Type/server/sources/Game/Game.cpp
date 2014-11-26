@@ -18,10 +18,12 @@ void Game::checkRessources(void) {
 
 void Game::addPlayer(const std::string& ipAddress) {
     mPlayersAddress.push_back(ipAddress);
+	mProperties.setNbPlayers(mPlayersAddress.size());
 }
 
 void Game::delPlayer(const std::string& ipAddress) {
     mPlayersAddress.remove_if([&ipAddress](const std::string& it) { return it == ipAddress; });
+	mProperties.setNbPlayers(mPlayersAddress.size());
 }
 
 void Game::terminateGame(void) {
@@ -32,7 +34,7 @@ const Game::GameProperties& Game::getProperties(void) const {
     return mProperties;
 }
 
-Game::GameProperties::GameProperties(void) : mName(""), mLevelName(""), mNbPlayers(0), mNbSpectators(0) {
+Game::GameProperties::GameProperties(void) : mName(""), mLevelName(""), mNbPlayers(0), mMaxPlayers(0), mNbSpectators(0), mMaxSpectators(0) {
 
 }
 
@@ -71,4 +73,20 @@ int Game::GameProperties::getNbPlayers(void) const {
 
 int Game::GameProperties::getNbSpectators(void) const {
     return mNbSpectators;
+}
+
+int Game::GameProperties::getMaxPlayers(void) const {
+	return mMaxPlayers;
+}
+
+int Game::GameProperties::getMaxSpectators(void) const {
+	return mMaxSpectators;
+}
+
+void Game::GameProperties::setMaxSpectators(int nbSpectators) {
+	mNbSpectators = nbSpectators;
+}
+
+void Game::GameProperties::setMaxPlayers(int nbPlayers) {
+	mNbPlayers = nbPlayers;
 }
