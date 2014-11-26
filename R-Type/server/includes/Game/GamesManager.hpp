@@ -53,7 +53,5 @@ class GamesManager : public PlayerCommunicationManager::OnPlayerCommunicationMan
         std::vector<std::shared_ptr<Game>> mGames;
         std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager mPlayerCommunicationManager;
-	
-	static const int THREAD_POOL_SIZE = 6;
 
 };

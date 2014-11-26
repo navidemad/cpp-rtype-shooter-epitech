@@ -1,6 +1,6 @@
 TEMPLATE	=	app
 TARGET		=	client
-QT		+=	network
+QT		+=	network widgets
 CONFIG		+=	console
 
 DESTDIR		=	build

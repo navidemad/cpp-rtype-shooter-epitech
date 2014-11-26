@@ -9,8 +9,10 @@ class WindowsThread : public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		explicit WindowsThread(void) {}
-		~WindowsThread(void) {}
+		explicit WindowsThread(void) : mIsRunning(false) {}
+		~WindowsThread(void) {
+			cancel()
+		}
 
 	// copy / move operators
 	public:
@@ -28,26 +30,30 @@ class WindowsThread : public IThread<U, T> {
 			mCallObj  = callObj;
 			mFctParam = fctParam;
 
-            mThread = CreateThread(
-                NULL, 
-                0, 
-                reinterpret_cast<LPTHREAD_START_ROUTINE>(start_thread_trampoline<U, T>),
-                reinterpret_cast<LPVOID>(this),
-                0,
-                &mThread_ID);
+			mThread = CreateThread(
+					NULL, 
+					0, 
+					reinterpret_cast<LPTHREAD_START_ROUTINE>(start_thread_trampoline<U, T>),
+					reinterpret_cast<LPVOID>(this),
+					0,
+					&mThread_ID);
 			if (mThread == NULL)
 				throw ThreadException("fail CreateThread()");
+
+			mIsRunning = true;
 		}
 
 		void wait(void **retVal = NULL) {
-            if (WaitForSingleObject(mThread, INFINITE) != WAIT_OBJECT_0)
-                throw ThreadException("fail WaitForSingleObject()");
-            else if (!CloseHandle(mThread))
-                throw ThreadException("fail CloseHandle()");
-            DWORD ret;
-            GetExitCodeThread(mThread, &ret);
-            if (ret && retVal)
-                *retVal = reinterpret_cast<void*>(ret);
+			if (WaitForSingleObject(mThread, INFINITE) != WAIT_OBJECT_0)
+				throw ThreadException("fail WaitForSingleObject()");
+			else if (!CloseHandle(mThread))
+				throw ThreadException("fail CloseHandle()");
+			DWORD ret;
+			GetExitCodeThread(mThread, &ret);
+			if (ret && retVal)
+				*retVal = reinterpret_cast<void*>(ret);
+
+			mIsRunning = false;
 		}
 
 		void *start(void) {
@@ -55,15 +61,19 @@ class WindowsThread : public IThread<U, T> {
 			return NULL;
 		}
 
-        void cancel(void) {
-            if (TerminateThread(mThread, 0) == 0)
-                throw ThreadException("fail TerminateThread()");
-        }
+		void cancel(void) {
+			if (TerminateThread(mThread, 0) == 0)
+		  	throw ThreadException("fail TerminateThread()");
 
-        void exit(void *status)	{
-			if (mThread)
-    			ExitThread(reinterpret_cast<DWORD>(status));
-		}
+			mIsRunning = false;
+			}
+
+			void exit(void *status)	{
+				if (mThread)
+					ExitThread(reinterpret_cast<DWORD>(status));
+
+				mIsRunning = false;
+			}
 
 	// attributes
 	private:
@@ -71,5 +81,6 @@ class WindowsThread : public IThread<U, T> {
 		DWORD mThread_ID;
 		U mCallObj;
 		T mFctParam;
+		boool mIsRunning;
 
 };

@@ -1,7 +1,10 @@
 #pragma once
+#include <list>
+#include "IClientSocket.hpp"
+#include "ICommand.hpp"
 
-class ServerCommunication
-{
+class ServerCommunication : public IClientSocket::OnSocketEvent {
+
     // ctor - dtor
     public:
         explicit ServerCommunication();
@@ -13,4 +16,30 @@ class ServerCommunication
         ServerCommunication(ServerCommunication &&) = delete;
         const ServerCommunication &operator=(const ServerCommunication &) = delete;
         const ServerCommunication &operator=(ServerCommunication &&) = delete;
+
+
+    //callback from ISocketClient
+    public:
+        void    onBytesWritten(IClientSocket *socket, unsigned int nbBytes);
+        void    onSocketReadable(IClientSocket *socket, unsigned int nbBytesToRead);
+        void    onSocketClosed(IClientSocket *socket);
+
+    //handle socket
+    public:
+        void connectSocketTcp(void);
+
+    //getter
+    public:
+        std::list<ICommand *> &getCommand(void);
+
+    //setter
+    public:
+        void setServerTcp(int port, std::string ip);
+
+    //attribut
+    private:
+        std::list<ICommand *> mListCommand;
+        int mPortTcp;
+        std::string mIpTcp;
+        IClientSocket *mSocketTcp;
 };

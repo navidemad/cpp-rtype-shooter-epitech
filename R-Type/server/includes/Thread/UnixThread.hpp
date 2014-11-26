@@ -9,8 +9,10 @@ class UnixThread : public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		UnixThread(void) {}
-		~UnixThread(void) {}
+		UnixThread(void) : mIsRunning(false) {}
+		~UnixThread(void) {
+			cancel();
+		}
 
 	// copy / move operators
 	public:
@@ -31,11 +33,15 @@ class UnixThread : public IThread<U, T> {
 
 			if (pthread_create(&mThread, NULL, start_thread_trampoline<U, T>, this) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_create()");
+
+			mIsRunning = true;
 		}
 
 		void wait(void **retVal = NULL) {
 			if (pthread_join(mThread, retVal) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_join()");
+
+			mIsRunning = false;
 		}
 
 		void *start(void) {
@@ -43,19 +49,23 @@ class UnixThread : public IThread<U, T> {
 			return NULL;
 		}
 
-        void cancel(void) {
-            if (pthread_cancel(mThread) != UnixThread::PTHREAD_SUCCESS)
+		void cancel(void) {
+			if (mIsRunning == true && pthread_cancel(mThread) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_cancel()");
-        }
 
-	    void exit(void *status) {
-	        pthread_exit(status);
-	    }
+			mIsRunning = false;
+    }
+
+		void exit(void *status) {
+			pthread_exit(status);
+			mIsRunning = false;
+		}
 
 	// attributes
 	private:
 		pthread_t mThread;
 		U mCallObj;
 		T mFctParam;
+		bool mIsRunning;
 
 };
