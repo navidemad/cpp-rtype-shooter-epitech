@@ -21,8 +21,19 @@ std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
 
 void			SpriteManager::loadResources()
 {
-	SpriteModel model("assets/sprites/r-typesheet7.gif", 2, 6);
-	mListResources.insert(std::pair<std::string, SpriteModel>("0", model));
+	{
+		SpriteModel model("assets/sprites/menu.png", 1, 1);
+		mListResources.insert(std::pair<std::string, SpriteModel>("menu", model));
+	}
+	{
+		SpriteModel model("assets/sprites/logo.png", 1, 1);
+		mListResources.insert(std::pair<std::string, SpriteModel>("logo", model));
+	}
+	{
+		SpriteModel model("assets/sprites/logoCharacter.png", 1, 1);
+		mListResources.insert(std::pair<std::string, SpriteModel>("logoCharacter", model));
+	}
+
 }
 
 void			SpriteManager::unloadResources()
