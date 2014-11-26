@@ -1,5 +1,7 @@
 #include "GUI/SFMLGraphic.hpp"
 
+std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
+
 SFMLGraphic::SFMLGraphic()
 : mWindow(sf::VideoMode::getDesktopMode(), "R-type"), mInputManager(this)
 {
@@ -8,6 +10,13 @@ SFMLGraphic::SFMLGraphic()
 SFMLGraphic::~SFMLGraphic()
 {
 
+}
+
+std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
+{
+	if (mInstance == nullptr)
+		mInstance = std::shared_ptr<IGraphic>(new SFMLGraphic);
+	return mInstance;
 }
 
 bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, float y)
@@ -34,9 +43,12 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 	return true;
 }
 
-bool	SFMLGraphic::playSound(bool onLoop)
+bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
-	return onLoop;
+	sf::Sound sound(mContentManager.getSounds()->getResource(key));
+	sound.setLoop(onLoop);
+	sound.play();
+	return true;
 }
 
 bool	SFMLGraphic::isOpen() const

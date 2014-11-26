@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <memory>
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "GUI/IGraphic.hpp"
@@ -11,9 +11,10 @@
 class SFMLGraphic : public IGraphic
 {
     // ctor - dtor
-    public:
-        explicit SFMLGraphic();
-        ~SFMLGraphic();
+    private:
+        SFMLGraphic();
+	public:
+        virtual ~SFMLGraphic();
 
     // copy operators
     public:
@@ -22,12 +23,18 @@ class SFMLGraphic : public IGraphic
         const SFMLGraphic &operator=(const SFMLGraphic &) = delete;
         const SFMLGraphic &operator=(SFMLGraphic &&) = delete;
 
+	// instance
+	public:
+		static std::shared_ptr<IGraphic>	getInstance();
+	private:
+		static std::shared_ptr<IGraphic>	mInstance;
+
 	// public methods
 	public:
 		bool	drawSprite(std::string const &key, float delta, float x, float y);
 		void	update();
 		bool	drawFont(std::string const &key, std::string const &str, float x, float y);
-		bool	playSound(bool onLoop = false);
+		bool	playSound(std::string const &key, bool onLoop = false);
 		bool	isOpen() const;
 		void	handleEvent();
 		void	show();

@@ -23,7 +23,8 @@ void	FontManager::loadResources()
 {
 	sf::Font font;
 
-	font.loadFromFile("./assets/fonts/RemachineScript_Personal_Use.ttf");
+	if (!font.loadFromFile("./assets/fonts/RemachineScript_Personal_Use.ttf"))
+		throw std::runtime_error("Failed to load fonts...");
 	mListResources.insert(std::pair<std::string, sf::Font>("0", font));
 }
 
