@@ -42,7 +42,8 @@ class TcpClient : public QObject, public IClientSocket{
 
     // get host ip
     public:
-        std::string getRemoteIp() const;
+        const std::string &getAddr(void) const;
+
 
     // slots
 	private slots:

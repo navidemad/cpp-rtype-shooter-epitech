@@ -92,6 +92,6 @@ void	TcpClient::setOnSocketEventListener(OnSocketEvent *listener) {
 	mListener = listener;
 }
 
-std::string TcpClient::getRemoteIp() const {
-    return mQTcpSocket->peerAddress().toString().toStdString();
+const std::string &TcpClient::getAddr(void) const {
+	return mQTcpSocket->peerAddress().toString().toStdString();
 }
