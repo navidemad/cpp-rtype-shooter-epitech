@@ -1,6 +1,7 @@
 #include "ClientManager.hpp"
 #include "PortabilityBuilder.hpp"
 #include "Utils.hpp"
+#include <algorithm>
 
 ClientManager::ClientManager(void) : mListener(nullptr), mServer(PortabilityBuilder::getTcpServer()) {
 }
@@ -31,7 +32,9 @@ void	ClientManager::onClientDisconnected(const Client &client) {
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientDisconnected(client.getHost());
 
-	mClients.remove_if([&](const std::shared_ptr<Client> &it) { return it.get() == &client; });
+	const auto &clientIt = findClient(client.getHost());
+	if (clientIt != mClients.end())
+		mClients.erase(clientIt);
 }
 
 void	ClientManager::onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
@@ -88,4 +91,44 @@ void	ClientManager::onClientUpdatePseudo(Client &client, const std::string &pseu
 
 void	ClientManager::setListener(ClientManager::OnClientManagerEvent *listener) {
 	mListener = listener;
+}
+
+void	ClientManager::sendError(const std::list<std::string> &hosts, const ErrorStatus &errorStatus) {
+	for (const auto &host : hosts) {
+		const auto &client = findClient(host);
+
+		if (client != mClients.end())
+			(*client)->sendError(errorStatus);
+	}
+}
+
+void	ClientManager::sendShowGame(const std::list<std::string> &hosts, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers) {
+	for (const auto &host : hosts) {
+		const auto &client = findClient(host);
+			
+		if (client != mClients.end())
+			(*client)->sendShowGame(name, levelName, nbPlayers, maxPlayers, nbObservers, maxObservers);
+	}
+}
+
+void	ClientManager::sendEndGame(const std::list<std::string> &hosts) {
+	for (const auto &host : hosts) {
+		const auto &client = findClient(host);
+
+		if (client != mClients.end())
+			(*client)->sendEndGame();
+	}
+}
+
+void	ClientManager::sendShowLevel(const std::list<std::string> &hosts, const std::string &name, const std::string &script) {
+	for (const auto &host : hosts) {
+		const auto &client = findClient(host);
+
+		if (client != mClients.end())
+			(*client)->sendShowLevel(name, script);
+	}
+}
+
+std::list<std::shared_ptr<Client>>::iterator ClientManager::findClient(const std::string &host) {
+	return std::find_if(mClients.begin(), mClients.end(), [&](const std::shared_ptr<Client> &client) { return client->getHost() == host; });
 }

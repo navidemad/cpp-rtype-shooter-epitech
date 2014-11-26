@@ -10,6 +10,10 @@
 #include "CommandHandshake.hpp"
 #include "CommandLeaveGame.hpp"
 #include "CommandUpdatePseudo.hpp"
+#include "CommandError.hpp"
+#include "CommandEndGame.hpp"
+#include "CommandShowLevel.hpp"
+#include "ErrorStatus.hpp"
 
 const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::CREATE_GAME,	&Client::recvCreateGame		},
@@ -146,4 +150,37 @@ void Client::handshake(void) {
 	CommandHandshake commandHandShake;
 
 	mClientPacketBuilder.sendCommand(&commandHandShake);
+}
+
+void	Client::sendError(const ErrorStatus &errorStatus) {
+	CommandError commandError;
+
+	commandError.setErrorCode(errorStatus.getErrorCode());
+	mClientPacketBuilder.sendCommand(&commandError);
+}
+
+void	Client::sendShowGame(const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers) {
+	CommandShowGame commandShowGame;
+
+	commandShowGame.setName(name);
+	commandShowGame.setLevelName(levelName);
+	commandShowGame.setNbPlayers(nbPlayers);
+	commandShowGame.setMaxPlayers(maxPlayers);
+	commandShowGame.setNbObservers(nbObservers);
+	commandShowGame.setMaxObservers(maxObservers);
+	mClientPacketBuilder.sendCommand(&commandShowGame);
+}
+
+void	Client::sendEndGame(void) {
+	CommandEndGame commandEndGame;
+
+	mClientPacketBuilder.sendCommand(&commandEndGame);
+}
+
+void	Client::sendShowLevel(const std::string &name, const std::string &script) {
+	CommandShowLevel commandShowLevel;
+
+	commandShowLevel.setName(name);
+	commandShowLevel.setScript(script);
+	mClientPacketBuilder.sendCommand(&commandShowLevel);
 }

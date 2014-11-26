@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "ErrorStatus.hpp"
 #include "IClientSocket.hpp"
 #include "ClientPacketBuilder.hpp"
 
@@ -62,9 +63,13 @@ class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
 		void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command);
 		void	onSocketClosed(const ClientPacketBuilder &clientPacketBuilder);
 
-	// handshake
+	// send command
 	public:
 		void	handshake(void);
+		void	sendError(const ErrorStatus &errorStatus);
+		void	sendShowGame(const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
+		void	sendEndGame(void);
+		void	sendShowLevel(const std::string &name, const std::string &script);
 
 	// getters setters
 	public:

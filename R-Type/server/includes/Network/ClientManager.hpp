@@ -2,6 +2,7 @@
 
 #include <list>
 #include <memory>
+#include "ErrorStatus.hpp"
 #include "Client.hpp"
 #include "IServerSocket.hpp"
 
@@ -55,6 +56,17 @@ class ClientManager : public IServerSocket::OnSocketEvent, public Client::OnClie
 		void	onClientUpdatePseudo(Client &client, const std::string &pseudo);
 
 		void	setListener(ClientManager::OnClientManagerEvent *listener);
+
+	// intern methods
+	private:
+		std::list<std::shared_ptr<Client>>::iterator findClient(const std::string &host);
+
+	// send commands
+	public:
+		void	sendError(const std::list<std::string> &hosts, const ErrorStatus &errorStatus);
+		void	sendShowGame(const std::list<std::string> &hosts, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
+		void	sendEndGame(const std::list<std::string> &hosts);
+		void	sendShowLevel(const std::list<std::string> &hosts, const std::string &name, const std::string &script);
 
 	// attributes
 	private:
