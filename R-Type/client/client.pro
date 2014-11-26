@@ -31,6 +31,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
+                        includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
 			includes/Core/InputManager.hpp				\
 			includes/Core/MovementSystem.hpp			\
@@ -39,6 +40,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Engine/Component.hpp				\
                         includes/Engine/ComponentType.h				\
                         includes/Engine/Compenent/Controllable.hpp		\
+                        includes/Engine/Compenent/Cursor.hpp            	\
+                        includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
 			includes/Engine/ECSManager.hpp				\
 			includes/Engine/Entity.hpp				\
@@ -90,11 +93,14 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Core/CollisionSystem.cpp		\
 			sources/Core/DamageSystem.cpp			\
 			sources/Core/DrawableSystem.cpp			\
-                        sources/Core/DrawableFontSystem.cpp			\
+                        sources/Core/DrawableFontSystem.cpp		\
+                        sources/Core/ButtonSystem.cpp			\
 			sources/Core/InputManager.cpp			\
 			sources/Core/MovementSystem.cpp			\
 			sources/Core/System.cpp				\
 			sources/Engine/Collision.cpp			\
+                        sources/Engine/Button.cpp			\
+                        sources/Engine/Cursor.cpp			\
 			sources/Engine/Component.cpp			\
 			sources/Engine/Controllable.cpp			\
                         sources/Engine/Font.cpp                         \

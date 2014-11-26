@@ -61,6 +61,11 @@ void	SFMLGraphic::handleEvent()
 {
 }
 
+bool	SFMLGraphic::isPressed(std::string key)
+{
+	return mInputManager.isPressed(key);
+}
+
 void	SFMLGraphic::show()
 {
 	mWindow.display();
