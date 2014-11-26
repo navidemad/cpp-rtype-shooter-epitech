@@ -31,7 +31,7 @@ Entity						&ECSManager::createEntity()
 	return mEntity.back();
 }
 
-inline Entity				&ECSManager::getEntity(const int id)
+Entity		&ECSManager::getEntity(const int id)
 {
 	return mEntity.at(id);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <string>
 
 class SFMLGraphic;
 
@@ -15,7 +16,13 @@ public:
 	void		update();
 	void		init();
 
+	void		pressedKey(sf::Keyboard::Key);
+	void		releasedKey(sf::Keyboard::Key);
+	bool		isPressed(std::string);
+
 private:
-	std::list<sf::Event>	mPoolEvent;
-	SFMLGraphic				*mGraphic;
+//	std::list<sf::Event>	mPoolEvent;
+	std::map<std::string, bool>					mPoolEvent;
+	std::map<sf::Keyboard::Key, std::string>	mKeyboard;
+	SFMLGraphic									*mGraphic;
 };

@@ -1,10 +1,10 @@
 #include <iostream>
 #include "RTypeClient.hpp"
 
-#include <QApplication>
-#include "Network/ServerCommunication.hpp"
+//#include <QApplication>
+//#include "Network/ServerCommunication.hpp"
 
-int trySocket(int ac, char **av){
+/*int trySocket(int ac, char **av){
 	QApplication	app(ac, av);
 	
 	ServerCommunication server;
@@ -13,7 +13,7 @@ int trySocket(int ac, char **av){
 	server.connectSocketTcp();
 
 	return app.exec();
-}
+}*/
 
 int		main(int ac, char **av)
 {

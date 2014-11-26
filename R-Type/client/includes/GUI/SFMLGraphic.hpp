@@ -39,7 +39,7 @@ class SFMLGraphic : public IGraphic
 		void	handleEvent();
 		void	show();
 		void	clear();
-
+		bool	isPressed(std::string);
 		sf::RenderWindow						&getWindow();
 
 	// public method

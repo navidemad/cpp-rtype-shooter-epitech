@@ -2,11 +2,10 @@
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManager.hpp"
 #include "Engine/Component.hpp"
-
+#include <iostream>
 Entity::Entity(unsigned int id, ECSManager *entityManager)
 : mId(id), mEntityManager(entityManager)
 {
-
 }
 
 Entity::~Entity()
@@ -36,7 +35,7 @@ Component				*Entity::getSpecificComponent(ComponentType::Type searchType)
 	return *it;
 }
 
-inline std::bitset<ComponentType::LIMIT>	Entity::getComponentBit() const
+std::bitset<ComponentType::LIMIT>	Entity::getComponentBit() const
 {
 	const std::list<Component *> list = getComponent();
 	std::bitset<ComponentType::LIMIT>	bitset;
@@ -49,8 +48,7 @@ inline std::bitset<ComponentType::LIMIT>	Entity::getComponentBit() const
 	return bitset;
 }
 
-inline const std::list<Component *>			&Entity::getComponent() const
+const std::list<Component *>			&Entity::getComponent() const
 {
 	return mEntityManager->getComponent(mId);
 }
-

@@ -14,9 +14,6 @@ class Entity
 		explicit Entity(unsigned int, ECSManager *);
 		~Entity();
 
-    // copy operators
-	public:
-
 	// getter
 	public:
 		const unsigned int	getId() const;
@@ -24,8 +21,8 @@ class Entity
 	public:
 		bool											addComponent(Component *);
 		Component										*getSpecificComponent(ComponentType::Type);
-		inline const std::list<Component *>				&getComponent() const;
-		inline std::bitset<ComponentType::LIMIT>		getComponentBit() const;
+		const std::list<Component *>					&getComponent() const;
+		std::bitset<ComponentType::LIMIT>				getComponentBit() const;
 
 	public:
 		inline ECSManager			*getEntityManager() const { return mEntityManager; }

@@ -31,7 +31,7 @@ class ECSManager
 	public:
 		// Entity
 		Entity						&createEntity();
-		inline Entity				&getEntity(const int);
+		Entity						&getEntity(const int);
 
 		// Component
 		bool									addComponent(const unsigned int, Component *);

@@ -7,6 +7,8 @@ namespace ComponentType
 		INVALID = 0,
 		MOVABLE,
 		FONT,
+		BUTTON,
+		CURSOR,
 		DRAWABLE,
 		NETWORK,
 		LIMIT
