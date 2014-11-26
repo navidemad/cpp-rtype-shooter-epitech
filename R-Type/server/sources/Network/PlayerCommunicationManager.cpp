@@ -2,6 +2,10 @@
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
 #include "CommandMove.hpp"
+#include "CommandMoveResource.hpp"
+#include "CommandDestroyResource.hpp"
+#include "CommandUpdateScore.hpp"
+#include "CommandTimeElapsedPing.hpp"
 #include <algorithm>
 
 const PlayerCommunicationManager::CommandExec PlayerCommunicationManager::commandExecTab[] = {
@@ -70,4 +74,38 @@ std::list<PlayerCommunicationManager::Peer>::iterator PlayerCommunicationManager
 
 void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *listener) {
 	mListener = listener;
+}
+
+void PlayerCommunicationManager::sendMoveResource(const std::string &host, int port, int id, IResource::Type type, float x, float y, short angle) {
+	CommandMoveResource commandMoveResource;
+
+	commandMoveResource.setId(id);
+	commandMoveResource.setType(type);
+	commandMoveResource.setX(x);
+	commandMoveResource.setY(y);
+	commandMoveResource.setAngle(angle);
+	mPlayerPacketBuilder.sendCommand(&commandMoveResource, host, port);
+}
+
+void PlayerCommunicationManager::sendDestroyResource(const std::string &host, int port, int id) {
+	CommandDestroyResource commandDestroyResource;
+
+	commandDestroyResource.setId(id);
+	mPlayerPacketBuilder.sendCommand(&commandDestroyResource, host, port);
+}
+
+void PlayerCommunicationManager::sendUpdateScore(const std::string &host, int port, int id, const std::string &pseudo, int score) {
+	CommandUpdateScore commandUpdateScore;
+
+	commandUpdateScore.setId(id);
+	commandUpdateScore.setPseudo(pseudo);
+	commandUpdateScore.setScore(score);
+	mPlayerPacketBuilder.sendCommand(&commandUpdateScore, host, port);
+}
+
+void PlayerCommunicationManager::sendTimeElapsedPing(const std::string &host, int port, int64_t timeElapsed) {
+	CommandTimeElapsedPing commandTimeElapsedPing;
+
+	commandTimeElapsedPing.setTimeElapsed(timeElapsed);
+	mPlayerPacketBuilder.sendCommand(&commandTimeElapsedPing, host, port);
 }

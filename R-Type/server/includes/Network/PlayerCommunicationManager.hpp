@@ -45,6 +45,13 @@ class PlayerCommunicationManager : public PlayerPacketBuilder::OnPlayerPacketBui
 
 		void	onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const std::string &host, int port);
 
+	// send commands
+	public:
+		void	sendMoveResource(const std::string &host, int port, int id, IResource::Type type, float x, float y, short angle);
+		void	sendDestroyResource(const std::string &host, int port, int id);
+		void	sendUpdateScore(const std::string &host, int port, int id, const std::string &pseudo, int score);
+		void	sendTimeElapsedPing(const std::string &host, int port, int64_t timeElapsed);
+
 	// build cmd
 	private:
 		struct CommandExec {
