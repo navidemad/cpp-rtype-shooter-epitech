@@ -29,9 +29,9 @@ class FontManager : public IResourceManager<sf::Font>
 
 	// methods
 	public:
-		void			loadResources();
-		void			unloadResources();
-		sf::Font const	&getResource(std::string const &key) const;
+		void		loadResources();
+		void		unloadResources();
+		sf::Font	&getResource(std::string const &key);
 
 	// attributes
 	private:

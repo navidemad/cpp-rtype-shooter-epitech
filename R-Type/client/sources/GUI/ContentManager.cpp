@@ -38,7 +38,7 @@ std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTexture
 	return mTextures;
 }
 
-std::shared_ptr<IResourceManager<SpriteModel>> const	&ContentManager::getSprites() const
+std::shared_ptr<IResourceManager<SpriteModel>>			&ContentManager::getSprites()
 {
 	return mSprites;
 }

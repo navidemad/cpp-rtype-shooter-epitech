@@ -35,7 +35,7 @@ void	SoundManager::unloadResources()
 	mListResources.clear();
 }
 
-sf::Sound const	&SoundManager::getResource(std::string const &key) const
+sf::Sound	&SoundManager::getResource(std::string const &key)
 {
 	return mListResources.at(key);
 }

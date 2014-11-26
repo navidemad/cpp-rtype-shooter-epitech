@@ -21,14 +21,8 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 
 bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, float y)
 {
-	sf::Texture texture(mContentManager.getSprites()->getResource(key).getTexture());
-	sf::IntRect rect(mContentManager.getSprites()->getResource(key).getFrame(0));
-	sf::Sprite sprite(texture, rect);
-
-	texture.setSmooth(true);
-	
-	sprite.setPosition(x, y);
-	mWindow.draw(sprite);
+	mContentManager.getSprites()->getResource(key).getSprite(0).setPosition(x, y);
+	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(0));
 	return true;
 }
 
@@ -46,9 +40,8 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 
 bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
-	sf::Sound sound(mContentManager.getSounds()->getResource(key));
-	sound.setLoop(onLoop);
-	sound.play();
+	mContentManager.getSounds()->getResource(key).setLoop(onLoop);
+	mContentManager.getSounds()->getResource(key).play();
 	return true;
 }
 
@@ -86,7 +79,7 @@ void	SFMLGraphic::init()
 	mWindow.setMouseCursorVisible(false);
 }
 
-sf::RenderWindow						&SFMLGraphic::getWindow()
+sf::RenderWindow	&SFMLGraphic::getWindow()
 {
 	return mWindow;
 }
