@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include "ErrorStatus.hpp"
 
 class GameException : public std::runtime_error {
 

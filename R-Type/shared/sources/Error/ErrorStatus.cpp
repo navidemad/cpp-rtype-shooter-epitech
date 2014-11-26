@@ -1,6 +1,6 @@
 #include "ErrorStatus.hpp"
 
-ErrorStatus::ErrorStatus(void) : mError(ErrorStatus::Error::OK) {
+ErrorStatus::ErrorStatus(ErrorStatus::Error error) : mError(error) {
 }
 
 ErrorStatus::~ErrorStatus(void) {
@@ -16,4 +16,10 @@ ErrorStatus::Error ErrorStatus::getErrorCode(void) const {
 
 void	ErrorStatus::setErrorCode(ErrorStatus::Error error) {
 	mError = error;
+}
+
+ErrorStatus::ErrorStatus(const ErrorStatus &) {
+}
+
+const ErrorStatus &ErrorStatus::operator=(const ErrorStatus &) {
 }

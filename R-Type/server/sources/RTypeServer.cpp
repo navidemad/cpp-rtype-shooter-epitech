@@ -11,7 +11,6 @@ RTypeServer::~RTypeServer(void) {
 }
 
 int RTypeServer::run(void) {
-    mScriptLoader.loadAll();
 	mClientManager.run();
     mGamesManager.run();	
 	return 0;
@@ -28,7 +27,13 @@ void RTypeServer::onClientCreateGame(const std::string &host, const std::string 
     properties.setNbPlayers(nbPlayers);
     properties.setNbSpectators(nbObservers);
 
-    mGamesManager.createGame(properties, host);
+	try {
+		mGamesManager.createGame(properties, host);
+		mClientManager.sendError(std::list<std::string>{host}, ErrorStatus(ErrorStatus::Error::OK));
+	}
+	catch (const GamesManagerException& e) {
+		mClientManager.sendError(std::list<std::string>{host}, e.getErrorStatus());
+	}
 }
 
 void RTypeServer::onClientJoinGame(const std::string &, const std::string &, const std::string &) {
@@ -37,9 +42,14 @@ void RTypeServer::onClientJoinGame(const std::string &, const std::string &, con
 void RTypeServer::onClientShowGame(const std::string &, const std::string &) {
 }
 
-void RTypeServer::onClientDeleteGame(const std::string &, const std::string &name) {
-    try { mGamesManager.removeGame(name); }
-    catch (const GamesManagerException& e) { Utils::logError(e.what()); }    
+void RTypeServer::onClientDeleteGame(const std::string &host, const std::string &name) {
+    try {
+		mGamesManager.removeGame(name);
+		mClientManager.sendError(std::list<std::string>{host}, ErrorStatus(ErrorStatus::Error::OK));
+	}
+    catch (const GamesManagerException& e) {
+		mClientManager.sendError(std::list<std::string>{host}, e.getErrorStatus());
+	}
 }
 
 void RTypeServer::onClientListGames(const std::string &) {

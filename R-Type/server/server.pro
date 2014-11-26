@@ -70,6 +70,7 @@ HEADERS			+=	includes/Exceptions/MutexException.hpp			\
                                 ../shared/includes/Commands/CommandTimeElapsedPing.hpp	\
                                 ../shared/includes/Commands/CommandUpdatePseudo.hpp	\
                                 ../shared/includes/Commands/CommandUpdateScore.hpp	\
+				../shared/includes/Error/ErrorStatus.hpp		\
 				includes/Mutex/IMutex.hpp				\
 				includes/Thread/IThread.hpp				\
 				includes/Thread/ThreadPool.hpp				\
