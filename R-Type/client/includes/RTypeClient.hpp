@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <memory>
 #include "Engine/ECSManager.hpp"
 #include "GUI/IGraphic.hpp"
 
@@ -30,12 +30,17 @@ public:
 
 	// setter getter
 	public: 
-		void			setIdGame(unsigned int);
-		unsigned int	getIdGame() const;
+		void						setIdGame(unsigned int);
+		unsigned int				getIdGame() const;
+		std::shared_ptr<IGraphic>	getGui() const { return mGui; }
 
 	// Attribute
 	private:
-		unsigned int	mCurrentId;
-		ECSManager		mEngine;
-		IGraphic		*mGui;
+		unsigned int				mCurrentId;
+		ECSManager					mEngine;
+		std::shared_ptr<IGraphic>	mGui;
+
+	private:
+		void						init();
+		void						initMenu();
 };

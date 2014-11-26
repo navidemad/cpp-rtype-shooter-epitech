@@ -31,16 +31,19 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
+                        includes/Core/DrawableFontSystem.hpp			\
 			includes/Core/InputManager.hpp				\
 			includes/Core/MovementSystem.hpp			\
 			includes/Core/System.hpp				\
-			includes/Engine/Collision.hpp				\
+                        includes/Engine/Compenent/Collision.hpp			\
 			includes/Engine/Component.hpp				\
-			includes/Engine/Controllable.hpp			\
-			includes/Engine/Drawable.hpp				\
+                        includes/Engine/ComponentType.h				\
+                        includes/Engine/Compenent/Controllable.hpp		\
+                        includes/Engine/Compenent/Drawable.hpp			\
 			includes/Engine/ECSManager.hpp				\
 			includes/Engine/Entity.hpp				\
-			includes/Engine/Position.hpp				\
+                        includes/Engine/Compenent/Position.hpp			\
+                        includes/Engine/Compenent/Font.hpp			\
 			includes/Engine/Script.hpp				\
 			includes/GUI/ContentManager.hpp				\
 			includes/GUI/FontManager.hpp				\
@@ -87,16 +90,18 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Core/CollisionSystem.cpp		\
 			sources/Core/DamageSystem.cpp			\
 			sources/Core/DrawableSystem.cpp			\
+                        sources/Core/DrawableFontSystem.cpp			\
 			sources/Core/InputManager.cpp			\
 			sources/Core/MovementSystem.cpp			\
 			sources/Core/System.cpp				\
 			sources/Engine/Collision.cpp			\
 			sources/Engine/Component.cpp			\
 			sources/Engine/Controllable.cpp			\
+                        sources/Engine/Font.cpp                         \
 			sources/Engine/Drawable.cpp			\
 			sources/Engine/ECSManager.cpp			\
 			sources/Engine/Entity.cpp			\
-			sources/Engine/Position.cpp			\
+                        sources/Engine/Position.cpp			\
 			sources/Engine/Script.cpp			\
 			sources/GUI/ContentManager.cpp			\
 			sources/GUI/FontManager.cpp			\

@@ -7,7 +7,7 @@ class Position : public Component
 {
 	// ctor - dtor
 	public:
-		Position(int, int);
+		Position(float, float);
 		~Position();
 
 	// coplien form
@@ -16,12 +16,12 @@ class Position : public Component
 		Position const	&operator=(Position const &) { return *this; }
 
 	public:
-		inline int	getX() const;
-		inline int	getY() const;
-		inline void			setX(int);
-		inline void			setY(int);
+		const float		getX() const;
+		const float		getY() const;
+		void			setX(float);
+		void			setY(float);
 
 	private:
-		int			mX;
-		int			mY;
+		float			mX;
+		float			mY;
 };

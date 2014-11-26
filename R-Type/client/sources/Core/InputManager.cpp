@@ -18,7 +18,7 @@ void	InputManager::update()
 
 	while (mGraphic->getWindow().pollEvent(currentEvent))
 	{
-		if (currentEvent.type == sf::Event::Closed)
+		if (currentEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			mGraphic->getWindow().close();
 		else
 			mPoolEvent.push_back(currentEvent);

@@ -1,7 +1,9 @@
 #include "GUI/SFMLGraphic.hpp"
 
+std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
+
 SFMLGraphic::SFMLGraphic()
-: mWindow(sf::VideoMode::getDesktopMode(), "R-type"), mInputManager(this)
+: mWindow(sf::VideoMode::getDesktopMode(), "R-type", sf::Style::Fullscreen), mInputManager(this)
 {
 }
 
@@ -10,13 +12,21 @@ SFMLGraphic::~SFMLGraphic()
 
 }
 
+std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
+{
+	if (mInstance == nullptr)
+		mInstance = std::shared_ptr<IGraphic>(new SFMLGraphic);
+	return mInstance;
+}
+
 bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, float y)
 {
 	sf::Texture texture(mContentManager.getSprites()->getResource(key).getTexture());
-	sf::IntRect rect(mContentManager.getSprites()->getResource(key).getFrame(1));
+	sf::IntRect rect(mContentManager.getSprites()->getResource(key).getFrame(0));
 	sf::Sprite sprite(texture, rect);
+
 	texture.setSmooth(true);
-	sprite.setScale(sf::Vector2f(16, 16));
+	
 	sprite.setPosition(x, y);
 	mWindow.draw(sprite);
 	return true;
@@ -34,9 +44,12 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 	return true;
 }
 
-bool	SFMLGraphic::playSound(bool onLoop)
+bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
-	return onLoop;
+	sf::Sound sound(mContentManager.getSounds()->getResource(key));
+	sound.setLoop(onLoop);
+	sound.play();
+	return true;
 }
 
 bool	SFMLGraphic::isOpen() const
@@ -70,6 +83,7 @@ void	SFMLGraphic::init()
 	mContentManager.loadSprites();
 	mContentManager.loadFonts();
 	mContentManager.loadSounds();
+	mWindow.setMouseCursorVisible(false);
 }
 
 sf::RenderWindow						&SFMLGraphic::getWindow()
