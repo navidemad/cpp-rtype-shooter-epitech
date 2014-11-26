@@ -16,7 +16,9 @@ GamesManager::~GamesManager(void) {
 
 
 void GamesManager::run(void) {
-    // beg test : create fake game
+	mScriptLoader.loadAll();
+	
+	// beg test : create fake game
     /*
     Game::GameProperties properties;
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ClientManager.hpp"
-#include "ScriptLoader.hpp"
 #include "GamesManager.hpp"
 
 class RTypeServer : public ClientManager::OnClientManagerEvent {
@@ -38,6 +37,5 @@ class RTypeServer : public ClientManager::OnClientManagerEvent {
     // attributes
     private:
         ClientManager mClientManager;
-        ScriptLoader mScriptLoader;
         GamesManager mGamesManager;
 };

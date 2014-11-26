@@ -4,6 +4,7 @@
 #include "ThreadPool.hpp"
 #include "IMutex.hpp"
 #include "Utils.hpp"
+#include "ScriptLoader.hpp"
 #include "PlayerCommunicationManager.hpp"
 
 #include <string>
@@ -38,7 +39,8 @@ class GamesManager : public PlayerCommunicationManager::OnPlayerCommunicationMan
 
     // attributes
     private:
-        std::shared_ptr<ThreadPool> mThreadPool;
+		ScriptLoader mScriptLoader;
+		std::shared_ptr<ThreadPool> mThreadPool;
         std::vector<std::shared_ptr<Game>> mGames;
         std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager mPlayerCommunicationManager;

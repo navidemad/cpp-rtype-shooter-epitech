@@ -12,21 +12,21 @@ class ErrorStatus {
 
 	// ctor dtor
 	public:
-		ErrorStatus(void);
+		ErrorStatus(ErrorStatus::Error error = ErrorStatus::Error::OK);
 		~ErrorStatus(void);
 
 
 	// copy / move operators
 	public:
-		ErrorStatus(const ErrorStatus &) = delete;
+		ErrorStatus(const ErrorStatus &);
 		ErrorStatus(const ErrorStatus &&) = delete;
-		const ErrorStatus &operator=(const ErrorStatus &) = delete;
-		const ErrorStatus &operator=(const ErrorStatus &&) = delete;
+		const ErrorStatus &operator=(const ErrorStatus &);
+		const ErrorStatus &operator=(ErrorStatus &&) = delete;
 
 	// getter - setters
 	public:
 		bool	errorOccured(void) const;
-		Error getErrorCode(void) const;
+		Error	getErrorCode(void) const;
 		void	setErrorCode(ErrorStatus::Error error);
 
 	// attributes
