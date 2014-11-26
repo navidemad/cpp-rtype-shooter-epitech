@@ -36,7 +36,7 @@ inline Entity				&ECSManager::getEntity(const int id)
 	return mEntity.at(id);
 }
 
-inline bool	ECSManager::addComponent(const unsigned int id, Component *component)
+bool		ECSManager::addComponent(const unsigned int id, Component *component)
 {
 	auto searchId = [&](Component *_component)
 	{
@@ -48,19 +48,19 @@ inline bool	ECSManager::addComponent(const unsigned int id, Component *component
 	if (std::find_if(listComponent.begin(), listComponent.end(), searchId) == listComponent.end())
 	{
 		listComponent.push_back(component);
+		mEntityBitset[id].set(component->getComponentId(), 1);
+
 		return true;
 	}
-
-	mEntityBitset[id].set(component->getComponentId(), 1);
 
 	return false;
 }
 
-inline const std::list<Component *>			&ECSManager::getComponent(const unsigned int id) const {
+const std::list<Component *>			&ECSManager::getComponent(const unsigned int id) const {
 	return mEntityComponent.at(id);
 }
 
-inline void		ECSManager::addSystem(System *system)
+void		ECSManager::addSystem(System *system)
 {
 	mSystem.push_back(system);
 }

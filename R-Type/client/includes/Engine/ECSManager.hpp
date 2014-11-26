@@ -6,7 +6,7 @@ class RTypeClient;
 #include <list>
 #include "Entity.hpp"
 #include "Component.hpp"
-#include "System.hpp"
+#include "../Core/System.hpp"
 
 class ECSManager
 {
@@ -23,9 +23,9 @@ class ECSManager
         const ECSManager &operator=(ECSManager &&) = delete;
 
 	// getter
-	private:
-		inline RTypeClient			&getClient() const;
-		inline unsigned int	getCurrentId() const;
+	public:
+		RTypeClient			*getClient() const { return mClient;  }
+		unsigned int		getCurrentId() const;
 
 	// Entity Manager
 	public:
@@ -34,8 +34,8 @@ class ECSManager
 		inline Entity				&getEntity(const int);
 
 		// Component
-		inline bool								addComponent(const unsigned int, Component *);
-		inline const std::list<Component *>		&getComponent(const unsigned int) const;
+		bool									addComponent(const unsigned int, Component *);
+		const std::list<Component *>			&getComponent(const unsigned int) const;
 
 		// System
 		void						addSystem(System *);
