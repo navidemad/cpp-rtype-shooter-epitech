@@ -32,10 +32,15 @@ public:
 	public: 
 		void			setIdGame(unsigned int);
 		unsigned int	getIdGame() const;
+		IGraphic		*getGui() const { return mGui; }
 
 	// Attribute
 	private:
 		unsigned int	mCurrentId;
 		ECSManager		mEngine;
 		IGraphic		*mGui;
+
+	private:
+		void			init();
+		void			initMenu();
 };

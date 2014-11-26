@@ -3,12 +3,12 @@
 #include "Core/System.hpp"
 #include "Engine/Entity.hpp"
 
-class DrawableSystem : public System
+class DrawableFontSystem : public System
 {
     // ctor - dtor
     public:
-		explicit DrawableSystem();
-		~DrawableSystem() { }
+		explicit DrawableFontSystem();
+		~DrawableFontSystem() { }
 
 		void	process(Entity &);
 public:

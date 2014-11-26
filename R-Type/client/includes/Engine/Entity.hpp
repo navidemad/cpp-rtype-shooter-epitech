@@ -19,13 +19,16 @@ class Entity
 
 	// getter
 	public:
-		inline unsigned int	getId() const;
+		const unsigned int	getId() const;
 
 	public:
-		inline bool										addComponent(Component *);
+		bool											addComponent(Component *);
+		Component										*getSpecificComponent(ComponentType::Type);
 		inline const std::list<Component *>				&getComponent() const;
 		inline std::bitset<ComponentType::LIMIT>		getComponentBit() const;
-		
+
+	public:
+		inline ECSManager			*getEntityManager() const { return mEntityManager; }
 	private:
 		const unsigned int	mId;
 		ECSManager			*mEntityManager;

@@ -6,6 +6,8 @@ namespace ComponentType
 	{
 		INVALID = 0,
 		MOVABLE,
+		FONT,
+		DRAWABLE,
 		NETWORK,
 		LIMIT
 	};

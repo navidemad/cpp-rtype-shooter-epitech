@@ -3,7 +3,7 @@
 std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 
 SFMLGraphic::SFMLGraphic()
-: mWindow(sf::VideoMode::getDesktopMode(), "R-type"), mInputManager(this)
+: mWindow(sf::VideoMode::getDesktopMode(), "R-type", sf::Style::Fullscreen), mInputManager(this)
 {
 }
 
@@ -22,10 +22,11 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, float y)
 {
 	sf::Texture texture(mContentManager.getSprites()->getResource(key).getTexture());
-	sf::IntRect rect(mContentManager.getSprites()->getResource(key).getFrame(1));
+	sf::IntRect rect(mContentManager.getSprites()->getResource(key).getFrame(0));
 	sf::Sprite sprite(texture, rect);
+
 	texture.setSmooth(true);
-	sprite.setScale(sf::Vector2f(16, 16));
+	
 	sprite.setPosition(x, y);
 	mWindow.draw(sprite);
 	return true;
@@ -82,6 +83,7 @@ void	SFMLGraphic::init()
 	mContentManager.loadSprites();
 	mContentManager.loadFonts();
 	mContentManager.loadSounds();
+	mWindow.setMouseCursorVisible(false);
 }
 
 sf::RenderWindow						&SFMLGraphic::getWindow()

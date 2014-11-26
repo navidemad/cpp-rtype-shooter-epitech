@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManager.hpp"
 #include "Engine/Component.hpp"
@@ -13,14 +14,26 @@ Entity::~Entity()
 
 }
 
-inline unsigned int	Entity::getId() const
+const unsigned int	Entity::getId() const
 {
 	return mId;
 }
 
-inline bool					Entity::addComponent(Component *component)
+bool					Entity::addComponent(Component *component)
 {
 	return mEntityManager->addComponent(mId, component);
+}
+
+Component				*Entity::getSpecificComponent(ComponentType::Type searchType)
+{
+	auto search = [&](Component *currentCompenent)
+	{
+		return searchType == currentCompenent->getComponentId();
+	};
+
+	std::list<Component *>::const_iterator it = std::find_if(mEntityManager->getComponent(mId).begin(), mEntityManager->getComponent(mId).end(), search);
+
+	return *it;
 }
 
 inline std::bitset<ComponentType::LIMIT>	Entity::getComponentBit() const
@@ -40,3 +53,4 @@ inline const std::list<Component *>			&Entity::getComponent() const
 {
 	return mEntityManager->getComponent(mId);
 }
+
