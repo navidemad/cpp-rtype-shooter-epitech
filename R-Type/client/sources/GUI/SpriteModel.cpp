@@ -20,33 +20,33 @@ SpriteModel::SpriteModel(std::string const &filename, uint32_t lines, uint32_t c
 	init();
 }
 
-SpriteModel::SpriteModel(const SpriteModel &sm)
+SpriteModel::SpriteModel(const SpriteModel &sm) :
+	mTexture(sm.getTexture()), 
+	mLoop(sm.isLoop()), 
+	mFileName(sm.getFileName()), 
+	mCurrentIndex(sm.getCurrentIndex()), 
+	mBegin(sm.getBegin()), 
+	mEnd(sm.getEnd()), 
+	mLines(sm.getLines()), 
+	mColumns(sm.getColumns()), 
+	mX(sm.getX()), 
+	mY(sm.getY())
 {
-	mTexture = sm.getTexture();
-	mLoop = sm.isLoop();
-	mFileName = sm.getFileName();
-	mCurrentIndex = sm.getCurrentIndex();
-	mBegin = sm.getBegin();
-	mEnd = sm.getEnd();
-	mLines = sm.getLines();
-	mColumns = sm.getColumns();
-	mX = sm.getX();
-	mY = sm.getY();
 	init();
 }
 
-SpriteModel::SpriteModel(SpriteModel &&sm)
+SpriteModel::SpriteModel(SpriteModel &&sm) :
+	mTexture(sm.getTexture()), 
+	mLoop(sm.isLoop()), 
+	mFileName(sm.getFileName()), 
+	mCurrentIndex(sm.getCurrentIndex()), 
+	mBegin(sm.getBegin()), 
+	mEnd(sm.getEnd()), 
+	mLines(sm.getLines()), 
+	mColumns(sm.getColumns()), 
+	mX(sm.getX()), 
+	mY(sm.getY())
 {
-	mTexture = sm.getTexture();
-	mLoop = sm.isLoop();
-	mFileName = sm.getFileName();
-	mCurrentIndex = sm.getCurrentIndex();
-	mBegin = sm.getBegin();
-	mEnd = sm.getEnd();
-	mLines = sm.getLines();
-	mColumns = sm.getColumns();
-	mX = sm.getX();
-	mY = sm.getY();
 	init();
 }
 
@@ -91,7 +91,7 @@ void		SpriteModel::init()
 {
 	// load file image
 	if (!mTexture.loadFromFile(mFileName))
-		throw std::exception(); // faire une class SpriteModelException
+		throw std::runtime_error("failed to load texture"); // faire une class SpriteModelException
 
 	// set params and sprite
 	mTexture.setSmooth(true);
@@ -99,6 +99,8 @@ void		SpriteModel::init()
 
 	// set container of frame rectangle
 	sf::Vector2u size = mTexture.getSize();
+	if (size == sf::Vector2u(0, 0))
+		throw std::runtime_error("Prevents Division by zero");
 	int rectWidth = size.x / mColumns;
 	int rectHeight = size.y / mLines;
 
