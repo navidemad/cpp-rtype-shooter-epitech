@@ -49,3 +49,13 @@ public:
 public:
 	void	process(Entity &);
 };
+
+class ButtonOption : public Button
+{
+public:
+	ButtonOption() { }
+	~ButtonOption() { }
+
+public:
+	void	process(Entity &);
+};

@@ -27,3 +27,8 @@ void	ButtonMenuGame::process(Entity &entity)
 {
 	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::MENU);
 }
+
+void	ButtonOption::process(Entity &entity)
+{
+	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::OPTION);
+}

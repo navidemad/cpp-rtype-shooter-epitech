@@ -77,6 +77,21 @@ void			RTypeClient::initOption()
 	logoScreen.addComponent(new Position(900, 60));
 	logoScreen.addComponent(new Drawable("logo"));
 
+	Entity		&cursorGame = engine.createEntity();
+	Cursor		*cursor = new Cursor();
+
+	cursorGame.addComponent(new Position(0, 500));
+	cursorGame.addComponent(cursor);
+	cursorGame.addComponent(new Drawable("searchBar"));
+
+	Entity		&createGame = engine.createEntity();
+	cursor->addEntity(createGame.getId());
+
+	createGame.addComponent(new Position(800, 500));
+	createGame.addComponent(new Font("0", "Go back without saving !"));
+	createGame.addComponent(new ButtonMenuGame());
+
+
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
@@ -153,6 +168,7 @@ void			RTypeClient::initMenu()
 
 	optionGame.addComponent(new Position(1150, 675));
 	optionGame.addComponent(new Font("0", "Option"));
+	optionGame.addComponent(new ButtonOption());
 
 	Entity		&quitGame = engine.createEntity();
 	cursor->addEntity(quitGame.getId());
