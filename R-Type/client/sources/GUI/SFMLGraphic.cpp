@@ -52,6 +52,11 @@ float	SFMLGraphic::getDelta()
 	return delta.asSeconds();
 }
 
+void	SFMLGraphic::close()
+{
+	mWindow.close();
+}
+
 bool	SFMLGraphic::isOpen() const
 {
 	return mWindow.isOpen();

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "RTypeClient.hpp"
 
 /*#include <QApplication>

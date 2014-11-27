@@ -29,3 +29,13 @@ class ButtonGame : public Button
 	public:
 		void	process(Entity &);
 };
+
+class ButtonQuitGame : public Button
+{
+public:
+	ButtonQuitGame() { }
+	~ButtonQuitGame() { }
+
+public:
+	void	process(Entity &);
+};

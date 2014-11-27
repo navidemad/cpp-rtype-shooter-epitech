@@ -7,12 +7,12 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 {
 	mKeyboard[sf::Keyboard::Down] = "down";
 	mKeyboard[sf::Keyboard::Up] =	"up";
+	mKeyboard[sf::Keyboard::Return] = "action";
 	mKeyboard[sf::Keyboard::Space] = "action";
 
 	mPoolEvent["down"] = false;
 	mPoolEvent["up"] = false;
 	mPoolEvent["action"] = false;
-
 }
 
 InputManager::~InputManager() { }
