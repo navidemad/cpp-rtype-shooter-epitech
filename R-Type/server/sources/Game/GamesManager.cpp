@@ -19,11 +19,11 @@ GamesManager::~GamesManager(void) {
 void GamesManager::run(void) {
 	mScriptLoader.loadAll();
 
+
     for (;;) for (const auto &game : mGames) {
-        *mThreadPool << std::bind(&Game::checkStateGame, game);
-        *mThreadPool << std::bind(&Game::killComponentOutOfScreen, game);
-        *mThreadPool << std::bind(&Game::updatePositions, game);
-        *mThreadPool << std::bind(&Game::checkRessources, game);
+        *mThreadPool << std::bind(&Game::stateGame, game);
+        *mThreadPool << std::bind(&Game::check, game);
+        *mThreadPool << std::bind(&Game::update, game);
     }
 }
 

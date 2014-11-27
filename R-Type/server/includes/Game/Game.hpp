@@ -1,12 +1,15 @@
 #pragma once
 
+#include "IMutex.hpp"
 #include "Timer.hpp"
 #include "Client.hpp"
 #include "NoCopyable.hpp"
+#include "IResource.hpp"
 
 #include <string>
 #include <memory>
 #include <list>
+#include <functional>
 
 class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
 
@@ -73,18 +76,21 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
                 void setHost(const std::string& host) { mHost = host; }
                 void setPseudo(const std::string& pseudo) { mPseudo = pseudo; }
                 void setType(Game::USER_TYPE type) { mType = type; }
+                void setId(uint64_t id) { mUserId = id; }
 
             // getters
             public:
                 const std::string& getHost(void) const { return mHost; }
                 const std::string& getPseudo(void) const { return mPseudo; }
                 Game::USER_TYPE getType(void) const { return mType; }
+                uint64_t getId(void) const { return mUserId; }
 
             // attributes
             private:
                 std::string mHost;
                 std::string mPseudo;
                 Game::USER_TYPE mType;
+                uint64_t mUserId;
 
         };
 
@@ -98,30 +104,44 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
 
             // ctor / dtor
             public:
-                explicit Component(void) { }
+                explicit Component(int userId = -1) : mUserId(userId) { }
                 ~Component(void) = default;
 
             // setters
             public:
                 void setX(float x) { mX = x; }
                 void setY(float y) { mY = y; }
+                void setWidth(int width) { mWidth = width; }
+                void setHeight(int height) { mHeight = height; }
                 void setAngle(float angle) { mAngle = angle; }
+                void setSpeed(float speed) { mSpeed = speed; }
                 void setLife(int life) { mLife = life; }
+                void setType(IResource::Type type) { mType = type; }
+                void setId(uint64_t id) { mUserId = id; }
 
             // getters
             public:
                 float getX(void) const { return mX; }
                 float getY(void) const { return mY; }
+                int getWidth(void) const { return mWidth; }
+                int getHeight(void) const { return mHeight; }
                 float getAngle(void) const { return mAngle; }
+                float getSpeed(void) const { return mSpeed; }
                 int getLife(void) const { return mLife; }
+                IResource::Type getType(void) { return mType; }
+                uint64_t getId(void) const { return mUserId; }
 
             // attributes
             private:
                 float mX;
                 float mY;
+                int mWidth;
+                int mHeight;
                 float mAngle;
+                float mSpeed;
                 int mLife;
-
+                IResource::Type mType;
+                uint64_t mUserId;
         };
 
     /*
@@ -144,22 +164,34 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
         };
         void	setListener(Game::OnGameEvent *listener);
 
+    // referentiel
+    public:
+        static const float XMAX;
+        static const float YMAX;
+
     // threadpool running functions
     public:
-        void checkStateGame(void);
-        void killComponentOutOfScreen(void);
-        void updatePositions(void);
-        void checkRessources(void);
+        void stateGame(void);
+        void check(void);
+        void update(void);
+
+    // ressources workflow functions
+    public:
+        bool outOfScreen(const Component& component);
+        bool collisionTouch(const Component& component, const Component& obstacle) const;
+        bool collision(const Component& component);
 
     // internal functions
     public:
         int countUserByType(Game::USER_TYPE type) const;
-        std::list<Game::User>::iterator findUserByHost(const std::string& host);
+        std::vector<Game::User>::iterator findUserByHost(const std::string& host);
+        std::vector<Game::User>::iterator findUserById(uint64_t id);
         void tryAddPlayer(const User& user);
         void tryAddSpectator(const User& user);
         void addUser(Game::USER_TYPE type, const std::string& ipAddress, const std::string& pseudo);
         void delUser(const std::string& ipAddress);
-        const std::list<Game::User>& getUsers() const;
+        void transferPlayerToSpectators(User& user);
+        const std::vector<Game::User>& getUsers() const;
         void terminateGame(void);
         const Game::GameProperties& getProperties(void) const;
 
@@ -168,9 +200,10 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
         Game::OnGameEvent *mListener;
         Timer mTimer;
         Game::GameProperties mProperties;
-        std::list<Game::User> mUsers;
-        std::list<Game::Component> mComponents;
+        std::vector<Game::User> mUsers;
+        std::vector<Game::Component> mComponents;
         bool mIsRunning;
         bool mAlreadyRunOneTime;
+        std::shared_ptr<IMutex> mMutex;
 
 };

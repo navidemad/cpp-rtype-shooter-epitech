@@ -1,24 +1,57 @@
 #include "Game.hpp"
 #include "GameException.hpp"
+#include "PortabilityBuilder.hpp"
+#include "ScopedLock.hpp"
 #include <algorithm>
 
-Game::Game(const Game::GameProperties& properties) : mListener(nullptr), mProperties(properties), mIsRunning(false), mAlreadyRunOneTime(false) {
+const float Game::XMAX = 100.f;
+const float Game::YMAX = 100.f;
+
+Game::Game(const Game::GameProperties& properties) : mListener(nullptr), mProperties(properties), mIsRunning(false), mAlreadyRunOneTime(false), mMutex(PortabilityBuilder::getMutex()) {
 }
 
 void Game::setListener(Game::OnGameEvent *listener) {
     mListener = listener;
 }
 
-#define X_MIN (0.0f)
-#define X_MAX (640.0f)
+bool Game::outOfScreen(const Component& component) {
+    bool eraseAsked = (component.getX() < 0.0f || component.getX() > Game::XMAX || component.getY() < 0.0f || component.getX() > Game::YMAX) != 0;
+    if (eraseAsked)
+    {
+        auto user = findUserById(component.getId());
+        if (user != mUsers.end())
+            transferPlayerToSpectators(*user);
+    }
+    return (eraseAsked);
+}
 
-#define Y_MIN (0.0f)
-#define Y_MAX (480.0f)
+bool Game::collisionTouch(const Component& component, const Component& obstacle) const {
+    if (&obstacle == &component)
+        return false;
 
-void Game::checkStateGame(void) {
-    /*
-    ** le jeu doit pas se terminer si la partie a déjà été lancée, mais qu'il ne reste plus que de spectateurs
-    */
+    float x = component.getX() - (component.getWidth() / 2);
+    float y = component.getY() - (component.getHeight() / 2);
+    float obsX = obstacle.getX() - (obstacle.getWidth() / 2);
+    float obsY = obstacle.getY() - (obstacle.getHeight() / 2);
+
+    return ((y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) &&
+        (x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
+}
+
+bool Game::collision(const Component& component) {
+    for (const Component& obstacle : mComponents)
+    {
+        if (collisionTouch(component, obstacle))
+        {
+
+        }
+    }
+    return (false);
+}
+
+void Game::stateGame(void) {
+    ScopedLock scopedLock(mMutex);
+
     if (mAlreadyRunOneTime && !mIsRunning)
     {
         terminateGame();
@@ -31,23 +64,36 @@ void Game::checkStateGame(void) {
     }
 }
 
-void Game::killComponentOutOfScreen(void) {
+void Game::check(void) {
+    ScopedLock scopedLock(mMutex);
+
+    auto functionsCheck = std::vector<const std::function<bool(const Component&)>> 
+    {
+        std::bind(&Game::outOfScreen, this, std::placeholders::_1),
+        std::bind(&Game::collision, this, std::placeholders::_1)
+    };
+
     if (!mIsRunning)
         return;
-    for (auto& component : mComponents)
+
+    auto it_cur = mComponents.begin();
+    auto it_end = mComponents.end();
+
+    while (it_cur != it_end)
     {
-        if (component.getX() < X_MIN || component.getX() > X_MAX || component.getY() < Y_MIN || component.getX() > Y_MAX)
+        for (const auto& fct : functionsCheck)
         {
-            component.setLife(0);
-            /*
-            ** on devrait remove la component
-            ** si c'est un type joueur, alors on switch le joueur en spectateur
-            */
+            if (fct(*it_cur))
+                it_cur = mComponents.erase(it_cur);
+            else
+                ++it_cur;
         }
     }
 }
 
-void Game::updatePositions(void) {
+void Game::update(void) {
+    ScopedLock scopedLock(mMutex);
+
     if (!mIsRunning)
         return;
     for (auto& component : mComponents)
@@ -59,17 +105,16 @@ void Game::updatePositions(void) {
     }
 }
 
-void Game::checkRessources(void) {
-    if (!mIsRunning)
-        return;
-}
-
 int Game::countUserByType(Game::USER_TYPE type) const {
     return std::count_if(mUsers.begin(), mUsers.end(), [&type](const User& user) { return user.getType() == type; });
 }
 
-std::list<Game::User>::iterator Game::findUserByHost(const std::string& host) {
+std::vector<Game::User>::iterator Game::findUserByHost(const std::string& host) {
     return std::find_if(mUsers.begin(), mUsers.end(), [&host](const User& user) { return user.getHost() == host; });
+}
+
+std::vector<Game::User>::iterator Game::findUserById(uint64_t id) {
+    return std::find_if(mUsers.begin(), mUsers.end(), [&id](const User& user) { return user.getId() == id; });
 }
 
 void Game::tryAddPlayer(const User& user) {
@@ -115,12 +160,19 @@ void Game::delUser(const std::string& host) {
     if ((*user).getType() == USER_TYPE::PLAYER)
         mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
     else if ((*user).getType() == USER_TYPE::SPECTATOR)
-        mProperties.setNbPlayers(mProperties.getNbSpectators() - 1);
+        mProperties.setNbSpectators(mProperties.getNbSpectators() - 1);
 
     mUsers.erase(user);
 }
 
-const std::list<Game::User>& Game::getUsers() const {
+void Game::transferPlayerToSpectators(User& user) {
+    mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
+    mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
+    user.setType(Game::USER_TYPE::SPECTATOR);
+    //sendMessage that user die
+}
+
+const std::vector<Game::User>& Game::getUsers() const {
     return mUsers;
 }
 
