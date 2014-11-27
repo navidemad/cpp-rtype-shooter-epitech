@@ -22,3 +22,8 @@ void	ButtonQuitGame::process(Entity &entity)
 {
 	entity.getEntityManager()->getClient()->getGui()->close();
 }
+
+void	ButtonMenuGame::process(Entity &entity)
+{
+	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::MENU);
+}

@@ -9,10 +9,12 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 	mKeyboard[sf::Keyboard::Up] =	"up";
 	mKeyboard[sf::Keyboard::Return] = "action";
 	mKeyboard[sf::Keyboard::Space] = "action";
+	mKeyboard[sf::Keyboard::Escape] = "back";
 
 	mPoolEvent["down"] = false;
 	mPoolEvent["up"] = false;
 	mPoolEvent["action"] = false;
+	mPoolEvent["back"] = false;
 }
 
 InputManager::~InputManager() { }
@@ -47,9 +49,7 @@ void	InputManager::update()
 
 	while (mGraphic->getWindow().pollEvent(currentEvent))
 	{
-		if (currentEvent.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			mGraphic->getWindow().close();
-		else if (sf::Event::KeyPressed == currentEvent.type)
+		if (sf::Event::KeyPressed == currentEvent.type)
 			pressedKey(currentEvent.key.code);
 		else if (sf::Event::KeyReleased == currentEvent.type)
 			releasedKey(currentEvent.key.code);

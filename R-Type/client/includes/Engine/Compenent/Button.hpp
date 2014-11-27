@@ -39,3 +39,13 @@ public:
 public:
 	void	process(Entity &);
 };
+
+class ButtonMenuGame : public Button
+{
+public:
+	ButtonMenuGame() { }
+	~ButtonMenuGame() { }
+
+public:
+	void	process(Entity &);
+};

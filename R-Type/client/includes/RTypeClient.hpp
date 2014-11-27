@@ -11,7 +11,8 @@ class RTypeClient
 public:
 	enum Game : unsigned int
 	{
-		MENU = 0,
+		PRESS_START = 0,
+		MENU,
 		OPTION,
 		RTYPE,
 		LIMIT
@@ -46,4 +47,5 @@ public:
 		void						init();
 		void						initMenu();
 		void						initOption();
+		void						initPressStart();
 };

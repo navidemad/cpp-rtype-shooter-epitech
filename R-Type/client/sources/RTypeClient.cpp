@@ -13,7 +13,7 @@
 #include "Engine/Compenent/Font.hpp"
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::MENU), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance())
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance())
 {
 	for (ECSManager &engine : mEngine)
 	{
@@ -60,6 +60,7 @@ void			RTypeClient::init()
 {
 	initMenu();
 	initOption();
+	initPressStart();
 }
 
 void			RTypeClient::initOption()
@@ -75,6 +76,38 @@ void			RTypeClient::initOption()
 
 	logoScreen.addComponent(new Position(900, 60));
 	logoScreen.addComponent(new Drawable("logo"));
+
+	engine.addSystem(new DrawableSystem);
+	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new DrawableFontSystem);
+}
+
+void			RTypeClient::initPressStart()
+{
+	ECSManager &engine = mEngine[RTypeClient::PRESS_START];
+
+	Entity		&menuScreen = engine.createEntity();
+
+	menuScreen.addComponent(new Position(0, 0));
+	menuScreen.addComponent(new Drawable("menu"));
+
+	Entity		&logoScreen = engine.createEntity();
+
+	logoScreen.addComponent(new Position(900, 60));
+	logoScreen.addComponent(new Drawable("logo"));
+
+	Entity		&cursorGame = engine.createEntity();
+	Cursor		*cursor = new Cursor();
+
+	cursorGame.addComponent(new Position(0, 500));
+	cursorGame.addComponent(cursor);
+
+	Entity		&createGame = engine.createEntity();
+	cursor->addEntity(createGame.getId());
+
+	createGame.addComponent(new Position(800, 500));
+	createGame.addComponent(new Font("0", "Press enter"));
+	createGame.addComponent(new ButtonMenuGame());
 
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
@@ -137,3 +170,4 @@ void			RTypeClient::initMenu()
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
 }
+
