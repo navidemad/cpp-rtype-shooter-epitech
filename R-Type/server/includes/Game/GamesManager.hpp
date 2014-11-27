@@ -30,21 +30,22 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // game events
     public:
-        void onTerminatedGame(std::shared_ptr<Game>);
+        void onTerminatedGame(const std::shared_ptr<Game>&);
 
 	// network workflow utils functions
 	public:
-        void    createGame(const Game::GameProperties&properties, const std::string& host);
+        void    createGame(const Game::GameProperties&properties);
         void    removeGame(const std::string&);
-        void    disconnectHostFromHisEventualGameRunning(const std::string& host);
-		void	joinGame(const std::string &host, const std::string &name, const std::string &pseudo);
-		void	observeGame(const std::string &host, const std::string &name);
-		void	leaveGame(const std::string &host);
+        void    joinGame(Game::USER_TYPE typeUser, const std::string &host, const std::string &name, const std::string &pseudo);
+        void    playGame(const std::string &host, const std::string &name, const std::string &pseudo);
+        void    spectateGame(const std::string &host, const std::string &name, const std::string &pseudo);
+        void	leaveGame(const std::string &host, bool throwExcept = true);
 		void	updatePseudo(const std::string &host, const std::string &pseudo);
-		const Game::GameProperties &getGameProperties(const std::string &name) const;
+		const Game::GameProperties &getGameProperties(const std::string &name);
 		const std::list<Game::GameProperties> &getGamesProperties(void) const;
-        std::vector<std::shared_ptr<Game>>::const_iterator findGameByName(const std::string& name) const;
-        std::vector<std::shared_ptr<Game>>::const_iterator findGameByUserAddressIp(const std::string& name) const;
+        std::vector<std::shared_ptr<Game>>::iterator findGameByGamePtr(const std::shared_ptr<Game>& target);
+        std::vector<std::shared_ptr<Game>>::iterator findGameByName(const std::string& name);
+        std::vector<std::shared_ptr<Game>>::iterator findGameByHost(const std::string& host);
 
     // attributes
     private:

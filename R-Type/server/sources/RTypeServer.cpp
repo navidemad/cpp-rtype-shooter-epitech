@@ -23,7 +23,7 @@ void RTypeServer::onClientCreateGame(const std::string &host, const std::string 
 		properties.setNbMaxPlayers(nbPlayers);
 		properties.setNbMaxSpectators(nbObservers);
 
-		mGamesManager.createGame(properties, host);
+		mGamesManager.createGame(properties);
 		mClientManager.sendError(std::list<std::string>{host}, ErrorStatus(ErrorStatus::Error::OK));
 	}
 	catch (const GamesManagerException& e) {
@@ -33,7 +33,7 @@ void RTypeServer::onClientCreateGame(const std::string &host, const std::string 
 
 void RTypeServer::onClientJoinGame(const std::string &host, const std::string &name, const std::string &pseudo) {
 	try {
-		mGamesManager.joinGame(host, name, pseudo);
+        mGamesManager.playGame(host, name, pseudo);
 		mClientManager.sendError(std::list<std::string>{host}, ErrorStatus(ErrorStatus::Error::OK));
 	}
 	catch (const GamesManagerException& e) {
@@ -75,7 +75,7 @@ void RTypeServer::onClientListLevels(const std::string &) {
 
 void RTypeServer::onClientObserveGame(const std::string &host, const std::string &name) {
 	try {
-		mGamesManager.observeGame(host, name);
+        mGamesManager.spectateGame(host, name, "Spectator Kikoo");
 		mClientManager.sendError(std::list<std::string>{host}, ErrorStatus(ErrorStatus::Error::OK));
 	}
 	catch (const GamesManagerException& e) {
