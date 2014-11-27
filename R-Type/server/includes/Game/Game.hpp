@@ -179,6 +179,9 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
     public:
         bool outOfScreen(const Component& component);
         bool collisionTouch(const Component& component, const Component& obstacle) const;
+        bool collisionWithBonus(const Component& component, const Component& obstacle);
+        bool collisionWithBullet(const Component& component, const Component& obstacle);
+        bool collisionWithMonster(const Component& component, const Component& obstacle);
         bool collision(const Component& component);
 
     // internal functions

@@ -38,14 +38,39 @@ bool Game::collisionTouch(const Component& component, const Component& obstacle)
         (x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
 }
 
-bool Game::collision(const Component& component) {
-    for (const Component& obstacle : mComponents)
-    {
-        if (collisionTouch(component, obstacle))
-        {
+bool Game::collisionWithBonus(const Component& /*component*/, const Component& /*obstacle*/) {
+    // en fonction du bonus changer via les setters le component
+    return false;
+}
 
-        }
-    }
+bool Game::collisionWithBullet(const Component& /*component*/, const Component& /*obstacle*/) {
+    // retrait de vie // attention à pas enlever deux fois de la vie dans le cas bullet-player => -1, puis player-bullet => -1
+    // attention aussi si la bullet vient d'un allié et non d'un monstre il faut pas retirer de vie
+    // component.setLife(component->getLife() - 1);
+    // notifier les utilisateurs qu'un allié a été touché
+    return false;
+}
+
+bool Game::collisionWithMonster(const Component& /*component*/, const Component& /*obstacle*/) {
+    // Mort instantané si on touche un monstre
+    return true;
+}
+
+bool Game::collision(const Component& component) {
+
+    static auto functionsHandleCollision = std::vector<const std::function<bool(const Component&, const Component&)>>
+    {
+        std::bind(&Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
+        std::bind(&Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
+        std::bind(&Game::collisionWithMonster, this, std::placeholders::_1, std::placeholders::_2)  
+    };
+
+    for (const Component& obstacle : mComponents)
+        if (collisionTouch(component, obstacle))
+            for (const auto& fct : functionsHandleCollision)
+                if (fct(component, obstacle))
+                    return true;
+
     return (false);
 }
 
@@ -67,7 +92,7 @@ void Game::stateGame(void) {
 void Game::check(void) {
     ScopedLock scopedLock(mMutex);
 
-    auto functionsCheck = std::vector<const std::function<bool(const Component&)>> 
+    static auto functionsCheck = std::vector<const std::function<bool(const Component&)>> 
     {
         std::bind(&Game::outOfScreen, this, std::placeholders::_1),
         std::bind(&Game::collision, this, std::placeholders::_1)
