@@ -1,14 +1,13 @@
 #include "Network/ServerCommunication.hpp"
 #include "Network/TcpClient.hpp"
 
-#include <iostream>
-
 /*
 ** ctor - dtor
 */
-ServerCommunication::ServerCommunication() {
+ServerCommunication::ServerCommunication() 
+: mHandleTcpCmd(this){
 	mSocketTcp = new TcpClient;
-	mSocketTcp->setOnSocketEventListener(this);
+	mSocketTcp->setOnSocketEventListener(&mHandleTcpCmd);
 }
 
 ServerCommunication::~ServerCommunication() {
@@ -16,22 +15,10 @@ ServerCommunication::~ServerCommunication() {
 }
 
 /*
-** Callback from ISocketClient
+** Callback from CommandPacketBuilder
 */
-void    ServerCommunication::onBytesWritten(IClientSocket * /*socket*/, unsigned int /*nbBytes*/){
-	return;
-}
-void    ServerCommunication::onSocketReadable(IClientSocket * socket, unsigned int nbBytesToRead){
-	IClientSocket::Message message;
-
-	message = socket->receive(nbBytesToRead);
-	std::string msg_str(message.msg.begin(), message.msg.end());
-	std::cout << msg_str;
-	socket->send(message);
-	return ;
-}
-void    ServerCommunication::onSocketClosed(IClientSocket * /*socket*/){
-	return ;
+void ServerCommunication::onNewCommand(ICommand *command) {
+	mListCommand.push_back(command);
 }
 
 /*
