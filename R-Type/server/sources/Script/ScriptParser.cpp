@@ -4,6 +4,15 @@
 #include <map>
 #include "ScriptParser.hpp"
 
+const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
+	{ "name", &ScriptParser::cmdName },
+	{ "require", &ScriptParser::cmdName },
+	{ "action", &ScriptParser::cmdName },
+	{ "add_cron", &ScriptParser::cmdName },
+	{ "remove_cron", &ScriptParser::cmdName }
+};
+
+
 ScriptParser::ScriptParser(void) {
 
 }
@@ -25,14 +34,7 @@ std::string ScriptParser::extractWord(void){
 }
 
 void		ScriptParser::parseFile(std::ifstream &file){
-	std::map<std::string, void (ScriptParser::*)(const std::string&)> command;
 	std::string lineContent;
-
-	command["name"] = &ScriptParser::cmdName;
-	command["action"] = &ScriptParser::cmdAction;
-	command["require"] = &ScriptParser::cmdRequire;
-	command["add_cron"] = &ScriptParser::cmdAddCron;
-	command["remove_cron"] = &ScriptParser::cmdRemoveCron;
 
 	while (file.good()){
 		std::getline(file, lineContent);

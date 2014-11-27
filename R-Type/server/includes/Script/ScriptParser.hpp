@@ -51,4 +51,10 @@ class ScriptParser : public NoCopyable {
 	private:
 		void						splitString(void);
 
+	private:
+		struct tokenExec {
+			std::string		cmd;
+			void			(ScriptParser::*Ptr)(const std::string &);
+		};
+	static const ScriptParser::tokenExec tokenExecTab[];
 	};

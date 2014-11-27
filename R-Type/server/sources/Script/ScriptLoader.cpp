@@ -21,7 +21,6 @@ void ScriptLoader::loadScript(const std::string& path) {
 		file.open(path);
 		Parser.parseFile(file);
 	}
-
 }
 
 void ScriptLoader::loadAll(void) {
