@@ -1,22 +1,17 @@
 #pragma once
 
 #include "IMutex.hpp"
-#include <WinSock2.h>
 #include "MutexException.hpp"
+#include "NoCopyable.hpp"
 
-class WindowsMutex : public IMutex {
+#include <WinSock2.h>
+
+class WindowsMutex : public NoCopyable, public IMutex {
 
 	// ctor dtor
 	public:
 		explicit WindowsMutex(void);
 		~WindowsMutex(void);
-
-	// copy / move operators
-	public:
-		WindowsMutex(const WindowsMutex &) = delete;
-		WindowsMutex(WindowsMutex &&) = delete;
-		const WindowsMutex &operator=(const WindowsMutex &) = delete;
-		const WindowsMutex &operator=(WindowsMutex &&) = delete;
 
 	// interface implementation
 	public:

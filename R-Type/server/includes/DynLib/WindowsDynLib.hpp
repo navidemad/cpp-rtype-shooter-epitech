@@ -2,22 +2,16 @@
 
 #include "Config.hpp"
 #include "IDynLib.hpp"
+#include "NoCopyable.hpp"
 
 #define DLL_IMPORT __declspec(dllimport)
 
-class WindowsDynLib : public IDynLib {
+class WindowsDynLib : public NoCopyable, public IDynLib {
 
 	// ctor dtor
 	public:
         WindowsDynLib(void) = default;
         ~WindowsDynLib(void) = default;
-
-	// copy / move operators
-	public:
-		WindowsDynLib(const WindowsDynLib &) = delete;
-		WindowsDynLib(const WindowsDynLib &&) = delete;
-		const WindowsDynLib &operator=(const WindowsDynLib &) = delete;
-		const WindowsDynLib &operator=(const WindowsDynLib &&) = delete;
 
 	// interface implementation
 	public:

@@ -2,20 +2,14 @@
 
 #include "ClientManager.hpp"
 #include "GamesManager.hpp"
+#include "NoCopyable.hpp"
 
-class RTypeServer : public ClientManager::OnClientManagerEvent {
+class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEvent {
 
     // ctor / dtor
     public:
         explicit RTypeServer(void);
         ~RTypeServer(void) = default;
-
-    // copy / move operators
-    public:
-        RTypeServer(const RTypeServer &) = delete;
-        RTypeServer(const RTypeServer &&) = delete;
-        const RTypeServer &operator=(const RTypeServer &) = delete;
-        const RTypeServer &operator=(const RTypeServer &&) = delete;
 
     // exec function
     public:

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include "IClientSocket.hpp"
+
+#include <memory>
 
 class IServerSocket {
 

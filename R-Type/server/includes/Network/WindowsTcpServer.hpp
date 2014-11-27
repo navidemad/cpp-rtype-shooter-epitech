@@ -2,20 +2,14 @@
 
 #include "IServerSocket.hpp"
 #include "NetworkManager.hpp"
+#include "NoCopyable.hpp"
 
-class WindowsTcpServer : public IServerSocket, public NetworkManager::OnSocketEvent {
+class WindowsTcpServer : public NoCopyable, public IServerSocket, public NetworkManager::OnSocketEvent {
 
 	// ctor - dtor
 	public:
 		explicit WindowsTcpServer(void);
 		~WindowsTcpServer(void);
-
-	// copy / move operators
-	public:
-		WindowsTcpServer(const WindowsTcpServer &) = delete;
-		WindowsTcpServer(WindowsTcpServer &&) = delete;
-		const WindowsTcpServer &operator=(const WindowsTcpServer &) = delete;
-		const WindowsTcpServer &operator=(WindowsTcpServer &&) = delete;
 
 	// init
 	public:

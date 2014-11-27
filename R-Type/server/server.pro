@@ -31,7 +31,8 @@ INCLUDEPATH		+=	.					\
 				build/ui				\
 				build/moc
 
-HEADERS			+=	includes/Exceptions/MutexException.hpp			\
+HEADERS			+=	../shared/includes/NoCopyable.hpp			\
+				includes/Exceptions/MutexException.hpp			\
 				includes/Exceptions/SocketException.hpp			\
 				includes/Exceptions/ThreadException.hpp			\
 				includes/Exceptions/CondVarException.hpp		\

@@ -2,21 +2,16 @@
 
 #include "IClientSocket.hpp"
 #include "NetworkManager.hpp"
+#include "NoCopyable.hpp"
+
 #include <deque>
 
-class WindowsUdpClient : public IClientSocket, public NetworkManager::OnSocketEvent {
+class WindowsUdpClient : public NoCopyable, public IClientSocket, public NetworkManager::OnSocketEvent {
 
 	// ctor - dtor
 	public:
 		explicit WindowsUdpClient(void);
 		~WindowsUdpClient(void);
-
-	// copy / move operators
-	public:
-		WindowsUdpClient(const WindowsUdpClient &) = delete;
-		WindowsUdpClient(WindowsUdpClient &&) = delete;
-		const WindowsUdpClient &operator=(const WindowsUdpClient &) = delete;
-		const WindowsUdpClient &operator=(WindowsUdpClient &&) = delete;
 
 	// start - stop
 	public:

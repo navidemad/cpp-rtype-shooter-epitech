@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include "ICommand.hpp"
+
+#include <memory>
 
 namespace CommandFactory {
 

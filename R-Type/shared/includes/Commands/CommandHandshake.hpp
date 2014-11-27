@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandHandshake : public ICommand {
+class CommandHandshake : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -20,13 +21,6 @@ class CommandHandshake : public ICommand {
 	public:
 		explicit CommandHandshake(void);
 		~CommandHandshake(void);
-
-	// copy / move operators
-	public:
-		CommandHandshake(const CommandHandshake &) = delete;
-		CommandHandshake(CommandHandshake &&) = delete;
-		const CommandHandshake &operator=(const CommandHandshake &) = delete;
-		const CommandHandshake &operator=(CommandHandshake &&) = delete;
 
 	// public pure methods
 	public:

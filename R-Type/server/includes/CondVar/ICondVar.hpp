@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include "IMutex.hpp"
+
+#include <memory>
 
 class ICondVar {
 

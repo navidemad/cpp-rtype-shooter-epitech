@@ -1,23 +1,18 @@
 #pragma once
 
 #include "IThread.hpp"
-# include <WinSock2.h>
 #include "ThreadException.hpp"
+#include "NoCopyable.hpp"
+
+#include <WinSock2.h>
 
 template <typename U, typename T>
-class WindowsThread : public IThread<U, T> {
+class WindowsThread : public NoCopyable, public IThread<U, T> {
 
 	// ctor dtor
 	public:
 		explicit WindowsThread(void) : mIsRunning(false) {}
         ~WindowsThread(void) { cancel(); }
-
-	// copy / move operators
-	public:
-		WindowsThread(const WindowsThread &) = delete;
-		WindowsThread(WindowsThread &&) = delete;
-		const WindowsThread &operator=(const WindowsThread &) = delete;
-		const WindowsThread &operator=(WindowsThread &&) = delete;
 
 	// enum ret value
 	public:

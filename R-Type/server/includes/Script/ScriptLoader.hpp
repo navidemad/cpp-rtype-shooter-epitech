@@ -1,20 +1,15 @@
 #pragma once
 
+#include "NoCopyable.hpp"
+
 #include <string>
 
-class ScriptLoader {
+class ScriptLoader : public NoCopyable {
 
     // ctor / dtor
     public:
         explicit ScriptLoader(void);
         ~ScriptLoader(void);
-
-    // copy / move operators
-    public:
-        ScriptLoader(const ScriptLoader &) = delete;
-        ScriptLoader(const ScriptLoader &&) = delete;
-        const ScriptLoader &operator=(const ScriptLoader &) = delete;
-        const ScriptLoader &operator=(const ScriptLoader &&) = delete;
 
     // internal functions
     public:

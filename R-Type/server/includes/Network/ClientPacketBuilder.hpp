@@ -1,22 +1,17 @@
 #pragma once
 
-#include <memory>
 #include "ICommand.hpp"
 #include "IClientSocket.hpp"
+#include "NoCopyable.hpp"
 
-class ClientPacketBuilder : public IClientSocket::OnSocketEvent {
+#include <memory>
+
+class ClientPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEvent {
 
 	// ctor dtor
 	public:
 		explicit ClientPacketBuilder(const std::shared_ptr<IClientSocket> &client);
 		~ClientPacketBuilder(void);
-
-	// copy move operators
-	public:
-		ClientPacketBuilder(const ClientPacketBuilder &) = delete;
-		ClientPacketBuilder(ClientPacketBuilder &&) = delete;
-		const ClientPacketBuilder &operator=(const ClientPacketBuilder &) = delete;
-		const ClientPacketBuilder &operator=(ClientPacketBuilder &&) = delete;
 
 	// interface implementation
 	public:

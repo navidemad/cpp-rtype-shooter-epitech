@@ -7,8 +7,8 @@
 #include "IClientSocket.hpp"
 #include "IServerSocket.hpp"
 #include "IDynLib.hpp"
-
 #include "WindowsThread.hpp"
+#include "NoCopyable.hpp"
 
 #include <memory>
 

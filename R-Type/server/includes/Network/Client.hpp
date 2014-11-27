@@ -1,23 +1,18 @@
 #pragma once
 
-#include <memory>
 #include "ErrorStatus.hpp"
 #include "IClientSocket.hpp"
 #include "ClientPacketBuilder.hpp"
+#include "NoCopyable.hpp"
 
-class Client : public ClientPacketBuilder::OnClientPacketBuilderEvent {
+#include <memory>
+
+class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuilderEvent {
 
 	// ctor dtor
 	public:
 		explicit Client(const std::shared_ptr<IClientSocket> &client);
 		~Client(void);
-
-	// copy operators
-	public:
-		Client(const Client &) = delete;
-		Client(Client &&) = delete;
-		const Client &operator=(const Client &) = delete;
-		const Client &operator=(Client &&) = delete;
 
 	// ptr tab
 	private:

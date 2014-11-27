@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandUpdatePseudo : public ICommand {
+#include <string>
+
+class CommandUpdatePseudo : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -17,13 +19,6 @@ class CommandUpdatePseudo : public ICommand {
 	public:
 		explicit CommandUpdatePseudo(void);
 		~CommandUpdatePseudo(void);
-
-	// copy / move operators
-	public:
-		CommandUpdatePseudo(const CommandUpdatePseudo &) = delete;
-		CommandUpdatePseudo(CommandUpdatePseudo &&) = delete;
-		const CommandUpdatePseudo &operator=(const CommandUpdatePseudo &) = delete;
-		const CommandUpdatePseudo &operator=(CommandUpdatePseudo &&) = delete;
 
 	// getter - setters
 	public:

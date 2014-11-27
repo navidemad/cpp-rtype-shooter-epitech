@@ -3,11 +3,12 @@
 #include "Config.hpp"
 #include "ThreadPool.hpp"
 #include "IMutex.hpp"
+#include "NoCopyable.hpp"
 
 #include <list>
 #include <memory>
 
-class NetworkManager {
+class NetworkManager : public NoCopyable {
 
 	// CallBack Interface
 	public:
@@ -34,13 +35,6 @@ class NetworkManager {
 		explicit NetworkManager(void);
 	public:
 		~NetworkManager(void);
-
-	// copy / move operators
-	public:
-		NetworkManager(const NetworkManager &) = delete;
-		NetworkManager(NetworkManager &&) = delete;
-		const NetworkManager &operator=(const NetworkManager &) = delete;
-		const NetworkManager &operator=(NetworkManager &&) = delete;
 
 
 	// singleton handle instance

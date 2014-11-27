@@ -15,7 +15,6 @@ class ErrorStatus {
 		ErrorStatus(ErrorStatus::Error error = ErrorStatus::Error::OK);
 		~ErrorStatus(void);
 
-
 	// copy / move operators
 	public:
 		ErrorStatus(const ErrorStatus &);

@@ -1,21 +1,16 @@
 #pragma once
 
 #include "IMutex.hpp"
+#include "NoCopyable.hpp"
+
 #include <memory>
 
-class ScopedLock {
+class ScopedLock : public NoCopyable {
 
 	// ctor dtor
 	public:
 		explicit ScopedLock(std::shared_ptr<IMutex> mutex);
 		~ScopedLock(void);
-
-	// copy / move operators
-	public:
-		ScopedLock(const ScopedLock &) = delete;
-		ScopedLock(ScopedLock &&) = delete;
-		const ScopedLock &operator=(const ScopedLock &) = delete;
-		const ScopedLock &operator=(ScopedLock &&) = delete;
 
 	// attributes
 	private:

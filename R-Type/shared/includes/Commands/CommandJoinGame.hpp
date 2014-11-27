@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandJoinGame : public ICommand {
+#include <string>
+
+class CommandJoinGame : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -17,13 +19,6 @@ class CommandJoinGame : public ICommand {
 	public:
 		explicit CommandJoinGame(void);
 		~CommandJoinGame(void);
-
-	// copy / move operators
-	public:
-		CommandJoinGame(const CommandJoinGame &) = delete;
-		CommandJoinGame(CommandJoinGame &&) = delete;
-		const CommandJoinGame &operator=(const CommandJoinGame &) = delete;
-		const CommandJoinGame &operator=(CommandJoinGame &&) = delete;
 
 	// getter - setters
 	public:

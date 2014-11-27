@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandFire : public ICommand {
+class CommandFire : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -15,13 +16,6 @@ class CommandFire : public ICommand {
 	public:
 		explicit CommandFire(void);
 		~CommandFire(void);
-
-	// copy / move operators
-	public:
-		CommandFire(const CommandFire &) = delete;
-		CommandFire(CommandFire &&) = delete;
-		const CommandFire &operator=(const CommandFire &) = delete;
-		const CommandFire &operator=(CommandFire &&) = delete;
 
 	// public pure methods
 	public:

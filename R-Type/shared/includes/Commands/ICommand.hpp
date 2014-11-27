@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IClientSocket.hpp"
+
 #include <cstdint>
 
 class ICommand {

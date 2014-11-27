@@ -3,25 +3,20 @@
 #include "IThread.hpp"
 #include "IMutex.hpp"
 #include "ICondVar.hpp"
+#include "NoCopyable.hpp"
+
 #include <vector>
 #include <deque>
 #include <functional>
 #include <memory>
 
-class ThreadPool {
+class ThreadPool : public NoCopyable {
 
 	// ctor - dtor
 	private:
 		explicit ThreadPool(unsigned int nbThreads);
 	public:
 		~ThreadPool(void);
-
-	// copy / move operators
-	public:
-		ThreadPool(const ThreadPool &) = delete;
-		ThreadPool(ThreadPool &&) = delete;
-		const ThreadPool &operator=(const ThreadPool &) = delete;
-		const ThreadPool &operator=(ThreadPool &&) = delete;
 
 	// singleton handle instance
 	public:

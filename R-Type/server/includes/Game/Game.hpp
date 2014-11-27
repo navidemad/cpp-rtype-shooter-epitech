@@ -2,12 +2,13 @@
 
 #include "Timer.hpp"
 #include "Client.hpp"
+#include "NoCopyable.hpp"
 
 #include <string>
 #include <memory>
 #include <list>
 
-class Game : public std::enable_shared_from_this<Game> {
+class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
 
     // game properties
     public:
@@ -50,13 +51,6 @@ class Game : public std::enable_shared_from_this<Game> {
     public:
         explicit Game(const Game::GameProperties& properties, const std::string& hostOwner);
         ~Game(void) = default;
-
-    // copy / move operators
-    public:
-        Game(const Game &) = delete;
-        Game(const Game &&) = delete;
-        const Game &operator=(const Game &) = delete;
-        const Game &operator=(const Game &&) = delete;
 
     // type user
     public:

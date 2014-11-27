@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandShowLevel : public ICommand {
+#include <string>
+
+class CommandShowLevel : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -19,13 +21,6 @@ class CommandShowLevel : public ICommand {
 	public:
 		explicit CommandShowLevel(void);
 		~CommandShowLevel(void);
-
-	// copy / move operators
-	public:
-		CommandShowLevel(const CommandShowLevel &) = delete;
-		CommandShowLevel(CommandShowLevel &&) = delete;
-		const CommandShowLevel &operator=(const CommandShowLevel &) = delete;
-		const CommandShowLevel &operator=(CommandShowLevel &&) = delete;
 
 	// getter - setters
 	public:

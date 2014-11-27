@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandUpdateScore : public ICommand {
+#include <string>
+
+class CommandUpdateScore : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -19,13 +21,6 @@ class CommandUpdateScore : public ICommand {
 	public:
 		explicit CommandUpdateScore(void);
 		~CommandUpdateScore(void);
-
-	// copy / move operators
-	public:
-		CommandUpdateScore(const CommandUpdateScore &) = delete;
-		CommandUpdateScore(CommandUpdateScore &&) = delete;
-		const CommandUpdateScore &operator=(const CommandUpdateScore &) = delete;
-		const CommandUpdateScore &operator=(CommandUpdateScore &&) = delete;
 
 	// getter - setters
 	public:

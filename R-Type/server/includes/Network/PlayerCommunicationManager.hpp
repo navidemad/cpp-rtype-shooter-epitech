@@ -3,21 +3,16 @@
 #include "PlayerPacketBuilder.hpp"
 #include "IMutex.hpp"
 #include "IResource.hpp"
+#include "NoCopyable.hpp"
+
 #include <list>
 
-class PlayerCommunicationManager : public PlayerPacketBuilder::OnPlayerPacketBuilderEvent {
+class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder::OnPlayerPacketBuilderEvent {
 
 	// ctor dtor
 	public:
 		PlayerCommunicationManager(void);
 		~PlayerCommunicationManager(void);
-
-	// move copy operators
-	private:
-		PlayerCommunicationManager(const PlayerCommunicationManager &) = delete;
-		PlayerCommunicationManager(PlayerCommunicationManager &&) = delete;
-		const PlayerCommunicationManager &operator=(const PlayerCommunicationManager &) = delete;
-		const PlayerCommunicationManager &operator=(PlayerCommunicationManager &&) = delete;
 
 	// peer
 	private:

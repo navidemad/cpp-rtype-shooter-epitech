@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandDestroyResource : public ICommand {
+class CommandDestroyResource : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -16,13 +17,6 @@ class CommandDestroyResource : public ICommand {
 	public:
 		explicit CommandDestroyResource(void);
 		~CommandDestroyResource(void);
-
-	// copy / move operators
-	public:
-		CommandDestroyResource(const CommandDestroyResource &) = delete;
-		CommandDestroyResource(CommandDestroyResource &&) = delete;
-		const CommandDestroyResource &operator=(const CommandDestroyResource &) = delete;
-		const CommandDestroyResource &operator=(CommandDestroyResource &&) = delete;
 
 	// getter - setters
 	public:

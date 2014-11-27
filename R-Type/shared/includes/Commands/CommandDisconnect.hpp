@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandDisconnect : public ICommand {
+class CommandDisconnect : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -15,13 +16,6 @@ class CommandDisconnect : public ICommand {
 	public:
 		explicit CommandDisconnect(void);
 		~CommandDisconnect(void);
-
-	// copy / move operators
-	public:
-		CommandDisconnect(const CommandDisconnect &) = delete;
-		CommandDisconnect(CommandDisconnect &&) = delete;
-		const CommandDisconnect &operator=(const CommandDisconnect &) = delete;
-		const CommandDisconnect &operator=(CommandDisconnect &&) = delete;
 
 	// public pure methods
 	public:

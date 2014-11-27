@@ -1,24 +1,19 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include "IMutex.hpp"
 #include "IClientSocket.hpp"
 #include "NetworkManager.hpp"
+#include "NoCopyable.hpp"
 
-class WindowsTcpClient : public IClientSocket, public NetworkManager::OnSocketEvent {
+#include <string>
+#include <vector>
+
+class WindowsTcpClient : public NoCopyable, public IClientSocket, public NetworkManager::OnSocketEvent {
 
 	// ctor - dtor
 	public:
 		explicit WindowsTcpClient(void);
 		~WindowsTcpClient(void);
-
-	// copy / move operators
-	public:
-		WindowsTcpClient(const WindowsTcpClient &) = delete;
-		WindowsTcpClient(WindowsTcpClient &&) = delete;
-		const WindowsTcpClient &operator=(const WindowsTcpClient &) = delete;
-		const WindowsTcpClient &operator=(WindowsTcpClient &&) = delete;
 
 	// start - stop
 	public:

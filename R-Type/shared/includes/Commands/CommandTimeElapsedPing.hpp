@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandTimeElapsedPing : public ICommand {
+class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -16,13 +17,6 @@ class CommandTimeElapsedPing : public ICommand {
 	public:
 		explicit CommandTimeElapsedPing(void);
 		~CommandTimeElapsedPing(void);
-
-	// copy / move operators
-	public:
-		CommandTimeElapsedPing(const CommandTimeElapsedPing &) = delete;
-		CommandTimeElapsedPing(CommandTimeElapsedPing &&) = delete;
-		const CommandTimeElapsedPing &operator=(const CommandTimeElapsedPing &) = delete;
-		const CommandTimeElapsedPing &operator=(CommandTimeElapsedPing &&) = delete;
 
 	// getter - setters
 	public:

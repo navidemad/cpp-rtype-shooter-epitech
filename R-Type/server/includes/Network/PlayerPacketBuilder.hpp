@@ -2,22 +2,17 @@
 
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
+
 #include <memory>
 #include <deque>
 
-class PlayerPacketBuilder : public IClientSocket::OnSocketEvent {
+class PlayerPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEvent {
 
 	// ctor dtor
 	public:
 		explicit PlayerPacketBuilder(int port);
 		~PlayerPacketBuilder(void);
-
-	// move copy operators
-	public:
-		PlayerPacketBuilder(const PlayerPacketBuilder &) = delete;
-		PlayerPacketBuilder(PlayerPacketBuilder &&) = delete;
-		const PlayerPacketBuilder &operator=(const PlayerPacketBuilder &) = delete;
-		const PlayerPacketBuilder &operator=(PlayerPacketBuilder &&) = delete;
 
 	// handle build state
 	private:

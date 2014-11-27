@@ -6,24 +6,18 @@
 #include "Utils.hpp"
 #include "ScriptLoader.hpp"
 #include "PlayerCommunicationManager.hpp"
+#include "NoCopyable.hpp"
 
 #include <string>
 #include <memory>
 #include <vector>
 
-class GamesManager : public PlayerCommunicationManager::OnPlayerCommunicationManagerEvent, public Game::OnGameEvent {
+class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPlayerCommunicationManagerEvent, public Game::OnGameEvent {
 
     // ctor / dtor
     public:
         explicit GamesManager(void);
         ~GamesManager(void);
-
-    // copy / move operators
-    public:
-        GamesManager(const GamesManager &) = delete;
-        GamesManager(const GamesManager &&) = delete;
-        const GamesManager &operator=(const GamesManager &) = delete;
-        const GamesManager &operator=(const GamesManager &&) = delete;
 
     // entry point
     public:

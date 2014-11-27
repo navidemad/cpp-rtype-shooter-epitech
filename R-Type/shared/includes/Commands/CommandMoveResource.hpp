@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IResource.hpp" // créer un fichier IResource.hpp (à la fois dans le client et dans le serveur)
-                         // ce fichier contiendra la déclaration des enums IResource::Direction et IResource::Type
+#include "IResource.hpp"
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandMoveResource : public ICommand {
+class CommandMoveResource : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -22,13 +22,6 @@ class CommandMoveResource : public ICommand {
 	public:
 		explicit CommandMoveResource(void);
 		~CommandMoveResource(void);
-
-	// copy / move operators
-	public:
-		CommandMoveResource(const CommandMoveResource &) = delete;
-		CommandMoveResource(CommandMoveResource &&) = delete;
-		const CommandMoveResource &operator=(const CommandMoveResource &) = delete;
-		const CommandMoveResource &operator=(CommandMoveResource &&) = delete;
 
 	// getter - setters
 	public:

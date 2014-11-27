@@ -1,24 +1,19 @@
 #pragma once
 
-#include <list>
-#include <memory>
 #include "ErrorStatus.hpp"
 #include "Client.hpp"
 #include "IServerSocket.hpp"
+#include "NoCopyable.hpp"
 
-class ClientManager : public IServerSocket::OnSocketEvent, public Client::OnClientEvent {
+#include <list>
+#include <memory>
+
+class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, public Client::OnClientEvent {
 
 	// ctor / dtor
 	public:
         explicit ClientManager(void);
 		~ClientManager(void);
-
-	// copy / move operators
-	public:
-		ClientManager(const ClientManager &) = delete;
-		ClientManager(ClientManager &&) = delete;
-		const ClientManager &operator=(const ClientManager &) = delete;
-		const ClientManager &operator=(ClientManager &&) = delete;
 
 	// handle client manager
 	public:

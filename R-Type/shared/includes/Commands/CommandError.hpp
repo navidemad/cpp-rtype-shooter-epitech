@@ -2,8 +2,9 @@
 
 #include "ErrorStatus.hpp"
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandError : public ICommand {
+class CommandError : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -18,13 +19,6 @@ class CommandError : public ICommand {
 	public:
 		explicit CommandError(void);
 		~CommandError(void);
-
-	// copy / move operators
-	public:
-		CommandError(const CommandError &) = delete;
-		CommandError(CommandError &&) = delete;
-		const CommandError &operator=(const CommandError &) = delete;
-		const CommandError &operator=(CommandError &&) = delete;
 
 	// getter - setters
 	public:

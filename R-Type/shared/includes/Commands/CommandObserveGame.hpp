@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandObserveGame : public ICommand {
+#include <string>
+
+class CommandObserveGame : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -17,13 +19,6 @@ class CommandObserveGame : public ICommand {
 	public:
 		explicit CommandObserveGame(void);
 		~CommandObserveGame(void);
-
-	// copy / move operators
-	public:
-		CommandObserveGame(const CommandObserveGame &) = delete;
-		CommandObserveGame(CommandObserveGame &&) = delete;
-		const CommandObserveGame &operator=(const CommandObserveGame &) = delete;
-		const CommandObserveGame &operator=(CommandObserveGame &&) = delete;
 
 	// getter - setters
 	public:

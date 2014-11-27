@@ -2,8 +2,9 @@
 
 #include "IMutex.hpp"
 #include "ICondVar.hpp"
+#include "NoCopyable.hpp"
 
-class WindowsCondVar : public ICondVar {
+class WindowsCondVar : public NoCopyable, public ICondVar {
 
     // enum events
     public:
@@ -17,13 +18,6 @@ class WindowsCondVar : public ICondVar {
 	public:
 		explicit WindowsCondVar(void);
 		~WindowsCondVar(void);
-
-	// copy / move operators
-	public:
-		WindowsCondVar(const WindowsCondVar &) = delete;
-		WindowsCondVar(WindowsCondVar &&) = delete;
-		const WindowsCondVar &operator=(const WindowsCondVar &) = delete;
-		const WindowsCondVar &operator=(WindowsCondVar &&) = delete;
 
 	// interface implementation
 	public:

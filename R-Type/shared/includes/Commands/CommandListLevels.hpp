@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ICommand.hpp"
+#include "NoCopyable.hpp"
 
-class CommandListLevels : public ICommand {
+class CommandListLevels : public NoCopyable, public ICommand {
 
 	// data structs
 	public:
@@ -15,13 +16,6 @@ class CommandListLevels : public ICommand {
 	public:
 		explicit CommandListLevels(void);
 		~CommandListLevels(void);
-
-	// copy / move operators
-	public:
-		CommandListLevels(const CommandListLevels &) = delete;
-		CommandListLevels(CommandListLevels &&) = delete;
-		const CommandListLevels &operator=(const CommandListLevels &) = delete;
-		const CommandListLevels &operator=(CommandListLevels &&) = delete;
 
 	// public pure methods
 	public:
