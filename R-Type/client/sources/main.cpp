@@ -16,6 +16,8 @@ int trySocket(int ac, char **av){
 
 int		main(int ac, char **av)
 {
+	(void)ac;
+	(void)av;
 	//return trySocket(ac, av);
 	RTypeClient	app;
 
