@@ -39,7 +39,7 @@ class ECSManager
 
 		// System
 		void						addSystem(System *);
-		void						updateSystem();
+		void						updateSystem(float);
 
 	private:
 		RTypeClient									*mClient;

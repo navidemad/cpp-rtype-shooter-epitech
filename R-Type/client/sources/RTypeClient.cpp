@@ -32,9 +32,11 @@ void	RTypeClient::run()
 
 	while (mGui->isOpen())
 	{
+		float delta = mGui->getDelta();
+
 		mGui->update(); // update graphic engine
 		mGui->clear(); // clear graphic engine
-		mEngine.updateSystem(); // update gameplay engine
+		mEngine.updateSystem(delta); // update gameplay engine
 		mGui->show(); // display graphic engine
 	}
 }
@@ -54,12 +56,10 @@ void			RTypeClient::init()
 	initMenu();
 }
 
-#include <iostream>
-
 void			RTypeClient::initMenu()
 {
 
-	mGui->playSound("mgs", false);
+	mGui->playSound("mgs", true);
 
 	Entity		&menuScreen = mEngine.createEntity();
 	
@@ -107,7 +107,6 @@ void			RTypeClient::initMenu()
 
 	logoCharacter.addComponent(new Position(0, 100));
 	logoCharacter.addComponent(new Drawable("logoCharacter"));
-
 
 	mEngine.addSystem(new DrawableSystem);
 	mEngine.addSystem(new ButtonSystem);

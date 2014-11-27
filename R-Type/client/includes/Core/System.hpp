@@ -34,7 +34,7 @@ class System
 			return true;
 		}
 		void				setComponentNeeded(const ComponentType::Type newType);
-		virtual void		process(Entity &) = 0;
+		virtual void		process(Entity &, float) = 0;
 
 	private:
 		std::bitset	<ComponentType::LIMIT>mComponentNeeded;

@@ -45,6 +45,13 @@ bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 	return true;
 }
 
+float	SFMLGraphic::getDelta()
+{
+	sf::Time	delta = mDeltaClock.restart();
+
+	return delta.asSeconds();
+}
+
 bool	SFMLGraphic::isOpen() const
 {
 	return mWindow.isOpen();

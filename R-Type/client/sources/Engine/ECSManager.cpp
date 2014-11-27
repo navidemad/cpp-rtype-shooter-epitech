@@ -65,7 +65,7 @@ void		ECSManager::addSystem(System *system)
 	mSystem.push_back(system);
 }
 
-void			ECSManager::updateSystem()
+void			ECSManager::updateSystem(float delta)
 {
 	const size_t	limit = mCurrentId;
 
@@ -74,7 +74,7 @@ void			ECSManager::updateSystem()
 		{
 			if (currentSystem->haveComponentNeeded(mEntityBitset[i]))
 			{
-				currentSystem->process(mEntity[i]);
+				currentSystem->process(mEntity[i], delta);
 			}
 		}
 	});

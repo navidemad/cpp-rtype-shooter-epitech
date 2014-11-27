@@ -40,6 +40,7 @@ class SFMLGraphic : public IGraphic
 		void	show();
 		void	clear();
 		bool	isPressed(std::string);
+		float	getDelta();
 		sf::RenderWindow						&getWindow();
 
 	// public method
@@ -52,4 +53,5 @@ class SFMLGraphic : public IGraphic
 		std::map<sf::Event, std::string>	mKeyEvents;
 		ContentManager						mContentManager;
 		InputManager						mInputManager;
+		sf::Clock							mDeltaClock;
 };

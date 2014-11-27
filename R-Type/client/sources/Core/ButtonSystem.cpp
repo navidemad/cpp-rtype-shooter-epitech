@@ -8,6 +8,7 @@
 
 ButtonSystem::ButtonSystem()
 {
+	mTimeElapsed = 0;
 	setComponentNeeded(ComponentType::CURSOR);
 	setComponentNeeded(ComponentType::MOVABLE);
 }
@@ -17,17 +18,20 @@ ButtonSystem::~ButtonSystem()
 
 }
 #include <iostream>
-void		ButtonSystem::process(Entity &entity)
+void		ButtonSystem::process(Entity &entity, float delta)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Cursor *button = static_cast<Cursor *>(entity.getSpecificComponent(ComponentType::CURSOR));
-	
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("down"))
+	 
+	mTimeElapsed += delta;
+	if (mTimeElapsed > 0.1 && entity.getEntityManager()->getClient()->getGui()->isPressed("down"))
 	{
+		mTimeElapsed = 0.;
 		button->next();
 	}
-	else if (entity.getEntityManager()->getClient()->getGui()->isPressed("up"))
+	else if (mTimeElapsed > 0.1 && entity.getEntityManager()->getClient()->getGui()->isPressed("up"))
 	{
+		mTimeElapsed = 0.;
 		button->prev();
 	}
 	

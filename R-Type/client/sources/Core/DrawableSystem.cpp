@@ -14,7 +14,7 @@ DrawableSystem::DrawableSystem()
 	setComponentNeeded(ComponentType::MOVABLE);
 }
 
-void	DrawableSystem::process(Entity &entity)
+void	DrawableSystem::process(Entity &entity, float /* */)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Drawable *sprite = static_cast<Drawable *>(entity.getSpecificComponent(ComponentType::DRAWABLE));
