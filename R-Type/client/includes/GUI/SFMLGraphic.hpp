@@ -35,6 +35,7 @@ class SFMLGraphic : public IGraphic
 		void	update();
 		bool	drawFont(std::string const &key, std::string const &str, float x, float y);
 		bool	playSound(std::string const &key, bool onLoop = false);
+		void	setVolume(std::string const &key, float volume);
 		bool	isOpen() const;
 		void	handleEvent();
 		void	show();

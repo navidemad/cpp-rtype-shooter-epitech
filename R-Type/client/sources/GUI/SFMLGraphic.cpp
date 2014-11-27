@@ -45,6 +45,11 @@ bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 	return true;
 }
 
+void	SFMLGraphic::setVolume(std::string const &key, float volume)
+{
+	mContentManager.getSounds()->getResource(key).setVolume(volume);
+}
+
 bool	SFMLGraphic::isOpen() const
 {
 	return mWindow.isOpen();
