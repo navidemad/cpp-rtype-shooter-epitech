@@ -17,7 +17,7 @@ ButtonSystem::~ButtonSystem()
 {
 
 }
-#include <iostream>
+
 void		ButtonSystem::process(Entity &entity, float delta)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
@@ -38,6 +38,6 @@ void		ButtonSystem::process(Entity &entity, float delta)
 	Entity &entityCiblate = entity.getEntityManager()->getEntity(button->getIdEntity());
 
 	Position	*newPos = static_cast<Position *>(entityCiblate.getSpecificComponent(ComponentType::MOVABLE));
-	pos->setY(newPos->getY() + 50);
+	pos->setY(newPos->getY() + 30);
 
 }

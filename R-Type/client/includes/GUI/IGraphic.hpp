@@ -11,7 +11,7 @@ class IGraphic
 	// public methods
 	public:
 		virtual bool	drawSprite(std::string const &key, float delta, float x, float y) = 0;
-		virtual bool	drawFont(std::string const &key, std::string const &strn, float x, float y) = 0;
+		virtual bool	drawFont(std::string const &key, std::string const &strn, float x, float y, uint32_t = 12) = 0;
 		virtual bool	playSound(std::string const &key, bool onLoop = false) = 0;
 		virtual bool	isOpen() const = 0;
 		virtual void	handleEvent() = 0;

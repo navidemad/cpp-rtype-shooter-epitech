@@ -33,7 +33,7 @@ class SFMLGraphic : public IGraphic
 	public:
 		bool	drawSprite(std::string const &key, float delta, float x, float y);
 		void	update();
-		bool	drawFont(std::string const &key, std::string const &str, float x, float y);
+		bool	drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t);
 		bool	playSound(std::string const &key, bool onLoop = false);
 		bool	isOpen() const;
 		void	handleEvent();
