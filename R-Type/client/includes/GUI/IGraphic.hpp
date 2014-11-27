@@ -21,4 +21,5 @@ class IGraphic
 		virtual void	show() = 0;
 		virtual bool	isPressed(std::string) = 0;
 		virtual float	getDelta() = 0;
+		virtual void	close() = 0;
 };
