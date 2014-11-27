@@ -6,14 +6,9 @@ RTypeServer::RTypeServer(void) {
 	mClientManager.setListener(this);
 }
 
-RTypeServer::~RTypeServer(void) {
-
-}
-
-int RTypeServer::run(void) {
+void RTypeServer::run(void) {
 	mClientManager.run();
     mGamesManager.run();	
-	return 0;
 }
 
 void RTypeServer::onClientDisconnected(const std::string &) {
@@ -25,8 +20,8 @@ void RTypeServer::onClientCreateGame(const std::string &host, const std::string 
 
 		properties.setName(name);
 		properties.setLevelName(levelName);
-		properties.setMaxPlayers(nbPlayers);
-		properties.setMaxSpectators(nbObservers);
+		properties.setNbMaxPlayers(nbPlayers);
+		properties.setNbMaxSpectators(nbObservers);
 
 		mGamesManager.createGame(properties, host);
 		mClientManager.sendError(std::list<std::string>{host}, ErrorStatus(ErrorStatus::Error::OK));

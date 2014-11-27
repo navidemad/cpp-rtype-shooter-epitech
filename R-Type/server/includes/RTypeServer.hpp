@@ -8,7 +8,7 @@ class RTypeServer : public ClientManager::OnClientManagerEvent {
     // ctor / dtor
     public:
         explicit RTypeServer(void);
-        ~RTypeServer(void);
+        ~RTypeServer(void) = default;
 
     // copy / move operators
     public:
@@ -19,7 +19,7 @@ class RTypeServer : public ClientManager::OnClientManagerEvent {
 
     // exec function
     public:
-        int run(void);
+        void run(void);
 
 	// events
 	public:

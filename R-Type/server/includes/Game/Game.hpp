@@ -7,7 +7,7 @@
 #include <memory>
 #include <list>
 
-class Game {
+class Game : public std::enable_shared_from_this<Game> {
 
     // game properties
     public:
@@ -16,16 +16,16 @@ class Game {
         // ctor / dtor
         public:
             GameProperties(void);
-            ~GameProperties(void);
+            ~GameProperties(void) = default;
 
         // setters
         public:
             void setName(const std::string&);
             void setLevelName(const std::string&);
             void setNbPlayers(int);
-			void setMaxPlayers(int);
+            void setNbMaxPlayers(int);
             void setNbSpectators(int);
-			void setMaxSpectators(int);
+            void setNbMaxSpectators(int);
 
         // getters
         public:
@@ -41,15 +41,15 @@ class Game {
             std::string mName;
             std::string mLevelName;
             int mNbPlayers;
-			int mMaxPlayers;
+            int mNbMaxPlayers;
             int mNbSpectators;
-			int mMaxSpectators;
+            int mNbMaxSpectators;
         };
 
     // ctor / dtor
     public:
         explicit Game(const Game::GameProperties& properties, const std::string& hostOwner);
-        ~Game(void);
+        ~Game(void) = default;
 
     // copy / move operators
     public:
@@ -58,20 +58,38 @@ class Game {
         const Game &operator=(const Game &) = delete;
         const Game &operator=(const Game &&) = delete;
 
+    // type user
+    public:
+        enum class USER_TYPE { PLAYER, SPECTATOR };
+
+    // events
+    public:
+        class OnGameEvent {
+        public:
+            virtual ~OnGameEvent(void) {}
+            virtual void onTerminatedGame(std::shared_ptr<Game>) = 0;
+        };
+        void	setListener(Game::OnGameEvent *listener);
+
     // internal functions
     public:
         void updatePositions(void);
         void checkRessources(void);
-        void addPlayer(const std::string& ipAddress);
-        void delPlayer(const std::string& ipAddress);
+        int countUserByType(Game::USER_TYPE type) const;
+        void tryAddPlayer(Game::USER_TYPE type, const std::string& ipAddress);
+        void tryAddSpectator(Game::USER_TYPE type, const std::string& ipAddress);
+        void addUser(Game::USER_TYPE type, const std::string& ipAddress);
+        void delUser(const std::string& ipAddress);
+        std::list<std::pair<Game::USER_TYPE, std::string>>::const_iterator findUserByAddressIp(const std::string& name) const;
+        const std::list<std::pair<Game::USER_TYPE, std::string>>& getUsers() const;
         void terminateGame(void);
         const Game::GameProperties& getProperties(void) const;
 
     // attributes
     private:
+        Game::OnGameEvent *mListener;
         Timer mTimer;
         Game::GameProperties mProperties;
-        std::list<std::string> mPlayersAddress;
-        bool isRunning;
+        std::list<std::pair<Game::USER_TYPE, std::string>> mUsers;
 
 };

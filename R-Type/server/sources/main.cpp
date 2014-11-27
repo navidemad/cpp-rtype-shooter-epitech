@@ -7,12 +7,13 @@ int	main(void) {
     try 
     {
         RTypeServer server;
-        ret = server.run();
+        server.run();
+        ret = EXIT_SUCCESS;
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << std::endl;
-        ret = - 1;
+        ret = EXIT_FAILURE;
     }
     #if defined(__OS_WINDOWS__)
         system("PAUSE");

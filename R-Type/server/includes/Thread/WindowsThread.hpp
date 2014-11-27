@@ -10,9 +10,7 @@ class WindowsThread : public IThread<U, T> {
 	// ctor dtor
 	public:
 		explicit WindowsThread(void) : mIsRunning(false) {}
-		~WindowsThread(void) {
-			cancel()
-		}
+        ~WindowsThread(void) { cancel(); }
 
 	// copy / move operators
 	public:
@@ -66,14 +64,14 @@ class WindowsThread : public IThread<U, T> {
 		  	throw ThreadException("fail TerminateThread()");
 
 			mIsRunning = false;
-			}
+		}
 
-			void exit(void *status)	{
-				if (mThread)
-					ExitThread(reinterpret_cast<DWORD>(status));
+		void exit(void *status)	{
+			if (mThread)
+				ExitThread(reinterpret_cast<DWORD>(status));
 
-				mIsRunning = false;
-			}
+			mIsRunning = false;
+		}
 
 	// attributes
 	private:
@@ -81,6 +79,6 @@ class WindowsThread : public IThread<U, T> {
 		DWORD mThread_ID;
 		U mCallObj;
 		T mFctParam;
-		boool mIsRunning;
+		bool mIsRunning;
 
 };

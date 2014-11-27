@@ -57,7 +57,11 @@ void	Client::recvCreateGame(const std::shared_ptr<ICommand> &command) {
 	if (mListener) {
 		const std::shared_ptr<CommandCreateGame> commandCreateGame = std::static_pointer_cast<CommandCreateGame>(command);
 
-		mListener->onClientCreateGame(*this, commandCreateGame->getName(), commandCreateGame->getLevelName(), commandCreateGame->getNbPlayers(), commandCreateGame->getNbSpectators());
+		mListener->onClientCreateGame(*this, 
+            commandCreateGame->getName(), 
+            commandCreateGame->getLevelName(), 
+            commandCreateGame->getNbPlayers(), 
+            commandCreateGame->getNbSpectators());
 	}
 }
 
