@@ -38,11 +38,11 @@ void    CommandPacketBuilder::onSocketClosed(IClientSocket * /*socket*/){
 /*
 ** HandleCommand
 */
-void CommandPacketBuilder::packCommand(IClientSocket *socket, ICommand *command){
+void CommandPacketBuilder::packCommand(IClientSocket * /*socket*/, ICommand * /*command*/){
 
 }
 
-ICommand *CommandPacketBuilder::unPackCommand(IClientSocket *socket){
-
+ICommand *CommandPacketBuilder::unPackCommand(IClientSocket * /*socket*/){
+	return NULL;
 }
 
