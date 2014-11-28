@@ -24,11 +24,35 @@ void	SoundManager::loadResources()
 {
 	{
 		sf::sSound ssound;
-		if (!ssound.soundBuffer.loadFromFile("./assets/sounds/efx/sample00/0x8c.wav"))
+		if (!ssound.soundBuffer.loadFromFile("./assets/sounds/efx/se_ok00.wav"))
 			throw std::runtime_error("Failed to load sound...");
 		ssound.sound.setBuffer(ssound.soundBuffer);
 		ssound.test = "init... ok ! ;)";
-		mListResources["mgs"] = ssound;
+		mListResources["ok"] = ssound;
+	}
+	{
+		sf::sSound ssound;
+		if (!ssound.soundBuffer.loadFromFile("./assets/sounds/efx/se_option.wav"))
+			throw std::runtime_error("Failed to load sound...");
+		ssound.sound.setBuffer(ssound.soundBuffer);
+		ssound.test = "init... ok ! ;)";
+		mListResources["option"] = ssound;
+	}
+	{
+		sf::sSound ssound;
+		if (!ssound.soundBuffer.loadFromFile("./assets/sounds/efx/se_pause.wav"))
+			throw std::runtime_error("Failed to load sound...");
+		ssound.sound.setBuffer(ssound.soundBuffer);
+		ssound.test = "init... ok ! ;)";
+		mListResources["pause"] = ssound;
+	}
+	{
+		sf::sSound ssound;
+		if (!ssound.soundBuffer.loadFromFile("./assets/sounds/efx/se_pldead00.wav"))
+			throw std::runtime_error("Failed to load sound...");
+		ssound.sound.setBuffer(ssound.soundBuffer);
+		ssound.test = "init... ok ! ;)";
+		mListResources["pldead"] = ssound;
 	}
 }
 
