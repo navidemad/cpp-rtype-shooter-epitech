@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include "Parser.hpp"
 #include "ScriptParser.hpp"
 
 const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
@@ -25,86 +26,73 @@ ScriptParser::~ScriptParser(void) {
 
 }
 
-std::string ScriptParser::extractWord(void){
-	std::string	word;
-
-	if (this->mWtab.size() == 0)
-		return "";
-
-	word = this->mWtab.front();
-	this->jumpToNextToken();
-
-	return word;
-}
-
 void		ScriptParser::parseFile(std::ifstream &file){
 	std::string lineContent;
 	std::string wordContent;
 
 	while (file.good()){
 		std::getline(file, lineContent);
-		this->setStringToParse(lineContent);
-		wordContent = this->extractWord();
-		std::cout << "LineContent = " << lineContent << std::endl;
+		Parser.setStringToParse(lineContent);
+		wordContent = Parser.extractWord();
 		std::cout << "premier mot : " << wordContent << std::endl;
 
 		for (const auto &instr : tokenExecTab)
 			if (instr.cmd == wordContent) {
-				(this->*instr.Ptr)(this->mStr);
+				(this->*instr.Ptr)();
 				return;
 		}
 	}
 }
 
-void		ScriptParser::cmdName(const std::string&){
-	this->mStageName = this->extractWord();
+void		ScriptParser::cmdName(void){
+	this->mStageName = Parser.extractWord();
 }
 
-void		ScriptParser::cmdRequire(const std::string&){
-	this->mRessourceName = this->extractWord();
+void		ScriptParser::cmdRequire(void){
+	this->mRessourceName = Parser.extractWord();
 }
 
-void		ScriptParser::cmdAddCron(const std::string&){
-	this->mAddCronFrame = extractValue<int>();
-	this->mAddCronTimer = extractValue<int>();
-	this->mAddCronIdCron = extractValue<int>();
-	this->mAddCronFireMob = this->extractWord();
-	this->mAddCronIdMonster = extractValue<int>();
-	this->mAddCronAngle = extractValue<int>();
+void		ScriptParser::cmdAddCron(void){
+	this->mAddCronFrame = Parser.extractValue<int>();
+	this->mAddCronTimer = Parser.extractValue<int>();
+	this->mAddCronIdCron = Parser.extractValue<int>();
+	this->mAddCronFireMob = Parser.extractWord();
+	this->mAddCronIdMonster = Parser.extractValue<int>();
+	this->mAddCronAngle = Parser.extractValue<int>();
 }
 
-void		ScriptParser::cmdRemoveCron(const std::string&){
-	this->mRemoveCronFrame = extractValue<int>();
-	this->mRemoveCronIdCron = extractValue<int>();
+void		ScriptParser::cmdRemoveCron(void){
+	this->mRemoveCronFrame = Parser.extractValue<int>();
+	this->mRemoveCronIdCron = Parser.extractValue<int>();
 }
 
-void		ScriptParser::cmdAction(const std::string&){
+void		ScriptParser::cmdAction(void){
 /*	CommandAction c;
 
 	c.setFrame(extractValue)*/
 
 	std::string	wordContent;
-	this->mActionFrame = extractValue<int>();
-	this->mActionMobAction = this->extractWord();
+	this->mActionFrame = Parser.extractValue<int>();
+	this->mActionMobAction = Parser.extractWord();
 
 	for (const auto &instr : MonsterCmdTab)
 	if (instr.mobAction == this->mActionMobAction) {
-		(this->*instr.ftPtr)(this->mStr);
+		(this->*instr.ftPtr)();
 		return;
 	}
 }
 
-void		ScriptParser::fctSpawnMob(const std::string&){
-	this->mSpawnIdMonster = extractValue<int>();
-	this->mSpawnName = this->extractWord();
-	this->mSpawnXpos = extractValue<int>();
-	this->mSpawnYpos = extractValue<int>();
-	this->mSpawnAngle = extractValue<int>();
+void		ScriptParser::fctSpawnMob(void){
+	this->mSpawnIdMonster = Parser.extractValue<int>();
+	this->mSpawnName = Parser.extractWord();
+	this->mSpawnXpos = Parser.extractValue<int>();
+	this->mSpawnYpos = Parser.extractValue<int>();
+	this->mSpawnAngle = Parser.extractValue<int>();
 }
 
-void		ScriptParser::fctMoveMob(const std::string&){
-	this->mMoveMobIdMonster = extractValue<int>();
-	this->mMoveMobAngle = extractValue<int>();
+void		ScriptParser::fctMoveMob(void){
+	this->mMoveMobIdMonster = Parser.extractValue<int>();
+	this->mMoveMobAngle = Parser.extractValue<int>();
 }
 
 std::string		ScriptParser::getName(void) const{
@@ -181,37 +169,4 @@ int				ScriptParser::getRemoveCronFrame(void) const{
 
 int				ScriptParser::getRemoveCronIdCron(void) const{
 	return this->mRemoveCronIdCron;
-}
-
-void ScriptParser::jumpToNextToken(void){
-	if (this->mWtab.size())
-		this->mWtab.pop_front();
-}
-
-void ScriptParser::setStringToParse(const std::string &str){
-	this->mStr = str;
-	this->splitString();
-}
-
-void ScriptParser::setTokenSep(char tokenSep){
-	this->mTokenSep = tokenSep;
-}
-
-void ScriptParser::splitString(void){
-	std::string substr;
-	size_t		pos = -1;
-	size_t		end_substr;
-
-	this->mWtab.clear();
-
-	do {
-		++pos;
-		end_substr = this->mStr.find(this->mTokenSep, pos + 1);
-		end_substr = end_substr == std::string::npos ? this->mStr.length() : end_substr;
-
-		substr = this->mStr.substr(pos, end_substr - pos);
-
-		if (substr != "")
-			this->mWtab.push_back(substr);
-	} while ((pos = this->mStr.find(this->mTokenSep, pos)) != std::string::npos);
 }

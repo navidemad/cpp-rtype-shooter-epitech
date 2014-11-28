@@ -27,6 +27,7 @@ INCLUDEPATH	+=	.					\
 			build/moc
 
 HEADERS		+=	includes/RTypeClient.hpp				\
+			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
@@ -89,6 +90,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 
 SOURCES		+=	sources/main.cpp				\
 			sources/RTypeClient.cpp				\
+			sources/Audio/MusicManager.cpp			\
 			sources/Audio/SoundManager.cpp			\
 			sources/Core/CollisionSystem.cpp		\
 			sources/Core/DamageSystem.cpp			\
@@ -124,7 +126,11 @@ SOURCES		+=	sources/main.cpp				\
 			../shared/sources/Commands/SharedCommandDeleteGame.cpp \
 			sources/Command/CommandDeleteGame.cpp \
 			../shared/sources/Commands/SharedCommandDestroyResource.cpp \
-			sources/Command/CommandDestroyResource.cpp
+			sources/Command/CommandDestroyResource.cpp \
+			../shared/sources/Commands/SharedCommandDisconnect.cpp \
+			sources/Command/CommandDisconnect.cpp \
+			../shared/sources/Commands/SharedCommandEndGame.cpp \
+			sources/Command/CommandEndGame.cpp
 
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system

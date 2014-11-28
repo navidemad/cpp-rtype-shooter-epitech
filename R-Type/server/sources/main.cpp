@@ -3,14 +3,14 @@
 #include <iostream>
 
 int	main(void) {
-/*	ScriptLoader loader;
+	ScriptLoader loader;
 
 	loader.loadScript("./sources/Script/Simon.txt");
 	#if defined(__OS_WINDOWS__)
 		system("PAUSE");
 	#endif
-*/
-    int ret;
+
+/*    int ret;
     try 
     {
         RTypeServer server;
@@ -26,4 +26,5 @@ int	main(void) {
         system("PAUSE");
     #endif
     return ret;
+	*/
 }

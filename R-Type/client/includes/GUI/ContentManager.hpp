@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <cstdint>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"

@@ -86,7 +86,8 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/RTypeServer.hpp				\
 				includes/Script/Script.hpp				\
 				includes/Script/ScriptLoader.hpp			\
-				includes/Script//ScriptParser.hpp			\
+				includes/Script/ScriptParser.hpp			\
+				includes/Script/Parser.hpp				\
 				includes/Game/Game.hpp 					\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp
@@ -167,6 +168,7 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Script/Script.cpp 					\
                                 sources/Script/ScriptLoader.cpp 				\
                                 sources/Script/ScriptParser.cpp					\
+								sources/Script/Parser.cpp						\
 				sources/Game/Game.cpp 						\
 				sources/Game/GamesManager.cpp 					\
 				sources/Game/Timer.cpp
