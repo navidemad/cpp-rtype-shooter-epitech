@@ -152,7 +152,9 @@ SOURCES		+=	sources/main.cpp				\
 			../shared/sources/Commands/SharedCommandObserveGame.cpp \
 			sources/Command/CommandObserveGame.cpp \
 			../shared/sources/Commands/SharedCommandShowGame.cpp \
-			sources/Command/CommandShowGame.cpp
+			sources/Command/CommandShowGame.cpp \
+			../shared/sources/Commands/SharedCommandShowLevel.cpp \
+			sources/Command/CommandShowLevel.cpp
 			
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
