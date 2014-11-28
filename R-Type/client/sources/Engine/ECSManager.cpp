@@ -65,7 +65,7 @@ void		ECSManager::addSystem(System *system)
 	mSystem.push_back(system);
 }
 
-void			ECSManager::updateSystem(float delta)
+void			ECSManager::updateSystem(uint32_t delta)
 {
 	const size_t	limit = mCurrentId;
 

@@ -21,10 +21,10 @@ ButtonSystem::~ButtonSystem()
 
 bool		ButtonSystem::hasTimeElapsed() const
 {
-	return mTimeElapsed > 0.1;
+	return mTimeElapsed > 100;
 }
 
-void		ButtonSystem::process(Entity &entity, float delta)
+void		ButtonSystem::process(Entity &entity, uint32_t delta)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Cursor *button = static_cast<Cursor *>(entity.getSpecificComponent(ComponentType::CURSOR));
@@ -44,14 +44,14 @@ void		ButtonSystem::process(Entity &entity, float delta)
 	{
 		entity.getEntityManager()->getClient()->getGui()->playSound("change_option");
 
-		mTimeElapsed = 0.;
+		mTimeElapsed = 0;
 		button->next();
 	}
 	else if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("up"))
 	{
 		entity.getEntityManager()->getClient()->getGui()->playSound("change_option");
 
-		mTimeElapsed = 0.;
+		mTimeElapsed = 0;
 		button->prev();
 	}
 	

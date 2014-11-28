@@ -37,7 +37,7 @@ void	RTypeClient::run()
 
 	while (mGui->isOpen())
 	{
-		float delta = mGui->getDelta();
+		uint32_t delta = mGui->getDelta();
 
 		mGui->update(); // update graphic engine
 		mGui->clear(); // clear graphic engine

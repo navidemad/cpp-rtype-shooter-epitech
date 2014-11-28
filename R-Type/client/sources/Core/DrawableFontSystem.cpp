@@ -14,7 +14,7 @@ DrawableFontSystem::DrawableFontSystem()
 	setComponentNeeded(ComponentType::MOVABLE);
 }
 
-void	DrawableFontSystem::process(Entity &entity, float /* */)
+void	DrawableFontSystem::process(Entity &entity, uint32_t /* */)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Font *sprite = static_cast<Font *>(entity.getSpecificComponent(ComponentType::FONT));

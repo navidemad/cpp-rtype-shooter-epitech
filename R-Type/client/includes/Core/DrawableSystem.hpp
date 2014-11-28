@@ -10,7 +10,7 @@ class DrawableSystem : public System
 		explicit DrawableSystem();
 		~DrawableSystem() { }
 
-		void	process(Entity &, float);
+		void	process(Entity &, uint32_t);
 public:
 	void	process();
     // copy operators

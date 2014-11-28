@@ -52,11 +52,11 @@ void	SFMLGraphic::setVolume(std::string const &key, float volume)
 	mContentManager.getSounds()->getResource(key).sound.setVolume(volume);
 }
 
-float	SFMLGraphic::getDelta()
+uint32_t	SFMLGraphic::getDelta()
 {
 	sf::Time	delta = mDeltaClock.restart();
 
-	return delta.asSeconds();
+	return delta.asMilliseconds();
 }
 
 void	SFMLGraphic::close()
