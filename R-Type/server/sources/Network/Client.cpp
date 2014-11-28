@@ -30,7 +30,7 @@ const Client::CommandExec Client::commandExecTab[] = {
 };
 
 Client::Client(const std::shared_ptr<IClientSocket> &client)
-	: mPeer{client->getAddr(), client->getPort()}, mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client)
+	: mPeer({client->getAddr(), client->getPort()}), mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client)
 {
 	mClientPacketBuilder.setListener(this);
 }
