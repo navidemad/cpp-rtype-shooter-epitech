@@ -27,9 +27,7 @@ void    CommandPacketBuilder::onSocketReadable(IClientSocket * socket, unsigned 
 	message = socket->receive(nbBytesToRead);
 	std::string msg_str(message.msg.begin(), message.msg.end());
 	std::cout << msg_str;
-	socket->send(message);
-	return ;
-}
+	socket->send(message);}
 
 void    CommandPacketBuilder::onSocketClosed(IClientSocket * /*socket*/){
 	return ;
@@ -42,7 +40,7 @@ void CommandPacketBuilder::packCommand(IClientSocket * /*socket*/, ICommand * /*
 
 }
 
-ICommand *CommandPacketBuilder::unPackCommand(IClientSocket * /*socket*/){
-	return NULL;
+void CommandPacketBuilder::unPackCommand(IClientSocket * /*socket*/){
+	
 }
 

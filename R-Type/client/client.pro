@@ -118,7 +118,9 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Network/CommandPacketBuilder.cpp	\
 			sources/Network/ServerCommunication.cpp		\
 			sources/Network/TcpClient.cpp			\
-			sources/Network/UdpClient.cpp
+			sources/Network/UdpClient.cpp 			\
+			../shared/sources/Commands/SharedCommandCreateGame.cpp \
+			sources/Command/CommandCreateGame.cpp
 
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system

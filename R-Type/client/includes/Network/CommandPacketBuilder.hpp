@@ -32,7 +32,7 @@ class CommandPacketBuilder : public IClientSocket::OnSocketEvent
     public:
 		void packCommand(IClientSocket *socket, ICommand *command);
 	private:
-		ICommand *unPackCommand(IClientSocket *socket);
+		void unPackCommand(IClientSocket *socket);
 
 	//attribut
 	private:
