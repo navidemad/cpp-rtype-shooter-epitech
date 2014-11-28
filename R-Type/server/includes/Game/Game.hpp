@@ -24,7 +24,7 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
         // ctor / dtor
         public:
             GameProperties(void) : mName(""), mLevelName(""), mNbPlayers(0), mNbMaxPlayers(0), mNbSpectators(0), mNbMaxSpectators(0) { }
-            ~GameProperties(void) = default;
+            ~GameProperties(void) {}
 
         // setters
         public:
@@ -187,12 +187,12 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
     // internal functions
     public:
         int countUserByType(Game::USER_TYPE type) const;
-        std::vector<Game::User>::iterator findUserByHost(const std::string& host);
+        std::vector<Game::User>::iterator findUserByHost(const Peer &peer);
         std::vector<Game::User>::iterator findUserById(uint64_t id);
         void tryAddPlayer(const User& user);
         void tryAddSpectator(const User& user);
-        void addUser(Game::USER_TYPE type, const std::string& ipAddress, const std::string& pseudo);
-        void delUser(const std::string& ipAddress);
+        void addUser(Game::USER_TYPE type, const Peer &peer, const std::string& pseudo);
+        void delUser(const Peer &peer);
         void transferPlayerToSpectators(User& user);
         const std::vector<Game::User>& getUsers() const;
         void terminateGame(void);

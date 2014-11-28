@@ -46,7 +46,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 		const std::list<Game::GameProperties> &getGamesProperties(void) const;
         std::vector<std::shared_ptr<Game>>::iterator findGameByGamePtr(const std::shared_ptr<Game>& target);
         std::vector<std::shared_ptr<Game>>::iterator findGameByName(const std::string& name);
-        std::vector<std::shared_ptr<Game>>::iterator findGameByHost(const std::string& host);
+        std::vector<std::shared_ptr<Game>>::iterator findGameByHost(const Peer &peer);
 
     // attributes
     private:

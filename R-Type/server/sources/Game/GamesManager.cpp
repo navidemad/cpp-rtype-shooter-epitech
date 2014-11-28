@@ -27,7 +27,7 @@ void GamesManager::run(void) {
     }
 }
 
-void GamesManager::createGame(const Game::GameProperties& properties, const Peer &peer) {
+void GamesManager::createGame(const Game::GameProperties& properties, const Peer &) {
     ScopedLock scopedLock(mMutex);
 
     auto game = std::shared_ptr<Game>{ std::make_shared<Game>(properties) };
@@ -59,11 +59,11 @@ void GamesManager::removeGame(const Peer &/* PEER POUR CHECK SI LE MEC EST LE OW
 /*
 ** PlayerCommunicationManager::OnPlayerCommunicationManagerEvent
 */ 
-void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const Peer &) {
+void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const Peer &peer) {
     try {
         ScopedLock scopedLock(mMutex);
 
-        auto game = findGameByHost(host);
+        auto game = findGameByHost(peer);
 
         if (game == mGames.end())
             throw GamesManagerException("Try to fire a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
@@ -78,11 +78,11 @@ void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const Peer &
     }
 }
 
-void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const Peer &) {
+void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const Peer &peer) {
     try {
         ScopedLock scopedLock(mMutex);
 
-        auto game = findGameByHost(host);
+        auto game = findGameByHost(peer);
 
         if (game == mGames.end())
             throw GamesManagerException("Try to fire a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
@@ -114,22 +114,22 @@ void GamesManager::joinGame(Game::USER_TYPE typeUser, const Peer &peer, const st
     if (game == mGames.end())
         throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
 
-    leaveGame(host, false);
-    (*game)->addUser(typeUser, host, pseudo);
+    leaveGame(peer, false);
+    (*game)->addUser(typeUser, peer, pseudo);
 }
 
 void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
-    joinGame(Game::USER_TYPE::PLAYER, host, name, pseudo);
+    joinGame(Game::USER_TYPE::PLAYER, peer, name, pseudo);
 }
 
 void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
-    joinGame(Game::USER_TYPE::SPECTATOR, host, name, "SPECTATOR HAS NO PSEUDO");
+    joinGame(Game::USER_TYPE::SPECTATOR, peer, name, "SPECTATOR HAS NO PSEUDO");
 }
 
 void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
     ScopedLock scopedLock(mMutex);
 
-    auto game = findGameByHost(host);
+    auto game = findGameByHost(peer);
 
     if (game == mGames.end())
     {
@@ -139,18 +139,18 @@ void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
             return;
     }   
 
-    (*game)->delUser(host);
+    (*game)->delUser(peer);
 }
 
 void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
-    auto game = findGameByHost(host);
+    auto game = findGameByHost(peer);
 
     if (game == mGames.end())
         throw GamesManagerException("Try to leave a player that he isn't on a game", ErrorStatus(ErrorStatus::Error::KO));
 
-    auto user = (*game)->findUserByHost(host);
+    auto user = (*game)->findUserByHost(peer);
     user->setPseudo(pseudo);
 
 }
@@ -189,11 +189,11 @@ std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByName(const 
     });
 }
 
-std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByHost(const std::string& host) {
-    return std::find_if(mGames.begin(), mGames.end(), [&host](const std::shared_ptr<Game>& game) {
+std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByHost(const Peer &peer) {
+    return std::find_if(mGames.begin(), mGames.end(), [&peer](const std::shared_ptr<Game>& game) {
         auto playersAddress = game.get()->getUsers();
         for (const auto& playerAddress : playersAddress) {
-            if (playerAddress.getHost() == host)
+            if (playerAddress.getPeer() == peer)
                 return true;
         }
         return false;

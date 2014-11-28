@@ -68,7 +68,7 @@ class ScriptParser : public NoCopyable {
 		int						mSpawnAngle;
 		int						mMoveMobIdMonster;
 		int						mMoveMobAngle;
-		Parser					Parser;
+		Parser				parser;
 
 	private:
 		void						splitString(void);

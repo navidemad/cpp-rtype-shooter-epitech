@@ -4,16 +4,8 @@
 #include "ScopedLock.hpp"
 #include <algorithm>
 
-<<<<<<< HEAD
 const float Game::XMAX = 100.f;
 const float Game::YMAX = 100.f;
-=======
-Game::Game(const Game::GameProperties& properties, const Peer &hostOwner) : mProperties(properties), isRunning(true) {
-    addPlayer(hostOwner);
-}
-
-Game::~Game(void) {
->>>>>>> use Peer struct instead of a simple std::string host (this patch lots of existing or future issue concerning a user starting multiple clients on the same computer and having the same host).
 
 Game::Game(const Game::GameProperties& properties) : mListener(nullptr), mProperties(properties), mIsRunning(false), mAlreadyRunOneTime(false), mMutex(PortabilityBuilder::getMutex()) {
 }
@@ -46,7 +38,6 @@ bool Game::collisionTouch(const Component& component, const Component& obstacle)
         (x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
 }
 
-<<<<<<< HEAD
 bool Game::collisionWithBonus(const Component& /*component*/, const Component& /*obstacle*/) {
     // en fonction du bonus changer via les setters le component
     return false;
@@ -58,16 +49,6 @@ bool Game::collisionWithBullet(const Component& /*component*/, const Component& 
     // component.setLife(component->getLife() - 1);
     // notifier les utilisateurs qu'un allié a été touché
     return false;
-=======
-void Game::addPlayer(const Peer &peer) {
-    mPlayersAddress.push_back(peer);
-	mProperties.setNbPlayers(mPlayersAddress.size());
-}
-
-void Game::delPlayer(const Peer &peer) {
-    mPlayersAddress.remove_if([&](const Peer& it) { return it == peer; });
-	mProperties.setNbPlayers(mPlayersAddress.size());
->>>>>>> use Peer struct instead of a simple std::string host (this patch lots of existing or future issue concerning a user starting multiple clients on the same computer and having the same host).
 }
 
 bool Game::collisionWithMonster(const Component& /*component*/, const Component& /*obstacle*/) {
@@ -77,7 +58,7 @@ bool Game::collisionWithMonster(const Component& /*component*/, const Component&
 
 bool Game::collision(const Component& component) {
 
-    static auto functionsHandleCollision = std::vector<const std::function<bool(const Component&, const Component&)>>
+    static auto functionsHandleCollision = std::vector<std::function<bool(const Component&, const Component&)>>
     {
         std::bind(&Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
         std::bind(&Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
@@ -111,7 +92,7 @@ void Game::stateGame(void) {
 void Game::check(void) {
     ScopedLock scopedLock(mMutex);
 
-    static auto functionsCheck = std::vector<const std::function<bool(const Component&)>> 
+    static auto functionsCheck = std::vector<std::function<bool(const Component&)>> 
     {
         std::bind(&Game::outOfScreen, this, std::placeholders::_1),
         std::bind(&Game::collision, this, std::placeholders::_1)
@@ -153,8 +134,8 @@ int Game::countUserByType(Game::USER_TYPE type) const {
     return std::count_if(mUsers.begin(), mUsers.end(), [&type](const User& user) { return user.getType() == type; });
 }
 
-std::vector<Game::User>::iterator Game::findUserByHost(const std::string& host) {
-    return std::find_if(mUsers.begin(), mUsers.end(), [&host](const User& user) { return user.getHost() == host; });
+std::vector<Game::User>::iterator Game::findUserByHost(const Peer &peer) {
+    return std::find_if(mUsers.begin(), mUsers.end(), [&](const User& user) { return user.getPeer() == peer; });
 }
 
 std::vector<Game::User>::iterator Game::findUserById(uint64_t id) {
@@ -179,13 +160,13 @@ void Game::tryAddSpectator(const User& user) {
     mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
 }
 
-void Game::addUser(Game::USER_TYPE type, const std::string& ipAddress, const std::string& pseudo) {
+void Game::addUser(Game::USER_TYPE type, const Peer &peer, const std::string& pseudo) {
     if (type != USER_TYPE::PLAYER && type != USER_TYPE::SPECTATOR)
         throw GameException("Invalid user type");
 
     User user;
 
-    user.setHost(ipAddress);
+    user.setPeer(peer);
     user.setPseudo(pseudo);
     user.setType(type);
 
@@ -195,8 +176,8 @@ void Game::addUser(Game::USER_TYPE type, const std::string& ipAddress, const std
         tryAddSpectator(user);
 }
 
-void Game::delUser(const std::string& host) {
-    auto user = findUserByHost(host);
+void Game::delUser(const Peer &peer) {
+    auto user = findUserByHost(peer);
 
     if (user == mUsers.end())
         throw GameException("Try to delete an undefined address ip");
