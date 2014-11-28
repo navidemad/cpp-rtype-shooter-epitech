@@ -1,4 +1,6 @@
 #include "CommandDeleteGame.hpp"
+#include <algorithm>
+#include <cstring>
 
 IClientSocket::Message CommandDeleteGame::getMessage(void) const {
 	CommandDeleteGame::PacketFromClient packet;
@@ -17,6 +19,6 @@ unsigned int CommandDeleteGame::getSizeToRead(void) const {
 	throw std::string("This command can not be receive by the client");
 }
 
-void CommandDeleteGame::initFromMessage(const IClientSocket::Message &message) {
+void CommandDeleteGame::initFromMessage(const IClientSocket::Message & /*message*/) {
 	throw std::string("This command can not be receive by the client");
 }
