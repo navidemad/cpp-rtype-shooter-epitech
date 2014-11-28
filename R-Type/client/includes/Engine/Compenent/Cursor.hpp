@@ -22,8 +22,11 @@ class Cursor : public Component
 		void			prev();
 		void			addEntity(unsigned int);
 		unsigned int	getIdEntity();
+		void			block();
+		bool			isBlocked() const;
 
 	private:
 		std::list<unsigned int>				mListEntity;
 		std::list<unsigned int>::iterator	mCurrent;
+		bool								mBlocked;
 };
