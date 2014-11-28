@@ -123,6 +123,8 @@ SOURCES		+=	sources/main.cpp				\
 			sources/Command/CommandCreateGame.cpp \
 			../shared/sources/Commands/SharedCommandDeleteGame.cpp \
 			sources/Command/CommandDeleteGame.cpp \
+			../shared/sources/Commands/SharedCommandDestroyResource.cpp \
+			sources/Command/CommandDestroyResource.cpp
 
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
