@@ -49,6 +49,8 @@ void	InputManager::update()
 
 	while (mGraphic->getWindow().pollEvent(currentEvent))
 	{
+		if (sf::Event::Closed || (sf::Event::KeyPressed == currentEvent.type && currentEvent.key.code == sf::Keyboard::Escape))
+			mGraphic->close();
 		if (sf::Event::KeyPressed == currentEvent.type)
 			pressedKey(currentEvent.key.code);
 		else if (sf::Event::KeyReleased == currentEvent.type)
