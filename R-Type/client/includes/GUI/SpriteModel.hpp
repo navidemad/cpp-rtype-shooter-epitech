@@ -23,7 +23,6 @@ class SpriteModel
 	public:
 		sf::Texture const	&getTexture() const;
 		sf::Sprite			&getSprite(uint32_t index);
-		sf::IntRect const	&getFrame(uint32_t index) const;
 		bool				isLoop() const;
 		std::string const	&getFileName() const;
 		uint32_t			getCurrentIndex() const;
@@ -33,7 +32,7 @@ class SpriteModel
 		uint32_t			getColumns() const;
 		uint32_t			getX() const;
 		uint32_t			getY() const;
-		std::vector<sf::Sprite>::size_type	SpriteModel::getSize() const;
+		uint32_t			SpriteModel::getSize() const;
 
 		void				setAnims(uint32_t begin, uint32_t end);
 		void				setCurrentIndex(uint32_t currentIndex);
@@ -45,7 +44,6 @@ class SpriteModel
 	private:
 		sf::Texture					mTexture;
 		sf::Sprite					mSprite;
-		std::vector<sf::IntRect>	mFrames;
 		std::vector<sf::Sprite>		mSprites;
 		bool						mLoop;
 		std::string					mFileName;

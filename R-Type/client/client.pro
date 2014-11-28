@@ -27,6 +27,7 @@ INCLUDEPATH	+=	.					\
 			build/moc
 
 HEADERS		+=	includes/RTypeClient.hpp				\
+			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
@@ -89,6 +90,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 
 SOURCES		+=	sources/main.cpp				\
 			sources/RTypeClient.cpp				\
+			sources/Audio/MusicManager.cpp			\
 			sources/Audio/SoundManager.cpp			\
 			sources/Core/CollisionSystem.cpp		\
 			sources/Core/DamageSystem.cpp			\
