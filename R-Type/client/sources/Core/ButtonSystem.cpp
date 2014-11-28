@@ -33,6 +33,8 @@ void		ButtonSystem::process(Entity &entity, float delta)
 
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
+
 		Entity &entityCiblate = entity.getEntityManager()->getEntity(button->getIdEntity());
 
 		Button	*button = static_cast<Button *>(entityCiblate.getSpecificComponent(ComponentType::BUTTON));
@@ -40,11 +42,15 @@ void		ButtonSystem::process(Entity &entity, float delta)
 	}
 	else if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("down"))
 	{
+		entity.getEntityManager()->getClient()->getGui()->playSound("change_option");
+
 		mTimeElapsed = 0.;
 		button->next();
 	}
 	else if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("up"))
 	{
+		entity.getEntityManager()->getClient()->getGui()->playSound("change_option");
+
 		mTimeElapsed = 0.;
 		button->prev();
 	}
