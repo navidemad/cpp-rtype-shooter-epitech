@@ -1,8 +1,15 @@
 #include "RTypeServer.hpp"
-
+#include "ScriptLoader.hpp"
 #include <iostream>
 
 int	main(void) {
+/*	ScriptLoader loader;
+
+	loader.loadScript("./sources/Script/Simon.txt");
+	#if defined(__OS_WINDOWS__)
+		system("PAUSE");
+	#endif
+*/
     int ret;
     try 
     {
