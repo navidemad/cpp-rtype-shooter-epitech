@@ -93,5 +93,10 @@ void	TcpClient::setOnSocketEventListener(OnSocketEvent *listener) {
 }
 
 const std::string &TcpClient::getAddr(void) const {
-	return NULL; /*mQTcpSocket->peerAddress().toString().toStdString();*/
+	return mQTcpSocket->peerAddress().toString().toStdString(); // NULL ou pas l'erreur est là... Vaut mieux stocké dans une variable memebre je pense
+}
+
+int					TcpClient::getPort(void) const
+{
+	return (mQTcpSocket->peerPort());
 }
