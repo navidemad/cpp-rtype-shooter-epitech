@@ -35,11 +35,9 @@ void		ScriptParser::parseFile(std::ifstream &file){
 		parser.setStringToParse(lineContent);
 		wordContent = parser.extractWord();
 		std::cout << "premier mot : " << wordContent << std::endl;
-
 		for (const auto &instr : tokenExecTab)
-			if (instr.cmd == wordContent) {
-				(this->*instr.Ptr)();
-				return;
+		if (instr.cmd == wordContent) {
+			(this->*instr.Ptr)();
 		}
 	}
 }

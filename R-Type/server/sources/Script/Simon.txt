@@ -1,2 +1,8 @@
 name Dark_Vador
-require ressource_name
+require ship
+require boss_dark_vador
+action 42 spawnMobAt 1 monster_basic 380 40 230
+action 42 spawnMobAt 2 monster_basic 380 250 270
+add_cron 42 10 1 fireMob 1 270
+remove_cron 2500 1
+action 125 moveMobTo 1 130
