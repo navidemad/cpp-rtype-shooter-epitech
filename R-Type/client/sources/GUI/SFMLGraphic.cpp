@@ -40,7 +40,7 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 
 bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
-	sf::Sound s = mContentManager.getSounds()->getResource(key).sound;
+	mContentManager.getSounds()->getResource(key).sound.setBuffer(mContentManager.getSounds()->getResource(key).soundBuffer);
 	mContentManager.getSounds()->getResource(key).sound.setLoop(onLoop);
 	mContentManager.getSounds()->getResource(key).sound.play();
 	return true;

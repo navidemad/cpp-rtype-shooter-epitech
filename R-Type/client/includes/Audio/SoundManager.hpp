@@ -10,7 +10,8 @@ namespace sf
 {
 	struct sSound
 	{
-		sf::SoundBuffer	bufferSound;
+		std::string		test;
+		sf::SoundBuffer	soundBuffer;
 		sf::Sound		sound;
 	};
 }
@@ -40,7 +41,7 @@ class SoundManager : public IResourceManager<sf::sSound>
 	public:
 		void					loadResources();
 		void					unloadResources();
-		sf::sSound	&getResource(std::string const &key);
+		sf::sSound				&getResource(std::string const &key);
 
 	// attributes
 	private:

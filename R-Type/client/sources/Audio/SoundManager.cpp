@@ -23,13 +23,12 @@ std::shared_ptr<SoundManager>	SoundManager::getInstance()
 void	SoundManager::loadResources()
 {
 	{
-		sf::SoundBuffer	buffer;
-		if (!buffer.loadFromFile("./assets/sounds/efx/sample00/0x8c.wav"))
+		sf::sSound ssound;
+		if (!ssound.soundBuffer.loadFromFile("./assets/sounds/efx/sample00/0x8c.wav"))
 			throw std::runtime_error("Failed to load sound...");
-		sf::Sound sound;
-		sound.setBuffer(buffer);
-		sf::sSound ssound = {buffer, sound};
-		mListResources.insert(std::pair<std::string, sf::sSound>("mgs", ssound));
+		ssound.sound.setBuffer(ssound.soundBuffer);
+		ssound.test = "init... ok ! ;)";
+		mListResources["mgs"] = ssound;
 	}
 }
 

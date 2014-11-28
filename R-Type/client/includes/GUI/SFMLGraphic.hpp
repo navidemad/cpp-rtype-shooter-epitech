@@ -53,7 +53,9 @@ class SFMLGraphic : public IGraphic
 	private:
 		sf::RenderWindow					mWindow;
 		std::map<sf::Event, std::string>	mKeyEvents;
+public:
 		ContentManager						mContentManager;
+private:
 		InputManager						mInputManager;
 		sf::Clock							mDeltaClock;
 		sf::SoundBuffer						mSoundBuffer;
