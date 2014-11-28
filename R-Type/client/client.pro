@@ -142,7 +142,9 @@ SOURCES		+=	sources/main.cpp				\
 			../shared/sources/Commands/SharedCommandLeaveGame.cpp \
 			sources/Command/CommandLeaveGame.cpp \
 			../shared/sources/Commands/SharedCommandListGames.cpp \
-			sources/Command/CommandListGames.cpp
+			sources/Command/CommandListGames.cpp \
+			../shared/sources/Commands/SharedCommandListLevels.cpp \
+			sources/Command/CommandListLevels.cpp
 
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
