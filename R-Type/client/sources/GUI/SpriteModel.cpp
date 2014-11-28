@@ -111,9 +111,6 @@ void		SpriteModel::init()
 		sf::Sprite sprite(mTexture, rect);
 		mSprites.push_back(sprite);
 	}
-
-	// set sprite
-	mTexture.setSmooth(true);
 }
 
 // GETTER FUNCTIONS : BEGIN
@@ -176,6 +173,12 @@ uint32_t			SpriteModel::getY() const
 {
 	return mY;
 }
+
+std::vector<sf::Sprite>::size_type	SpriteModel::getSize() const
+{
+	return (mSprites.size());
+}
+
 // GETTER FUNCTIONS : END
 
 void	SpriteModel::setAnims(uint32_t begin, uint32_t end)

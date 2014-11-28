@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <memory>
 
 namespace Utils
@@ -14,7 +15,7 @@ namespace Utils
 	template <typename T>
 	T getNbr(const std::string &str){
 		std::stringstream	ss(str);
-		float				val;
+		T				val;
 
 		ss >> val;
 		return val;

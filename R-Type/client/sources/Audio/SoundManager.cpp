@@ -28,7 +28,7 @@ void	SoundManager::loadResources()
 			throw std::runtime_error("Failed to load sound...");
 		ssound.sound.setBuffer(ssound.soundBuffer);
 		ssound.test = "init... ok ! ;)";
-		mListResources["ok"] = ssound;
+		mListResources["change_option"] = ssound;
 	}
 	{
 		sf::sSound ssound;
