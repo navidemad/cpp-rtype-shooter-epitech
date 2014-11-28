@@ -84,12 +84,12 @@ void			RTypeClient::initOption()
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
-	Entity		&createGame = engine.createEntity();
-	cursor->addEntity(createGame.getId());
+	Entity		backGame = engine.createEntity();
+	cursor->addEntity(backGame.getId());
 
-	createGame.addComponent(new Position(800, 500));
-	createGame.addComponent(new Font("0", "Go back without saving !"));
-	createGame.addComponent(new ButtonMenuGame());
+	backGame.addComponent(new Position(800, 500));
+	backGame.addComponent(new Font("0", "Go back without saving !"));
+	backGame.addComponent(new ButtonMenuGame());
 
 
 	engine.addSystem(new DrawableSystem);
@@ -186,4 +186,3 @@ void			RTypeClient::initMenu()
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
 }
-
