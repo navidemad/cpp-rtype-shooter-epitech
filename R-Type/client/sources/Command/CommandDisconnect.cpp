@@ -1,12 +1,7 @@
 #include "CommandDisconnect.hpp"
 
-#include "CommandDisconnect.hpp"
-#include "CommandException.hpp"
-
 IClientSocket::Message CommandDisconnect::getMessage(void) const {
-
 	IClientSocket::Message message;
-	message.msg.clear();
 	message.msgSize = 0;
 
 	return message;

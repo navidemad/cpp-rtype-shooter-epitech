@@ -128,8 +128,14 @@ SOURCES		+=	sources/main.cpp				\
 			../shared/sources/Commands/SharedCommandDisconnect.cpp \
 			sources/Command/CommandDisconnect.cpp \
 			../shared/sources/Commands/SharedCommandEndGame.cpp \
-			sources/Command/CommandEndGame.cpp
-
+			sources/Command/CommandEndGame.cpp \
+			../shared/sources/Commands/SharedCommandError.cpp \
+			sources/Command/CommandError.cpp \
+			../shared/sources/Commands/SharedCommandFire.cpp \
+			sources/Command/CommandFire.cpp \
+			../shared/sources/Commands/SharedCommandHandshake.cpp \
+			sources/Command/CommandHandshake.cpp
+			
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
 
