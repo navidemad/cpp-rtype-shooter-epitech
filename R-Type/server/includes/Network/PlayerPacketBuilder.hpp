@@ -2,17 +2,24 @@
 
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
-#include "NoCopyable.hpp"
+#include "Peer.hpp"
 
 #include <memory>
 #include <deque>
 
-class PlayerPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEvent {
+class PlayerPacketBuilder : public IClientSocket::OnSocketEvent {
 
 	// ctor dtor
 	public:
 		explicit PlayerPacketBuilder(int port);
 		~PlayerPacketBuilder(void);
+
+	// move copy
+	public:
+		PlayerPacketBuilder(const PlayerPacketBuilder &) = delete;
+		PlayerPacketBuilder(PlayerPacketBuilder &&) = delete;
+		const PlayerPacketBuilder &operator=(const PlayerPacketBuilder &) = delete;
+		const PlayerPacketBuilder &operator=(PlayerPacketBuilder &&) = delete;
 
 	// handle build state
 	private:
@@ -29,7 +36,7 @@ class PlayerPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEve
 		class OnPlayerPacketBuilderEvent {
 			public:
 				virtual ~OnPlayerPacketBuilderEvent(void) {}
-				virtual void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const std::string &host, int port) = 0;
+				virtual void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer) = 0;
 		};
 
 		void	setListener(PlayerPacketBuilder::OnPlayerPacketBuilderEvent *listener);
@@ -47,7 +54,7 @@ class PlayerPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEve
 
 	// send commands
 	public:
-		void	sendCommand(const ICommand *command, const std::string &host, int port);
+		void	sendCommand(const ICommand *command, const Peer &peer);
 
 	// attributes
 	private:

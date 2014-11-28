@@ -29,7 +29,9 @@ const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::UPDATE_PSEUDO, &Client::recvUpdatePseudo	}
 };
 
-Client::Client(const std::shared_ptr<IClientSocket> &client) : mHost(client->getAddr()), mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client) {
+Client::Client(const std::shared_ptr<IClientSocket> &client)
+	: mPeer{client->getAddr(), client->getPort()}, mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client)
+{
 	mClientPacketBuilder.setListener(this);
 }
 
@@ -130,8 +132,8 @@ void	Client::recvUpdatePseudo(const std::shared_ptr<ICommand> &command) {
 	}
 }
 
-const std::string &Client::getHost(void) const {
-	return mHost;
+const Peer &Client::getPeer(void) const {
+	return mPeer;
 }
 
 const std::string &Client::getPseudo(void) const {

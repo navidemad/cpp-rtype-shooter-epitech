@@ -43,6 +43,7 @@ class IClientSocket {
 	// get host ip
 	public:
 		virtual const std::string &getAddr(void) const = 0;
+		virtual int getPort(void) const = 0;
 
 	// set listener
 	public:

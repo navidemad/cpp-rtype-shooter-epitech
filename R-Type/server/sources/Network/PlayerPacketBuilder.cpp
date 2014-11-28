@@ -88,7 +88,7 @@ void	PlayerPacketBuilder::fetchBody(void) {
 	}
 
 	if (error == false && mListener)
-		mListener->onPacketAvailable(*this, mCurrentCommand, mCurrentHost, mCurrentPort);
+		mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort});
 
 	mCurrentState = PlayerPacketBuilder::State::HEADER;
 	fetchHeader();
@@ -129,7 +129,7 @@ void	PlayerPacketBuilder::mergeWithLastDatagram(const IClientSocket::Message &me
 	mDatagrams.back().msgSize += message.msgSize;
 }
 
-void	PlayerPacketBuilder::sendCommand(const ICommand *command, const std::string &host, int port) {
+void	PlayerPacketBuilder::sendCommand(const ICommand *command, const Peer &peer) {
 	ICommand::Header header;
 	header.instructionCode = static_cast<int>(command->getInstruction());
 	header.magicCode = ICommand::MAGIC_CODE;
@@ -139,8 +139,8 @@ void	PlayerPacketBuilder::sendCommand(const ICommand *command, const std::string
 	message.msg.assign(reinterpret_cast<char *>(&header), reinterpret_cast<char *>(&header + 1));
 	message.msg.insert(message.msg.end(), bodyMessage.msg.begin(), bodyMessage.msg.end());
 	message.msgSize = sizeof(ICommand::Header) + bodyMessage.msgSize;
-	message.host = host;
-	message.port = port;
+	message.host = peer.host;
+	message.port = peer.port;
 
 	mClient->send(message);
 }

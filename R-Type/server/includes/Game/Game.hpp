@@ -73,21 +73,21 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
 
             // setters
             public:
-                void setHost(const std::string& host) { mHost = host; }
+                void setPeer(const Peer &peer) { mPeer = peer; }
                 void setPseudo(const std::string& pseudo) { mPseudo = pseudo; }
                 void setType(Game::USER_TYPE type) { mType = type; }
                 void setId(uint64_t id) { mUserId = id; }
 
             // getters
             public:
-                const std::string& getHost(void) const { return mHost; }
+                const Peer& getPeer(void) const { return mPeer; }
                 const std::string& getPseudo(void) const { return mPseudo; }
                 Game::USER_TYPE getType(void) const { return mType; }
                 uint64_t getId(void) const { return mUserId; }
 
             // attributes
             private:
-                std::string mHost;
+                Peer mPeer;
                 std::string mPseudo;
                 Game::USER_TYPE mType;
                 uint64_t mUserId;

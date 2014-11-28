@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Peer.hpp"
 #include "ErrorStatus.hpp"
 #include "IClientSocket.hpp"
 #include "ClientPacketBuilder.hpp"
@@ -68,7 +69,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 
 	// getters setters
 	public:
-		const std::string &getHost(void) const;
+		const Peer &getPeer(void) const;
 		const std::string &getPseudo(void) const;
 		bool isAuthenticated(void) const;
 		void setIsAuthenticated(bool isAuthenticated);
@@ -76,7 +77,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 
 	// attributes
 	private:
-		std::string mHost;
+		Peer mPeer;
 		std::string mPseudo;
 		bool mIsAuthenticated;
 		Client::OnClientEvent *mListener;

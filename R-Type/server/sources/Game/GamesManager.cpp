@@ -27,17 +27,25 @@ void GamesManager::run(void) {
     }
 }
 
-void GamesManager::createGame(const Game::GameProperties& properties) {
+void GamesManager::createGame(const Game::GameProperties& properties, const Peer &peer) {
     ScopedLock scopedLock(mMutex);
 
     auto game = std::shared_ptr<Game>{ std::make_shared<Game>(properties) };
 
     game->setListener(this);
+// SETTER L'OWNER DE LA GAME
+//    game->setOwner(peer);
 
     mGames.push_back(game);
 }
 
-void GamesManager::removeGame(const std::string& name) {
+void GamesManager::removeGame(const Peer &/* PEER POUR CHECK SI LE MEC EST LE OWNER */, const std::string& name) {
+/*
+** CHECKER SI C'EST LE OWNER
+**
+** si oui => delete
+** si non => GamesManagerException
+*/
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
@@ -51,7 +59,7 @@ void GamesManager::removeGame(const std::string& name) {
 /*
 ** PlayerCommunicationManager::OnPlayerCommunicationManagerEvent
 */ 
-void GamesManager::onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const std::string &host, int port) {
+void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const Peer &) {
     try {
         ScopedLock scopedLock(mMutex);
 
@@ -62,8 +70,6 @@ void GamesManager::onPlayerFire(const PlayerCommunicationManager &playerCommunic
         
         // (*game)->fire(host);
 
-        (void)playerCommunicationManager;
-        (void)port;
         // faut créer sendCreateRessource ??
         //mPlayerCommunicationManager.sendCreateResource(host, port, id???)
     }
@@ -72,7 +78,7 @@ void GamesManager::onPlayerFire(const PlayerCommunicationManager &playerCommunic
     }
 }
 
-void GamesManager::onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const std::string &host, int port) {
+void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const Peer &) {
     try {
         ScopedLock scopedLock(mMutex);
 
@@ -81,9 +87,6 @@ void GamesManager::onPlayerMove(const PlayerCommunicationManager &playerCommunic
         if (game == mGames.end())
             throw GamesManagerException("Try to fire a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
 
-        (void)playerCommunicationManager;
-        (void)direction;
-        (void)port;
         //(*game)->move(host, direction);
         // auto component = getComponent(host);
         //mPlayerCommunicationManager.sendMoveResource(host, port, id ? ? , IResource::Type::PLAYER, component->getX(), component->getY(), component->getAngle());
@@ -103,7 +106,7 @@ void GamesManager::onTerminatedGame(const std::shared_ptr<Game>& game) {
     mGames.erase(game_it);
 }
 
-void GamesManager::joinGame(Game::USER_TYPE typeUser, const std::string &host, const std::string &name, const std::string &pseudo) {
+void GamesManager::joinGame(Game::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
@@ -115,15 +118,15 @@ void GamesManager::joinGame(Game::USER_TYPE typeUser, const std::string &host, c
     (*game)->addUser(typeUser, host, pseudo);
 }
 
-void GamesManager::playGame(const std::string &host, const std::string &name, const std::string &pseudo) {
+void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
     joinGame(Game::USER_TYPE::PLAYER, host, name, pseudo);
 }
 
-void GamesManager::spectateGame(const std::string &host, const std::string &name, const std::string &pseudo) {
-    joinGame(Game::USER_TYPE::SPECTATOR, host, name, pseudo);
+void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
+    joinGame(Game::USER_TYPE::SPECTATOR, host, name, "SPECTATOR HAS NO PSEUDO");
 }
 
-void GamesManager::leaveGame(const std::string &host, bool throwExcept) {
+void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByHost(host);
@@ -139,7 +142,7 @@ void GamesManager::leaveGame(const std::string &host, bool throwExcept) {
     (*game)->delUser(host);
 }
 
-void GamesManager::updatePseudo(const std::string &host, const std::string &pseudo) {
+void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByHost(host);

@@ -4,8 +4,16 @@
 #include "ScopedLock.hpp"
 #include <algorithm>
 
+<<<<<<< HEAD
 const float Game::XMAX = 100.f;
 const float Game::YMAX = 100.f;
+=======
+Game::Game(const Game::GameProperties& properties, const Peer &hostOwner) : mProperties(properties), isRunning(true) {
+    addPlayer(hostOwner);
+}
+
+Game::~Game(void) {
+>>>>>>> use Peer struct instead of a simple std::string host (this patch lots of existing or future issue concerning a user starting multiple clients on the same computer and having the same host).
 
 Game::Game(const Game::GameProperties& properties) : mListener(nullptr), mProperties(properties), mIsRunning(false), mAlreadyRunOneTime(false), mMutex(PortabilityBuilder::getMutex()) {
 }
@@ -38,6 +46,7 @@ bool Game::collisionTouch(const Component& component, const Component& obstacle)
         (x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
 }
 
+<<<<<<< HEAD
 bool Game::collisionWithBonus(const Component& /*component*/, const Component& /*obstacle*/) {
     // en fonction du bonus changer via les setters le component
     return false;
@@ -49,6 +58,16 @@ bool Game::collisionWithBullet(const Component& /*component*/, const Component& 
     // component.setLife(component->getLife() - 1);
     // notifier les utilisateurs qu'un allié a été touché
     return false;
+=======
+void Game::addPlayer(const Peer &peer) {
+    mPlayersAddress.push_back(peer);
+	mProperties.setNbPlayers(mPlayersAddress.size());
+}
+
+void Game::delPlayer(const Peer &peer) {
+    mPlayersAddress.remove_if([&](const Peer& it) { return it == peer; });
+	mProperties.setNbPlayers(mPlayersAddress.size());
+>>>>>>> use Peer struct instead of a simple std::string host (this patch lots of existing or future issue concerning a user starting multiple clients on the same computer and having the same host).
 }
 
 bool Game::collisionWithMonster(const Component& /*component*/, const Component& /*obstacle*/) {
