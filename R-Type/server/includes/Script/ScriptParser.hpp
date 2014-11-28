@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include "Parser.hpp"
 #include "Utils.hpp"
 #include "NoCopyable.hpp"
 
@@ -39,33 +40,15 @@ class ScriptParser : public NoCopyable {
 		int				getRemoveCronFrame(void) const;
 		int				getRemoveCronIdCron(void) const;
 		void			parseFile(std::ifstream &);
-		void			cmdName(const std::string&);
-		void			cmdRequire(const std::string&);
-		void			cmdAction(const std::string&);
-		void			cmdAddCron(const std::string&);
-		void			cmdRemoveCron(const std::string&);
-		void			fctSpawnMob(const std::string&);
-		void			fctMoveMob(const std::string&);
-		void			jumpToNextToken(void);
-		void			setStringToParse(const std::string &str);
-		void			setTokenSep(char tokenSep);
-		std::string		extractWord(void);
-
-		template <typename T>
-		T		extractValue(void){
-			T		val;
-
-			if (this->mWtab.size() == 0)
-				return 0;
-			val = Utils::getNbr<T>(this->mWtab.front());
-			this->jumpToNextToken();
-			return val;
-		}
+		void			cmdName(void);
+		void			cmdRequire(void);
+		void			cmdAction(void);
+		void			cmdAddCron(void);
+		void			cmdRemoveCron(void);
+		void			fctSpawnMob(void);
+		void			fctMoveMob(void);
 
 	private:
-		char					mTokenSep;
-		std::string				mStr;
-		std::list<std::string>	mWtab;
 		std::string				mStageName;
 		std::string				mRessourceName;
 		int						mActionFrame;
@@ -85,6 +68,7 @@ class ScriptParser : public NoCopyable {
 		int						mSpawnAngle;
 		int						mMoveMobIdMonster;
 		int						mMoveMobAngle;
+		Parser					Parser;
 
 	private:
 		void						splitString(void);
@@ -92,14 +76,14 @@ class ScriptParser : public NoCopyable {
 	private:
 		struct tokenExec {
 			std::string		cmd;
-			void			(ScriptParser::*Ptr)(const std::string &);
+			void			(ScriptParser::*Ptr)();
 		};
 	static const ScriptParser::tokenExec tokenExecTab[];
 
 	private:
 		struct MonsterCmd {
 			std::string		mobAction;
-			void			(ScriptParser::*ftPtr)(const std::string &);
+			void			(ScriptParser::*ftPtr)(void);
 		};
 		static const ScriptParser::MonsterCmd MonsterCmdTab[];
 	};

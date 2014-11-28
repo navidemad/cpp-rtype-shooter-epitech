@@ -124,11 +124,6 @@ sf::Sprite			&SpriteModel::getSprite(uint32_t index)
 	return mSprites[index];
 }
 
-sf::IntRect const	&SpriteModel::getFrame(uint32_t index) const
-{
-	return mFrames[index];
-}
-
 bool				SpriteModel::isLoop() const
 {
 	return mLoop;
@@ -174,7 +169,7 @@ uint32_t			SpriteModel::getY() const
 	return mY;
 }
 
-std::vector<sf::Sprite>::size_type	SpriteModel::getSize() const
+uint32_t			SpriteModel::getSize() const
 {
 	return (mSprites.size());
 }
