@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include "NoCopyable.hpp"
+#include "Utils.hpp"
 
 class Parser : public NoCopyable {
 

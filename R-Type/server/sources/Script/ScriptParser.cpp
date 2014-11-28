@@ -32,8 +32,8 @@ void		ScriptParser::parseFile(std::ifstream &file){
 
 	while (file.good()){
 		std::getline(file, lineContent);
-		Parser.setStringToParse(lineContent);
-		wordContent = Parser.extractWord();
+		parser.setStringToParse(lineContent);
+		wordContent = parser.extractWord();
 		std::cout << "premier mot : " << wordContent << std::endl;
 
 		for (const auto &instr : tokenExecTab)
@@ -45,25 +45,25 @@ void		ScriptParser::parseFile(std::ifstream &file){
 }
 
 void		ScriptParser::cmdName(void){
-	this->mStageName = Parser.extractWord();
+	this->mStageName = parser.extractWord();
 }
 
 void		ScriptParser::cmdRequire(void){
-	this->mRessourceName = Parser.extractWord();
+	this->mRessourceName = parser.extractWord();
 }
 
 void		ScriptParser::cmdAddCron(void){
-	this->mAddCronFrame = Parser.extractValue<int>();
-	this->mAddCronTimer = Parser.extractValue<int>();
-	this->mAddCronIdCron = Parser.extractValue<int>();
-	this->mAddCronFireMob = Parser.extractWord();
-	this->mAddCronIdMonster = Parser.extractValue<int>();
-	this->mAddCronAngle = Parser.extractValue<int>();
+	this->mAddCronFrame = parser.extractValue<int>();
+	this->mAddCronTimer = parser.extractValue<int>();
+	this->mAddCronIdCron = parser.extractValue<int>();
+	this->mAddCronFireMob = parser.extractWord();
+	this->mAddCronIdMonster = parser.extractValue<int>();
+	this->mAddCronAngle = parser.extractValue<int>();
 }
 
 void		ScriptParser::cmdRemoveCron(void){
-	this->mRemoveCronFrame = Parser.extractValue<int>();
-	this->mRemoveCronIdCron = Parser.extractValue<int>();
+	this->mRemoveCronFrame = parser.extractValue<int>();
+	this->mRemoveCronIdCron = parser.extractValue<int>();
 }
 
 void		ScriptParser::cmdAction(void){
@@ -72,8 +72,8 @@ void		ScriptParser::cmdAction(void){
 	c.setFrame(extractValue)*/
 
 	std::string	wordContent;
-	this->mActionFrame = Parser.extractValue<int>();
-	this->mActionMobAction = Parser.extractWord();
+	this->mActionFrame = parser.extractValue<int>();
+	this->mActionMobAction = parser.extractWord();
 
 	for (const auto &instr : MonsterCmdTab)
 	if (instr.mobAction == this->mActionMobAction) {
@@ -83,16 +83,16 @@ void		ScriptParser::cmdAction(void){
 }
 
 void		ScriptParser::fctSpawnMob(void){
-	this->mSpawnIdMonster = Parser.extractValue<int>();
-	this->mSpawnName = Parser.extractWord();
-	this->mSpawnXpos = Parser.extractValue<int>();
-	this->mSpawnYpos = Parser.extractValue<int>();
-	this->mSpawnAngle = Parser.extractValue<int>();
+	this->mSpawnIdMonster = parser.extractValue<int>();
+	this->mSpawnName = parser.extractWord();
+	this->mSpawnXpos = parser.extractValue<int>();
+	this->mSpawnYpos = parser.extractValue<int>();
+	this->mSpawnAngle = parser.extractValue<int>();
 }
 
 void		ScriptParser::fctMoveMob(void){
-	this->mMoveMobIdMonster = Parser.extractValue<int>();
-	this->mMoveMobAngle = Parser.extractValue<int>();
+	this->mMoveMobIdMonster = parser.extractValue<int>();
+	this->mMoveMobAngle = parser.extractValue<int>();
 }
 
 std::string		ScriptParser::getName(void) const{

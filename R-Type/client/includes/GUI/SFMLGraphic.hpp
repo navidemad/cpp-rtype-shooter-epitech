@@ -41,7 +41,7 @@ class SFMLGraphic : public IGraphic
 		void	show();
 		void	clear();
 		bool	isPressed(std::string);
-		float	getDelta();
+		uint32_t	getDelta();
 		void	close();
 		sf::RenderWindow						&getWindow();
 

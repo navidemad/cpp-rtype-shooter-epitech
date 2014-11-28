@@ -10,7 +10,7 @@ class DrawableFontSystem : public System
 		explicit DrawableFontSystem();
 		~DrawableFontSystem() { }
 
-		void	process(Entity &, float);
+		void	process(Entity &, uint32_t);
 public:
 	void	process();
     // copy operators

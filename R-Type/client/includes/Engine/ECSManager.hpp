@@ -4,6 +4,7 @@ class RTypeClient;
 
 #include <vector>
 #include <list>
+#include <stdint.h>
 #include "Entity.hpp"
 #include "Component.hpp"
 #include "../Core/System.hpp"
@@ -41,7 +42,7 @@ class ECSManager
 
 		// System
 		void						addSystem(System *);
-		void						updateSystem(float);
+		void						updateSystem(uint32_t);
 
 	private:
 		RTypeClient									*mClient;

@@ -20,17 +20,12 @@ PlayerCommunicationManager::PlayerCommunicationManager(void) : mPlayerPacketBuil
 PlayerCommunicationManager::~PlayerCommunicationManager(void) {
 }
 
-void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const std::string &host, int port) {
-
-	PlayerCommunicationManager::Peer peer;
+void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const Peer &peer) {
 	{
 		ScopedLock scopedLock(mMutex);
 
-		const auto &peerIt = findPeer(host, port);
-		if (peerIt == mAllowedPeers.end())
+		if (findPeer(peer) == mAllowedPeers.end())
 			return;
-
-		peer = *peerIt;
 	}
 
 	for (const auto &instr : commandExecTab)
@@ -40,43 +35,43 @@ void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, 
 		}
 }
 
-void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &command, const PlayerCommunicationManager::Peer &peer) {
+void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &command, const Peer &peer) {
 	if (mListener) {
 		std::shared_ptr<CommandMove> commandMove = std::static_pointer_cast<CommandMove>(command);
 
-		mListener->onPlayerMove(*this, commandMove->getDirection(), peer.host, peer.port);
+		mListener->onPlayerMove(*this, commandMove->getDirection(), peer);
 	}
 }
 
-void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, const PlayerCommunicationManager::Peer &peer) {
+void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, const Peer &peer) {
 	if (mListener)
-		mListener->onPlayerFire(*this, peer.host, peer.port);
+		mListener->onPlayerFire(*this, peer);
 }
 
-void PlayerCommunicationManager::addPeerToWhiteList(const std::string &host, int port) {
+void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
 	ScopedLock scopedLock(mMutex);
 
-	if (findPeer(host, port) == mAllowedPeers.end())
-		mAllowedPeers.push_back(Peer{ host, port });
+	if (findPeer(peer) == mAllowedPeers.end())
+		mAllowedPeers.push_back(peer);
 }
 
-void PlayerCommunicationManager::removePeerFromWhiteList(const std::string &host, int port) {
+void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {
 	ScopedLock scopedLock(mMutex);
 
-	const auto &peer = findPeer(host, port);
-	if (peer != mAllowedPeers.end())
-		mAllowedPeers.erase(peer);
+	const auto &peerIt = findPeer(peer);
+	if (peerIt != mAllowedPeers.end())
+		mAllowedPeers.erase(peerIt);
 }
 
-std::list<PlayerCommunicationManager::Peer>::iterator PlayerCommunicationManager::findPeer(const std::string &host, int port) {
-	return std::find_if(mAllowedPeers.begin(), mAllowedPeers.end(), [&](const PlayerCommunicationManager::Peer &peer) { return peer.host == host && peer.port == port; });
+std::list<Peer>::iterator PlayerCommunicationManager::findPeer(const Peer &peer) {
+	return std::find_if(mAllowedPeers.begin(), mAllowedPeers.end(), [&](const Peer &peerIt) { return peer == peerIt; });
 }
 
 void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *listener) {
 	mListener = listener;
 }
 
-void PlayerCommunicationManager::sendMoveResource(const std::string &host, int port, int id, IResource::Type type, float x, float y, short angle) {
+void PlayerCommunicationManager::sendMoveResource(const Peer &peer, int id, IResource::Type type, float x, float y, short angle) {
 	CommandMoveResource commandMoveResource;
 
 	commandMoveResource.setId(id);
@@ -84,28 +79,28 @@ void PlayerCommunicationManager::sendMoveResource(const std::string &host, int p
 	commandMoveResource.setX(x);
 	commandMoveResource.setY(y);
 	commandMoveResource.setAngle(angle);
-	mPlayerPacketBuilder.sendCommand(&commandMoveResource, host, port);
+	mPlayerPacketBuilder.sendCommand(&commandMoveResource, peer);
 }
 
-void PlayerCommunicationManager::sendDestroyResource(const std::string &host, int port, int id) {
+void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, int id) {
 	CommandDestroyResource commandDestroyResource;
 
 	commandDestroyResource.setId(id);
-	mPlayerPacketBuilder.sendCommand(&commandDestroyResource, host, port);
+	mPlayerPacketBuilder.sendCommand(&commandDestroyResource, peer);
 }
 
-void PlayerCommunicationManager::sendUpdateScore(const std::string &host, int port, int id, const std::string &pseudo, int score) {
+void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, int id, const std::string &pseudo, int score) {
 	CommandUpdateScore commandUpdateScore;
 
 	commandUpdateScore.setId(id);
 	commandUpdateScore.setPseudo(pseudo);
 	commandUpdateScore.setScore(score);
-	mPlayerPacketBuilder.sendCommand(&commandUpdateScore, host, port);
+	mPlayerPacketBuilder.sendCommand(&commandUpdateScore, peer);
 }
 
-void PlayerCommunicationManager::sendTimeElapsedPing(const std::string &host, int port, int64_t timeElapsed) {
+void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, int64_t timeElapsed) {
 	CommandTimeElapsedPing commandTimeElapsedPing;
 
 	commandTimeElapsedPing.setTimeElapsed(timeElapsed);
-	mPlayerPacketBuilder.sendCommand(&commandTimeElapsedPing, host, port);
+	mPlayerPacketBuilder.sendCommand(&commandTimeElapsedPing, peer);
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Peer.hpp"
 #include "ErrorStatus.hpp"
 #include "Client.hpp"
 #include "IServerSocket.hpp"
@@ -24,16 +25,16 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		class OnClientManagerEvent {
 			public:
 				virtual ~OnClientManagerEvent(void) {}
-				virtual void onClientDisconnected(const std::string &host) = 0;
-				virtual void onClientCreateGame(const std::string &host, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
-				virtual void onClientJoinGame(const std::string &host, const std::string &name, const std::string &pseudo) = 0;
-				virtual void onClientShowGame(const std::string &host, const std::string &name) = 0;
-				virtual void onClientDeleteGame(const std::string &host, const std::string &name) = 0;
-				virtual void onClientListGames(const std::string &host) = 0;
-				virtual void onClientListLevels(const std::string &host) = 0;
-				virtual void onClientObserveGame(const std::string &host, const std::string &name) = 0;
-				virtual void onClientLeaveGame(const std::string &host) = 0;
-				virtual void onClientUpdatePseudo(const std::string &host, const std::string &pseudo) = 0;
+				virtual void onClientDisconnected(const Peer &peer) = 0;
+				virtual void onClientCreateGame(const Peer &peer, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
+				virtual void onClientJoinGame(const Peer &peer, const std::string &name, const std::string &pseudo) = 0;
+				virtual void onClientShowGame(const Peer &peer, const std::string &name) = 0;
+				virtual void onClientDeleteGame(const Peer &peer, const std::string &name) = 0;
+				virtual void onClientListGames(const Peer &peer) = 0;
+				virtual void onClientListLevels(const Peer &peer) = 0;
+				virtual void onClientObserveGame(const Peer &peer, const std::string &name) = 0;
+				virtual void onClientLeaveGame(const Peer &peer) = 0;
+				virtual void onClientUpdatePseudo(const Peer &peer, const std::string &pseudo) = 0;
 		};
 
 		void	onNewConnection(IServerSocket *socket);
@@ -54,14 +55,14 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 
 	// intern methods
 	private:
-		std::list<std::shared_ptr<Client>>::iterator findClient(const std::string &host);
+		std::list<std::shared_ptr<Client>>::iterator findClient(const Peer &peer);
 
 	// send commands
 	public:
-		void	sendError(const std::list<std::string> &hosts, const ErrorStatus &errorStatus);
-		void	sendShowGame(const std::list<std::string> &hosts, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
-		void	sendEndGame(const std::list<std::string> &hosts);
-		void	sendShowLevel(const std::list<std::string> &hosts, const std::string &name, const std::string &script);
+		void	sendError(const std::list<Peer> &peers, const ErrorStatus &errorStatus);
+		void	sendShowGame(const std::list<Peer> &peers, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
+		void	sendEndGame(const std::list<Peer> &peers);
+		void	sendShowLevel(const std::list<Peer> &peers, const std::string &name, const std::string &script);
 
 	// attributes
 	private:

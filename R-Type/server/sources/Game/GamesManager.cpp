@@ -27,17 +27,25 @@ void GamesManager::run(void) {
     }
 }
 
-void GamesManager::createGame(const Game::GameProperties& properties) {
+void GamesManager::createGame(const Game::GameProperties& properties, const Peer &) {
     ScopedLock scopedLock(mMutex);
 
     auto game = std::shared_ptr<Game>{ std::make_shared<Game>(properties) };
 
     game->setListener(this);
+// SETTER L'OWNER DE LA GAME
+//    game->setOwner(peer);
 
     mGames.push_back(game);
 }
 
-void GamesManager::removeGame(const std::string& name) {
+void GamesManager::removeGame(const Peer &/* PEER POUR CHECK SI LE MEC EST LE OWNER */, const std::string& name) {
+/*
+** CHECKER SI C'EST LE OWNER
+**
+** si oui => delete
+** si non => GamesManagerException
+*/
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
@@ -51,19 +59,17 @@ void GamesManager::removeGame(const std::string& name) {
 /*
 ** PlayerCommunicationManager::OnPlayerCommunicationManagerEvent
 */ 
-void GamesManager::onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const std::string &host, int port) {
+void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const Peer &peer) {
     try {
         ScopedLock scopedLock(mMutex);
 
-        auto game = findGameByHost(host);
+        auto game = findGameByHost(peer);
 
         if (game == mGames.end())
             throw GamesManagerException("Try to fire a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
         
         // (*game)->fire(host);
 
-        (void)playerCommunicationManager;
-        (void)port;
         // faut créer sendCreateRessource ??
         //mPlayerCommunicationManager.sendCreateResource(host, port, id???)
     }
@@ -72,18 +78,15 @@ void GamesManager::onPlayerFire(const PlayerCommunicationManager &playerCommunic
     }
 }
 
-void GamesManager::onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const std::string &host, int port) {
+void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const Peer &peer) {
     try {
         ScopedLock scopedLock(mMutex);
 
-        auto game = findGameByHost(host);
+        auto game = findGameByHost(peer);
 
         if (game == mGames.end())
             throw GamesManagerException("Try to fire a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
 
-        (void)playerCommunicationManager;
-        (void)direction;
-        (void)port;
         //(*game)->move(host, direction);
         // auto component = getComponent(host);
         //mPlayerCommunicationManager.sendMoveResource(host, port, id ? ? , IResource::Type::PLAYER, component->getX(), component->getY(), component->getAngle());
@@ -103,7 +106,7 @@ void GamesManager::onTerminatedGame(const std::shared_ptr<Game>& game) {
     mGames.erase(game_it);
 }
 
-void GamesManager::joinGame(Game::USER_TYPE typeUser, const std::string &host, const std::string &name, const std::string &pseudo) {
+void GamesManager::joinGame(Game::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
@@ -111,22 +114,22 @@ void GamesManager::joinGame(Game::USER_TYPE typeUser, const std::string &host, c
     if (game == mGames.end())
         throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
 
-    leaveGame(host, false);
-    (*game)->addUser(typeUser, host, pseudo);
+    leaveGame(peer, false);
+    (*game)->addUser(typeUser, peer, pseudo);
 }
 
-void GamesManager::playGame(const std::string &host, const std::string &name, const std::string &pseudo) {
-    joinGame(Game::USER_TYPE::PLAYER, host, name, pseudo);
+void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
+    joinGame(Game::USER_TYPE::PLAYER, peer, name, pseudo);
 }
 
-void GamesManager::spectateGame(const std::string &host, const std::string &name, const std::string &pseudo) {
-    joinGame(Game::USER_TYPE::SPECTATOR, host, name, pseudo);
+void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
+    joinGame(Game::USER_TYPE::SPECTATOR, peer, name, "SPECTATOR HAS NO PSEUDO");
 }
 
-void GamesManager::leaveGame(const std::string &host, bool throwExcept) {
+void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
     ScopedLock scopedLock(mMutex);
 
-    auto game = findGameByHost(host);
+    auto game = findGameByHost(peer);
 
     if (game == mGames.end())
     {
@@ -136,18 +139,18 @@ void GamesManager::leaveGame(const std::string &host, bool throwExcept) {
             return;
     }   
 
-    (*game)->delUser(host);
+    (*game)->delUser(peer);
 }
 
-void GamesManager::updatePseudo(const std::string &host, const std::string &pseudo) {
+void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
-    auto game = findGameByHost(host);
+    auto game = findGameByHost(peer);
 
     if (game == mGames.end())
         throw GamesManagerException("Try to leave a player that he isn't on a game", ErrorStatus(ErrorStatus::Error::KO));
 
-    auto user = (*game)->findUserByHost(host);
+    auto user = (*game)->findUserByHost(peer);
     user->setPseudo(pseudo);
 
 }
@@ -186,11 +189,11 @@ std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByName(const 
     });
 }
 
-std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByHost(const std::string& host) {
-    return std::find_if(mGames.begin(), mGames.end(), [&host](const std::shared_ptr<Game>& game) {
+std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByHost(const Peer &peer) {
+    return std::find_if(mGames.begin(), mGames.end(), [&peer](const std::shared_ptr<Game>& game) {
         auto playersAddress = game.get()->getUsers();
         for (const auto& playerAddress : playersAddress) {
-            if (playerAddress.getHost() == host)
+            if (playerAddress.getPeer() == peer)
                 return true;
         }
         return false;

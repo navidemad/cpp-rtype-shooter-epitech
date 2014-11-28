@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Peer.hpp"
 #include "PlayerPacketBuilder.hpp"
 #include "IMutex.hpp"
 #include "IResource.hpp"
@@ -14,55 +15,55 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		PlayerCommunicationManager(void);
 		~PlayerCommunicationManager(void);
 
-	// peer
+	// move copy operators
 	private:
-		struct Peer {
-			std::string host;
-			int port;
-		};
+		PlayerCommunicationManager(const PlayerCommunicationManager &) = delete;
+		PlayerCommunicationManager(PlayerCommunicationManager &&) = delete;
+		const PlayerCommunicationManager &operator=(const PlayerCommunicationManager &) = delete;
+		const PlayerCommunicationManager &operator=(PlayerCommunicationManager &&) = delete;
 
-		std::list<PlayerCommunicationManager::Peer>::iterator findPeer(const std::string &host, int port);
+		std::list<Peer>::iterator findPeer(const Peer &peer);
 
 	public:
-		void	addPeerToWhiteList(const std::string &host, int port);
-		void	removePeerFromWhiteList(const std::string &host, int port);
+		void	addPeerToWhiteList(const Peer &peer);
+		void	removePeerFromWhiteList(const Peer &peer);
 
 	// events
 	public:
 		class OnPlayerCommunicationManagerEvent {
 		public:
 			virtual ~OnPlayerCommunicationManagerEvent(void) {}
-			virtual void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const std::string &host, int port) = 0;
-			virtual void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const std::string &host, int port) = 0;
+			virtual void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) = 0;
+			virtual void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) = 0;
 		};
 
 		void	setListener(PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *listener);
 
-		void	onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const std::string &host, int port);
+		void	onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer);
 
 	// send commands
 	public:
-		void	sendMoveResource(const std::string &host, int port, int id, IResource::Type type, float x, float y, short angle);
-		void	sendDestroyResource(const std::string &host, int port, int id);
-		void	sendUpdateScore(const std::string &host, int port, int id, const std::string &pseudo, int score);
-		void	sendTimeElapsedPing(const std::string &host, int port, int64_t timeElapsed);
+		void	sendMoveResource(const Peer &peer, int id, IResource::Type type, float x, float y, short angle);
+		void	sendDestroyResource(const Peer &peer, int id);
+		void	sendUpdateScore(const Peer &peer, int id, const std::string &pseudo, int score);
+		void	sendTimeElapsedPing(const Peer &peer, int64_t timeElapsed);
 
 	// build cmd
 	private:
 		struct CommandExec {
 			ICommand::Instruction	instruction;
-			void					(PlayerCommunicationManager::*ftPtr)(const std::shared_ptr<ICommand> &command, const PlayerCommunicationManager::Peer &peer);
+			void					(PlayerCommunicationManager::*ftPtr)(const std::shared_ptr<ICommand> &command, const Peer &peer);
 		};
 
 		static const PlayerCommunicationManager::CommandExec commandExecTab[];
 
-		void	recvMove(const std::shared_ptr<ICommand> &command, const PlayerCommunicationManager::Peer &peer);
-		void	recvFire(const std::shared_ptr<ICommand> &command, const PlayerCommunicationManager::Peer &peer);
+		void	recvMove(const std::shared_ptr<ICommand> &command, const Peer &peer);
+		void	recvFire(const std::shared_ptr<ICommand> &command, const Peer &peer);
 
 	// attributes
 	private:
 		PlayerPacketBuilder mPlayerPacketBuilder;
-		std::list<PlayerCommunicationManager::Peer> mAllowedPeers;
+		std::list<Peer> mAllowedPeers;
 		std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *mListener;
 

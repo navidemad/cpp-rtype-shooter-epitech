@@ -11,7 +11,7 @@ class ButtonSystem : public System
         ~ButtonSystem();
 
 	public:
-		void	process(Entity &, float);
+		void	process(Entity &, uint32_t);
 
 	private:
 		bool	hasTimeElapsed() const;
@@ -24,5 +24,5 @@ class ButtonSystem : public System
         const ButtonSystem &operator=(ButtonSystem &&) = delete;
 
 	private:
-		float	mTimeElapsed;
+		uint32_t	mTimeElapsed;
 };

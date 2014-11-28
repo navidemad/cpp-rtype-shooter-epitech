@@ -1,7 +1,8 @@
 #include <iostream>
 #include "Parser.hpp"
 
-Parser::Parser(void) {
+Parser::Parser() : mTokenSep(' ')
+{
 
 }
 
@@ -48,7 +49,6 @@ void Parser::splitString(void){
 		end_substr = end_substr == std::string::npos ? this->mStr.length() : end_substr;
 
 		substr = this->mStr.substr(pos, end_substr - pos);
-		std::cout << "substr = " << substr << std::endl;
 		if (substr != "")
 			this->mWtab.push_back(substr);
 	} while ((pos = this->mStr.find(this->mTokenSep, pos)) != std::string::npos);

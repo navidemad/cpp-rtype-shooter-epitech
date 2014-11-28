@@ -24,7 +24,7 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
         // ctor / dtor
         public:
             GameProperties(void) : mName(""), mLevelName(""), mNbPlayers(0), mNbMaxPlayers(0), mNbSpectators(0), mNbMaxSpectators(0) { }
-            ~GameProperties(void) = default;
+            ~GameProperties(void) {}
 
         // setters
         public:
@@ -73,21 +73,21 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
 
             // setters
             public:
-                void setHost(const std::string& host) { mHost = host; }
+                void setPeer(const Peer &peer) { mPeer = peer; }
                 void setPseudo(const std::string& pseudo) { mPseudo = pseudo; }
                 void setType(Game::USER_TYPE type) { mType = type; }
                 void setId(uint64_t id) { mUserId = id; }
 
             // getters
             public:
-                const std::string& getHost(void) const { return mHost; }
+                const Peer& getPeer(void) const { return mPeer; }
                 const std::string& getPseudo(void) const { return mPseudo; }
                 Game::USER_TYPE getType(void) const { return mType; }
                 uint64_t getId(void) const { return mUserId; }
 
             // attributes
             private:
-                std::string mHost;
+                Peer mPeer;
                 std::string mPseudo;
                 Game::USER_TYPE mType;
                 uint64_t mUserId;
@@ -187,12 +187,12 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
     // internal functions
     public:
         int countUserByType(Game::USER_TYPE type) const;
-        std::vector<Game::User>::iterator findUserByHost(const std::string& host);
+        std::vector<Game::User>::iterator findUserByHost(const Peer &peer);
         std::vector<Game::User>::iterator findUserById(uint64_t id);
         void tryAddPlayer(const User& user);
         void tryAddSpectator(const User& user);
-        void addUser(Game::USER_TYPE type, const std::string& ipAddress, const std::string& pseudo);
-        void delUser(const std::string& ipAddress);
+        void addUser(Game::USER_TYPE type, const Peer &peer, const std::string& pseudo);
+        void delUser(const Peer &peer);
         void transferPlayerToSpectators(User& user);
         const std::vector<Game::User>& getUsers() const;
         void terminateGame(void);
