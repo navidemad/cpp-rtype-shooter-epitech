@@ -11,8 +11,11 @@ class RTypeClient
 public:
 	enum Game : unsigned int
 	{
-		MENU = 0,
-		RTYPE = 1
+		PRESS_START = 0,
+		MENU,
+		OPTION,
+		RTYPE,
+		LIMIT
 	};
 	
 	// ctor - dtor
@@ -22,7 +25,7 @@ public:
 
 	// coplien form
 	private:
-		RTypeClient(RTypeClient const &);
+//		RTypeClient(RTypeClient const &);
 		RTypeClient const	&operator=(RTypeClient const &);
 
 	public:
@@ -37,10 +40,12 @@ public:
 	// Attribute
 	private:
 		unsigned int				mCurrentId;
-		ECSManager					mEngine;
+		std::vector<ECSManager>		mEngine;
 		std::shared_ptr<IGraphic>	mGui;
 
 	private:
 		void						init();
 		void						initMenu();
+		void						initOption();
+		void						initPressStart();
 };

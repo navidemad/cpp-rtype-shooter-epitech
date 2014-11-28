@@ -29,3 +29,33 @@ class ButtonGame : public Button
 	public:
 		void	process(Entity &);
 };
+
+class ButtonQuitGame : public Button
+{
+public:
+	ButtonQuitGame() { }
+	~ButtonQuitGame() { }
+
+public:
+	void	process(Entity &);
+};
+
+class ButtonMenuGame : public Button
+{
+public:
+	ButtonMenuGame() { }
+	~ButtonMenuGame() { }
+
+public:
+	void	process(Entity &);
+};
+
+class ButtonOption : public Button
+{
+public:
+	ButtonOption() { }
+	~ButtonOption() { }
+
+public:
+	void	process(Entity &);
+};

@@ -28,7 +28,8 @@ void	SoundManager::loadResources()
 			throw std::runtime_error("Failed to load sound...");
 		sf::Sound sound;
 		sound.setBuffer(buffer);
-		mListResources.insert(std::pair<std::string, sf::Sound>("mgs", sound));
+		sf::sSound ssound = {buffer, sound};
+		mListResources.insert(std::pair<std::string, sf::sSound>("mgs", ssound));
 	}
 }
 
@@ -37,7 +38,7 @@ void	SoundManager::unloadResources()
 	mListResources.clear();
 }
 
-sf::Sound	&SoundManager::getResource(std::string const &key)
+sf::sSound	&SoundManager::getResource(std::string const &key)
 {
 	return mListResources.at(key);
 }

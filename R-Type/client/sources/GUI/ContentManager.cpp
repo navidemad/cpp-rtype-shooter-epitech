@@ -48,7 +48,7 @@ std::shared_ptr<IResourceManager<sf::Font>> const		&ContentManager::getFonts() c
 	return mFonts;
 }
 
-std::shared_ptr<IResourceManager<sf::Sound>> const		&ContentManager::getSounds() const
+std::shared_ptr<IResourceManager<sf::sSound>> const		&ContentManager::getSounds() const
 {
 	return mSounds;
 }

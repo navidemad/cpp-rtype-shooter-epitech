@@ -14,10 +14,10 @@ DrawableFontSystem::DrawableFontSystem()
 	setComponentNeeded(ComponentType::MOVABLE);
 }
 
-void	DrawableFontSystem::process(Entity &entity)
+void	DrawableFontSystem::process(Entity &entity, float /* */)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Font *sprite = static_cast<Font *>(entity.getSpecificComponent(ComponentType::FONT));
 
-	entity.getEntityManager()->getClient()->getGui()->drawFont(sprite->getFont(), sprite->getText(), pos->getX(), pos->getY());
+	entity.getEntityManager()->getClient()->getGui()->drawFont(sprite->getFont(), sprite->getText(), pos->getX(), pos->getY(), 100);
 }

@@ -12,7 +12,8 @@ class ECSManager
 {
     // ctor - dtor
     public:
-        explicit ECSManager(RTypeClient *);
+		explicit ECSManager() : mClient(nullptr), mCurrentId(0) { }
+        ECSManager(RTypeClient *);
         ~ECSManager();
 
     // copy operators
@@ -25,6 +26,7 @@ class ECSManager
 	// getter
 	public:
 		RTypeClient			*getClient() const { return mClient;  }
+		void				setClient(RTypeClient *client) { mClient = client; }
 		unsigned int		getCurrentId() const;
 
 	// Entity Manager
@@ -39,7 +41,7 @@ class ECSManager
 
 		// System
 		void						addSystem(System *);
-		void						updateSystem();
+		void						updateSystem(float);
 
 	private:
 		RTypeClient									*mClient;

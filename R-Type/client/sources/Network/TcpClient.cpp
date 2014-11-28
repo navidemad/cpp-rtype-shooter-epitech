@@ -93,5 +93,5 @@ void	TcpClient::setOnSocketEventListener(OnSocketEvent *listener) {
 }
 
 const std::string &TcpClient::getAddr(void) const {
-	return mQTcpSocket->peerAddress().toString().toStdString();
+	return NULL; /*mQTcpSocket->peerAddress().toString().toStdString();*/
 }

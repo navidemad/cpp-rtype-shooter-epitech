@@ -2,8 +2,9 @@
 #include <list>
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
+#include "Network/CommandPacketBuilder.hpp"
 
-class ServerCommunication : public IClientSocket::OnSocketEvent {
+class ServerCommunication : public CommandPacketBuilder::OnCommandEvent {
 
     // ctor - dtor
     public:
@@ -17,12 +18,9 @@ class ServerCommunication : public IClientSocket::OnSocketEvent {
         const ServerCommunication &operator=(const ServerCommunication &) = delete;
         const ServerCommunication &operator=(ServerCommunication &&) = delete;
 
-
-    //callback from ISocketClient
+    //callback from CommandPacketBuilder
     public:
-        void    onBytesWritten(IClientSocket *socket, unsigned int nbBytes);
-        void    onSocketReadable(IClientSocket *socket, unsigned int nbBytesToRead);
-        void    onSocketClosed(IClientSocket *socket);
+        void    onNewCommand(ICommand *command);
 
     //handle socket
     public:
@@ -39,6 +37,7 @@ class ServerCommunication : public IClientSocket::OnSocketEvent {
     //attribut
     private:
         std::list<ICommand *> mListCommand;
+        CommandPacketBuilder mHandleTcpCmd;
         int mPortTcp;
         std::string mIpTcp;
         IClientSocket *mSocketTcp;

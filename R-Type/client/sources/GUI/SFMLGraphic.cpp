@@ -26,13 +26,13 @@ bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, f
 	return true;
 }
 
-bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float x, float y)
+bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t size = 128)
 {
 	sf::Text text;
 
 	text.setFont(mContentManager.getFonts()->getResource(key));
 	text.setString(str);
-	text.setCharacterSize(128);
+	text.setCharacterSize(size);
 	text.setPosition(x, y);
 	mWindow.draw(text);
 	return true;
@@ -40,14 +40,27 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 
 bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
-	mContentManager.getSounds()->getResource(key).setLoop(onLoop);
-	mContentManager.getSounds()->getResource(key).play();
+	sf::Sound s = mContentManager.getSounds()->getResource(key).sound;
+	mContentManager.getSounds()->getResource(key).sound.setLoop(onLoop);
+	mContentManager.getSounds()->getResource(key).sound.play();
 	return true;
 }
 
 void	SFMLGraphic::setVolume(std::string const &key, float volume)
 {
-	mContentManager.getSounds()->getResource(key).setVolume(volume);
+	mContentManager.getSounds()->getResource(key).sound.setVolume(volume);
+}
+
+float	SFMLGraphic::getDelta()
+{
+	sf::Time	delta = mDeltaClock.restart();
+
+	return delta.asSeconds();
+}
+
+void	SFMLGraphic::close()
+{
+	mWindow.close();
 }
 
 bool	SFMLGraphic::isOpen() const

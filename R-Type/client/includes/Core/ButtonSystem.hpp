@@ -11,11 +11,18 @@ class ButtonSystem : public System
         ~ButtonSystem();
 
 	public:
-		void	process(Entity &);
+		void	process(Entity &, float);
+
+	private:
+		bool	hasTimeElapsed() const;
+
     // copy operators
     public:
         ButtonSystem(const ButtonSystem &) = delete;
         ButtonSystem(ButtonSystem &&) = delete;
         const ButtonSystem &operator=(const ButtonSystem &) = delete;
         const ButtonSystem &operator=(ButtonSystem &&) = delete;
+
+	private:
+		float	mTimeElapsed;
 };

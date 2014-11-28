@@ -6,7 +6,16 @@
 #include <SFML/Audio.hpp>
 #include "GUI/IResourceManager.hpp"
 
-class SoundManager : public IResourceManager<sf::Sound>
+namespace sf
+{
+	struct sSound
+	{
+		sf::SoundBuffer	bufferSound;
+		sf::Sound		sound;
+	};
+}
+
+class SoundManager : public IResourceManager<sf::sSound>
 {
 	// ctor - dtor
 	private:
@@ -29,11 +38,11 @@ class SoundManager : public IResourceManager<sf::Sound>
 
 	// methods
 	public:
-		void		loadResources();
-		void		unloadResources();
-		sf::Sound	&getResource(std::string const &key);
+		void					loadResources();
+		void					unloadResources();
+		sf::sSound	&getResource(std::string const &key);
 
 	// attributes
 	private:
-		std::map<std::string, sf::Sound>		mListResources;
+		std::map<std::string, sf::sSound>		mListResources;
 };

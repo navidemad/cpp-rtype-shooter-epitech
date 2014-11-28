@@ -36,12 +36,12 @@ class ContentManager
 		std::shared_ptr<IResourceManager<sf::Texture>> const	&getTextures() const;
 		std::shared_ptr<IResourceManager<SpriteModel>> 			&getSprites(); // Sprite must be modifiable
 		std::shared_ptr<IResourceManager<sf::Font>> const		&getFonts() const;
-		std::shared_ptr<IResourceManager<sf::Sound>> const		&getSounds() const;
+		std::shared_ptr<IResourceManager<sf::sSound>> const		&getSounds() const;
 
 	// attributes
 	private:
 		std::shared_ptr<IResourceManager<sf::Texture>>	mTextures;
 		std::shared_ptr<IResourceManager<SpriteModel>>	mSprites;
 		std::shared_ptr<IResourceManager<sf::Font>>		mFonts;
-		std::shared_ptr<IResourceManager<sf::Sound>>	mSounds;
+		std::shared_ptr<IResourceManager<sf::sSound>>	mSounds;
 };
