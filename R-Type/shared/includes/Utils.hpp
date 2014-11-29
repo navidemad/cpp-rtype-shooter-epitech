@@ -17,7 +17,8 @@ namespace Utils
 		std::stringstream	ss(str);
 		T				val;
 
-		ss >> val;
+		if ((ss >> val).fail() || !(ss >> std::ws).eof())
+			throw std::bad_cast();
 		return val;
 	}
 

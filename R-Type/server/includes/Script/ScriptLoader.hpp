@@ -16,7 +16,7 @@ public:
 
 	// internal functions
 public:
-	void loadScript(const std::string&);
+	std::shared_ptr<Script> loadScript(const std::string& stage_name);
 	void loadAll(void);
 
 	// attributes

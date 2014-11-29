@@ -6,8 +6,8 @@
 class ScriptRemoveCron : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptRemoveCron(void);
-		~ScriptRemoveCron(void);
+		explicit ScriptRemoveCron(void) { }
+		~ScriptRemoveCron(void) { }
 
 	// public pure methods
 	public:
@@ -15,8 +15,8 @@ class ScriptRemoveCron : public IScriptCommand {
 
 	// getter-setter
 	public:
-		int					getRemoveCronFrame(void) const;
-		int					getRemoveCronIdCron(void) const;
+		int					getRemoveCronFrame(void) const { return mRemoveCronFrame; }
+		int					getRemoveCronIdCron(void) const { return mRemoveCronIdCron; }
 
 		void				setRemoveCronFrame(const int& frame) { mRemoveCronFrame = frame; }
 		void				setRemoveCronIdCron(const int& idCron) { mRemoveCronIdCron = idCron; }

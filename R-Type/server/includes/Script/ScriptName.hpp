@@ -6,8 +6,8 @@
 class ScriptName : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptName(void);
-		~ScriptName(void);
+		explicit ScriptName(void) { }
+		~ScriptName(void) { }
 
 	// public pure methods
 	public:
@@ -15,7 +15,7 @@ class ScriptName : public IScriptCommand {
 
 	// getter-setter
 	public:
-		std::string				getName(void) const;
+		std::string				getName(void) const { return mStageName; }
 
 		void					setName(const std::string &name) { mStageName = name; }
 

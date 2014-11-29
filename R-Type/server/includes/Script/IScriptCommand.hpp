@@ -8,7 +8,7 @@ class IScriptCommand {
 	// Instructions
 	public:
 	enum class Instruction {
-		NAME,
+		NAME = 0,
 		REQUIRE,
 		ACTION,
 		ADD_CRON,

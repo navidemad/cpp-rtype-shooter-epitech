@@ -6,43 +6,93 @@
 class ScriptAction : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptAction(void);
-		~ScriptAction(void);
+		explicit ScriptAction(void) { }
+		~ScriptAction(void) { }
 
 	// public pure methods
 	public:
 		IScriptCommand::Instruction	getInstruction(void) const { return IScriptCommand::Instruction::ACTION; }
 
+	// actions enum
+	public:
+		enum class TYPE { SPAWN_MOB, MOVE_MOB };
+
+	// interface action class
+	public:
+		class IActionType {
+			public:
+				virtual ~IActionType(void) {}
+		};
+
 	// getter-setter
 	public:
-		int						getActionFrame(void) const { return mActionFrame; }
-		std::string				getActionMobAction(void) const;
-		int						getActionSpawnIdMonster(void) const;
-		std::string				getActionSpawnName(void) const;
-		int						getActionSpawnXpos(void) const;
-		int						getActionSpawnYpos(void) const;
-		int						getActionSpawnAngle(void) const;
-		int						getActionMoveMobIdMonster(void) const;
-		int						getActionMoveMobAngle(void) const;
+		int								getActionFrame(void) const { return mActionFrame; }
+		const std::string&				getActionMobAction(void) const { return mActionMobAction; }
+		ScriptAction::TYPE				getActionType(void) const { return mType; }
+		std::shared_ptr<IActionType>	getActionParams(void) const { return mParams; }
 
-		void					setActionFrame(const int& frame) { mActionFrame = frame; }
-		void					setActionMobAction(const std::string& mobAction) { mActionMobAction = mobAction; }
-		void					setActionSpawnIdMonster(const int& idMonster) { mSpawnIdMonster = idMonster; }
-		void					setActionSpawnName(const std::string& name) { mSpawnName = name; }
-		void					setActionSpawnXpos(const int& xPos) { mSpawnXpos = xPos; }
-		void					setActionSpawnYpos(const int& yPos) { mSpawnYpos = yPos; }
-		void					setActionMoveMobIdMonster(const int& idMonster) { mMoveMobIdMonster = idMonster; }
-		void					setActionMoveMobAngle(const int& angle) { mMoveMobAngle = angle; }
+		void							setActionFrame(const int& frame) { mActionFrame = frame; }
+		void							setActionMobAction(const std::string& mobAction) { mActionMobAction = mobAction; }
+		void							setActionType(ScriptAction::TYPE type) { mType = type; }
+		void							setActionParams(std::shared_ptr<IActionType> params) { mParams = params; }
+
+	// actions class
+	public:
+		class SpawnMob : public IActionType {
+
+			// ctor / dtor
+			public:
+				SpawnMob(void) { }
+				~SpawnMob(void) { }
+
+			// getter-setter
+			public:
+				int						getActionIdMonster(void) const { return mIdMonster; }
+				std::string				getActionName(void) const { return mName; }
+				int						getActionXpos(void) const { return mXpos; }
+				int						getActionYpos(void) const { return mYpos; }
+				int						getActionAngle(void) const { return mAngle; }
+
+				void					setActionIdMonster(const int& idMonster) { mIdMonster = idMonster; }
+				void					setActionName(const std::string& name) { mName = name; }
+				void					setActionXpos(const int& xPos) { mXpos = xPos; }
+				void					setActionYpos(const int& yPos) { mYpos = yPos; }
+				void					setActionAngle(const int& angle) { mAngle = angle; }
+
+			// attributes
+			public:
+				int mIdMonster;
+				std::string mName;
+				int mXpos;
+				int mYpos;
+				int mAngle;
+		};
+
+		class MoveMob : public IActionType {
+
+			// ctor / dtor
+			public:
+				MoveMob(void) { }
+				~MoveMob(void) { }
+
+			// getter-setter
+			public:
+				int						getActionIdMonster(void) const { return mIdMonster; }
+				int						getActionAngle(void) const { return mAngle; }
+
+				void					setActionIdMonster(const int& idMonster) { mIdMonster = idMonster; }
+				void					setActionAngle(const int& angle) { mAngle = angle; }
+
+			// attributes
+			public:
+				int						mIdMonster;
+				int						mAngle;
+		};
 
 	// attribut
 	public:
-		int						mActionFrame;
-		std::string				mActionMobAction;
-		int						mSpawnIdMonster;
-		std::string				mSpawnName;
-		int						mSpawnXpos;
-		int						mSpawnYpos;
-		int						mSpawnAngle;
-		int						mMoveMobIdMonster;
-		int						mMoveMobAngle;
+		int								mActionFrame;
+		std::string						mActionMobAction;
+		std::shared_ptr<IActionType>	mParams;
+		ScriptAction::TYPE				mType;
 };

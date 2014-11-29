@@ -6,8 +6,8 @@
 class ScriptAddCron : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptAddCron(void);
-		~ScriptAddCron(void);
+		explicit ScriptAddCron(void) { }
+		~ScriptAddCron(void) { }
 
 	// public pure methods
 	public:
@@ -15,12 +15,12 @@ class ScriptAddCron : public IScriptCommand {
 
 	// getter-setter
 	public:
-		int					getAddCronFrame(void) const;
-		int					getAddCronTimer(void) const;
-		int					getAddCronIdCron(void) const;
-		std::string			getAddCronFireMob(void) const;
-		int					getAddCronIdMonster(void) const;
-		int					getAddCronAngle(void) const;
+		int					getAddCronFrame(void) const { return mAddCronFrame; }
+		int					getAddCronTimer(void) const { return mAddCronTimer; }
+		int					getAddCronIdCron(void) const { return mAddCronIdCron; }
+		std::string			getAddCronFireMob(void) const { return mAddCronFireMob; }
+		int					getAddCronIdMonster(void) const { return mAddCronIdMonster; }
+		int					getAddCronAngle(void) const { return mAddCronAngle; }
 
 		void				setAddCronFrame(const int& frame) { mAddCronFrame = frame; }
 		void				setAddCronTimer(const int& timer) { mAddCronTimer = timer; }

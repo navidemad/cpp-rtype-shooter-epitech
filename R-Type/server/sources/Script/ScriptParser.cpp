@@ -1,5 +1,11 @@
 #include "Parser.hpp"
 #include "ScriptParser.hpp"
+#include "ScriptException.hpp"
+#include "ScriptName.hpp"
+#include "ScriptAddCron.hpp"
+#include "ScriptAction.hpp"
+#include "ScriptRemoveCron.hpp"
+#include "ScriptRequire.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -35,141 +41,92 @@ std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
 	while (file && std::getline(file, lineContent)){
 		if (lineContent.length() == 0)continue;
 		parser.setStringToParse(lineContent);
-		wordContent = parser.extractWord();
-		std::cout << "premier mot : " << wordContent << std::endl;
-
-		for (const auto &instr : tokenExecTab)
-		if (instr.cmd == wordContent) {
-			//script->addAction((this->*instr.Ptr)());
-			(this->*instr.Ptr)();
+		try {
+			wordContent = parser.extractWord();
+			for (const auto &instr : tokenExecTab)
+				if (instr.cmd == wordContent)
+					script->addAction((this->*instr.Ptr)());
+		}
+		catch (const ScriptException& e)
+		{
+			Utils::logError(e.what());
+		}
+		catch (...)
+		{
+			Utils::logError("Fail seems to be corrupted");
+			return nullptr;
 		}
 	}
 	return script;
 }
 
-void		ScriptParser::cmdName(void){
-	this->mStageName = parser.extractWord();
+std::shared_ptr<IScriptCommand> ScriptParser::cmdName(void){
+	auto command = std::make_shared<ScriptName>();
+
+	command->setName(parser.extractWord());
+
+	return command;
 }
 
-void		ScriptParser::cmdRequire(void){
-	this->mRessourceName = parser.extractWord();
+std::shared_ptr<IScriptCommand>		ScriptParser::cmdRequire(void){
+	auto command = std::make_shared<ScriptRequire>();
+
+	command->setRessourceName(parser.extractWord());
+
+	return command;
 }
 
-void		ScriptParser::cmdAddCron(void){
-	this->mAddCronFrame = parser.extractValue<int>();
-	this->mAddCronTimer = parser.extractValue<int>();
-	this->mAddCronIdCron = parser.extractValue<int>();
-	this->mAddCronFireMob = parser.extractWord();
-	this->mAddCronIdMonster = parser.extractValue<int>();
-	this->mAddCronAngle = parser.extractValue<int>();
+std::shared_ptr<IScriptCommand>		ScriptParser::cmdAddCron(void){
+	auto command = std::make_shared<ScriptAddCron>();
+
+	command->setAddCronFrame(parser.extractValue<int>());
+	command->setAddCronTimer(parser.extractValue<int>());
+	command->setAddCronIdCron(parser.extractValue<int>());
+	command->setAddCronFireMob(parser.extractWord());
+	command->setAddCronIdMonster(parser.extractValue<int>());
+	command->setAddCronAngle(parser.extractValue<int>());
+
+	return command;
 }
 
-void		ScriptParser::cmdRemoveCron(void){
-	this->mRemoveCronFrame = parser.extractValue<int>();
-	this->mRemoveCronIdCron = parser.extractValue<int>();
+std::shared_ptr<IScriptCommand>		ScriptParser::cmdRemoveCron(void){
+	auto command = std::make_shared<ScriptRemoveCron>();
+
+	command->setRemoveCronFrame(parser.extractValue<int>());
+	command->setRemoveCronIdCron(parser.extractValue<int>());
+	return command;
 }
 
-void		ScriptParser::cmdAction(void){
-/*	CommandAction c;
+std::shared_ptr<IScriptCommand>		ScriptParser::cmdAction(void){
+	auto command = std::make_shared<ScriptAction>();
 
-	c.setFrame(extractValue)*/
-
-	std::string	wordContent;
-	this->mActionFrame = parser.extractValue<int>();
-	this->mActionMobAction = parser.extractWord();
+	command->setActionFrame(parser.extractValue<int>());
+	command->setActionMobAction(parser.extractWord());
 
 	for (const auto &instr : MonsterCmdTab)
-	if (instr.mobAction == this->mActionMobAction) {
-		(this->*instr.ftPtr)();
-		return;
-	}
+		if (instr.mobAction == command->getActionMobAction())
+			command->setActionParams((this->*instr.ftPtr)());
+	
+	return command;
 }
 
-void		ScriptParser::fctSpawnMob(void){
-	this->mSpawnIdMonster = parser.extractValue<int>();
-	this->mSpawnName = parser.extractWord();
-	this->mSpawnXpos = parser.extractValue<int>();
-	this->mSpawnYpos = parser.extractValue<int>();
-	this->mSpawnAngle = parser.extractValue<int>();
+std::shared_ptr<ScriptAction::IActionType> ScriptParser::fctSpawnMob(void){
+	auto params = std::make_shared<ScriptAction::SpawnMob>();
+
+	params->setActionIdMonster(parser.extractValue<int>());
+	params->setActionName(parser.extractWord());
+	params->setActionXpos(parser.extractValue<int>());
+	params->setActionYpos(parser.extractValue<int>());
+	params->setActionAngle(parser.extractValue<int>());
+
+	return params;
 }
 
-void		ScriptParser::fctMoveMob(void){
-	this->mMoveMobIdMonster = parser.extractValue<int>();
-	this->mMoveMobAngle = parser.extractValue<int>();
-}
+std::shared_ptr<ScriptAction::IActionType> ScriptParser::fctMoveMob(void){
+	auto params = std::make_shared<ScriptAction::MoveMob>();
 
-std::string		ScriptParser::getName(void) const{
-	return this->mStageName;
-}
+	params->setActionIdMonster(parser.extractValue<int>());
+	params->setActionAngle(parser.extractValue<int>());
 
-std::string		ScriptParser::getRequire(void) const{
-	return this->mRessourceName;
-}
-
-int				ScriptParser::getActionFrame(void) const{
-	return this->mActionFrame;
-}
-
-std::string		ScriptParser::getActionMobAction(void) const{
-	return this->mActionMobAction;
-}
-
-std::string		ScriptParser::getActionSpawnName(void) const{
-	return this->mSpawnName;
-}
-
-int				ScriptParser::getActionSpawnIdMonster(void) const{
-	return this->mSpawnIdMonster;
-}
-
-int				ScriptParser::getActionSpawnXpos(void) const{
-	return this->mSpawnXpos;
-}
-
-int				ScriptParser::getActionSpawnYpos(void) const{
-	return this->mSpawnYpos;
-}
-
-int				ScriptParser::getActionSpawnAngle(void) const{
-	return this->mSpawnAngle;
-}
-
-int				ScriptParser::getActionMoveMobIdMonster(void) const{
-	return this->mMoveMobIdMonster;
-}
-
-int				ScriptParser::getActionMoveMobAngle(void) const{
-	return this->mMoveMobAngle;
-}
-
-int				ScriptParser::getAddCronFrame(void) const{
-	return this->mAddCronFrame;
-}
-
-int				ScriptParser::getAddCronTimer(void) const{
-	return this->mAddCronTimer;
-}
-
-int				ScriptParser::getAddCronIdCron(void) const{
-	return this->mAddCronIdCron;
-}
-
-std::string			ScriptParser::getAddCronFireMob(void) const{
-	return this->mAddCronFireMob;
-}
-
-int				ScriptParser::getAddCronIdMonster(void) const{
-	return this->mAddCronIdMonster;
-}
-
-int				ScriptParser::getAddCronAngle(void) const{
-	return this->mAddCronAngle;
-}
-
-int				ScriptParser::getRemoveCronFrame(void) const{
-	return this->mRemoveCronFrame;
-}
-
-int				ScriptParser::getRemoveCronIdCron(void) const{
-	return this->mRemoveCronIdCron;
+	return params;
 }

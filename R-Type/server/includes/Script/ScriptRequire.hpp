@@ -6,8 +6,8 @@
 class ScriptRequire : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptRequire(void);
-		~ScriptRequire(void);
+		explicit ScriptRequire(void) { }
+		~ScriptRequire(void) { }
 
 	// public pure methods
 	public:
@@ -15,7 +15,7 @@ class ScriptRequire : public IScriptCommand {
 
 	// getter-setter
 	public:
-		std::string				getRessourceName(void) const;
+		std::string				getRessourceName(void) const { return mRessourceName; }
 
 		void					setRessourceName(const std::string &name) { mRessourceName = name; }
 
