@@ -5,6 +5,7 @@ ContentManager::ContentManager() :
 	mTextures(TextureManager::getInstance()), 
 	mSprites(SpriteManager::getInstance()), 
 	mFonts(FontManager::getInstance()), 
+	mMusics(MusicManager::getInstance()),
 	mSounds(SoundManager::getInstance())
 {
 }
@@ -28,6 +29,11 @@ void	ContentManager::loadFonts()
 	mFonts->loadResources();
 }
 
+void	ContentManager::loadMusics()
+{
+	mMusics->loadResources();
+}
+
 void	ContentManager::loadSounds()
 {
 	mSounds->loadResources();
@@ -46,6 +52,11 @@ std::shared_ptr<IResourceManager<SpriteModel>>			&ContentManager::getSprites()
 std::shared_ptr<IResourceManager<sf::Font>> const		&ContentManager::getFonts() const
 {
 	return mFonts;
+}
+
+std::shared_ptr<IResourceManager<std::string>> const		&ContentManager::getMusics() const
+{
+	return mMusics;
 }
 
 std::shared_ptr<IResourceManager<sf::sSound>> const		&ContentManager::getSounds() const

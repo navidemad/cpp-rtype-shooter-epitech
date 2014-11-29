@@ -2,10 +2,11 @@
 
 #include <map>
 #include <memory>
+#include <string>
 #include <SFML/Audio.hpp>
 #include "GUI/IResourceManager.hpp"
 
-class MusicManager : public IResourceManager<sf::Music>
+class MusicManager : public IResourceManager<std::string>
 {
 	// ctor - dtor
 	private:
@@ -30,9 +31,9 @@ class MusicManager : public IResourceManager<sf::Music>
 	public:
 		void					loadResources();
 		void					unloadResources();
-		sf::Music				&getResource(std::string const &key);
+		std::string				&getResource(std::string const &key);
 
 	// attributes
 	private:
-		std::map<std::string, sf::Music>		mListResources;
+		std::map<std::string, std::string>		mListResources;
 };

@@ -39,6 +39,15 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 	return true;
 }
 
+bool	SFMLGraphic::playMusic(std::string const &key, bool onLoop)
+{
+	if (!mMusic.openFromFile(mContentManager.getMusics()->getResource(key)))
+		return false;
+	mMusic.setLoop(onLoop);
+	mMusic.play();
+	return true;
+}
+
 bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
 	mContentManager.getSounds()->getResource(key).sound.setBuffer(mContentManager.getSounds()->getResource(key).soundBuffer);
@@ -99,6 +108,7 @@ void	SFMLGraphic::init()
 	mContentManager.loadTextures();
 	mContentManager.loadSprites();
 	mContentManager.loadFonts();
+	mContentManager.loadMusics();
 	mContentManager.loadSounds();
 	mWindow.setMouseCursorVisible(false);
 }

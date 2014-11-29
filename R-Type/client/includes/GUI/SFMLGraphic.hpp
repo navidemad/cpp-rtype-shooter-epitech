@@ -34,6 +34,7 @@ class SFMLGraphic : public IGraphic
 		bool	drawSprite(std::string const &key, float delta, float x, float y);
 		void	update();
 		bool	drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t size);
+		bool	playMusic(std::string const &key, bool onLoop = true);
 		bool	playSound(std::string const &key, bool onLoop = false);
 		void	setVolume(std::string const &key, float volume = 100.0);
 		bool	isOpen() const;
@@ -58,5 +59,5 @@ public:
 private:
 		InputManager						mInputManager;
 		sf::Clock							mDeltaClock;
-		sf::SoundBuffer						mSoundBuffer;
+		sf::Music							mMusic;
 };
