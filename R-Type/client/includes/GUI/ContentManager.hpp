@@ -11,6 +11,7 @@
 #include "GUI/TextureManager.hpp"
 #include "GUI/SpriteManager.hpp"
 #include "GUI/FontManager.hpp"
+#include "Audio/MusicManager.hpp"
 #include "Audio/SoundManager.hpp"
 
 class ContentManager
@@ -32,11 +33,13 @@ class ContentManager
 		void	loadTextures();
 		void	loadSprites();
 		void	loadFonts();
+		void	loadMusics();
 		void	loadSounds();
 
 		std::shared_ptr<IResourceManager<sf::Texture>> const	&getTextures() const;
 		std::shared_ptr<IResourceManager<SpriteModel>> 			&getSprites(); // Sprite must be modifiable
 		std::shared_ptr<IResourceManager<sf::Font>> const		&getFonts() const;
+		std::shared_ptr<IResourceManager<std::string>> const	&getMusics() const;
 		std::shared_ptr<IResourceManager<sf::sSound>> const		&getSounds() const;
 
 	// attributes
@@ -44,5 +47,6 @@ class ContentManager
 		std::shared_ptr<IResourceManager<sf::Texture>>	mTextures;
 		std::shared_ptr<IResourceManager<SpriteModel>>	mSprites;
 		std::shared_ptr<IResourceManager<sf::Font>>		mFonts;
+		std::shared_ptr<IResourceManager<std::string>>	mMusics;
 		std::shared_ptr<IResourceManager<sf::sSound>>	mSounds;
 };

@@ -13,6 +13,7 @@ class IGraphic
 		virtual bool		drawSprite(std::string const &key, float delta, float x, float y) = 0;
 		virtual bool		drawFont(std::string const &key, std::string const &strn, float x, float y, uint32_t size = 12) = 0;
 		virtual bool		playSound(std::string const &key, bool onLoop = false) = 0;
+		virtual bool		playMusic(std::string const &key, bool onLoop = true) = 0;
 		virtual void		setVolume(std::string const &key, float volume = 100.0) = 0;
 		virtual bool		isOpen() const = 0;
 		virtual void		handleEvent() = 0;
