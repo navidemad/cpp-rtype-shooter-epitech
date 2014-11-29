@@ -1,9 +1,10 @@
+#include "Parser.hpp"
+#include "ScriptParser.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <map>
-#include "Parser.hpp"
-#include "ScriptParser.hpp"
+#include <memory>
 
 const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
 	{ "name", &ScriptParser::cmdName },
@@ -26,20 +27,24 @@ ScriptParser::~ScriptParser(void) {
 
 }
 
-void		ScriptParser::parseFile(std::ifstream &file){
+std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
 	std::string lineContent;
 	std::string wordContent;
+	auto		script = std::make_shared<Script>();
 
-	while (file.good()){
-		std::getline(file, lineContent);
+	while (file && std::getline(file, lineContent)){
+		if (lineContent.length() == 0)continue;
 		parser.setStringToParse(lineContent);
 		wordContent = parser.extractWord();
 		std::cout << "premier mot : " << wordContent << std::endl;
+
 		for (const auto &instr : tokenExecTab)
 		if (instr.cmd == wordContent) {
+			//script->addAction((this->*instr.Ptr)());
 			(this->*instr.Ptr)();
 		}
 	}
+	return script;
 }
 
 void		ScriptParser::cmdName(void){

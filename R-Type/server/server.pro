@@ -87,7 +87,13 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Script/Script.hpp				\
 				includes/Script/ScriptLoader.hpp			\
 				includes/Script/ScriptParser.hpp			\
+				includes/Script/ScriptName.hpp			\
+				includes/Script/ScriptRequire.hpp			\
+				includes/Script/ScriptAction.hpp			\
+				includes/Script/ScriptAddCron.hpp			\
+				includes/Script/ScriptRemoveCron.hpp			\
 				includes/Script/Parser.hpp				\
+				includes/Script/IScriptCommand.hpp			\
 				includes/Game/Game.hpp 					\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp								\
