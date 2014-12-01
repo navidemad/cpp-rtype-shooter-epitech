@@ -11,6 +11,7 @@ namespace ComponentType
 		CURSOR,
 		DRAWABLE,
 		NETWORK,
+		TEXTINPUT,
 		LIMIT
 	};
 }

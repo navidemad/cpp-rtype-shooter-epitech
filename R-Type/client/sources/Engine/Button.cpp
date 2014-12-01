@@ -32,3 +32,8 @@ void	ButtonOption::process(Entity &entity)
 {
 	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::OPTION);
 }
+
+void	ButtonInput::process(Entity &/* */)
+{
+
+}
