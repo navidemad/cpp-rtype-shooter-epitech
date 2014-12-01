@@ -1,5 +1,6 @@
 #include "CommandObserveGame.hpp"
 #include <cstring>
+#include <algorithm>
 
 IClientSocket::Message CommandObserveGame::getMessage(void) const {
 	CommandObserveGame::PacketFromClient packet;

@@ -1,5 +1,6 @@
 #include "CommandUpdatePseudo.hpp"
 #include <cstring>
+#include <algorithm>
 
 IClientSocket::Message CommandUpdatePseudo::getMessage(void) const {
 	CommandUpdatePseudo::PacketFromClient packet;
