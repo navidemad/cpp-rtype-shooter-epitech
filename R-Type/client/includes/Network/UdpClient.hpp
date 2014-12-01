@@ -44,10 +44,17 @@ class UdpClient : public QObject, public IClientSocket{
 		void	markAsReadable(void);
 		void	close(void);
 
+	//
+	public:
+		const std::string 	&getAddr(void) const;
+		int 				getPort(void) const;
+
 	// attributes
 	private:
 		std::shared_ptr<QUdpSocket>	mQUdpSocket;
 		bool						mIsReadable;
+		std::string						mAddr;
+		int								mPort;
 
 		IClientSocket::OnSocketEvent	*mListener;
 };

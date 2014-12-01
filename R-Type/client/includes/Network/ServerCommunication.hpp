@@ -2,9 +2,8 @@
 #include <list>
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
-#include "Network/CommandPacketBuilder.hpp"
 
-class ServerCommunication : public CommandPacketBuilder::OnCommandEvent {
+class ServerCommunication {
 
     // ctor - dtor
     public:
@@ -17,10 +16,6 @@ class ServerCommunication : public CommandPacketBuilder::OnCommandEvent {
         ServerCommunication(ServerCommunication &&) = delete;
         const ServerCommunication &operator=(const ServerCommunication &) = delete;
         const ServerCommunication &operator=(ServerCommunication &&) = delete;
-
-    //callback from CommandPacketBuilder
-    public:
-        void    onNewCommand(ICommand *command);
 
     //handle socket
     public:
@@ -37,7 +32,6 @@ class ServerCommunication : public CommandPacketBuilder::OnCommandEvent {
     //attribut
     private:
         std::list<ICommand *> mListCommand;
-        CommandPacketBuilder mHandleTcpCmd;
         int mPortTcp;
         std::string mIpTcp;
         IClientSocket *mSocketTcp;

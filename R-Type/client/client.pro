@@ -87,7 +87,12 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandShowLevel.hpp	\
 			../shared/includes/Commands/CommandTimeElapsedPing.hpp	\
 			../shared/includes/Commands/CommandUpdatePseudo.hpp	\
-			../shared/includes/Commands/CommandUpdateScore.hpp	
+			../shared/includes/Commands/CommandUpdateScore.hpp      \
+			../shared/includes/Commands/ClientPacketBuilder.hpp     \
+			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
+			../shared/includes/Network/Peer.hpp                     \
+			../shared/includes/Commands/CommandFactory.hpp
+
 
 SOURCES		+=	sources/main.cpp						\
 			sources/RTypeClient.cpp						\
@@ -118,10 +123,13 @@ SOURCES		+=	sources/main.cpp						\
 			sources/GUI/SpriteManager.cpp					\
 			sources/GUI/SpriteModel.cpp					\
 			sources/GUI/TextureManager.cpp					\
-			sources/Network/CommandPacketBuilder.cpp			\
 			sources/Network/ServerCommunication.cpp				\
 			sources/Network/TcpClient.cpp					\
 			sources/Network/UdpClient.cpp 					\
+                        sources/Command/PlayerPacketBuilder.cpp                         \
+			../shared/sources/Commands/CommandFactory.cpp                   \
+			../shared/sources/Commands/SharedPlayerPacketBuilder.cpp        \
+			../shared/sources/Commands/ICommand.cpp                         \
 			../shared/sources/Commands/SharedCommandCreateGame.cpp		\
 			sources/Command/CommandCreateGame.cpp				\
 			../shared/sources/Commands/SharedCommandDeleteGame.cpp		\
@@ -161,7 +169,8 @@ SOURCES		+=	sources/main.cpp						\
 			../shared/sources/Commands/SharedCommandUpdatePseudo.cpp	\
 			sources/Command/CommandUpdatePseudo.cpp				\
 			../shared/sources/Commands/SharedCommandUpdateScore.cpp		\
-			sources/Command/CommandUpdateScore.cpp
+                        sources/Command/CommandUpdateScore.cpp                          \
+			../shared/sources/Commands/ClientPacketBuilder.cpp
 			
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
