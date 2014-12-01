@@ -14,6 +14,7 @@ public:
 		PRESS_START = 0,
 		MENU,
 		OPTION,
+		SEARCH_MENU,
 		RTYPE,
 		LIMIT
 	};
@@ -36,17 +37,38 @@ public:
 		void						setIdGame(unsigned int);
 		unsigned int				getIdGame() const;
 		std::shared_ptr<IGraphic>	getGui() const { return mGui; }
-		void						startMenu();
 
 	// Attribute
 	private:
-		unsigned int				mCurrentId;
-		std::vector<ECSManager>		mEngine;
-		std::shared_ptr<IGraphic>	mGui;
+		unsigned int							mCurrentId;
+		std::vector<ECSManager>					mEngine;
+		std::shared_ptr<IGraphic>				mGui;
 
-	private:
+		std::vector<void (RTypeClient::*)()>	mInit;
+		std::vector<void (RTypeClient::*)()>	mStart;
+		std::vector<void (RTypeClient::*)()>	mStop;
+
+
+
+	private: // init function
 		void						init();
 		void						initMenu();
 		void						initOption();
 		void						initPressStart();
+		void						initRtype();
+		void						initSearchMenu();
+
+	private:
+		void						startMenu();
+		void						startOption();
+		void						startPressStart();
+		void						startRtype();
+		void						startSearchMenu();
+
+	private:
+		void						stopMenu();
+		void						stopOption();
+		void						stopPressStart();
+		void						stopRtype();
+		void						stopSearchMenu();
 };
