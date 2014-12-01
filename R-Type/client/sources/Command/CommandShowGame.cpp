@@ -21,7 +21,7 @@ unsigned int CommandShowGame::getSizeToRead(void) const {
 
 void CommandShowGame::initFromMessage(const IClientSocket::Message &message) {
 	if (message.msgSize != sizeof(CommandShowGame::PacketFromServer))
-		throw CommandException("Packet has an invalid size");
+		throw std::string("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandShowGame::PacketFromServer *>(message.msg.data());
 

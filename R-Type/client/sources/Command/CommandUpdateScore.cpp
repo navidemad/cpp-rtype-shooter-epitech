@@ -3,16 +3,16 @@
 #include <cstring>
 
 IClientSocket::Message CommandUpdateScore::getMessage(void) const {
-	throw CommandException("This command can not be sent by the server");
+	throw std::string("This command can not be sent by the server");
 }
 
 unsigned int CommandUpdateScore::getSizeToRead(void) const {
 	return sizeof(CommandUpdateScore::PacketFromServer);
 }
 
-void CommandUpdateScore::initFromMessage(const IClientSocket::Message &) {
+void CommandUpdateScore::initFromMessage(const IClientSocket::Message &message) {
 	if (message.msgSize != sizeof(CommandUpdateScore::PacketFromServer))
-		throw CommandException("Packet has an invalid size");
+		throw std::string("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandUpdateScore::PacketFromServer *>(message.msg.data());
 

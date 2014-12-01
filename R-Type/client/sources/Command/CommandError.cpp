@@ -9,12 +9,12 @@ unsigned int CommandError::getSizeToRead(void) const {
 	return sizeof(CommandError::PacketFromServer);
 }
 
-void CommandError::initFromMessage(const IClientSocket::Message &) {
+void CommandError::initFromMessage(const IClientSocket::Message & message) {
 	if (message.msgSize != sizeof(CommandError::PacketFromServer))
 		throw std::string("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandError::PacketFromServer *>(message.msg.data());
 
 	mInstructionCode = packet.instructionCode;
-	mErrorCode = packet.errorCode
+	mErrorCode = packet.errorCode;
 }

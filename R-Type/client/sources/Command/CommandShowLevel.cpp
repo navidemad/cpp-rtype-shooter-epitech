@@ -10,7 +10,7 @@ unsigned int CommandShowLevel::getSizeToRead(void) const {
 	return sizeof(CommandShowLevel::PacketFromServer);
 }
 
-void CommandShowLevel::initFromMessage(const IClientSocket::Message &) {
+void CommandShowLevel::initFromMessage(const IClientSocket::Message & message) {
 	if (message.msgSize != sizeof(CommandShowLevel::PacketFromServer))
 		throw std::string("Packet has an invalid size");
 

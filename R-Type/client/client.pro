@@ -79,8 +79,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandLeaveGame.hpp	\
 			../shared/includes/Commands/CommandListGames.hpp	\
 			../shared/includes/Commands/CommandListLevels.hpp	\
-			../shared/includes/Commands/CommandMove.hpp		\
-			../shared/includes/Commands/CommandMoveResource.hpp	\
+			#../shared/includes/Commands/CommandMove.hpp		\
+			#../shared/includes/Commands/CommandMoveResource.hpp	\
 			../shared/includes/Commands/CommandObserveGame.hpp	\
 			../shared/includes/Commands/CommandShowGame.hpp		\
 			../shared/includes/Commands/CommandShowLevel.hpp	\
@@ -145,10 +145,10 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Command/CommandListGames.cpp				\
 			../shared/sources/Commands/SharedCommandListLevels.cpp		\
 			sources/Command/CommandListLevels.cpp				\
-			../shared/sources/Commands/SharedCommandMove.cpp		\
-			sources/Command/CommandMove.cpp					\
-			../shared/sources/Commands/SharedCommandMoveResource.cpp	\
-			sources/Command/CommandMoveResource.cpp				\
+			#../shared/sources/Commands/SharedCommandMove.cpp		\
+			#sources/Command/CommandMove.cpp					\
+			#../shared/sources/Commands/SharedCommandMoveResource.cpp	\
+			#sources/Command/CommandMoveResource.cpp				\
 			../shared/sources/Commands/SharedCommandObserveGame.cpp		\
 			sources/Command/CommandObserveGame.cpp				\
 			../shared/sources/Commands/SharedCommandShowGame.cpp		\
