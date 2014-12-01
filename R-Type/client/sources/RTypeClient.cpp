@@ -74,7 +74,7 @@ void		RTypeClient::startMenu()
 void			RTypeClient::initOption()
 {
 	ECSManager &engine = mEngine[RTypeClient::OPTION];
-
+	
 	Entity		&menuScreen = engine.createEntity();
 
 	menuScreen.addComponent(new Position(0, 0));
@@ -93,28 +93,30 @@ void			RTypeClient::initOption()
 	cursorGame.addComponent(new Drawable("searchBar"));
 
 	Entity		inputPortGame = engine.createEntity();
+	Font	*fontPortGame = new Font("0", "4242");
 
 	inputPortGame.addComponent(new Position(1400, 400));
-	inputPortGame.addComponent(new TextInput("0", "4242"));
+	inputPortGame.addComponent(fontPortGame);
 
 	Entity		portGame = engine.createEntity();
 	cursor->addEntity(portGame.getId());
 
 	portGame.addComponent(new Position(1020, 400));
 	portGame.addComponent(new Font("0", "Port server "));
-	portGame.addComponent(new ButtonInput(inputPortGame.getId()));
+	portGame.addComponent(new ButtonInput(fontPortGame));
 
 	Entity		inputAdressGame = engine.createEntity();
+	Font	*fontAdressGame = new Font("0", "127.0.0.1");
 
 	inputAdressGame.addComponent(new Position(1400, 500));
-	inputAdressGame.addComponent(new TextInput("0", "127.0.0.1"));
+	inputAdressGame.addComponent(fontAdressGame);
 
 	Entity		adressGame = engine.createEntity();
 	cursor->addEntity(adressGame.getId());
 
 	adressGame.addComponent(new Position(960, 500));
 	adressGame.addComponent(new Font("0", "Adress server "));
-	adressGame.addComponent(new ButtonInput(inputAdressGame.getId()));
+	adressGame.addComponent(new ButtonInput(fontAdressGame));
 
 
 	Entity		backGame = engine.createEntity();

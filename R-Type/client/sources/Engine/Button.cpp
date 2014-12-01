@@ -51,6 +51,7 @@ void	ButtonQuitGame::process(Entity &entity, uint32_t delta)
 
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
+		resetTimer();
 		entity.getEntityManager()->getClient()->getGui()->close();
 	}
 }
@@ -61,6 +62,7 @@ void	ButtonMenuGame::process(Entity &entity, uint32_t delta)
 
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
+		resetTimer();
 		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::MENU);
 	}
 }
@@ -71,43 +73,28 @@ void	ButtonOption::process(Entity &entity, uint32_t delta)
 
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
+		resetTimer();
 		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::OPTION);
 	}
 	
 }
 
-void	ButtonSearchMenu::process(Entity &, uint32_t delta)
+void	ButtonSearchMenu::process(Entity &/* */, uint32_t/* delta*/)
 {
 
 }
 
-void	ButtonInput::process(Entity &temporyEntity, uint32_t delta)
+void	ButtonInput::process(Entity &entity, uint32_t delta)
 {
-	/*
-	ButtonInput	*button = static_cast<ButtonInput *>(temporyEntity.getSpecificComponent(ComponentType::BUTTON));
+	std::string	text = mFont->getText() + entity.getEntityManager()->getClient()->getGui()->getInputText();
+	mFont->setText(text);
 
-	Entity &entity = entity.getEntityManager()->getEntity(button->getEntity());
-
-	Font *sprite = static_cast<TextInput *>(entity.getSpecificComponent(ComponentType::TEXTINPUT));
-	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
-
-//	mTimeElapsed += delta;
-
-	std::string	text = sprite->getText() + entity.getEntityManager()->getClient()->getGui()->getInputText();
-	sprite->setText(text);
-
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("delete") && sprite->getText().size() && mTimeElapsed > 50)
+	updateTimer(delta);
+	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("delete") && mFont->getText().size())
 	{
-	//	mTimeElapsed = 0;
-		text = sprite->getText();
+		text = mFont->getText();
 		text = text.substr(0, text.size() - 1);
-		sprite->setText(text);
+		mFont->setText(text);
+		resetTimer();
 	}
-	entity.getEntityManager()->getClient()->getGui()->drawFont(sprite->getFont(), sprite->getText(), pos->getX(), pos->getY(), 100);
-	*/
-}
-
-unsigned int	ButtonInput::getEntity() const
-{
-	return mEntity;
 }

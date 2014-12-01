@@ -3,7 +3,7 @@
 #include "Engine/ECSManager.hpp"
 #include "Engine/Component.hpp"
 #include <iostream>
-Entity::Entity(unsigned int id, ECSManager *entityManager)
+Entity::Entity(const unsigned int id, ECSManager *entityManager)
 : mId(id), mEntityManager(entityManager)
 {
 }

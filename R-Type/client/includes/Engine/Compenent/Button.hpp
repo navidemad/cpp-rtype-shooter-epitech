@@ -3,6 +3,7 @@
 #include "Engine/Entity.hpp"
 #include "Engine/Component.hpp"
 #include "Engine/ComponentType.h"
+#include "Engine/Compenent/Font.hpp"
 
 class Button : public Component
 {
@@ -24,9 +25,9 @@ class Button : public Component
 	public:
 		virtual void	process(Entity &, uint32_t delta) = 0;
 
-private:
-	uint32_t	mTimeElapsed;
-	uint32_t	mCycle;
+	private:
+		uint32_t	mTimeElapsed;
+		uint32_t	mCycle;
 };
 
 class ButtonGame : public Button
@@ -72,17 +73,14 @@ public:
 class ButtonInput : public Button
 {
 public:
-	ButtonInput(unsigned int entity) : Button(100), mEntity(entity) { }
+	ButtonInput(Font *font) : Button(100), mFont(font) { }
 	~ButtonInput() { }
 
 public:
 	void	process(Entity &, uint32_t delta);
 
-public:
-	unsigned int	getEntity() const;
-
 private:
-	unsigned int	mEntity;
+	Font	*mFont;
 };
 
 class ButtonSearchMenu : public Button
