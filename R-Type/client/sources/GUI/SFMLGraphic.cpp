@@ -19,10 +19,14 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
-bool	SFMLGraphic::drawSprite(std::string const &key, float delta, float x, float y)
+bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, float y)
 {
-	uint32_t index = 0;
-	mContentManager.getSprites()->getResource(key).setCurrentIndex(0);
+	uint32_t index;
+	if (mContentManager.getSprites()->getResource(key).isLoop())
+		index = mContentManager.getSprites()->getResource(key).getSize() * (delta % 1000) / 1000;
+	else
+		index = mContentManager.getSprites()->getResource(key).getCurrentIndex();
+	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);
 	mContentManager.getSprites()->getResource(key).getSprite(0).setPosition(x, y);
 	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()));
 	return true;
@@ -55,6 +59,16 @@ bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 	mContentManager.getSounds()->getResource(key).sound.setLoop(onLoop);
 	mContentManager.getSounds()->getResource(key).sound.play();
 	return true;
+}
+
+void	SFMLGraphic::stopMusic()
+{
+	mMusic.stop();
+}
+
+void	SFMLGraphic::stopSound(std::string const &key)
+{
+	mContentManager.getSounds()->getResource(key).sound.stop();
 }
 
 void	SFMLGraphic::setVolume(std::string const &key, float volume)
