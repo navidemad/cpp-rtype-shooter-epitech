@@ -22,10 +22,7 @@ std::shared_ptr<MusicManager>	MusicManager::getInstance()
 void			MusicManager::loadResources()
 {
 	{
-		sf::Music music;
-		if (!music.openFromFile("./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.mp3"))
-			throw std::runtime_error("Failed to load music");
-		//mListResources.insert(std::pair<std::string, sf::Music>("menu", music));
+		mListResources.insert(std::pair<std::string, std::string>("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg"));
 	}
 }
 
@@ -34,7 +31,7 @@ void			MusicManager::unloadResources()
 
 }
 
-sf::Music		&MusicManager::getResource(std::string const &key)
+std::string		&MusicManager::getResource(std::string const &key)
 {
 	return mListResources.at(key);
 }

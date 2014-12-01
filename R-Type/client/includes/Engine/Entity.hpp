@@ -16,7 +16,7 @@ class Entity
 
 	// getter
 	public:
-		const unsigned int	getId() const;
+		unsigned int	getId() const;
 
 	public:
 		bool											addComponent(Component *);

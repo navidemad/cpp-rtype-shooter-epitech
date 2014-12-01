@@ -11,18 +11,24 @@ ScriptLoader::ScriptLoader(void) {
 ScriptLoader::~ScriptLoader(void) {
 }
 
-void ScriptLoader::loadScript(const std::string& path) {
+std::shared_ptr<Script> ScriptLoader::loadScript(const std::string& stage_name) {
+	return mScripts[stage_name];
+}
+
+void ScriptLoader::loadAll(void) {
 	ScriptParser Parser;
 	std::ifstream file;
 
 	if (!file.good() || file.fail())
 		throw ScriptException("impossible d'ouvrir le fichier");
 	else{
+		const std::string& path = "./sources/Script/Simon.txt";
 		file.open(path);
-		Parser.parseFile(file);
+		mScripts["Simon"] = Parser.parseFile(file);
+		auto commands = mScripts["Simon"]->getCommands();
+		for (const auto& command : commands)
+		{
+			std::cout << (int)command->getInstruction() << std::endl;
+		}
 	}
-}
-
-void ScriptLoader::loadAll(void) {
-	std::string path;
 }
