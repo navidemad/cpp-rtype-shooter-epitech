@@ -98,7 +98,7 @@ void			RTypeClient::initOption()
 	inputPortGame.addComponent(new TextInput("0", "4242"));
 
 	Entity		portGame = engine.createEntity();
-	cursor->addEntity(inputPortGame.getId());
+	cursor->addEntity(portGame.getId());
 
 	portGame.addComponent(new Position(1020, 400));
 	portGame.addComponent(new Font("0", "Port server "));
@@ -110,11 +110,11 @@ void			RTypeClient::initOption()
 	inputAdressGame.addComponent(new TextInput("0", "127.0.0.1"));
 
 	Entity		adressGame = engine.createEntity();
-	cursor->addEntity(inputAdressGame.getId());
+	cursor->addEntity(adressGame.getId());
 
 	adressGame.addComponent(new Position(960, 500));
 	adressGame.addComponent(new Font("0", "Adress server "));
-	adressGame.addComponent(new ButtonInput(inputPortGame.getId()));
+	adressGame.addComponent(new ButtonInput(inputAdressGame.getId()));
 
 
 	Entity		backGame = engine.createEntity();
