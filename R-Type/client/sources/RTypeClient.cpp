@@ -195,6 +195,7 @@ void			RTypeClient::initMenu()
 
 	searchGame.addComponent(new Position(1150, 585));
 	searchGame.addComponent(new Font("0", "Search room"));
+	searchGame.addComponent(new ButtonSearchMenu());
 
 	Entity		&optionGame = engine.createEntity();
 	cursor->addEntity(optionGame.getId());

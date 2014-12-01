@@ -8,7 +8,7 @@ class Button : public Component
 {
 	// ctor - dtor
 	public:
-		Button();
+		Button(uint32_t);
 		~Button();
 
 	// coplien form
@@ -16,59 +16,80 @@ class Button : public Component
 		Button(Button const &) : Component(ComponentType::BUTTON) {}
 		Button const	&operator=(Button const &) { return *this; }
 
+	protected:
+		bool	hasTimeElapsed() const;
+		void	resetTimer();
+		void	updateTimer(uint32_t delta);
+
 	public:
-		virtual void	process(Entity &) = 0;
+		virtual void	process(Entity &, uint32_t delta) = 0;
+
+private:
+	uint32_t	mTimeElapsed;
+	uint32_t	mCycle;
 };
 
 class ButtonGame : public Button
 {
 	public:
-		ButtonGame() { }
+		ButtonGame() : Button(100) { }
 		~ButtonGame() { }
 
 	public:
-		void	process(Entity &);
+		void	process(Entity &, uint32_t delta);
 };
 
 class ButtonQuitGame : public Button
 {
 public:
-	ButtonQuitGame() { }
+	ButtonQuitGame() : Button(100) { }
 	~ButtonQuitGame() { }
 
 public:
-	void	process(Entity &);
+	void	process(Entity &, uint32_t delta);
 };
 
 class ButtonMenuGame : public Button
 {
 public:
-	ButtonMenuGame() { }
+	ButtonMenuGame() : Button(100) { }
 	~ButtonMenuGame() { }
 
 public:
-	void	process(Entity &);
+	void	process(Entity &, uint32_t delta);
 };
 
 class ButtonOption : public Button
 {
 public:
-	ButtonOption() { }
+	ButtonOption() : Button(100) { }
 	~ButtonOption() { }
 
 public:
-	void	process(Entity &);
+	void	process(Entity &, uint32_t delta);
 };
 
 class ButtonInput : public Button
 {
 public:
-	ButtonInput(unsigned int entity) : mEntity(entity) { }
+	ButtonInput(unsigned int entity) : Button(100), mEntity(entity) { }
 	~ButtonInput() { }
 
 public:
-	void	process(Entity &);
+	void	process(Entity &, uint32_t delta);
+
+public:
+	unsigned int	getEntity() const;
 
 private:
 	unsigned int	mEntity;
+};
+
+class ButtonSearchMenu : public Button
+{
+	public:
+		ButtonSearchMenu() : Button(100) {}
+		~ButtonSearchMenu() {}
+	public:
+		void	process(Entity &, uint32_t delta);
 };

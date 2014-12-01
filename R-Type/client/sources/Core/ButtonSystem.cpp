@@ -31,16 +31,19 @@ void		ButtonSystem::process(Entity &entity, uint32_t delta)
 	 
 	mTimeElapsed += delta;
 
-	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
-		entity.getEntityManager()->getClient()->getGui()->playSound("option");
-
 		Entity &entityCiblate = entity.getEntityManager()->getEntity(button->getIdEntity());
 
 		Button	*button = static_cast<Button *>(entityCiblate.getSpecificComponent(ComponentType::BUTTON));
-		button->process(entityCiblate);
+		button->process(entityCiblate, delta);
 	}
-	else if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("down"))
+
+//	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	//{
+		//entity.getEntityManager()->getClient()->getGui()->playSound("option");
+
+//	}
+	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("down"))
 	{
 		entity.getEntityManager()->getClient()->getGui()->playSound("change_option");
 

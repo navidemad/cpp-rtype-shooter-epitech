@@ -25,12 +25,14 @@ TextInputSystem::~TextInputSystem()
 
 void		TextInputSystem::process(Entity &entity, uint32_t delta)
 {
-	Font *sprite = static_cast<TextInput *>(entity.getSpecificComponent(ComponentType::TEXTINPUT));
+/*	Font *sprite = static_cast<TextInput *>(entity.getSpecificComponent(ComponentType::TEXTINPUT));
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
 	mTimeElapsed += delta;
+
 	std::string	text = sprite->getText() + entity.getEntityManager()->getClient()->getGui()->getInputText();
 	sprite->setText(text);
+	
 	if (entity.getEntityManager()->getClient()->getGui()->isPressed("delete") && sprite->getText().size() && mTimeElapsed > 50)
 	{
 		mTimeElapsed = 0;
@@ -38,5 +40,5 @@ void		TextInputSystem::process(Entity &entity, uint32_t delta)
 		text = text.substr(0, text.size() - 1);
 		sprite->setText(text);
 	}
-	entity.getEntityManager()->getClient()->getGui()->drawFont(sprite->getFont(), sprite->getText(), pos->getX(), pos->getY(), 100);	 
+	entity.getEntityManager()->getClient()->getGui()->drawFont(sprite->getFont(), sprite->getText(), pos->getX(), pos->getY(), 100);*/
 }
