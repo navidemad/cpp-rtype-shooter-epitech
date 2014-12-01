@@ -92,3 +92,10 @@ void	UdpClient::setOnSocketEventListener(OnSocketEvent *listener) {
 std::string UdpClient::getRemoteIp() const {
     return "127.0.0.1";
 }
+
+const std::string 	&UdpClient::getAddr(void) const {
+	return mAddr;
+}
+int 				UdpClient::getPort(void) const {
+	return mPort;
+}
