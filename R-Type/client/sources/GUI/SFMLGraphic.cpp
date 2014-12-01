@@ -118,6 +118,14 @@ sf::RenderWindow	&SFMLGraphic::getWindow()
 	return mWindow;
 }
 
+void				SFMLGraphic::setScale(std::string const &key, float sizeX, float sizeY)
+{
+	for (uint32_t i = 0; i < mContentManager.getSprites()->getResource(key).getSize(); ++i)
+	{
+		mContentManager.getSprites()->getResource(key).getSprite(0).setScale(sizeX, sizeY);
+	}
+}
+
 /*
 std::map<sf::Event, std::string> const	&SFMLGraphic::getKeyEvents() const
 {
