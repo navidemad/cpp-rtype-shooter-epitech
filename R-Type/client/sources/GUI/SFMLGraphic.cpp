@@ -19,9 +19,8 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
-bool	SFMLGraphic::drawSprite(std::string const &key, float delta, float x, float y)
+bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, float y)
 {
-	uint32_t index = 0;
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(0);
 	mContentManager.getSprites()->getResource(key).getSprite(0).setPosition(x, y);
 	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()));

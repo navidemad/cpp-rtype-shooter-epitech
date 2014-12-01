@@ -2,7 +2,7 @@
 #include "Network/TcpClient.hpp"
 
 TcpClient::TcpClient(void)
-: mQTcpSocket(new QTcpSocket(this)), mListener(NULL) {
+  : mQTcpSocket(new QTcpSocket(this)), mAddr(""), mPort(0), mListener(NULL) {
 }
 
 TcpClient::~TcpClient(void) {
@@ -12,21 +12,26 @@ void	TcpClient::connect(const std::string &addr, int port) {
 	close(false);
 	mQTcpSocket->connectToHost(QString(addr.c_str()), port);
 
-	//juste pour test compiler a changer
 	if (mQTcpSocket->waitForConnected(-1) == false)
 		throw std::string("fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected");
 
 	QObject::connect(mQTcpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQTcpSocket.get(), SIGNAL(disconnected()), this, SLOT(close()));
 	QObject::connect(mQTcpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
+
+	mAddr = addr;
+	mPort = port;
 }
 
-void	TcpClient::initFromSocket(void *socket, const std::string & /*addr*/, int /*port*/) {
+void	TcpClient::initFromSocket(void *socket, const std::string &addr, int port) {
 	mQTcpSocket = std::shared_ptr<QTcpSocket>(reinterpret_cast<QTcpSocket *>(socket));
 
 	QObject::connect(mQTcpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQTcpSocket.get(), SIGNAL(disconnected()), this, SLOT(close()));
 	QObject::connect(mQTcpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
+
+	mAddr = addr;
+	mPort = port;
 }
 
 void	TcpClient::closeClient(void) {
@@ -68,8 +73,8 @@ IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
 
 	message.msgSize = ret;
 	message.msg.insert(message.msg.end(), buffer.get(), buffer.get() + message.msgSize);
-    message.host = (mQTcpSocket->peerAddress()).toString().toStdString();
-	message.port = mQTcpSocket->peerPort();
+	message.host = mAddr;
+	message.port = mPort;
 
 	return message;
 }
@@ -93,10 +98,10 @@ void	TcpClient::setOnSocketEventListener(OnSocketEvent *listener) {
 }
 
 const std::string &TcpClient::getAddr(void) const {
-	return mQTcpSocket->peerAddress().toString().toStdString(); // NULL ou pas l'erreur est là... Vaut mieux stocké dans une variable memebre je pense
+	return mAddr;
 }
 
 int					TcpClient::getPort(void) const
 {
-	return (mQTcpSocket->peerPort());
+	return mPort;
 }
