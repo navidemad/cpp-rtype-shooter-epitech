@@ -8,9 +8,11 @@
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/Button.hpp"
 #include "Core/DrawableSystem.hpp"
+#include "Core/TextInputSystem.hpp"
 #include "Core/DrawableFontSystem.hpp"
 #include "Core/ButtonSystem.hpp"
 #include "Engine/Compenent/Font.hpp"
+#include "Engine/Compenent/TextInput.hpp"
 
 RTypeClient::RTypeClient()
 : mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance())
@@ -39,8 +41,8 @@ void	RTypeClient::run()
 	{
 		uint32_t delta = mGui->getDelta();
 
-		mGui->update(); // update graphic engine
 		mGui->clear(); // clear graphic engine
+		mGui->update(); // update graphic engine
 		mEngine[mCurrentId].updateSystem(delta); // update gameplay engine
 		mGui->show(); // display graphic engine
 	}
@@ -90,16 +92,41 @@ void			RTypeClient::initOption()
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	Entity		inputPortGame = engine.createEntity();
+
+	inputPortGame.addComponent(new Position(1400, 400));
+	inputPortGame.addComponent(new TextInput("0", "4242"));
+
+	Entity		portGame = engine.createEntity();
+	cursor->addEntity(inputPortGame.getId());
+
+	portGame.addComponent(new Position(1020, 400));
+	portGame.addComponent(new Font("0", "Port server "));
+	portGame.addComponent(new ButtonInput(inputPortGame.getId()));
+
+	Entity		inputAdressGame = engine.createEntity();
+
+	inputAdressGame.addComponent(new Position(1400, 500));
+	inputAdressGame.addComponent(new TextInput("0", "127.0.0.1"));
+
+	Entity		adressGame = engine.createEntity();
+	cursor->addEntity(inputAdressGame.getId());
+
+	adressGame.addComponent(new Position(960, 500));
+	adressGame.addComponent(new Font("0", "Adress server "));
+	adressGame.addComponent(new ButtonInput(inputPortGame.getId()));
+
+
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
 
-	backGame.addComponent(new Position(800, 500));
+	backGame.addComponent(new Position(1150, 900));
 	backGame.addComponent(new Font("0", "Go back without saving !"));
 	backGame.addComponent(new ButtonMenuGame());
 
-
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new TextInputSystem);
 	engine.addSystem(new DrawableFontSystem);
 }
 

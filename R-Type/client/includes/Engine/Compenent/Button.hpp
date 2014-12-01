@@ -59,3 +59,16 @@ public:
 public:
 	void	process(Entity &);
 };
+
+class ButtonInput : public Button
+{
+public:
+	ButtonInput(unsigned int entity) : mEntity(entity) { }
+	~ButtonInput() { }
+
+public:
+	void	process(Entity &);
+
+private:
+	unsigned int	mEntity;
+};

@@ -35,6 +35,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
 			includes/Core/InputManager.hpp				\
+                        includes/Core/TextInputSystem.hpp				\
 			includes/Core/MovementSystem.hpp			\
 			includes/Core/System.hpp				\
                         includes/Engine/Compenent/Collision.hpp			\
@@ -44,6 +45,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Engine/Compenent/Cursor.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
+                        includes/Engine/Compenent/TextInput.hpp			\
 			includes/Engine/ECSManager.hpp				\
 			includes/Engine/Entity.hpp				\
                         includes/Engine/Compenent/Position.hpp			\
@@ -64,6 +66,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Network/TcpClient.hpp				\
 			includes/Network/UdpClient.hpp				\
 			../shared/includes/Config.hpp				\
+			../shared/includes/IResource.hpp			\
 			../shared/includes/Network/IClientSocket.hpp		\
 			../shared/includes/Network/IServerSocket.hpp		\
 			../shared/includes/Commands/ICommand.hpp        	\
@@ -88,50 +91,82 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandUpdatePseudo.hpp	\
 			../shared/includes/Commands/CommandUpdateScore.hpp	
 
-SOURCES		+=	sources/main.cpp				\
-			sources/RTypeClient.cpp				\
-			sources/Audio/MusicManager.cpp			\
-			sources/Audio/SoundManager.cpp			\
-			sources/Core/CollisionSystem.cpp		\
-			sources/Core/DamageSystem.cpp			\
-			sources/Core/DrawableSystem.cpp			\
-                        sources/Core/DrawableFontSystem.cpp		\
-                        sources/Core/ButtonSystem.cpp			\
-			sources/Core/InputManager.cpp			\
-			sources/Core/MovementSystem.cpp			\
-			sources/Core/System.cpp				\
-			sources/Engine/Collision.cpp			\
-                        sources/Engine/Button.cpp			\
-                        sources/Engine/Cursor.cpp			\
-			sources/Engine/Component.cpp			\
-			sources/Engine/Controllable.cpp			\
-                        sources/Engine/Font.cpp                         \
-			sources/Engine/Drawable.cpp			\
-			sources/Engine/ECSManager.cpp			\
-			sources/Engine/Entity.cpp			\
-                        sources/Engine/Position.cpp			\
-			sources/Engine/Script.cpp			\
-			sources/GUI/ContentManager.cpp			\
-			sources/GUI/FontManager.cpp			\
-			sources/GUI/SFMLGraphic.cpp			\
-			sources/GUI/SpriteManager.cpp			\
-			sources/GUI/SpriteModel.cpp			\
-			sources/GUI/TextureManager.cpp			\
-			sources/Network/CommandPacketBuilder.cpp	\
-			sources/Network/ServerCommunication.cpp		\
-			sources/Network/TcpClient.cpp			\
-			sources/Network/UdpClient.cpp 			\
-			../shared/sources/Commands/SharedCommandCreateGame.cpp \
-			sources/Command/CommandCreateGame.cpp \
-			../shared/sources/Commands/SharedCommandDeleteGame.cpp \
-			sources/Command/CommandDeleteGame.cpp \
-			../shared/sources/Commands/SharedCommandDestroyResource.cpp \
-			sources/Command/CommandDestroyResource.cpp \
-			../shared/sources/Commands/SharedCommandDisconnect.cpp \
-			sources/Command/CommandDisconnect.cpp \
-			../shared/sources/Commands/SharedCommandEndGame.cpp \
-			sources/Command/CommandEndGame.cpp
-
+SOURCES		+=	sources/main.cpp						\
+			sources/RTypeClient.cpp						\
+			sources/Audio/MusicManager.cpp					\
+			sources/Audio/SoundManager.cpp					\
+			sources/Core/CollisionSystem.cpp				\
+			sources/Core/DamageSystem.cpp					\
+			sources/Core/DrawableSystem.cpp					\
+                        sources/Core/DrawableFontSystem.cpp				\
+                        sources/Core/TextInputSystem.cpp				\
+                        sources/Core/ButtonSystem.cpp					\
+			sources/Core/InputManager.cpp					\
+			sources/Core/MovementSystem.cpp					\
+			sources/Core/System.cpp						\
+			sources/Engine/Collision.cpp					\
+                        sources/Engine/Button.cpp					\
+                        sources/Engine/Cursor.cpp					\
+			sources/Engine/Component.cpp					\
+			sources/Engine/Controllable.cpp					\
+                        sources/Engine/Font.cpp                         		\
+                        sources/Engine/TextInput.cpp                         		\
+			sources/Engine/Drawable.cpp					\
+			sources/Engine/ECSManager.cpp					\
+			sources/Engine/Entity.cpp					\
+                        sources/Engine/Position.cpp					\
+			sources/Engine/Script.cpp					\
+			sources/GUI/ContentManager.cpp					\
+			sources/GUI/FontManager.cpp					\
+			sources/GUI/SFMLGraphic.cpp					\
+			sources/GUI/SpriteManager.cpp					\
+			sources/GUI/SpriteModel.cpp					\
+			sources/GUI/TextureManager.cpp					\
+			sources/Network/CommandPacketBuilder.cpp			\
+			sources/Network/ServerCommunication.cpp				\
+			sources/Network/TcpClient.cpp					\
+			sources/Network/UdpClient.cpp 					\
+			../shared/sources/Commands/SharedCommandCreateGame.cpp		\
+			sources/Command/CommandCreateGame.cpp				\
+			../shared/sources/Commands/SharedCommandDeleteGame.cpp		\
+			sources/Command/CommandDeleteGame.cpp				\
+			../shared/sources/Commands/SharedCommandDestroyResource.cpp	\
+			sources/Command/CommandDestroyResource.cpp			\
+			../shared/sources/Commands/SharedCommandDisconnect.cpp		\
+			sources/Command/CommandDisconnect.cpp				\
+			../shared/sources/Commands/SharedCommandEndGame.cpp		\
+			sources/Command/CommandEndGame.cpp				\
+			../shared/sources/Commands/SharedCommandError.cpp		\
+			sources/Command/CommandError.cpp				\
+			../shared/sources/Commands/SharedCommandFire.cpp		\
+			sources/Command/CommandFire.cpp					\
+			../shared/sources/Commands/SharedCommandHandshake.cpp		\
+			sources/Command/CommandHandshake.cpp				\
+			../shared/sources/Commands/SharedCommandJoinGame.cpp		\
+			sources/Command/CommandJoinGame.cpp				\
+			../shared/sources/Commands/SharedCommandLeaveGame.cpp		\
+			sources/Command/CommandLeaveGame.cpp				\
+			../shared/sources/Commands/SharedCommandListGames.cpp		\
+			sources/Command/CommandListGames.cpp				\
+			../shared/sources/Commands/SharedCommandListLevels.cpp		\
+			sources/Command/CommandListLevels.cpp				\
+			../shared/sources/Commands/SharedCommandMove.cpp		\
+			sources/Command/CommandMove.cpp					\
+			../shared/sources/Commands/SharedCommandMoveResource.cpp	\
+			sources/Command/CommandMoveResource.cpp				\
+			../shared/sources/Commands/SharedCommandObserveGame.cpp		\
+			sources/Command/CommandObserveGame.cpp				\
+			../shared/sources/Commands/SharedCommandShowGame.cpp		\
+			sources/Command/CommandShowGame.cpp				\
+			../shared/sources/Commands/SharedCommandShowLevel.cpp		\
+			sources/Command/CommandShowLevel.cpp				\
+			../shared/sources/Commands/SharedCommandTimeElapsedPing.cpp	\
+			sources/Command/CommandTimeElapsedPing.cpp			\
+			../shared/sources/Commands/SharedCommandUpdatePseudo.cpp	\
+			sources/Command/CommandUpdatePseudo.cpp				\
+			../shared/sources/Commands/SharedCommandUpdateScore.cpp		\
+			sources/Command/CommandUpdateScore.cpp
+			
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
 
@@ -150,10 +185,10 @@ win32:LIBS	+=	-ldependencies/libs/sfml-audio-d	\
 #			-ldependencies/libs/sfml-window
 
 unix:LIBS	+=	-lsfml-audio 		\
-				-lsfml-graphics 	\
-				-lsfml-network 		\
-				-lsfml-window 		\
-				-lsfml-system	
+			-lsfml-graphics 	\
+			-lsfml-network 		\
+			-lsfml-window 		\
+			-lsfml-system	
 
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
