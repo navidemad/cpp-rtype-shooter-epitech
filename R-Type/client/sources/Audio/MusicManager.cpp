@@ -22,7 +22,7 @@ std::shared_ptr<MusicManager>	MusicManager::getInstance()
 void			MusicManager::loadResources()
 {
 	{
-		mListResources.insert(std::pair<std::string, std::string>("Eastern Night", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg"));
+		mListResources.insert(std::pair<std::string, std::string>("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg"));
 	}
 }
 
