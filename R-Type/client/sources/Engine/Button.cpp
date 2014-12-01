@@ -40,6 +40,7 @@ void	ButtonGame::process(Entity &entity, uint32_t delta)
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
 		resetTimer();
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
 		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::RTYPE);
 	}
 	
@@ -52,6 +53,7 @@ void	ButtonQuitGame::process(Entity &entity, uint32_t delta)
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
 		resetTimer();
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
 		entity.getEntityManager()->getClient()->getGui()->close();
 	}
 }
@@ -63,6 +65,7 @@ void	ButtonMenuGame::process(Entity &entity, uint32_t delta)
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
 		resetTimer();
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
 		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::MENU);
 	}
 }
@@ -74,6 +77,7 @@ void	ButtonOption::process(Entity &entity, uint32_t delta)
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
 		resetTimer();
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
 		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::OPTION);
 	}
 	

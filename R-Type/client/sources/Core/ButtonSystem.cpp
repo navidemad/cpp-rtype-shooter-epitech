@@ -38,11 +38,6 @@ void		ButtonSystem::process(Entity &entity, uint32_t delta)
 		button->process(entityCiblate, delta);
 	}
 
-//	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
-	//{
-		//entity.getEntityManager()->getClient()->getGui()->playSound("option");
-
-//	}
 	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("down"))
 	{
 		entity.getEntityManager()->getClient()->getGui()->playSound("change_option");
