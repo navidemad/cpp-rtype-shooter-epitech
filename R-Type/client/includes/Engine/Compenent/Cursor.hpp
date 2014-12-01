@@ -18,8 +18,8 @@ class Cursor : public Component
 		Cursor const	&operator=(Cursor const &) { return *this; }
 		
 	public:
-		void			next();
-		void			prev();
+		bool			next();
+		bool			prev();
 		void			addEntity(unsigned int);
 		unsigned int	getIdEntity();
 		void			block();
