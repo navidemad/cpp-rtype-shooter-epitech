@@ -1,4 +1,5 @@
 #include "CommandMove.hpp"
+#include <cstring>
 
 IClientSocket::Message CommandMove::getMessage(void) const {
 	CommandMove::PacketFromClient packet;
@@ -17,6 +18,6 @@ unsigned int CommandMove::getSizeToRead(void) const {
 	throw std::string("This command can not be receive by the client");
 }
 
-void CommandMove::initFromMessage(const IClientSocket::Message &message) {
+void CommandMove::initFromMessage(const IClientSocket::Message & /*message*/) {
 	throw std::string("This command can not be receive by the client");
 }
