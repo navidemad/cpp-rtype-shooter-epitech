@@ -16,3 +16,8 @@ ComponentType::Type Component::getComponentId() const
 {
 	return mCompenentId;
 }
+
+void				Component::setComponentId(ComponentType::Type type)
+{
+	mCompenentId = type;
+}

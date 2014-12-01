@@ -1,5 +1,6 @@
 #include "CommandJoinGame.hpp"
 #include <cstring>
+#include <algorithm>
 
 IClientSocket::Message CommandJoinGame::getMessage(void) const {
 	CommandJoinGame::PacketFromClient packet;
