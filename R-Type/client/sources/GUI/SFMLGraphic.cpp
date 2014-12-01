@@ -19,11 +19,11 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
-bool	SFMLGraphic::drawSprite(std::string const &key, float delta, float x, float y)
+bool	SFMLGraphic::drawSprite(std::string const &key, float /*delta*/, float x, float y)
 {
-	uint32_t	index = static_cast<uint32_t>(static_cast<float>(mContentManager.getSprites()->getResource(key).getSize()) * delta);
+	mContentManager.getSprites()->getResource(key).setCurrentIndex(0);
 	mContentManager.getSprites()->getResource(key).getSprite(0).setPosition(x, y);
-	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(index));
+	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()));
 	return true;
 }
 
@@ -36,6 +36,15 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 	text.setCharacterSize(size);
 	text.setPosition(x, y);
 	mWindow.draw(text);
+	return true;
+}
+
+bool	SFMLGraphic::playMusic(std::string const &key, bool onLoop)
+{
+	if (!mMusic.openFromFile(mContentManager.getMusics()->getResource(key)))
+		return false;
+	mMusic.setLoop(onLoop);
+	mMusic.play();
 	return true;
 }
 
@@ -99,6 +108,7 @@ void	SFMLGraphic::init()
 	mContentManager.loadTextures();
 	mContentManager.loadSprites();
 	mContentManager.loadFonts();
+	mContentManager.loadMusics();
 	mContentManager.loadSounds();
 	mWindow.setMouseCursorVisible(false);
 }
@@ -106,6 +116,14 @@ void	SFMLGraphic::init()
 sf::RenderWindow	&SFMLGraphic::getWindow()
 {
 	return mWindow;
+}
+
+void				SFMLGraphic::setScale(std::string const &key, float sizeX, float sizeY)
+{
+	for (uint32_t i = 0; i < mContentManager.getSprites()->getResource(key).getSize(); ++i)
+	{
+		mContentManager.getSprites()->getResource(key).getSprite(0).setScale(sizeX, sizeY);
+	}
 }
 
 /*

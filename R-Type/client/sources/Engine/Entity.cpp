@@ -13,7 +13,7 @@ Entity::~Entity()
 
 }
 
-const unsigned int	Entity::getId() const
+unsigned int	Entity::getId() const
 {
 	return mId;
 }

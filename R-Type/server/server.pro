@@ -78,8 +78,8 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/PortabilityBuilder.hpp				\
 				includes/Network/ClientManager.hpp			\
 				includes/Network/Client.hpp				\
-				includes/Network/ClientPacketBuilder.hpp		\
-				includes/Network/PlayerPacketBuilder.hpp		\
+				../shared/includes/Commands/ClientPacketBuilder.hpp	\
+				../shared/includes/Commands/PlayerPacketBuilder.hpp	\
 				../shared/includes/Commands/CommandFactory.hpp		\
 				../shared/includes/Commands/CommandException.hpp	\
 				includes/IResource.hpp					\
@@ -87,7 +87,13 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Script/Script.hpp				\
 				includes/Script/ScriptLoader.hpp			\
 				includes/Script/ScriptParser.hpp			\
+				includes/Script/ScriptName.hpp			\
+				includes/Script/ScriptRequire.hpp			\
+				includes/Script/ScriptAction.hpp			\
+				includes/Script/ScriptAddCron.hpp			\
+				includes/Script/ScriptRemoveCron.hpp			\
 				includes/Script/Parser.hpp				\
+				includes/Script/IScriptCommand.hpp			\
 				includes/Game/Game.hpp 					\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp								\
@@ -119,8 +125,8 @@ SOURCES			+=	sources/main.cpp						\
                                 ../shared/sources/Error/ErrorStatus.cpp				\
 				sources/Network/ClientManager.cpp				\
 				sources/Network/Client.cpp					\
-				sources/Network/ClientPacketBuilder.cpp				\
-				sources/Network/PlayerPacketBuilder.cpp				\
+				../shared/sources/Commands/ClientPacketBuilder.cpp		\
+				../shared/sources/Commands/PlayerPacketBuilder.cpp		\
 				sources/Network/PlayerCommunicationManager.cpp			\
 				../shared/sources/Utils.cpp					\
 				../shared/sources/Commands/CommandFactory.cpp			\

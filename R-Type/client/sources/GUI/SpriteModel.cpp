@@ -185,7 +185,7 @@ void	SpriteModel::setAnims(uint32_t begin, uint32_t end)
 
 void	SpriteModel::setCurrentIndex(uint32_t currentIndex)
 {
-	mCurrentIndex = currentIndex;
+	mCurrentIndex = currentIndex % mSprites.size();
 }
 
 void	SpriteModel::setLoop(bool enable)

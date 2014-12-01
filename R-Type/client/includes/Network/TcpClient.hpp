@@ -42,8 +42,8 @@ class TcpClient : public QObject, public IClientSocket{
 
     // get host ip
     public:
-        const std::string &getAddr(void) const;
-
+        const std::string	&getAddr(void) const;
+		int					getPort(void) const;
 
     // slots
 	private slots:
@@ -53,7 +53,8 @@ class TcpClient : public QObject, public IClientSocket{
 
 	// attributes
 	private:
-		std::shared_ptr<QTcpSocket>	mQTcpSocket;
-
+		std::shared_ptr<QTcpSocket>		mQTcpSocket;
+		std::string						mAddr;
+		int				mPort;
 		IClientSocket::OnSocketEvent	*mListener;
 };

@@ -36,6 +36,7 @@ public:
 		void						setIdGame(unsigned int);
 		unsigned int				getIdGame() const;
 		std::shared_ptr<IGraphic>	getGui() const { return mGui; }
+		void						startMenu();
 
 	// Attribute
 	private:

@@ -12,12 +12,12 @@ Position::~Position()
 
 }
 
-const float	Position::getX() const
+float	Position::getX() const
 {
 	return mX;
 }
 
-const float	Position::getY() const
+float	Position::getY() const
 {
 	return mY;
 }

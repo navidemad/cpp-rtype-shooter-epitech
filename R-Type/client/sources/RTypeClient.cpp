@@ -61,6 +61,12 @@ void			RTypeClient::init()
 	initMenu();
 	initOption();
 	initPressStart();
+	startMenu();
+}
+
+void		RTypeClient::startMenu()
+{
+	mGui->playMusic("Menu");
 }
 
 void			RTypeClient::initOption()
