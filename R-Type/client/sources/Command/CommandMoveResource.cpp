@@ -14,7 +14,7 @@ void CommandMoveResource::initFromMessage(const IClientSocket::Message &message)
 
 	auto packet = *reinterpret_cast<const CommandMoveResource::PacketFromServer *>(message.msg.data());
 
-	mType = static_cast<IResource::Type>(packet.type);
+	mType = static_cast<IRessource::Type>(packet.type);
 	mX = packet.x;
 	mY = packet.y;
 	mAngle = packet.angle;

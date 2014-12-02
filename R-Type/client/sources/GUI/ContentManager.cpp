@@ -39,27 +39,27 @@ void	ContentManager::loadSounds()
 	mSounds->loadResources();
 }
 
-std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTextures() const
+std::shared_ptr<IRessourceManager<sf::Texture>> const	&ContentManager::getTextures() const
 {
 	return mTextures;
 }
 
-std::shared_ptr<IResourceManager<SpriteModel>>			&ContentManager::getSprites()
+std::shared_ptr<IRessourceManager<SpriteModel>>			&ContentManager::getSprites()
 {
 	return mSprites;
 }
 
-std::shared_ptr<IResourceManager<sf::Font>> const		&ContentManager::getFonts() const
+std::shared_ptr<IRessourceManager<sf::Font>> const		&ContentManager::getFonts() const
 {
 	return mFonts;
 }
 
-std::shared_ptr<IResourceManager<std::string>> const		&ContentManager::getMusics() const
+std::shared_ptr<IRessourceManager<std::string>> const		&ContentManager::getMusics() const
 {
 	return mMusics;
 }
 
-std::shared_ptr<IResourceManager<sf::sSound>> const		&ContentManager::getSounds() const
+std::shared_ptr<IRessourceManager<sf::sSound>> const		&ContentManager::getSounds() const
 {
 	return mSounds;
 }

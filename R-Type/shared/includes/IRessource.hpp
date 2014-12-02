@@ -1,6 +1,6 @@
 #pragma once
 
-namespace IResource {
+namespace IRessource {
 
 	enum class Direction {
 		LEFT	= 0x00,

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IResource.hpp"
+#include "IRessource.hpp"
 #include "ICommand.hpp"
 #include "NoCopyable.hpp"
 
@@ -21,8 +21,8 @@ class CommandMove : public NoCopyable, public ICommand {
 
 	// getter - setters
 	public:
-		IResource::Direction getDirection(void) const;
-		void setDirection(IResource::Direction direction);
+		IRessource::Direction getDirection(void) const;
+		void setDirection(IRessource::Direction direction);
 
 	// public pure methods
 	public:
@@ -33,6 +33,6 @@ class CommandMove : public NoCopyable, public ICommand {
 
 	// attributes
 	private:
-		IResource::Direction mDirection;
+		IRessource::Direction mDirection;
 
 };

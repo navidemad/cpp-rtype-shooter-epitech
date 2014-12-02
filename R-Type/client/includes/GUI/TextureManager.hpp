@@ -4,9 +4,9 @@
 #include <memory>
 #include <map>
 #include <SFML/Graphics.hpp>
-#include "GUI/IResourceManager.hpp"
+#include "GUI/IRessourceManager.hpp"
 
-class TextureManager : public IResourceManager<sf::Texture>
+class TextureManager : public IRessourceManager<sf::Texture>
 {
     // ctor - dtor
     private:

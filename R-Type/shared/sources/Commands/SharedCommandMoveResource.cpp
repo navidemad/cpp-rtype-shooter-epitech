@@ -1,6 +1,6 @@
 #include "CommandMoveResource.hpp"
 
-CommandMoveResource::CommandMoveResource(void) : mId(0), mType(IResource::Type::UNKNOWN), mX(0), mY(0), mAngle(0) {
+CommandMoveResource::CommandMoveResource(void) : mId(0), mType(IRessource::Type::UNKNOWN), mX(0), mY(0), mAngle(0) {
 }
 
 CommandMoveResource::~CommandMoveResource(void) {
@@ -10,7 +10,7 @@ int CommandMoveResource::getId(void) const {
 	return mId;
 }
 
-IResource::Type CommandMoveResource::getType(void) const {
+IRessource::Type CommandMoveResource::getType(void) const {
 	return mType;
 }
 
@@ -30,7 +30,7 @@ void	CommandMoveResource::setId(int id) {
 	mId = id;
 }
 
-void	CommandMoveResource::setType(IResource::Type type) {
+void	CommandMoveResource::setType(IRessource::Type type) {
 	mType = type;
 }
 

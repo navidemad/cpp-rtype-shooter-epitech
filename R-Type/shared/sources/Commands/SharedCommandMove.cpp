@@ -1,16 +1,16 @@
 #include "CommandMove.hpp"
 
-CommandMove::CommandMove(void) : mDirection(IResource::Direction::UNKNOWN) {
+CommandMove::CommandMove(void) : mDirection(IRessource::Direction::UNKNOWN) {
 }
 
 CommandMove::~CommandMove(void) {
 }
 
-IResource::Direction CommandMove::getDirection(void) const {
+IRessource::Direction CommandMove::getDirection(void) const {
 	return mDirection;
 }
 
-void CommandMove::setDirection(IResource::Direction direction) {
+void CommandMove::setDirection(IRessource::Direction direction) {
 	mDirection = direction;
 }
 

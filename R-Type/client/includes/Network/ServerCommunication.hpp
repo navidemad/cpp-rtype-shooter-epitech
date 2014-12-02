@@ -4,7 +4,7 @@
 #include "ICommand.hpp"
 #include "ClientPacketBuilder.hpp"
 #include "PlayerPacketBuilder.hpp"
-#include "IResource.hpp"
+#include "IRessource.hpp"
 #include "ErrorStatus.hpp"
 #include <memory>
 
@@ -31,7 +31,7 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, Pla
                 virtual void OnDestroyResource(int id) = 0;
                 virtual void OnEndGame(const std::string &name) = 0;
                 virtual void OnError(ICommand::Instruction instruction, ErrorStatus::Error) = 0;
-                virtual void OnMoveResource(IResource::Type type, float x, float y, short angle, int id) = 0;
+                virtual void OnMoveResource(IRessource::Type type, float x, float y, short angle, int id) = 0;
                 virtual void OnShowGame(const std::string &name, const std::string &levelName, int nbPlayer, int maxPlayer, int nbObserver, int maxObserver) = 0;
                 virtual void OnShowLevel(const std::string &name, const std::string &script) = 0;
                 virtual void OnTimeElapse(int64_t time) = 0;

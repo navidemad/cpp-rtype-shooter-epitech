@@ -4,7 +4,7 @@
 #include "Timer.hpp"
 #include "Client.hpp"
 #include "NoCopyable.hpp"
-#include "IResource.hpp"
+#include "IRessource.hpp"
 
 #include <string>
 #include <memory>
@@ -116,7 +116,7 @@ class Game : public NoCopyable {
                 void setAngle(float angle) { mAngle = angle; }
                 void setSpeed(float speed) { mSpeed = speed; }
                 void setLife(int life) { mLife = life; }
-                void setType(IResource::Type type) { mType = type; }
+                void setType(IRessource::Type type) { mType = type; }
                 void setId(uint64_t id) { mUserId = id; }
 
             // getters
@@ -128,7 +128,7 @@ class Game : public NoCopyable {
                 float getAngle(void) const { return mAngle; }
                 float getSpeed(void) const { return mSpeed; }
                 int getLife(void) const { return mLife; }
-                IResource::Type getType(void) { return mType; }
+                IRessource::Type getType(void) { return mType; }
                 uint64_t getId(void) const { return mUserId; }
 
             // attributes
@@ -140,7 +140,7 @@ class Game : public NoCopyable {
                 float mAngle;
                 float mSpeed;
                 int mLife;
-                IResource::Type mType;
+                IRessource::Type mType;
                 uint64_t mUserId;
         };
 

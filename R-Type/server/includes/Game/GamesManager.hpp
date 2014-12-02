@@ -27,7 +27,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 	// player communication manager events
 	public:
 		void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const Peer &peer);
-		void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer);
+		void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IRessource::Direction direction, const Peer &peer);
 
     // game events
     public:

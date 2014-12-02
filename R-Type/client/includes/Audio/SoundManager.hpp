@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <SFML/Audio.hpp>
-#include "GUI/IResourceManager.hpp"
+#include "GUI/IRessourceManager.hpp"
 
 namespace sf
 {
@@ -16,7 +16,7 @@ namespace sf
 	};
 }
 
-class SoundManager : public IResourceManager<sf::sSound>
+class SoundManager : public IRessourceManager<sf::sSound>
 {
 	// ctor - dtor
 	private:

@@ -71,7 +71,7 @@ void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlaye
 	mListener = listener;
 }
 
-void PlayerCommunicationManager::sendMoveResource(const Peer &peer, int id, IResource::Type type, float x, float y, short angle) {
+void PlayerCommunicationManager::sendMoveResource(const Peer &peer, int id, IRessource::Type type, float x, float y, short angle) {
 	CommandMoveResource commandMoveResource;
 
 	commandMoveResource.setId(id);

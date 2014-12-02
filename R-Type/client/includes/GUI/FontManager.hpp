@@ -4,9 +4,9 @@
 #include <string>
 #include <map>
 #include <SFML/Graphics.hpp>
-#include "GUI/IResourceManager.hpp"
+#include "GUI/IRessourceManager.hpp"
 
-class FontManager : public IResourceManager<sf::Font>
+class FontManager : public IRessourceManager<sf::Font>
 {
 	// ctor - dtor
 	private:

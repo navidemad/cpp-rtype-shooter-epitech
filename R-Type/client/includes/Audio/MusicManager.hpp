@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 #include <SFML/Audio.hpp>
-#include "GUI/IResourceManager.hpp"
+#include "GUI/IRessourceManager.hpp"
 
-class MusicManager : public IResourceManager<std::string>
+class MusicManager : public IRessourceManager<std::string>
 {
 	// ctor - dtor
 	private:

@@ -1,10 +1,10 @@
 #pragma once
 
 template<typename T>
-class IResourceManager
+class IRessourceManager
 {
 	public:
-		virtual ~IResourceManager() {}
+		virtual ~IRessourceManager() {}
 
 	// virtual methods
 	public:

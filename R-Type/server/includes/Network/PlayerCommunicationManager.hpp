@@ -3,7 +3,7 @@
 #include "Peer.hpp"
 #include "PlayerPacketBuilder.hpp"
 #include "IMutex.hpp"
-#include "IResource.hpp"
+#include "IRessource.hpp"
 #include "NoCopyable.hpp"
 
 #include <list>
@@ -34,7 +34,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		public:
 			virtual ~OnPlayerCommunicationManagerEvent(void) {}
 			virtual void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) = 0;
-			virtual void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) = 0;
+			virtual void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IRessource::Direction direction, const Peer &peer) = 0;
 		};
 
 		void	setListener(PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *listener);
@@ -43,7 +43,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 
 	// send commands
 	public:
-		void	sendMoveResource(const Peer &peer, int id, IResource::Type type, float x, float y, short angle);
+		void	sendMoveResource(const Peer &peer, int id, IRessource::Type type, float x, float y, short angle);
 		void	sendDestroyResource(const Peer &peer, int id);
 		void	sendUpdateScore(const Peer &peer, int id, const std::string &pseudo, int score);
 		void	sendTimeElapsedPing(const Peer &peer, int64_t timeElapsed);

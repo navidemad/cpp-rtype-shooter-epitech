@@ -27,6 +27,7 @@ INCLUDEPATH	+=	.					\
 			build/moc
 
 HEADERS		+=	includes/RTypeClient.hpp				\
+			includes/PortabilityBuilder.hpp				\
 			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
 			includes/Core/CollisionSystem.hpp			\
@@ -57,7 +58,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/GUI/ContentManager.hpp				\
 			includes/GUI/FontManager.hpp				\
 			includes/GUI/IGraphic.hpp				\
-			includes/GUI/IResourceManager.hpp			\
+			includes/GUI/IRessourceManager.hpp			\
 			includes/GUI/SFMLGraphic.hpp				\
 			includes/GUI/SpriteManager.hpp				\
 			includes/GUI/SpriteModel.hpp				\
@@ -68,7 +69,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Network/TcpClient.hpp				\
 			includes/Network/UdpClient.hpp				\
 			../shared/includes/Config.hpp				\
-			../shared/includes/IResource.hpp			\
+			../shared/includes/IRessource.hpp			\
 			../shared/includes/Network/IClientSocket.hpp		\
 			../shared/includes/Network/IServerSocket.hpp		\
 			../shared/includes/Commands/ICommand.hpp        	\
@@ -98,7 +99,9 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandFactory.hpp			\
 			../shared/includes/Error/ErrorStatus.hpp
 
-
+unix:HEADERS += includes/UnixPortabilityBuilder.hpp
+win32:HEADERS += includes/WindowsPortabilityBuilder.hpp
+				
 SOURCES		+=	sources/main.cpp						\
 			sources/RTypeClient.cpp						\
 			sources/Audio/MusicManager.cpp					\

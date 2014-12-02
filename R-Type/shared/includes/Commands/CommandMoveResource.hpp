@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IResource.hpp"
+#include "IRessource.hpp"
 #include "ICommand.hpp"
 #include "NoCopyable.hpp"
 
@@ -26,13 +26,13 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 	// getter - setters
 	public:
 		int 						getId(void) const;
-		IResource::Type getType(void) const;
+		IRessource::Type getType(void) const;
 		float						getX(void) const;
 		float						getY(void) const;
 		short						getAngle(void) const;
 
 		void	setId(int id);
-		void	setType(IResource::Type type);
+		void	setType(IRessource::Type type);
 		void	setX(float x);
 		void	setY(float y);
 		void	setAngle(short angle);
@@ -47,7 +47,7 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 	// attributes
 	private:
 		int 			mId;
-		IResource::Type mType;
+		IRessource::Type mType;
 		float			mX;
 		float			mY;
 		short			mAngle;

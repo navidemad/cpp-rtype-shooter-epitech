@@ -1,9 +1,11 @@
 #pragma once
 
-#include <sstream>
 #include "NoCopyable.hpp"
-#include <string>
 #include "Script.hpp"
+#include "IReaddir.hpp"
+
+#include <sstream>
+#include <string>
 #include <map>
 #include <memory>
 
@@ -23,4 +25,5 @@ public:
 	// attributes
 private:
 	std::map<std::string, std::shared_ptr<Script>> mScripts;
+	std::shared_ptr<IReaddir> mReaddir;
 };

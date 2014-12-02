@@ -73,7 +73,7 @@ void GamesManager::onPlayerFire(const PlayerCommunicationManager &, const Peer &
     }
 }
 
-void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::Direction, const Peer &peer) {
+void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IRessource::Direction, const Peer &peer) {
     try {
         ScopedLock scopedLock(mMutex);
 
@@ -84,7 +84,7 @@ void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::D
 
         //(*game)->move(host, direction);
         // auto component = getComponent(host);
-        //mPlayerCommunicationManager.sendMoveResource(host, port, id ? ? , IResource::Type::PLAYER, component->getX(), component->getY(), component->getAngle());
+        //mPlayerCommunicationManager.sendMoveResource(host, port, id ? ? , IRessource::Type::PLAYER, component->getX(), component->getY(), component->getAngle());
     }
     catch (const GamesManagerException& e) {
         std::cerr << e.what() << std::endl;

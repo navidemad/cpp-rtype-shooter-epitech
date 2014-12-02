@@ -3,10 +3,10 @@
 #include <memory>
 #include <map>
 #include <SFML/Graphics.hpp>
-#include "GUI/IResourceManager.hpp"
+#include "GUI/IRessourceManager.hpp"
 #include "GUI/SpriteModel.hpp"
 
-class SpriteManager : public IResourceManager<SpriteModel>
+class SpriteManager : public IRessourceManager<SpriteModel>
 {
     // ctor - dtor
     private:

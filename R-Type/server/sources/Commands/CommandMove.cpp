@@ -14,5 +14,5 @@ void CommandMove::initFromMessage(const IClientSocket::Message &message) {
 		throw CommandException("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandMove::PacketFromClient *>(message.msg.data());
-	mDirection = static_cast<IResource::Direction>(packet.direction);
+	mDirection = static_cast<IRessource::Direction>(packet.direction);
 }
