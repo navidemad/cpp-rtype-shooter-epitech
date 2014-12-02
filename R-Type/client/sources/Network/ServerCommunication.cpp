@@ -1,13 +1,25 @@
 #include "Network/ServerCommunication.hpp"
 #include "Network/TcpClient.hpp"
+#include <memory>
 
 /*
 ** ctor - dtor
 */
-ServerCommunication::ServerCommunication() {
+ServerCommunication::ServerCommunication()
+: mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp){
 }
 
 ServerCommunication::~ServerCommunication() {
+}
+
+/*
+** Callback from ClientPacketBuilder
+*/
+void    ServerCommunication::onPacketAvailable(const ClientPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &/*command*/){
+
+}
+void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientPacketBuilder*/){
+
 }
 
 /*
