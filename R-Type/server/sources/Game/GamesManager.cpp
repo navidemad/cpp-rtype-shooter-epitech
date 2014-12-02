@@ -1,4 +1,5 @@
 #include "GamesManager.hpp"
+#include "GameException.hpp"
 #include "GamesManagerException.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
@@ -15,10 +16,8 @@ GamesManager::~GamesManager(void) {
     mGames.clear();
 }
 
-
 void GamesManager::run(void) {
 	mScriptLoader.loadAll();
-
 
     for (;;) for (const auto &game : mGames) {
         *mThreadPool << std::bind(&Game::stateGame, game);
@@ -27,25 +26,18 @@ void GamesManager::run(void) {
     }
 }
 
-void GamesManager::createGame(const Game::GameProperties& properties, const Peer &) {
+void GamesManager::createGame(const Game::GameProperties& properties, const Peer &peer) {
     ScopedLock scopedLock(mMutex);
 
     auto game = std::shared_ptr<Game>{ std::make_shared<Game>(properties) };
 
     game->setListener(this);
-// SETTER L'OWNER DE LA GAME
-//    game->setOwner(peer);
+    game->setOwner(peer);
 
     mGames.push_back(game);
 }
 
-void GamesManager::removeGame(const Peer &/* PEER POUR CHECK SI LE MEC EST LE OWNER */, const std::string& name) {
-/*
-** CHECKER SI C'EST LE OWNER
-**
-** si oui => delete
-** si non => GamesManagerException
-*/
+void GamesManager::removeGame(const Peer &peer, const std::string& name) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
@@ -53,7 +45,10 @@ void GamesManager::removeGame(const Peer &/* PEER POUR CHECK SI LE MEC EST LE OW
     if (game == mGames.end())
         throw GamesManagerException("Try to delete an undefined game", ErrorStatus(ErrorStatus::Error::KO));
 
-    mGames.erase(game);
+    if (peer == (*game)->getOwner())
+        mGames.erase(game);
+    else
+        throw GamesManagerException("You can remove a game only if you are owner", ErrorStatus(ErrorStatus::Error::KO));
 }
 
 /*
@@ -99,47 +94,72 @@ void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::D
 /*
 ** Game::OnGameEvent
 */
-void GamesManager::onTerminatedGame(const std::shared_ptr<Game>& game) {
-    auto users = game->getUsers();
-    //std::for_each(users.begin(), users.end(), std::bind1st(std::mem_fun(&GamesManager::leaveGame), this));
-    auto game_it = findGameByGamePtr(game);
-    mGames.erase(game_it);
+void GamesManager::onTerminatedGame(const std::string &name) {
+    ScopedLock scopedLock(mMutex);
+
+    auto game = findGameByName(name);
+
+    if (game == mGames.end())
+        throw GamesManagerException("Try to terminate an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
+
+    auto users = (*game)->getUsers();
+    std::for_each(users.begin(), users.end(), [&](const Game::User& user) {
+        const Peer& peer = user.getPeer();
+        mPlayerCommunicationManager.removePeerFromWhiteList(peer);
+    });
+    mGames.erase(game);
 }
 
 void GamesManager::joinGame(Game::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
-
+    
     if (game == mGames.end())
-        throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
-
+       throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
+    
     leaveGame(peer, false);
     (*game)->addUser(typeUser, peer, pseudo);
 }
 
 void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
-    joinGame(Game::USER_TYPE::PLAYER, peer, name, pseudo);
+    try {
+        joinGame(Game::USER_TYPE::PLAYER, peer, name, pseudo);
+        mPlayerCommunicationManager.addPeerToWhiteList(peer);
+    }
+    catch (const GameException& e) {
+        throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
+    }
 }
 
 void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
-    joinGame(Game::USER_TYPE::SPECTATOR, peer, name, "SPECTATOR HAS NO PSEUDO");
+    try {
+        joinGame(Game::USER_TYPE::SPECTATOR, peer, name);
+        mPlayerCommunicationManager.removePeerFromWhiteList(peer);
+    }
+    catch (const GameException& e) {
+        throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
+    }
 }
 
 void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
     ScopedLock scopedLock(mMutex);
 
-    auto game = findGameByHost(peer);
-
-    if (game == mGames.end())
-    {
-        if (throwExcept)
-            throw GamesManagerException("Try to leave a player that he isn't on a game", ErrorStatus(ErrorStatus::Error::KO));
-        else
-            return;
-    }   
-
-    (*game)->delUser(peer);
+    try {
+        auto game = findGameByHost(peer);
+        if (game == mGames.end())
+        {
+            if (throwExcept)
+                throw GamesManagerException("Try to leave a player that he isn't on a game", ErrorStatus(ErrorStatus::Error::KO));
+            else
+                return;
+        }
+        (*game)->delUser(peer);
+        mPlayerCommunicationManager.removePeerFromWhiteList(peer);
+    }
+    catch (const GameException& e) {
+        throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
+    }
 }
 
 void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
@@ -150,9 +170,15 @@ void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
     if (game == mGames.end())
         throw GamesManagerException("Try to leave a player that he isn't on a game", ErrorStatus(ErrorStatus::Error::KO));
 
-    auto user = (*game)->findUserByHost(peer);
-    user->setPseudo(pseudo);
-
+    try {
+        auto user = (*game)->findUserByHost(peer);
+        if (user == (*game)->getUsers().end())
+            throw GameException("Try to delete an undefined address ip");
+        user->setPseudo(pseudo);
+    }
+    catch (const GameException& e) {
+        throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
+    }
 }
 
 const Game::GameProperties &GamesManager::getGameProperties(const std::string &name) {
@@ -198,4 +224,8 @@ std::vector<std::shared_ptr<Game>>::iterator GamesManager::findGameByHost(const 
         }
         return false;
     });
+}
+
+const ScriptLoader& GamesManager::getScriptLoader(void) const {
+    return mScriptLoader;
 }

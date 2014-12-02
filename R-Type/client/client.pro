@@ -63,7 +63,6 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/GUI/SpriteModel.hpp				\
 			includes/GUI/TextureManager.hpp				\
 			includes/Network/INetworkManager.hpp			\
-			includes/Network/CommandPacketBuilder.hpp		\
 			includes/Network/INetworkManager.hpp			\
 			includes/Network/ServerCommunication.hpp		\
 			includes/Network/TcpClient.hpp				\
@@ -96,7 +95,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/ClientPacketBuilder.hpp     \
 			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
 			../shared/includes/Network/Peer.hpp                     \
-			../shared/includes/Commands/CommandFactory.hpp
+			../shared/includes/Commands/CommandFactory.hpp			\
+			../shared/includes/Error/ErrorStatus.hpp
 
 
 SOURCES		+=	sources/main.cpp						\

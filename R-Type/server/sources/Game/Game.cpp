@@ -14,6 +14,14 @@ void Game::setListener(Game::OnGameEvent *listener) {
     mListener = listener;
 }
 
+void Game::setOwner(const Peer& owner) {
+    mOwner = owner;
+}
+
+const Peer& Game::getOwner(void) const {
+    return mOwner;
+}
+
 bool Game::outOfScreen(const Component& component) {
     bool eraseAsked = (component.getX() < 0.0f || component.getX() > Game::XMAX || component.getY() < 0.0f || component.getX() > Game::YMAX) != 0;
     if (eraseAsked)
@@ -194,6 +202,7 @@ void Game::transferPlayerToSpectators(User& user) {
     mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
     mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
     user.setType(Game::USER_TYPE::SPECTATOR);
+    // remove from peer list mPlayerCommunication
     //sendMessage that user die
 }
 
@@ -203,7 +212,7 @@ const std::vector<Game::User>& Game::getUsers() const {
 
 void Game::terminateGame(void) {
     if (mListener)
-        mListener->onTerminatedGame(shared_from_this());
+        mListener->onTerminatedGame(mProperties.getName());
 }
 
 const Game::GameProperties& Game::getProperties(void) const {

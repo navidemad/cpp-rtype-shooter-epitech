@@ -29,7 +29,7 @@ void ScriptLoader::loadAll(void) {
 			auto commands = mScripts["Simon"]->getCommands();
 			for (const auto& command : commands)
 			{
-				std::cout << (int)command->getInstruction() << std::endl;
+				std::cout << "Enum Action = " << (int)command->getInstruction() << std::endl;
 			}
 		}
 		catch (const std::exception& e){

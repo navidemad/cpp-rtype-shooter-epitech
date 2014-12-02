@@ -11,7 +11,7 @@
 #include <list>
 #include <functional>
 
-class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
+class Game : public NoCopyable {
 
     /*
     ** ********************************************************************************
@@ -160,9 +160,11 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
         class OnGameEvent {
         public:
             virtual ~OnGameEvent(void) {}
-            virtual void onTerminatedGame(const std::shared_ptr<Game>&) = 0;
+            virtual void onTerminatedGame(const std::string &name) = 0;
         };
-        void	setListener(Game::OnGameEvent *listener);
+        void	    setListener(Game::OnGameEvent *listener);
+        void        setOwner(const Peer& owner);
+        const Peer& getOwner(void) const;
 
     // referentiel
     public:
@@ -208,5 +210,6 @@ class Game : public NoCopyable, public std::enable_shared_from_this<Game>  {
         bool mIsRunning;
         bool mAlreadyRunOneTime;
         std::shared_ptr<IMutex> mMutex;
+        Peer mOwner;
 
 };
