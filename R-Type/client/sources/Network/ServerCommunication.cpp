@@ -1,13 +1,34 @@
 #include "Network/ServerCommunication.hpp"
 #include "Network/TcpClient.hpp"
+#include <memory>
 
 /*
 ** ctor - dtor
 */
-ServerCommunication::ServerCommunication() {
+ServerCommunication::ServerCommunication()
+: mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp), mCmdUdp(4242){
+	mCmdTcp.setListener(this);
+	mCmdUdp.setListener(this);
 }
 
 ServerCommunication::~ServerCommunication() {
+}
+
+/*
+** Callback from ClientPacketBuilder
+*/
+void    ServerCommunication::onPacketAvailable(const ClientPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &/*command*/){
+
+}
+void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientPacketBuilder*/){
+
+}
+
+/*
+** Callback from PlayerPacketBuilder
+*/
+void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &/*command*/, const Peer &/*peer*/){
+
 }
 
 /*

@@ -2,8 +2,11 @@
 #include <list>
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
+#include "ClientPacketBuilder.hpp"
+#include "PlayerPacketBuilder.hpp"
+#include <memory>
 
-class ServerCommunication {
+class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
 
     // ctor - dtor
     public:
@@ -16,6 +19,15 @@ class ServerCommunication {
         ServerCommunication(ServerCommunication &&) = delete;
         const ServerCommunication &operator=(const ServerCommunication &) = delete;
         const ServerCommunication &operator=(ServerCommunication &&) = delete;
+
+    //callback from ClientPacketBuilder
+    public:
+        void    onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command);
+        void    onSocketClosed(const ClientPacketBuilder &clientPacketBuilder);
+
+    //callback from PlayerPacketBuilder
+    public:
+        void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer);
 
     //handle socket
     public:
@@ -34,5 +46,7 @@ class ServerCommunication {
         std::list<ICommand *> mListCommand;
         int mPortTcp;
         std::string mIpTcp;
-        IClientSocket *mSocketTcp;
+        std::shared_ptr<IClientSocket> mSocketTcp;
+        ClientPacketBuilder mCmdTcp;
+        PlayerPacketBuilder mCmdUdp;
 };
