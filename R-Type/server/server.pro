@@ -21,10 +21,12 @@ INCLUDEPATH		+=	.					\
 				includes/CondVar			\
 				includes/Game			\
 				includes/Script			\
+				includes/Readdir			\
 				includes/DynLib			\
 				../shared/includes			\
 				../shared/includes/Network		\
 				../shared/includes/Commands		\
+				../shared/includes/Script		\
                                 ../shared/includes/Error                \
 				dependencies/includes			\
 				build					\
@@ -39,11 +41,11 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Exceptions/GameException.hpp			\
 				includes/Exceptions/DynLibException.hpp			\
 				includes/Exceptions/GamesManagerException.hpp		\
-				includes/Exceptions/ScriptException.hpp			\
 				includes/Mutex/ScopedLock.hpp				\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
 				includes/DynLib/IDynLib.hpp				\
+				includes/Readdir/IReaddir.hpp \
 				includes/Network/NetworkManager.hpp     		\
 				includes/Network/PlayerCommunicationManager.hpp		\
 				../shared/includes/Config.hpp				\
@@ -82,7 +84,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				../shared/includes/Commands/PlayerPacketBuilder.hpp	\
 				../shared/includes/Commands/CommandFactory.hpp		\
 				../shared/includes/Commands/CommandException.hpp	\
-				includes/IResource.hpp					\
+				../shared/includes/IResource.hpp					\
 				includes/RTypeServer.hpp				\
 				../shared/includes/Script/Script.hpp				\
 				../shared/includes/Script/ScriptLoader.hpp			\
@@ -92,6 +94,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				../shared/includes/Script/ScriptAction.hpp			\
 				../shared/includes/Script/ScriptAddCron.hpp			\
 				../shared/includes/Script/ScriptRemoveCron.hpp			\
+				../shared/includes/Script/ScriptException.hpp			\
 				../shared/includes/Script/Parser.hpp				\
 				../shared/includes/Script/IScriptCommand.hpp			\
 				includes/Game/NGame.hpp 					\
@@ -111,6 +114,7 @@ unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/CondVar/UnixCondVar.hpp 			\
 				includes/Thread/UnixThread.hpp 				\
 				includes/DynLib/UnixDynLib.hpp				\
+				includes/Readdir/UnixReaddir.hpp				\
 				includes/UnixPortabilityBuilder.hpp
 
 win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
@@ -121,6 +125,7 @@ win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
 				includes/CondVar/WindowsCondVar.hpp 			\
 				includes/Thread/WindowsThread.hpp 			\
 				includes/DynLib/WindowsDynLib.hpp				\
+				includes/Readdir/WindowsReaddir.hpp				\
 				includes/WindowsPortabilityBuilder.hpp
 
 SOURCES			+=	sources/main.cpp						\
@@ -181,7 +186,7 @@ SOURCES			+=	sources/main.cpp						\
                                 ../shared/sources/Script/Script.cpp 					\
                                 ../shared/sources/Script/ScriptLoader.cpp 				\
                                 ../shared/sources/Script/ScriptParser.cpp					\
-								sources/Script/Parser.cpp						\
+								../shared/sources/Script/Parser.cpp						\
 				sources/Game/Game.cpp 						\
 				sources/Game/GamesManager.cpp 					\
 				sources/Game/Timer.cpp
@@ -192,6 +197,7 @@ unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/CondVar/UnixCondVar.cpp 			\
 				sources/Mutex/UnixMutex.cpp 				\
 				sources/DynLib/UnixDynLib.cpp				\
+				sources/Readdir/UnixReaddir.cpp				\
 				sources/UnixPortabilityBuilder.cpp
 
 win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
@@ -201,6 +207,7 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 				sources/CondVar/WindowsCondVar.cpp 			\
 				sources/Mutex/WindowsMutex.cpp	 			\
 				sources/DynLib/WindowsDynLib.cpp			\
+				sources/Readdir/WindowsReaddir.cpp				\
 				sources/WindowsPortabilityBuilder.cpp
 
 win32:LIBS	+= -lWs2_32

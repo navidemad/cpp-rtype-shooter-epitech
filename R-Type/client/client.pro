@@ -27,6 +27,7 @@ INCLUDEPATH	+=	.					\
 			build/moc
 
 HEADERS		+=	includes/RTypeClient.hpp				\
+			includes/PortabilityBuilder.hpp				\
 			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
 			includes/Core/CollisionSystem.hpp			\
@@ -98,7 +99,9 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandFactory.hpp			\
 			../shared/includes/Error/ErrorStatus.hpp
 
-
+unix:HEADERS += includes/UnixPortabilityBuilder.hpp
+win32:HEADERS += includes/WindowsPortabilityBuilder.hpp
+				
 SOURCES		+=	sources/main.cpp						\
 			sources/RTypeClient.cpp						\
 			sources/Audio/MusicManager.cpp					\
