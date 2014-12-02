@@ -19,11 +19,15 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
+#include <iostream>
+#define TIME 1000
+
 bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, float y)
 {
 	uint32_t index;
+
 	if (mContentManager.getSprites()->getResource(key).isLoop())
-		index = mContentManager.getSprites()->getResource(key).getSize() * (delta % 1000) / 1000;
+		index = mContentManager.getSprites()->getResource(key).getSize() * (delta % TIME) / TIME;
 	else
 		index = mContentManager.getSprites()->getResource(key).getCurrentIndex();
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);
