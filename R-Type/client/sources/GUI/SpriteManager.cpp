@@ -37,7 +37,10 @@ void			SpriteManager::loadResources()
 		SpriteModel model("assets/sprites/logoSearch.png", 1, 1);
 		mListResources.insert(std::pair<std::string, SpriteModel>("logoSearch", model));
 	}
-
+	{
+		SpriteModel model("assets/sprites/logoOption.png", 1, 1);
+		mListResources.insert(std::pair<std::string, SpriteModel>("logoOption", model));
+	}
 	{
 		SpriteModel model("assets/sprites/search_bar.png", 1, 1);
 		mListResources.insert(std::pair<std::string, SpriteModel>("searchBar", model));
