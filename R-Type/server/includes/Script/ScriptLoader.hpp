@@ -18,6 +18,7 @@ public:
 public:
 	std::shared_ptr<Script> loadScript(const std::string& stage_name);
 	void loadAll(void);
+    const std::map<std::string, std::shared_ptr<Script>>& getScripts() const;
 
 	// attributes
 private:

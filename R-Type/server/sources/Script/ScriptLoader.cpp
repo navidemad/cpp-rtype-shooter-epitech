@@ -32,3 +32,7 @@ void ScriptLoader::loadAll(void) {
 		}
 	}
 }
+
+const std::map<std::string, std::shared_ptr<Script>>& ScriptLoader::getScripts() const {
+    return mScripts;
+}

@@ -37,9 +37,11 @@ std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
 	std::string lineContent;
 	std::string wordContent;
 	auto		script = std::make_shared<Script>();
+    std::string textScript;
 
 	while (file && std::getline(file, lineContent)){
-		if (lineContent.length() == 0)continue;
+		if (lineContent.length() == 0) continue;
+        textScript += lineContent;
 		parser.setStringToParse(lineContent);
 		try {
 			wordContent = parser.extractWord();
@@ -57,6 +59,7 @@ std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
 			return nullptr;
 		}
 	}
+    script->setTextScript(textScript);
 	return script;
 }
 

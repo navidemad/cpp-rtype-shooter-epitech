@@ -31,13 +31,13 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // game events
     public:
-        void onTerminatedGame(const std::shared_ptr<Game>&);
+        void onTerminatedGame(const std::string &name);
 
 	// network workflow utils functions
 	public:
         void    createGame(const Game::GameProperties&properties, const Peer &peer);
         void    removeGame(const Peer &peer, const std::string&);
-        void    joinGame(Game::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo);
+        void    joinGame(Game::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo = "Anonymous");
         void    playGame(const Peer &peer, const std::string &name, const std::string &pseudo);
         void    spectateGame(const Peer &peer, const std::string &name);
         void	leaveGame(const Peer &peer, bool throwExcept = true);
@@ -47,6 +47,10 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         std::vector<std::shared_ptr<Game>>::iterator findGameByGamePtr(const std::shared_ptr<Game>& target);
         std::vector<std::shared_ptr<Game>>::iterator findGameByName(const std::string& name);
         std::vector<std::shared_ptr<Game>>::iterator findGameByHost(const Peer &peer);
+
+    // getter
+    public:
+        const ScriptLoader& getScriptLoader(void) const;
 
     // attributes
     private:

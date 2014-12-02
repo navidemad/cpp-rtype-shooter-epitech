@@ -40,3 +40,10 @@ void Script::restart(void) {
 	mIndex = 0;
 }
 
+const std::string& Script::getTextScript(void) const {
+    return mTextScript;
+}
+
+void Script::setTextScript(const std::string& textScript) {
+    mTextScript = textScript;
+}
