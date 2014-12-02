@@ -84,16 +84,16 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				../shared/includes/Commands/CommandException.hpp	\
 				includes/IResource.hpp					\
 				includes/RTypeServer.hpp				\
-				includes/Script/Script.hpp				\
-				includes/Script/ScriptLoader.hpp			\
-				includes/Script/ScriptParser.hpp			\
-				includes/Script/ScriptName.hpp			\
-				includes/Script/ScriptRequire.hpp			\
-				includes/Script/ScriptAction.hpp			\
-				includes/Script/ScriptAddCron.hpp			\
-				includes/Script/ScriptRemoveCron.hpp			\
-				includes/Script/Parser.hpp				\
-				includes/Script/IScriptCommand.hpp			\
+				../shared/includes/Script/Script.hpp				\
+				../shared/includes/Script/ScriptLoader.hpp			\
+				../shared/includes/Script/ScriptParser.hpp			\
+				../shared/includes/Script/ScriptName.hpp			\
+				../shared/includes/Script/ScriptRequire.hpp			\
+				../shared/includes/Script/ScriptAction.hpp			\
+				../shared/includes/Script/ScriptAddCron.hpp			\
+				../shared/includes/Script/ScriptRemoveCron.hpp			\
+				../shared/includes/Script/Parser.hpp				\
+				../shared/includes/Script/IScriptCommand.hpp			\
 				includes/Game/Game.hpp 					\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp								\
@@ -173,9 +173,9 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Commands/CommandUpdatePseudo.cpp			\
                                 sources/Commands/CommandUpdateScore.cpp 			\
                                 sources/RTypeServer.cpp 					\
-                                sources/Script/Script.cpp 					\
-                                sources/Script/ScriptLoader.cpp 				\
-                                sources/Script/ScriptParser.cpp					\
+                                ../shared/sources/Script/Script.cpp 					\
+                                ../shared/sources/Script/ScriptLoader.cpp 				\
+                                ../shared/sources/Script/ScriptParser.cpp					\
 								sources/Script/Parser.cpp						\
 				sources/Game/Game.cpp 						\
 				sources/Game/GamesManager.cpp 					\
