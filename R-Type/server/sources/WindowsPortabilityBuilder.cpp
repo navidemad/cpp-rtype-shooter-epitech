@@ -6,6 +6,7 @@
 # include "WindowsUdpClient.hpp"
 # include "WindowsCondVar.hpp"
 # include "WindowsDynLib.hpp"
+# include "WindowsReaddir.hpp"
 
 std::shared_ptr<IMutex> PortabilityBuilder::getMutex(void) {
 	return std::make_shared<WindowsMutex>();
@@ -29,4 +30,8 @@ std::shared_ptr<ICondVar> PortabilityBuilder::getCondVar(void) {
 
 std::shared_ptr<IDynLib> PortabilityBuilder::getDynLib(void) {
     return std::make_shared<WindowsDynLib>();
+}
+
+std::shared_ptr<IReaddir> PortabilityBuilder::getReaddir(void) {
+	return std::make_shared<WindowsReaddir>();
 }

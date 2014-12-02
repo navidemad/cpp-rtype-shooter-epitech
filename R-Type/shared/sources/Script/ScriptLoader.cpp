@@ -4,8 +4,9 @@
 #include "ScriptException.hpp"
 #include "ScriptParser.hpp"
 #include "ScriptLoader.hpp"
+#include "PortabilityBuilder.hpp"
 
-ScriptLoader::ScriptLoader(void) {
+ScriptLoader::ScriptLoader(void) : mReaddir(PortabilityBuilder::getReaddir()) {
 }
 
 ScriptLoader::~ScriptLoader(void) {
@@ -22,14 +23,14 @@ void ScriptLoader::loadAll(void) {
 	if (!file.good() || file.fail())
 		throw ScriptException("impossible d'ouvrir le fichier");
 	else{
-		const std::string& path = "./sources/Script/Simon.txt";
+		const std::string& path = "../shared/sources/Script/Simon.txt";
 		file.open(path);
 		try {
 			mScripts["Simon"] = Parser.parseFile(file);
 			auto commands = mScripts["Simon"]->getCommands();
 			for (const auto& command : commands)
 			{
-				std::cout << "Enum Action = " << (int)command->getInstruction() << std::endl;
+				std::cout << (int)command->getInstruction() << std::endl;
 			}
 		}
 		catch (const std::exception& e){

@@ -21,7 +21,7 @@ void RTypeServer::onClientDisconnected(const Peer &peer) {
 
 void RTypeServer::onClientCreateGame(const Peer &peer, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
 	try {
-		Game::GameProperties properties;
+        NGame::Properties properties;
 
 		properties.setName(name);
 		properties.setLevelName(levelName);
@@ -48,7 +48,7 @@ void RTypeServer::onClientJoinGame(const Peer &peer, const std::string &name, co
 
 void RTypeServer::onClientShowGame(const Peer &peer, const std::string &name) {
 	try {
-		Game::GameProperties properties = mGamesManager.getGameProperties(name);
+        NGame::Properties properties = mGamesManager.getGameProperties(name);
 		mClientManager.sendError(std::list<Peer>{peer}, ErrorStatus(ErrorStatus::Error::OK));
 		mClientManager.sendShowGame(std::list<Peer>{peer}, properties.getName(), properties.getLevelName(), properties.getNbPlayers(), properties.getMaxPlayers(), properties.getNbSpectators(), properties.getMaxSpectators());
 	}
@@ -68,7 +68,7 @@ void RTypeServer::onClientDeleteGame(const Peer &peer, const std::string &name) 
 }
 
 void RTypeServer::onClientListGames(const Peer &peer) {
-	std::list<Game::GameProperties> games = mGamesManager.getGamesProperties();
+    std::list<NGame::Properties> games = mGamesManager.getGamesProperties();
 
 	for (const auto &game : games)
 		mClientManager.sendShowGame(std::list<Peer>{peer}, game.getName(), game.getLevelName(), game.getNbPlayers(), game.getMaxPlayers(), game.getNbSpectators(), game.getMaxSpectators());

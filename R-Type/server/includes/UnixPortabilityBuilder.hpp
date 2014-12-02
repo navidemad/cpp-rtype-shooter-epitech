@@ -7,6 +7,7 @@
 #include "IClientSocket.hpp"
 #include "IServerSocket.hpp"
 #include "IDynLib.hpp"
+#include "IReaddir.hpp"
 
 # include "UnixThread.hpp"
 
@@ -20,6 +21,7 @@ namespace PortabilityBuilder {
     std::shared_ptr<IServerSocket> 	getTcpServer(void);
     std::shared_ptr<ICondVar>       getCondVar(void);
     std::shared_ptr<IDynLib>        getDynLib(void);
+    std::shared_ptr<IReaddir>       getReaddir(void);
 
     template <typename U, typename T>
     std::shared_ptr<IThread<U, T>>  getThread(void) {
