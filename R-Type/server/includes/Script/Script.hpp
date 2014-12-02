@@ -22,9 +22,12 @@ class Script : public NoCopyable {
 		void restart(void);
 		bool goToNextAction(void);
 		bool goToPrevAction(void);
+        const std::string& getTextScript(void) const;
+        void setTextScript(const std::string&);
 
 	// attributes
 	private:
 		std::vector<std::shared_ptr<IScriptCommand>> mCommands;
 		uint32_t mIndex;
+        std::string mTextScript;
 };

@@ -24,11 +24,20 @@ void ScriptLoader::loadAll(void) {
 	else{
 		const std::string& path = "./sources/Script/Simon.txt";
 		file.open(path);
-		mScripts["Simon"] = Parser.parseFile(file);
-		auto commands = mScripts["Simon"]->getCommands();
-		for (const auto& command : commands)
-		{
-			std::cout << (int)command->getInstruction() << std::endl;
+		try {
+			mScripts["Simon"] = Parser.parseFile(file);
+			auto commands = mScripts["Simon"]->getCommands();
+			for (const auto& command : commands)
+			{
+				std::cout << (int)command->getInstruction() << std::endl;
+			}
+		}
+		catch (const std::exception& e){
+			Utils::logError(e.what());
 		}
 	}
+}
+
+const std::map<std::string, std::shared_ptr<Script>>& ScriptLoader::getScripts() const {
+    return mScripts;
 }
