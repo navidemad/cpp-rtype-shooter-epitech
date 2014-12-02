@@ -18,4 +18,5 @@ void CommandMoveResource::initFromMessage(const IClientSocket::Message &message)
 	mX = packet.x;
 	mY = packet.y;
 	mAngle = packet.angle;
+	mId = packet.id;
 }
