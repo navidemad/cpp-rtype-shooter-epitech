@@ -49,6 +49,11 @@ void			SpriteManager::loadResources()
 		SpriteModel model("assets/sprites/r-typesheet3.gif", 1, 12);
 		mListResources.insert(std::pair<std::string, SpriteModel>("ball", model));
 	}
+	{
+		SpriteModel model("assets/sprites/cursor.png", 1, 1);
+		mListResources.insert(std::pair<std::string, SpriteModel>("cursor", model));
+	}
+
 }
 
 void			SpriteManager::unloadResources()

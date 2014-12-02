@@ -26,6 +26,7 @@ class Entity
 
 	public:
 		inline ECSManager			*getEntityManager() const { return mEntityManager; }
+
 	private:
 		const unsigned int	mId;
 		ECSManager			*mEntityManager;

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManager.hpp"
 #include "Engine/Compenent/Button.hpp"
@@ -109,3 +110,4 @@ void	ButtonInput::process(Entity &entity, uint32_t delta)
 		resetTimer();
 	}
 }
+
