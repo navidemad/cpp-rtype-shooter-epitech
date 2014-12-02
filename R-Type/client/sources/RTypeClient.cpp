@@ -23,8 +23,8 @@ RTypeClient::RTypeClient()
 	mEngine[PRESS_START] = new ECSManager;
 	mEngine[MENU] = new ECSManager;
 	mEngine[OPTION] = new ECSManager;
-	mEngine[SEARCH_MENU] = new ECSManager;
-	mEngine[RTYPE] = new ECSManager;
+	mEngine[SEARCH_MENU] = new ECSManagerNetwork;
+	mEngine[RTYPE] = new ECSManagerNetwork;
 
 	mInit[PRESS_START] = &RTypeClient::initPressStart;
 	mInit[MENU] = &RTypeClient::initMenu;
