@@ -14,6 +14,12 @@ class RTypeClient;
 class ECSManagerNetwork : public ECSManager, public ServerCommunication::OnServerEvent
 {
 public:
-	void		start();
-	void		stop();
+	void OnDestroyResource(int id);
+	void OnEndGame(const std::string &name);
+	void OnError(ICommand::Instruction instruction, ErrorStatus::Error);
+	void OnMoveResource(IResource::Type type, float x, float y, short angle, int id);
+	void OnShowGame(const std::string &name, const std::string &levelName, int nbPlayer, int maxPlayer, int nbObserver, int maxObserver);
+	void OnShowLevel(const std::string &name, const std::string &script);
+	void OnTimeElapse(int64_t time);
+	void OnUpdateScore(const std::string &name, int id, int score);
 };

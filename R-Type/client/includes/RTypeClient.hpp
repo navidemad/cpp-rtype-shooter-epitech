@@ -41,7 +41,7 @@ public:
 	// Attribute
 	private:
 		unsigned int							mCurrentId;
-		std::vector<ECSManager>					mEngine;
+		std::vector<ECSManager *>					mEngine;
 		std::shared_ptr<IGraphic>				mGui;
 
 		std::vector<void (RTypeClient::*)()>	mInit;

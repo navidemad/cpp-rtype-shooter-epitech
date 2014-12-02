@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "RTypeClient.hpp"
 #include "Engine/Entity.hpp"
+#include "Engine/ECSManagerNetwork.hpp"
 #include "GUI/SFMLGraphic.hpp"
 #include "Engine/Component.hpp"
 #include "Engine/Compenent/Position.hpp"
@@ -19,6 +20,12 @@
 RTypeClient::RTypeClient()
 : mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
 {
+	mEngine[PRESS_START] = new ECSManager;
+	mEngine[MENU] = new ECSManager;
+	mEngine[OPTION] = new ECSManager;
+	mEngine[SEARCH_MENU] = new ECSManager;
+	mEngine[RTYPE] = new ECSManager;
+
 	mInit[PRESS_START] = &RTypeClient::initPressStart;
 	mInit[MENU] = &RTypeClient::initMenu;
 	mInit[OPTION] = &RTypeClient::initOption;
@@ -38,9 +45,9 @@ RTypeClient::RTypeClient()
 	mStop[RTYPE] = &RTypeClient::stopRtype;
 
 
-	for (ECSManager &engine : mEngine)
+	for (ECSManager *engine : mEngine)
 	{
-		engine.setClient(this);
+		engine->setClient(this);
 	}
 }
 
@@ -65,7 +72,7 @@ void	RTypeClient::run()
 
 		mGui->clear(); // clear graphic engine
 		mGui->update(); // update graphic engine
-		mEngine[mCurrentId].updateSystem(delta); // update gameplay engine
+		mEngine[mCurrentId]->updateSystem(delta); // update gameplay engine
 		mGui->show(); // display graphic engine
 
 		if (id != mCurrentId)
@@ -79,6 +86,7 @@ void	RTypeClient::run()
 void	RTypeClient::setIdGame(unsigned int currentId)
 {
 	mCurrentId = currentId;
+	mEngine[currentId]->start();
 }
 
 unsigned int	RTypeClient::getIdGame() const
@@ -102,7 +110,7 @@ void			RTypeClient::initRtype()
 
 void			RTypeClient::initSearchMenu()
 {
-	ECSManager &engine = mEngine[RTypeClient::SEARCH_MENU];
+	ECSManager &engine = *mEngine[RTypeClient::SEARCH_MENU];
 
 	Entity		&menuScreen = engine.createEntity();
 
@@ -157,7 +165,7 @@ void			RTypeClient::initSearchMenu()
 
 void			RTypeClient::simulateReceiveClient(unsigned int id)
 {
-	ECSManager &engine = mEngine[RTypeClient::SEARCH_MENU];
+	ECSManager &engine = *mEngine[RTypeClient::SEARCH_MENU];
 
 	Entity	&entity = engine.getEntity(id);
 	List *button = static_cast<List *>(entity.getSpecificComponent(ComponentType::LIST));
@@ -183,7 +191,7 @@ void			RTypeClient::simulateReceiveClient(unsigned int id)
 
 void			RTypeClient::initOption()
 {
-	ECSManager &engine = mEngine[RTypeClient::OPTION];
+	ECSManager &engine = *mEngine[RTypeClient::OPTION];
 	
 	Entity		&menuScreen = engine.createEntity();
 
@@ -247,7 +255,7 @@ void			RTypeClient::initOption()
 
 void			RTypeClient::initPressStart()
 {
-	ECSManager &engine = mEngine[RTypeClient::PRESS_START];
+	ECSManager &engine = *mEngine[RTypeClient::PRESS_START];
 
 	Entity		&menuScreen = engine.createEntity();
 
@@ -279,7 +287,7 @@ void			RTypeClient::initPressStart()
 
 void			RTypeClient::initMenu()
 {
-	ECSManager &engine = mEngine[RTypeClient::MENU];
+	ECSManager &engine = *mEngine[RTypeClient::MENU];
 
 	Entity		&menuScreen = engine.createEntity();
 	
@@ -354,6 +362,7 @@ void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
 }
+
 void	RTypeClient::startSearchMenu()
 {
 

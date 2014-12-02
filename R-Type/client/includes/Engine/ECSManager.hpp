@@ -26,24 +26,25 @@ class ECSManager
 
 	// getter
 	public:
-		RTypeClient			*getClient() const { return mClient;  }
-		void				setClient(RTypeClient *client) { mClient = client; }
-		unsigned int		getCurrentId() const;
+		RTypeClient								*getClient() const { return mClient;  }
+		void									setClient(RTypeClient *client) { mClient = client; }
+		unsigned int							getCurrentId() const;
 
 	// Entity Manager
 	public:
 		// Entity
-		Entity						&createEntity();
-		Entity						&getEntity(const int);
+		Entity									&createEntity();
+		Entity									&getEntity(const int);
 
 		// Component
 		bool									addComponent(const unsigned int, Component *);
 		const std::list<Component *>			&getComponent(const unsigned int) const;
 
 		// System
-		void						addSystem(System *);
-		void						updateSystem(uint32_t);
-
+		void									addSystem(System *);
+		void									updateSystem(uint32_t);
+		virtual void							start() { }
+		virtual void							stop() { }
 	private:
 		RTypeClient									*mClient;
 
