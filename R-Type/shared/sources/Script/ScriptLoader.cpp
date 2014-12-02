@@ -23,7 +23,7 @@ void ScriptLoader::loadAll(void) {
 	if (!file.good() || file.fail())
 		throw ScriptException("impossible d'ouvrir le fichier");
 	else{
-		const std::string& path = "./sources/Script/Simon.txt";
+		const std::string& path = "../shared/sources/Script/Simon.txt";
 		file.open(path);
 		try {
 			mScripts["Simon"] = Parser.parseFile(file);
