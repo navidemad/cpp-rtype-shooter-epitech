@@ -100,7 +100,40 @@ void			RTypeClient::initRtype()
 
 void			RTypeClient::initSearchMenu()
 {
+	ECSManager &engine = mEngine[RTypeClient::SEARCH_MENU];
 
+	Entity		&menuScreen = engine.createEntity();
+
+	menuScreen.addComponent(new Position(0, 0));
+	menuScreen.addComponent(new Drawable("menu"));
+
+	Entity		&logoScreen = engine.createEntity();
+
+	logoScreen.addComponent(new Position(900, 60));
+	logoScreen.addComponent(new Drawable("logo"));
+
+	Entity		&cursorGame = engine.createEntity();
+	Cursor		*cursor = new Cursor();
+
+	cursorGame.addComponent(new Position(0, 500));
+	cursorGame.addComponent(cursor);
+	cursorGame.addComponent(new Drawable("searchBar"));
+
+	Entity		&quitGame = engine.createEntity();
+	cursor->addEntity(quitGame.getId());
+
+	quitGame.addComponent(new Position(1150, 770));
+	quitGame.addComponent(new Font("0", "Quit"));
+	quitGame.addComponent(new ButtonQuitGame());
+
+	Entity		&logoCharacter = engine.createEntity();
+
+	logoCharacter.addComponent(new Position(0, 100));
+	logoCharacter.addComponent(new Drawable("logoSearch"));
+
+	engine.addSystem(new DrawableSystem);
+	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new DrawableFontSystem);
 }
 
 void			RTypeClient::initOption()
@@ -160,7 +193,6 @@ void			RTypeClient::initOption()
 
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
-	engine.addSystem(new TextInputSystem);
 	engine.addSystem(new DrawableFontSystem);
 }
 
@@ -257,11 +289,11 @@ void			RTypeClient::initMenu()
 
 void	RTypeClient::startMenu()
 {
-
+	mGui->playMusic("Menu");
 }
 void	RTypeClient::startOption()
 {
-
+	mGui->playMusic("Menu");
 }
 
 void	RTypeClient::startPressStart()

@@ -83,9 +83,16 @@ void	ButtonOption::process(Entity &entity, uint32_t delta)
 	
 }
 
-void	ButtonSearchMenu::process(Entity &/* */, uint32_t/* delta*/)
+void	ButtonSearchMenu::process(Entity &entity, uint32_t delta)
 {
+	updateTimer(delta);
 
+	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	{
+		resetTimer();
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
+		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::SEARCH_MENU);
+	}
 }
 
 void	ButtonInput::process(Entity &entity, uint32_t delta)

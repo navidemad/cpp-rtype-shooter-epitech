@@ -50,6 +50,7 @@ bool	SFMLGraphic::playMusic(std::string const &key, bool onLoop)
 		return false;
 	mMusic.setLoop(onLoop);
 	mMusic.play();
+	mMusicCurrentKey = key;
 	return true;
 }
 
