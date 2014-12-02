@@ -13,11 +13,15 @@ const PlayerCommunicationManager::CommandExec PlayerCommunicationManager::comman
 	{ ICommand::Instruction::FIRE, &PlayerCommunicationManager::recvFire }
 };
 
-PlayerCommunicationManager::PlayerCommunicationManager(void) : mPlayerPacketBuilder(PlayerCommunicationManager::UDP_PORT), mMutex(PortabilityBuilder::getMutex()), mListener(nullptr) {
+PlayerCommunicationManager::PlayerCommunicationManager(void) : 
+mPlayerPacketBuilder(PlayerCommunicationManager::UDP_PORT),
+mMutex(PortabilityBuilder::getMutex()),
+mListener(nullptr) {
 	mPlayerPacketBuilder.setListener(this);
 }
 
 PlayerCommunicationManager::~PlayerCommunicationManager(void) {
+
 }
 
 void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const Peer &peer) {
