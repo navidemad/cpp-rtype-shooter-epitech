@@ -58,8 +58,6 @@ void	ListSystem::process(Entity &entity, uint32_t delta)
 
 				for (unsigned int i = 0; i < list->mNbRoomButton || *it != list->mListRoom.back(); ++i, ++it)
 				{
-					std::cout << list->mNbRoomButton << i <<std::endl;
-					std::cout << (*it).mName << std::endl;
 					list->mListRoomButton[i] = it;
 				}
 				list->mCurrentRoom = list->mListRoomButton.begin();

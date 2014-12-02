@@ -352,7 +352,7 @@ void	RTypeClient::startPressStart()
 
 void	RTypeClient::startRtype()
 {
-
+	mGui->playMusic("Game");
 }
 void	RTypeClient::startSearchMenu()
 {

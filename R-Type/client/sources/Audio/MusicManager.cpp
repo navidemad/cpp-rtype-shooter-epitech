@@ -25,7 +25,7 @@ void			MusicManager::loadResources()
 		mListResources.insert(std::pair<std::string, std::string>("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg"));
 	}
 	{
-		mListResources.insert(std::pair<std::string, std::string>("Game", "./assets/musics/[02] Illusionary Night ~ Ghostly Eyes.ogg"));
+		mListResources.insert(std::pair<std::string, std::string>("Game", "./assets/musics/Touhou_8/[02] Illusionary Night ~ Ghostly Eyes.ogg"));
 	}
 	{
 		mListResources.insert(std::pair<std::string, std::string>("Boss", "./assets/musics/Touhou_8/[08] Retribution for the Eternal Night ~ Imperishable Night.ogg"));
