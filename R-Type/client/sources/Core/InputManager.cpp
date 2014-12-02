@@ -11,12 +11,17 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 	mKeyboard[sf::Keyboard::Space] = "action";
 	mKeyboard[sf::Keyboard::Escape] = "back";
 	mKeyboard[sf::Keyboard::BackSpace] = "delete";
+	mKeyboard[sf::Keyboard::Z] = "z";
+	mKeyboard[sf::Keyboard::S] = "s";
+
 
 	mPoolEvent["down"] = false;
 	mPoolEvent["up"] = false;
 	mPoolEvent["action"] = false;
 	mPoolEvent["back"] = false;
 	mPoolEvent["delete"] = false;
+	mPoolEvent["z"] = false;
+	mPoolEvent["a"] = false;
 
 	mEnteredKey = "";
 }

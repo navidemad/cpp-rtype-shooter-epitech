@@ -12,6 +12,7 @@ namespace ComponentType
 		DRAWABLE,
 		NETWORK,
 		TEXTINPUT,
+		LIST,
 		LIMIT
 	};
 }
