@@ -41,21 +41,16 @@ std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
 	while (file && std::getline(file, lineContent)){
 		if (lineContent.length() == 0)continue;
 		parser.setStringToParse(lineContent);
-		try {
+		bool rightCmd = false;
 			wordContent = parser.extractWord();
-			for (const auto &instr : tokenExecTab)
-				if (instr.cmd == wordContent)
+			for (const auto &instr : tokenExecTab) {
+				if (instr.cmd == wordContent) {
 					script->addAction((this->*instr.Ptr)());
-		}
-		catch (const ScriptException& e)
-		{
-			Utils::logError(e.what());
-		}
-		catch (...)
-		{
-			Utils::logError("Fail seems to be corrupted");
-			return nullptr;
-		}
+					rightCmd = true;
+				}
+			}
+			if (rightCmd == false)
+				throw ScriptException("Wrong Command Action");
 	}
 	return script;
 }
