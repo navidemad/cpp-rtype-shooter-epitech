@@ -71,4 +71,7 @@ public:
 		void						stopPressStart();
 		void						stopRtype();
 		void						stopSearchMenu();
+
+	private:
+		void						simulateReceiveClient(unsigned int);
 };

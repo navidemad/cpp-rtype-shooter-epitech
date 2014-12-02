@@ -37,16 +37,19 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/InputManager.hpp				\
                         includes/Core/TextInputSystem.hpp				\
 			includes/Core/MovementSystem.hpp			\
+                        includes/Core/ListSystem.hpp                    	\
 			includes/Core/System.hpp				\
                         includes/Engine/Compenent/Collision.hpp			\
 			includes/Engine/Component.hpp				\
                         includes/Engine/ComponentType.h				\
                         includes/Engine/Compenent/Controllable.hpp		\
+                        includes/Engine/Compenent/List.hpp              	\
                         includes/Engine/Compenent/Cursor.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
                         includes/Engine/Compenent/TextInput.hpp			\
 			includes/Engine/ECSManager.hpp				\
+                        includes/Engine/ECSManagerNetwork.hpp			\
 			includes/Engine/Entity.hpp				\
                         includes/Engine/Compenent/Position.hpp			\
                         includes/Engine/Compenent/Font.hpp			\
@@ -92,7 +95,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/ClientPacketBuilder.hpp     \
 			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
 			../shared/includes/Network/Peer.hpp                     \
-			../shared/includes/Commands/CommandFactory.hpp
+			../shared/includes/Commands/CommandFactory.hpp			\
+			../shared/includes/Error/ErrorStatus.hpp
 
 
 SOURCES		+=	sources/main.cpp						\
@@ -104,12 +108,14 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Core/DrawableSystem.cpp					\
                         sources/Core/DrawableFontSystem.cpp				\
                         sources/Core/TextInputSystem.cpp				\
+                        sources/Core/ListSystem.cpp				\
                         sources/Core/ButtonSystem.cpp					\
 			sources/Core/InputManager.cpp					\
 			sources/Core/MovementSystem.cpp					\
 			sources/Core/System.cpp						\
 			sources/Engine/Collision.cpp					\
                         sources/Engine/Button.cpp					\
+                        sources/Engine/List.cpp                 			\
                         sources/Engine/Cursor.cpp					\
 			sources/Engine/Component.cpp					\
 			sources/Engine/Controllable.cpp					\
@@ -117,6 +123,7 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Engine/TextInput.cpp                         		\
 			sources/Engine/Drawable.cpp					\
 			sources/Engine/ECSManager.cpp					\
+                        sources/Engine/ECSManagerNetwork.cpp				\
 			sources/Engine/Entity.cpp					\
                         sources/Engine/Position.cpp					\
 			sources/Engine/Script.cpp					\

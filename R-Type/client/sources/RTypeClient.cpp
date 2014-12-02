@@ -7,10 +7,12 @@
 #include "Engine/Compenent/Cursor.hpp"
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/Button.hpp"
+#include "Engine/Compenent/List.hpp"
 #include "Core/DrawableSystem.hpp"
 #include "Core/TextInputSystem.hpp"
 #include "Core/DrawableFontSystem.hpp"
 #include "Core/ButtonSystem.hpp"
+#include "Core/ListSystem.hpp"
 #include "Engine/Compenent/Font.hpp"
 #include "Engine/Compenent/TextInput.hpp"
 
@@ -119,12 +121,26 @@ void			RTypeClient::initSearchMenu()
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	Entity		&runGame = engine.createEntity();
+	cursor->addEntity(runGame.getId());
+
+	runGame.addComponent(new Position(1150, 400));
+	runGame.addComponent(new Font("0", "Run game !"));
+	runGame.addComponent(new ButtonMenuGame());
+
 	Entity		&quitGame = engine.createEntity();
 	cursor->addEntity(quitGame.getId());
 
-	quitGame.addComponent(new Position(1150, 770));
+	quitGame.addComponent(new Position(1600, 950));
 	quitGame.addComponent(new Font("0", "Quit"));
-	quitGame.addComponent(new ButtonQuitGame());
+	quitGame.addComponent(new ButtonMenuGame());
+
+	Entity		&searchMenu = engine.createEntity();
+
+	unsigned int	id = searchMenu.getId();
+	searchMenu.addComponent(new Position(1000, 500));
+	searchMenu.addComponent(new List(3));
+	searchMenu.addComponent(new Font("0", ""));
 
 	Entity		&logoCharacter = engine.createEntity();
 
@@ -134,6 +150,35 @@ void			RTypeClient::initSearchMenu()
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
+	engine.addSystem(new ListSystem);
+
+	simulateReceiveClient(id);
+}
+
+void			RTypeClient::simulateReceiveClient(unsigned int id)
+{
+	ECSManager &engine = mEngine[RTypeClient::SEARCH_MENU];
+
+	Entity	&entity = engine.getEntity(id);
+	List *button = static_cast<List *>(entity.getSpecificComponent(ComponentType::LIST));
+
+	{
+		information_room room("MON PETIT PONEY", 2, 4);
+		button->addRoom(room);
+	}
+	{
+		information_room room("I WANT TO BE FREE", 2, 4);
+		button->addRoom(room);
+	}
+	{
+		information_room room("I WANT TO BREAK FREE", 2, 4);
+		button->addRoom(room);
+	}
+	{
+		information_room room("BOOST CA LEAK", 2, 4);
+		button->addRoom(room);
+	}
+	
 }
 
 void			RTypeClient::initOption()
@@ -187,7 +232,6 @@ void			RTypeClient::initOption()
 	adressGame.addComponent(new Position(960, 500));
 	adressGame.addComponent(new Font("0", "Adress server "));
 	adressGame.addComponent(new ButtonInput(fontAdressGame));
-
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());

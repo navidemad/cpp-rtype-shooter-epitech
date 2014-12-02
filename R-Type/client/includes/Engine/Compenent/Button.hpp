@@ -88,6 +88,7 @@ class ButtonSearchMenu : public Button
 	public:
 		ButtonSearchMenu() : Button(100) {}
 		~ButtonSearchMenu() {}
+
 	public:
 		void	process(Entity &, uint32_t delta);
 };
