@@ -125,8 +125,9 @@ SOURCES			+=	sources/main.cpp						\
                                 ../shared/sources/Error/ErrorStatus.cpp				\
 				sources/Network/ClientManager.cpp				\
 				sources/Network/Client.cpp					\
+				sources/Network/PlayerPacketBuilder.cpp 	\
 				../shared/sources/Commands/ClientPacketBuilder.cpp		\
-				../shared/sources/Commands/PlayerPacketBuilder.cpp		\
+				../shared/sources/Commands/SharedPlayerPacketBuilder.cpp		\
 				sources/Network/PlayerCommunicationManager.cpp			\
 				../shared/sources/Utils.cpp					\
 				../shared/sources/Commands/CommandFactory.cpp			\

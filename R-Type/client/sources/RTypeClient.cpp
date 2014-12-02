@@ -8,13 +8,34 @@
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/Button.hpp"
 #include "Core/DrawableSystem.hpp"
+#include "Core/TextInputSystem.hpp"
 #include "Core/DrawableFontSystem.hpp"
 #include "Core/ButtonSystem.hpp"
 #include "Engine/Compenent/Font.hpp"
+#include "Engine/Compenent/TextInput.hpp"
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance())
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
 {
+	mInit[PRESS_START] = &RTypeClient::initPressStart;
+	mInit[MENU] = &RTypeClient::initMenu;
+	mInit[OPTION] = &RTypeClient::initOption;
+	mInit[SEARCH_MENU] = &RTypeClient::initSearchMenu;
+	mInit[RTYPE] = &RTypeClient::initRtype;
+
+	mStart[PRESS_START] = &RTypeClient::startPressStart;
+	mStart[MENU] = &RTypeClient::startMenu;
+	mStart[OPTION] = &RTypeClient::startOption;
+	mStart[SEARCH_MENU] = &RTypeClient::startSearchMenu;
+	mStart[RTYPE] = &RTypeClient::startRtype;
+
+	mStop[PRESS_START] = &RTypeClient::stopPressStart;
+	mStop[MENU] = &RTypeClient::stopMenu;
+	mStop[OPTION] = &RTypeClient::stopOption;
+	mStop[SEARCH_MENU] = &RTypeClient::stopSearchMenu;
+	mStop[RTYPE] = &RTypeClient::stopRtype;
+
+
 	for (ECSManager &engine : mEngine)
 	{
 		engine.setClient(this);
@@ -38,11 +59,18 @@ void	RTypeClient::run()
 	while (mGui->isOpen())
 	{
 		uint32_t delta = mGui->getDelta();
+		unsigned int	id = mCurrentId;
 
-		mGui->update(); // update graphic engine
 		mGui->clear(); // clear graphic engine
+		mGui->update(); // update graphic engine
 		mEngine[mCurrentId].updateSystem(delta); // update gameplay engine
 		mGui->show(); // display graphic engine
+
+		if (id != mCurrentId)
+		{
+			(this->*(mStop[id]))();
+			(this->*(mStart[mCurrentId]))();
+		}
 	}
 }
 
@@ -58,21 +86,27 @@ unsigned int	RTypeClient::getIdGame() const
 
 void			RTypeClient::init()
 {
-	initMenu();
-	initOption();
-	initPressStart();
-	startMenu();
+	auto init = [this](void (RTypeClient::*ptr)(void)) {
+		(this->*ptr)();
+	};
+	(this->*(this->mStart[this->mCurrentId]))();
+	std::for_each(mInit.begin(), mInit.end(), init);
 }
 
-void		RTypeClient::startMenu()
+void			RTypeClient::initRtype()
 {
-	mGui->playMusic("Menu");
+
+}
+
+void			RTypeClient::initSearchMenu()
+{
+
 }
 
 void			RTypeClient::initOption()
 {
 	ECSManager &engine = mEngine[RTypeClient::OPTION];
-
+	
 	Entity		&menuScreen = engine.createEntity();
 
 	menuScreen.addComponent(new Position(0, 0));
@@ -90,16 +124,43 @@ void			RTypeClient::initOption()
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	Entity		inputPortGame = engine.createEntity();
+	Font	*fontPortGame = new Font("0", "4242");
+
+	inputPortGame.addComponent(new Position(1400, 400));
+	inputPortGame.addComponent(fontPortGame);
+
+	Entity		portGame = engine.createEntity();
+	cursor->addEntity(portGame.getId());
+
+	portGame.addComponent(new Position(1020, 400));
+	portGame.addComponent(new Font("0", "Port server "));
+	portGame.addComponent(new ButtonInput(fontPortGame));
+
+	Entity		inputAdressGame = engine.createEntity();
+	Font	*fontAdressGame = new Font("0", "127.0.0.1");
+
+	inputAdressGame.addComponent(new Position(1400, 500));
+	inputAdressGame.addComponent(fontAdressGame);
+
+	Entity		adressGame = engine.createEntity();
+	cursor->addEntity(adressGame.getId());
+
+	adressGame.addComponent(new Position(960, 500));
+	adressGame.addComponent(new Font("0", "Adress server "));
+	adressGame.addComponent(new ButtonInput(fontAdressGame));
+
+
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
 
-	backGame.addComponent(new Position(800, 500));
+	backGame.addComponent(new Position(1150, 900));
 	backGame.addComponent(new Font("0", "Go back without saving !"));
 	backGame.addComponent(new ButtonMenuGame());
 
-
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new TextInputSystem);
 	engine.addSystem(new DrawableFontSystem);
 }
 
@@ -168,6 +229,7 @@ void			RTypeClient::initMenu()
 
 	searchGame.addComponent(new Position(1150, 585));
 	searchGame.addComponent(new Font("0", "Search room"));
+	searchGame.addComponent(new ButtonSearchMenu());
 
 	Entity		&optionGame = engine.createEntity();
 	cursor->addEntity(optionGame.getId());
@@ -191,4 +253,49 @@ void			RTypeClient::initMenu()
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
+}
+
+void	RTypeClient::startMenu()
+{
+
+}
+void	RTypeClient::startOption()
+{
+
+}
+
+void	RTypeClient::startPressStart()
+{
+	mGui->playMusic("Menu");
+}
+
+void	RTypeClient::startRtype()
+{
+
+}
+void	RTypeClient::startSearchMenu()
+{
+
+}
+
+void	RTypeClient::stopMenu()
+{
+
+}
+void	RTypeClient::stopOption()
+{
+
+}
+
+void	RTypeClient::stopPressStart()
+{
+}
+
+void	RTypeClient::stopRtype()
+{
+
+}
+void	RTypeClient::stopSearchMenu()
+{
+
 }

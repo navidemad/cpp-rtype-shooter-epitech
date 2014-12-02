@@ -1,0 +1,155 @@
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:5:1: error: ‘PlayerPacketBuilder’ does not name a type
+ PlayerPacketBuilder::~PlayerPacketBuilder(void) {
+ ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:8:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::cleanDatagramsList(unsigned int sizeToRead) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void cleanDatagramsList(unsigned int)’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:9:9: error: ‘mDatagrams’ was not declared in this scope
+  while (mDatagrams.size() > 1 && mDatagrams.front().msgSize < sizeToRead)
+         ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:13:24: error: ‘PlayerPacketBuilder’ has not been declared
+ IClientSocket::Message PlayerPacketBuilder::getPartOfFirstDatagram(unsigned int sizeToRead) {
+                        ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘IClientSocket::Message getPartOfFirstDatagram(unsigned int)’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:20:6: error: ‘mDatagrams’ was not declared in this scope
+  if (mDatagrams.size() == 0)
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:23:6: error: ‘mDatagrams’ was not declared in this scope
+  if (mDatagrams.front().msgSize <= sizeToRead) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:42:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::fetchHeader(void) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void fetchHeader()’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:45:6: error: ‘mDatagrams’ was not declared in this scope
+  if (mDatagrams.size() == 0 || mDatagrams.front().msgSize < ICommand::HEADER_SIZE)
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:50:2: error: ‘mCurrentCommand’ was not declared in this scope
+  mCurrentCommand = CommandFactory::getCommand(static_cast<ICommand::Instruction>(header.instructionCode));
+  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:51:2: error: ‘mCurrentHost’ was not declared in this scope
+  mCurrentHost = message.host;
+  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:52:2: error: ‘mCurrentPort’ was not declared in this scope
+  mCurrentPort = message.port;
+  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:57:2: error: ‘mCurrentState’ was not declared in this scope
+  mCurrentState = PlayerPacketBuilder::State::BODY;
+  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:57:18: error: ‘PlayerPacketBuilder’ has not been declared
+  mCurrentState = PlayerPacketBuilder::State::BODY;
+                  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:58:12: error: ‘fetchBody’ was not declared in this scope
+  fetchBody();
+            ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:61:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::fetchBody(void) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void fetchBody()’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:64:6: error: ‘mDatagrams’ was not declared in this scope
+  if (mDatagrams.size() == 0 || mDatagrams.front().msgSize < ICommand::HEADER_SIZE)
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:70:59: error: ‘mCurrentCommand’ was not declared in this scope
+   IClientSocket::Message message = getPartOfFirstDatagram(mCurrentCommand->getSizeToRead());
+                                                           ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:72:23: error: ‘mCurrentHost’ was not declared in this scope
+   if (message.host == mCurrentHost && message.port == mCurrentPort)
+                       ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:72:55: error: ‘mCurrentPort’ was not declared in this scope
+   if (message.host == mCurrentHost && message.port == mCurrentPort)
+                                                       ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:81:24: error: ‘mListener’ was not declared in this scope
+  if (error == false && mListener)
+                        ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:82:33: error: invalid use of ‘this’ in non-member function
+   mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort});
+                                 ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:82:39: error: ‘mCurrentCommand’ was not declared in this scope
+   mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort});
+                                       ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:82:56: error: ‘Peer’ was not declared in this scope
+   mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort});
+                                                        ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:84:2: error: ‘mCurrentState’ was not declared in this scope
+  mCurrentState = PlayerPacketBuilder::State::HEADER;
+  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:84:18: error: ‘PlayerPacketBuilder’ has not been declared
+  mCurrentState = PlayerPacketBuilder::State::HEADER;
+                  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:88:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::onSocketReadable(IClientSocket *, unsigned int) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void onSocketReadable(IClientSocket*, unsigned int)’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:89:15: error: ‘fetchPackets’ was not declared in this scope
+  fetchPackets();
+               ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:91:6: error: ‘mCurrentState’ was not declared in this scope
+  if (mCurrentState == PlayerPacketBuilder::State::HEADER)
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:91:23: error: ‘PlayerPacketBuilder’ has not been declared
+  if (mCurrentState == PlayerPacketBuilder::State::HEADER)
+                       ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:93:28: error: ‘PlayerPacketBuilder’ has not been declared
+  else if (mCurrentState == PlayerPacketBuilder::State::BODY)
+                            ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:97:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::onBytesWritten(IClientSocket *, unsigned int) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:100:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::onSocketClosed(IClientSocket *) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:103:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::setListener(PlayerPacketBuilder::OnPlayerPacketBuilderEvent *listener) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:103:39: error: variable or field ‘setListener’ declared void
+ void PlayerPacketBuilder::setListener(PlayerPacketBuilder::OnPlayerPacketBuilderEvent *listener) {
+                                       ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:103:39: error: ‘PlayerPacketBuilder’ has not been declared
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:103:88: error: ‘listener’ was not declared in this scope
+ void PlayerPacketBuilder::setListener(PlayerPacketBuilder::OnPlayerPacketBuilderEvent *listener) {
+                                                                                        ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:107:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::fetchPackets(void) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void fetchPackets()’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:108:9: error: ‘mClient’ was not declared in this scope
+  while (mClient->nbBytesToRead() > 0) {
+         ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:111:7: error: ‘mDatagrams’ was not declared in this scope
+   if (mDatagrams.size() > 0 && mDatagrams.back().host == message.host && mDatagrams.back().port == message.port)
+       ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:112:33: error: ‘mergeWithLastDatagram’ was not declared in this scope
+    mergeWithLastDatagram(message);
+                                 ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:118:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::mergeWithLastDatagram(const IClientSocket::Message &message) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void mergeWithLastDatagram(const IClientSocket::Message&)’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:119:2: error: ‘mDatagrams’ was not declared in this scope
+  mDatagrams.back().msg.insert(mDatagrams.back().msg.end(), message.msg.begin(), message.msg.end());
+  ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: At global scope:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:123:6: error: ‘PlayerPacketBuilder’ has not been declared
+ void PlayerPacketBuilder::sendCommand(const ICommand *command, const Peer &peer) {
+      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:123:70: error: ‘Peer’ does not name a type
+ void PlayerPacketBuilder::sendCommand(const ICommand *command, const Peer &peer) {
+                                                                      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp: In function ‘void sendCommand(const ICommand*, const int&)’:
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:133:22: error: request for member ‘host’ in ‘peer’, which is of non-class type ‘const int’
+  message.host = peer.host;
+                      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:134:22: error: request for member ‘port’ in ‘peer’, which is of non-class type ‘const int’
+  message.port = peer.port;
+                      ^
+../shared/sources/Commands/SharedPlayerPacketBuilder.cpp:136:2: error: ‘mClient’ was not declared in this scope
+  mClient->send(message);
+  ^
+make: *** [build/obj/SharedPlayerPacketBuilder.o] Error 1

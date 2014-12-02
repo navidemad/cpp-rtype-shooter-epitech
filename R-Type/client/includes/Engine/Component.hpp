@@ -18,7 +18,9 @@ class Component
 
 	public:
 		ComponentType::Type	getComponentId() const;
+		void				setComponentId(ComponentType::Type type);
+
 
 	private:
-		const ComponentType::Type mCompenentId;
+		ComponentType::Type mCompenentId;
 };

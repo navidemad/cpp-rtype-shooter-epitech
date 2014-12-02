@@ -35,6 +35,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
 			includes/Core/InputManager.hpp				\
+                        includes/Core/TextInputSystem.hpp				\
 			includes/Core/MovementSystem.hpp			\
 			includes/Core/System.hpp				\
                         includes/Engine/Compenent/Collision.hpp			\
@@ -44,6 +45,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Engine/Compenent/Cursor.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
+                        includes/Engine/Compenent/TextInput.hpp			\
 			includes/Engine/ECSManager.hpp				\
 			includes/Engine/Entity.hpp				\
                         includes/Engine/Compenent/Position.hpp			\
@@ -87,7 +89,12 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandShowLevel.hpp	\
 			../shared/includes/Commands/CommandTimeElapsedPing.hpp	\
 			../shared/includes/Commands/CommandUpdatePseudo.hpp	\
-			../shared/includes/Commands/CommandUpdateScore.hpp	
+			../shared/includes/Commands/CommandUpdateScore.hpp      \
+			../shared/includes/Commands/ClientPacketBuilder.hpp     \
+			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
+			../shared/includes/Network/Peer.hpp                     \
+			../shared/includes/Commands/CommandFactory.hpp
+
 
 SOURCES		+=	sources/main.cpp						\
 			sources/RTypeClient.cpp						\
@@ -97,6 +104,7 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Core/DamageSystem.cpp					\
 			sources/Core/DrawableSystem.cpp					\
                         sources/Core/DrawableFontSystem.cpp				\
+                        sources/Core/TextInputSystem.cpp				\
                         sources/Core/ButtonSystem.cpp					\
 			sources/Core/InputManager.cpp					\
 			sources/Core/MovementSystem.cpp					\
@@ -107,6 +115,7 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Engine/Component.cpp					\
 			sources/Engine/Controllable.cpp					\
                         sources/Engine/Font.cpp                         		\
+                        sources/Engine/TextInput.cpp                         		\
 			sources/Engine/Drawable.cpp					\
 			sources/Engine/ECSManager.cpp					\
 			sources/Engine/Entity.cpp					\
@@ -118,10 +127,13 @@ SOURCES		+=	sources/main.cpp						\
 			sources/GUI/SpriteManager.cpp					\
 			sources/GUI/SpriteModel.cpp					\
 			sources/GUI/TextureManager.cpp					\
-			sources/Network/CommandPacketBuilder.cpp			\
 			sources/Network/ServerCommunication.cpp				\
 			sources/Network/TcpClient.cpp					\
 			sources/Network/UdpClient.cpp 					\
+                        sources/Command/PlayerPacketBuilder.cpp                         \
+			../shared/sources/Commands/CommandFactory.cpp                   \
+			../shared/sources/Commands/SharedPlayerPacketBuilder.cpp        \
+			../shared/sources/Commands/ICommand.cpp                         \
 			../shared/sources/Commands/SharedCommandCreateGame.cpp		\
 			sources/Command/CommandCreateGame.cpp				\
 			../shared/sources/Commands/SharedCommandDeleteGame.cpp		\
@@ -161,7 +173,8 @@ SOURCES		+=	sources/main.cpp						\
 			../shared/sources/Commands/SharedCommandUpdatePseudo.cpp	\
 			sources/Command/CommandUpdatePseudo.cpp				\
 			../shared/sources/Commands/SharedCommandUpdateScore.cpp		\
-			sources/Command/CommandUpdateScore.cpp
+                        sources/Command/CommandUpdateScore.cpp                          \
+			../shared/sources/Commands/ClientPacketBuilder.cpp
 			
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system

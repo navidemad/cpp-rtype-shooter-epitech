@@ -1,15 +1,15 @@
 #include "CommandListLevels.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandListLevels::getMessage(void) const {
-	IClientSocket::Message message;
-	message.msgSize = 0;
-
-	return message;
+	throw CommandException("This command can not be sent by the server");
 }
 
 unsigned int CommandListLevels::getSizeToRead(void) const {
 	return sizeof(CommandListLevels::PacketFromClient);
 }
 
-void CommandListLevels::initFromMessage(const IClientSocket::Message &) {
+void CommandListLevels::initFromMessage(const IClientSocket::Message &message) {
+	if (message.msgSize != sizeof(CommandListLevels::PacketFromClient))
+		throw CommandException("Packet has an invalid size");
 }

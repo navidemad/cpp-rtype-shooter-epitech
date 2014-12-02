@@ -1,34 +1,17 @@
+#include <string>
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManager.hpp"
-#include "Engine/Compenent/Button.hpp"
+#include "Engine/Compenent/TextInput.hpp"
+#include "Engine/Compenent/Font.hpp"
 #include "RTypeClient.hpp"
+#include <iostream>
 
-Button::Button() : Component(ComponentType::BUTTON)
+TextInput::TextInput(std::string const &font, std::string const &text) : Font(font, text)
 {
-
+	setComponentId(ComponentType::TEXTINPUT);
 }
 
-Button::~Button()
+TextInput::~TextInput()
 {
 
-}
-
-void	ButtonGame::process(Entity &entity)
-{
-	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::RTYPE);
-}
-
-void	ButtonQuitGame::process(Entity &entity)
-{
-	entity.getEntityManager()->getClient()->getGui()->close();
-}
-
-void	ButtonMenuGame::process(Entity &entity)
-{
-	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::MENU);
-}
-
-void	ButtonOption::process(Entity &entity)
-{
-	entity.getEntityManager()->getClient()->setIdGame(RTypeClient::OPTION);
 }

@@ -45,6 +45,9 @@ class SFMLGraphic : public IGraphic
 		void				clear();
 		bool				isPressed(std::string);
 		uint32_t			getDelta();
+		std::string	const		&getInputText() const;
+
+
 		void				close();
 		sf::RenderWindow	&getWindow();
 		void				setScale(std::string const &key, float sizeX, float sizeY);

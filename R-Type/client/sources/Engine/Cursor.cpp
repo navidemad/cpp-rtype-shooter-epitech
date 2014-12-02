@@ -23,24 +23,36 @@ bool	Cursor::isBlocked() const
 	return mBlocked;
 }
 
-void	Cursor::next()
+bool	Cursor::next()
 {
 	if (!mBlocked)
 	{
+		std::list<unsigned int>::iterator it = mCurrent;
+
 		++mCurrent;
 		if (mCurrent == mListEntity.end())
 			mCurrent = mListEntity.begin();
+
+		if (mCurrent != it)
+			return true;
 	}
+	return false;
 }
 
-void	Cursor::prev()
+bool	Cursor::prev()
 {
 	if (!mBlocked)
 	{
+		std::list<unsigned int>::iterator it = mCurrent;
+
 		if (mCurrent == mListEntity.begin())
 			mCurrent = mListEntity.end();
 		--mCurrent;
+
+		if (mCurrent != it)
+			return true;
 	}
+	return false;
 }
 
 void	Cursor::addEntity(unsigned int id)

@@ -4,21 +4,10 @@
 /*
 ** ctor - dtor
 */
-ServerCommunication::ServerCommunication() 
-: mHandleTcpCmd(this){
-	mSocketTcp = new TcpClient;
-	mSocketTcp->setOnSocketEventListener(&mHandleTcpCmd);
+ServerCommunication::ServerCommunication() {
 }
 
 ServerCommunication::~ServerCommunication() {
-	delete mSocketTcp;
-}
-
-/*
-** Callback from CommandPacketBuilder
-*/
-void ServerCommunication::onNewCommand(ICommand *command) {
-	mListCommand.push_back(command);
 }
 
 /*
