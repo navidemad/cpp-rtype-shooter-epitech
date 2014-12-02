@@ -6,7 +6,9 @@
 ** ctor - dtor
 */
 ServerCommunication::ServerCommunication()
-: mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp){
+: mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp), mCmdUdp(4242){
+	mCmdTcp.setListener(this);
+	mCmdUdp.setListener(this);
 }
 
 ServerCommunication::~ServerCommunication() {
@@ -19,6 +21,13 @@ void    ServerCommunication::onPacketAvailable(const ClientPacketBuilder &/*clie
 
 }
 void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientPacketBuilder*/){
+
+}
+
+/*
+** Callback from PlayerPacketBuilder
+*/
+void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &/*command*/, const Peer &/*peer*/){
 
 }
 

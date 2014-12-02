@@ -3,9 +3,10 @@
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
 #include "ClientPacketBuilder.hpp"
+#include "PlayerPacketBuilder.hpp"
 #include <memory>
 
-class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent{
+class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
 
     // ctor - dtor
     public:
@@ -23,6 +24,10 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent{
     public:
         void    onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command);
         void    onSocketClosed(const ClientPacketBuilder &clientPacketBuilder);
+
+    //callback from PlayerPacketBuilder
+    public:
+        void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer);
 
     //handle socket
     public:
@@ -43,4 +48,5 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent{
         std::string mIpTcp;
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
+        PlayerPacketBuilder mCmdUdp;
 };
