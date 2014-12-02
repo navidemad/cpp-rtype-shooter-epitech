@@ -1,5 +1,4 @@
 #include "CommandCreateGame.hpp"
-#include "CommandException.hpp"
 #include <algorithm>
 #include <cstring>
 

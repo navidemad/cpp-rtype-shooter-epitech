@@ -63,4 +63,5 @@ private:
 		InputManager						mInputManager;
 		sf::Clock							mDeltaClock;
 		sf::Music							mMusic;
+		std::string							mMusicCurrentKey;
 };

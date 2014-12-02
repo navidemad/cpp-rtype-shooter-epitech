@@ -32,7 +32,7 @@ class SpriteModel
 		uint32_t			getColumns() const;
 		uint32_t			getX() const;
 		uint32_t			getY() const;
-		uint32_t			SpriteModel::getSize() const;
+		uint32_t			getSize() const;
 
 		void				setAnims(uint32_t begin, uint32_t end);
 		void				setCurrentIndex(uint32_t currentIndex);

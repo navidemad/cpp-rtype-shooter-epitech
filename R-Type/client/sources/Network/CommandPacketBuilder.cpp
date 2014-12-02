@@ -27,7 +27,8 @@ void    CommandPacketBuilder::onSocketReadable(IClientSocket * socket, unsigned 
 	message = socket->receive(nbBytesToRead);
 	std::string msg_str(message.msg.begin(), message.msg.end());
 	std::cout << msg_str;
-	socket->send(message);}
+	socket->send(message);
+}
 
 void    CommandPacketBuilder::onSocketClosed(IClientSocket * /*socket*/){
 	return ;

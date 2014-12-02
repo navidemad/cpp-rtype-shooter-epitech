@@ -55,5 +55,6 @@ class TcpClient : public QObject, public IClientSocket{
 	private:
 		std::shared_ptr<QTcpSocket>		mQTcpSocket;
 		std::string						mAddr;
+		int				mPort;
 		IClientSocket::OnSocketEvent	*mListener;
 };

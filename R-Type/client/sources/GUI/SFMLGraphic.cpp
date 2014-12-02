@@ -3,7 +3,7 @@
 std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 
 SFMLGraphic::SFMLGraphic()
-: mWindow(sf::VideoMode::getDesktopMode(), "R-type", sf::Style::Fullscreen), mInputManager(this)
+	: mWindow(sf::VideoMode::getDesktopMode(), "R-type", sf::Style::Fullscreen), mInputManager(this), mMusicCurrentKey("")
 {
 }
 
@@ -27,7 +27,7 @@ bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, fl
 	else
 		index = mContentManager.getSprites()->getResource(key).getCurrentIndex();
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);
-	mContentManager.getSprites()->getResource(key).getSprite(0).setPosition(x, y);
+	mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()).setPosition(x, y);
 	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()));
 	return true;
 }
@@ -46,7 +46,7 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 
 bool	SFMLGraphic::playMusic(std::string const &key, bool onLoop)
 {
-	if (!mMusic.openFromFile(mContentManager.getMusics()->getResource(key)))
+	if (key == mMusicCurrentKey || !mMusic.openFromFile(mContentManager.getMusics()->getResource(key)))
 		return false;
 	mMusic.setLoop(onLoop);
 	mMusic.play();
