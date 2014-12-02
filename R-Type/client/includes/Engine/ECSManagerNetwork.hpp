@@ -9,9 +9,11 @@ class RTypeClient;
 #include "Component.hpp"
 #include "../Core/System.hpp"
 #include "ECSManager.hpp"
+#include "Network/ServerCommunication.hpp"
 
-class ECSManagerNetwork : public ECSManager
+class ECSManagerNetwork : public ECSManager, public ServerCommunication::OnServerEvent
 {
-//	public slots:
-		
+public:
+	void		start();
+	void		stop();
 };
