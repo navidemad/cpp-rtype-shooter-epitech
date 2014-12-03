@@ -23,7 +23,7 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, Pla
         const ServerCommunication &operator=(ServerCommunication &&) = delete;
 
 
-    //server comunication's callback
+    //serverComunication's callback
     public:
         class OnServerEvent {
             public:
@@ -37,6 +37,25 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, Pla
                 virtual void OnTimeElapse(int64_t time) = 0;
                 virtual void OnUpdateScore(const std::string &name, int id, int score) = 0;
         };
+
+    //handle command from server
+    public:
+        struct HandleServerCommand {
+            ICommand::Instruction key;
+            void (ServerCommunication::*fct)(ICommand *command);
+        };
+        static const ServerCommunication::HandleServerCommand tabHandleServerCommand[];
+
+        void ExecServerCommand(ICommand *command);
+        void ExecDestroyResource(ICommand *command);
+        void ExecEndGame(ICommand *command);
+        void ExecError(ICommand *command);
+        void ExecMoveResource(ICommand *command);
+        void ExecShowGame(ICommand *command);
+        void ExecShowLevel(ICommand *command);
+        void ExecTimeElapse(ICommand *command);
+        void ExecUpdateScore(ICommand *command);
+        void ExecHandShake(ICommand *command);
 
     //callback from ClientPacketBuilder
     public:

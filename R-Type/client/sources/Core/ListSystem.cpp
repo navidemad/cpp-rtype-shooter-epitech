@@ -9,6 +9,7 @@
 #include "GUI/IGraphic.hpp"
 #include "RTypeClient.hpp"
 
+#include <algorithm>
 #include <iostream>
 
 ListSystem::ListSystem()
