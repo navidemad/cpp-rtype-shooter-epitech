@@ -1,4 +1,5 @@
 #include "CommandFire.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandFire::getMessage(void) const {
 	IClientSocket::Message message;
@@ -9,9 +10,9 @@ IClientSocket::Message CommandFire::getMessage(void) const {
 }
 
 unsigned int CommandFire::getSizeToRead(void) const {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }
 
 void CommandFire::initFromMessage(const IClientSocket::Message &) {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }

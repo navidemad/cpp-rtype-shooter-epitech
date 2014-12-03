@@ -1,4 +1,5 @@
 #include "CommandUpdatePseudo.hpp"
+#include "CommandException.hpp"
 #include <cstring>
 #include <algorithm>
 
@@ -16,9 +17,9 @@ IClientSocket::Message CommandUpdatePseudo::getMessage(void) const {
 }
 
 unsigned int CommandUpdatePseudo::getSizeToRead(void) const {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }
 
 void CommandUpdatePseudo::initFromMessage(const IClientSocket::Message & /*message*/) {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }

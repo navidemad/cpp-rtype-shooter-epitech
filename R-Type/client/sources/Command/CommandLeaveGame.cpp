@@ -1,4 +1,5 @@
 #include "CommandLeaveGame.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandLeaveGame::getMessage(void) const {
 	IClientSocket::Message message;
@@ -9,9 +10,9 @@ IClientSocket::Message CommandLeaveGame::getMessage(void) const {
 }
 
 unsigned int CommandLeaveGame::getSizeToRead(void) const {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }
 
 void CommandLeaveGame::initFromMessage(const IClientSocket::Message & /*message*/) {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }

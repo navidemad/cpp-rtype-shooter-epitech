@@ -1,9 +1,10 @@
 #include "CommandShowLevel.hpp"
+#include "CommandException.hpp"
 #include <algorithm>
 #include <cstring>
 
 IClientSocket::Message CommandShowLevel::getMessage(void) const {
-	throw std::string("This command can not be sent by the client");
+	throw CommandException("This command can not be sent by the client");
 }
 
 unsigned int CommandShowLevel::getSizeToRead(void) const {
@@ -12,7 +13,7 @@ unsigned int CommandShowLevel::getSizeToRead(void) const {
 
 void CommandShowLevel::initFromMessage(const IClientSocket::Message & message) {
 	if (message.msgSize != sizeof(CommandShowLevel::PacketFromServer))
-		throw std::string("Packet has an invalid size");
+		throw CommandException("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandShowLevel::PacketFromServer *>(message.msg.data());
 

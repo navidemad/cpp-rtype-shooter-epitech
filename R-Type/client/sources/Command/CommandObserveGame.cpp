@@ -1,4 +1,5 @@
 #include "CommandObserveGame.hpp"
+#include "CommandException.hpp"
 #include <cstring>
 #include <algorithm>
 
@@ -16,9 +17,9 @@ IClientSocket::Message CommandObserveGame::getMessage(void) const {
 }
 
 unsigned int CommandObserveGame::getSizeToRead(void) const {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }
 
 void CommandObserveGame::initFromMessage(const IClientSocket::Message & /*message*/) {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }

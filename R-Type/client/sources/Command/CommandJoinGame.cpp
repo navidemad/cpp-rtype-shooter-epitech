@@ -1,4 +1,5 @@
 #include "CommandJoinGame.hpp"
+#include "CommandException.hpp"
 #include <cstring>
 #include <algorithm>
 
@@ -16,9 +17,9 @@ IClientSocket::Message CommandJoinGame::getMessage(void) const {
 }
 
 unsigned int CommandJoinGame::getSizeToRead(void) const {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }
 
 void CommandJoinGame::initFromMessage(const IClientSocket::Message & /*message*/) {
-	throw std::string("This command can not be receive by the client");
+	throw CommandException("This command can not be receive by the client");
 }

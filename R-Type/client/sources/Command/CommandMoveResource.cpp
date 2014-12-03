@@ -1,7 +1,8 @@
 #include "CommandMoveResource.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandMoveResource::getMessage(void) const {
-	throw std::string("This command can not be sent by the client");
+	throw CommandException("This command can not be sent by the client");
 }
 
 unsigned int CommandMoveResource::getSizeToRead(void) const {
@@ -10,7 +11,7 @@ unsigned int CommandMoveResource::getSizeToRead(void) const {
 
 void CommandMoveResource::initFromMessage(const IClientSocket::Message &message) {
 	if (message.msgSize != sizeof(CommandMoveResource::PacketFromServer))
-		throw std::string("Packet has an invalid size");
+		throw CommandException("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandMoveResource::PacketFromServer *>(message.msg.data());
 

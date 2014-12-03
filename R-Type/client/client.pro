@@ -72,6 +72,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/IResource.hpp			\
 			../shared/includes/Network/IClientSocket.hpp		\
 			../shared/includes/Network/IServerSocket.hpp		\
+			../shared/includes/Commands/CommandException.hpp 	\ 							\
 			../shared/includes/Commands/ICommand.hpp        	\
 			../shared/includes/Commands/CommandCreateGame.hpp	\
 			../shared/includes/Commands/CommandDeleteGame.hpp	\

@@ -1,7 +1,8 @@
 #include "CommandTimeElapsedPing.hpp"
+#include "CommandException.hpp"
 
 IClientSocket::Message CommandTimeElapsedPing::getMessage(void) const {
-	throw std::string("This command can not be sent by the client");
+	throw CommandException("This command can not be sent by the client");
 }
 
 unsigned int CommandTimeElapsedPing::getSizeToRead(void) const {
@@ -10,7 +11,7 @@ unsigned int CommandTimeElapsedPing::getSizeToRead(void) const {
 
 void CommandTimeElapsedPing::initFromMessage(const IClientSocket::Message & message) {
 	if (message.msgSize != sizeof(CommandTimeElapsedPing::PacketFromServer))
-		throw std::string("Packet has an invalid size");
+		throw CommandException("Packet has an invalid size");
 
 	auto packet = *reinterpret_cast<const CommandTimeElapsedPing::PacketFromServer *>(message.msg.data());
 
