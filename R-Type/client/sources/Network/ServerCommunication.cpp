@@ -15,7 +15,7 @@
 ** ctor - dtor
 */
 ServerCommunication::ServerCommunication()
-: mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp), mCmdUdp(4242){
+: QObject(), mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp), mCmdUdp(4242){
 	mCmdTcp.setListener(this);
 	mCmdUdp.setListener(this);
 }
@@ -51,35 +51,35 @@ void ServerCommunication::ExecServerCommand(ICommand *command){
 }
 void ServerCommunication::ExecDestroyResource(ICommand *command){
 	CommandDestroyResource *cmd = reinterpret_cast<CommandDestroyResource *>(command);
-	mListenerEcs->OnDestroyResource(cmd->getId());
+	//mListenerEcs->OnDestroyResource(cmd->getId());
 }
 void ServerCommunication::ExecEndGame(ICommand *command){
 	CommandEndGame*cmd = reinterpret_cast<CommandEndGame *>(command);
-	mListenerEcs->OnEndGame(cmd->getName());
+	//mListenerEcs->OnEndGame(cmd->getName());
 }
 void ServerCommunication::ExecError(ICommand *command){
 	CommandError *cmd = reinterpret_cast<CommandError *>(command);
-	mListenerEcs->OnError(cmd->getInstructionCode(), cmd->getErrorCode());
+	//mListenerEcs->OnError(cmd->getInstructionCode(), cmd->getErrorCode());
 }
 void ServerCommunication::ExecMoveResource(ICommand *command){
 	CommandMoveResource *cmd = reinterpret_cast<CommandMoveResource*>(command);
-	mListenerEcs->OnMoveResource(cmd->getType(), cmd->getX(), cmd->getY(), cmd->getAngle(), cmd->getId());
+	//mListenerEcs->OnMoveResource(cmd->getType(), cmd->getX(), cmd->getY(), cmd->getAngle(), cmd->getId());
 }
 void ServerCommunication::ExecShowGame(ICommand *command){
 	CommandShowGame *cmd = reinterpret_cast<CommandShowGame *>(command);
-	mListenerEcs->OnShowGame(cmd->getName(), cmd->getLevelName(), cmd->getNbPlayers(), cmd->getMaxPlayers(), cmd->getNbObservers(), cmd->getMaxObservers());
+	//mListenerEcs->OnShowGame(cmd->getName(), cmd->getLevelName(), cmd->getNbPlayers(), cmd->getMaxPlayers(), cmd->getNbObservers(), cmd->getMaxObservers());
 }
 void ServerCommunication::ExecShowLevel(ICommand *command){
 	CommandShowLevel *cmd = reinterpret_cast<CommandShowLevel *>(command);
-	mListenerEcs->OnShowLevel(cmd->getName(), cmd->getScript());
+	//mListenerEcs->OnShowLevel(cmd->getName(), cmd->getScript());
 }
 void ServerCommunication::ExecTimeElapse(ICommand *command){
 	CommandTimeElapsedPing *cmd = reinterpret_cast<CommandTimeElapsedPing *>(command);
-	mListenerEcs->OnTimeElapse(cmd->getTimeElapsed());
+	//mListenerEcs->OnTimeElapse(cmd->getTimeElapsed());
 }
 void ServerCommunication::ExecUpdateScore(ICommand *command){
 	CommandUpdateScore *cmd = reinterpret_cast<CommandUpdateScore *>(command);
-	mListenerEcs->OnUpdateScore(cmd->getPseudo(), cmd->getId(), cmd->getScore());
+	//mListenerEcs->OnUpdateScore(cmd->getPseudo(), cmd->getId(), cmd->getScore());
 }
 void ServerCommunication::ExecHandShake(ICommand * /*command*/){
 	

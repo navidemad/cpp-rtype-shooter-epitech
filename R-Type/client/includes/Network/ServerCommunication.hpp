@@ -1,4 +1,5 @@
 #pragma once
+#include <QObject>
 #include <list>
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
@@ -8,7 +9,8 @@
 #include "ErrorStatus.hpp"
 #include <memory>
 
-class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
+class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
+    Q_OBJECT
 
     // ctor - dtor
     public:
@@ -22,21 +24,16 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, Pla
         const ServerCommunication &operator=(const ServerCommunication &) = delete;
         const ServerCommunication &operator=(ServerCommunication &&) = delete;
 
-
-    //serverComunication's callback
-    public:
-        class OnServerEvent {
-            public:
-                virtual ~OnServerEvent(void) {}
-                virtual void OnDestroyResource(int id) = 0;
-                virtual void OnEndGame(const std::string &name) = 0;
-                virtual void OnError(ICommand::Instruction instruction, ErrorStatus::Error) = 0;
-                virtual void OnMoveResource(IResource::Type type, float x, float y, short angle, int id) = 0;
-                virtual void OnShowGame(const std::string &name, const std::string &levelName, int nbPlayer, int maxPlayer, int nbObserver, int maxObserver) = 0;
-                virtual void OnShowLevel(const std::string &name, const std::string &script) = 0;
-                virtual void OnTimeElapse(int64_t time) = 0;
-                virtual void OnUpdateScore(const std::string &name, int id, int score) = 0;
-        };
+    //signal
+    signals:
+        void SignalDestroyResource(int id);
+        void SignalEndGame(const std::string &name);
+        void SignalError(ICommand::Instruction instruction, ErrorStatus::Error);
+        void SignalMoveResource(IResource::Type type, float x, float y, short angle, int id);
+        void SignalShowGame(const std::string &name, const std::string &levelName, int nbPlayer, int maxPlayer, int nbObserver, int maxObserver);
+        void SignalShowLevel(const std::string &name, const std::string &script);
+        void SignalTimeElapse(int64_t time);
+        void SignalUpdateScore(const std::string &name, int id, int score);
 
     //handle command from server
     public:
@@ -86,5 +83,4 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, Pla
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
         PlayerPacketBuilder mCmdUdp;
-        OnServerEvent *mListenerEcs;
 };
