@@ -1,3 +1,14 @@
+/*
+#include "PortabilityBuilder.hpp"
+int main(void) {
+	auto mReaddir = PortabilityBuilder::getReaddir();
+	mReaddir->readFolder("C:/Users/LikseN/Desktop/R-Type/R-Type/server/Test/");
+	#if defined(__OS_WINDOWS__)
+		system("PAUSE");
+	#endif
+}
+*/
+
 #include "RTypeServer.hpp"
 #include "ScriptLoader.hpp"
 #include <iostream>
