@@ -18,11 +18,13 @@ std::list<std::string> WindowsReaddir::readFolder(std::string pathFolder) {
 	hFind = FindFirstFile(s2ws(pathFolder).c_str(), &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
-			if (strcmp(reinterpret_cast<char*>(data.cFileName), ".") == 0 || strcmp(reinterpret_cast<char*>(data.cFileName), "..") == 0) { continue; }
-			std::wcout << data.cFileName << std::endl;
-			files.push_back(reinterpret_cast<char*>(data.cFileName));
+			if (strcmp(reinterpret_cast<char*>(data.cFileName), ".") && strcmp(reinterpret_cast<char*>(data.cFileName), "..")) {
+				const std::wstring ws = std::wstring(data.cFileName);			
+				const std::string file(ws.begin(), ws.end());
+				files.push_back(file);
+			}
 		} while (FindNextFile(hFind, &data));
-			FindClose(hFind);
+		FindClose(hFind);
 	}
 	return files;
 }

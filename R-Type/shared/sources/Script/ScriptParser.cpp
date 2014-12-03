@@ -41,7 +41,7 @@ std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
 
 	while (file && std::getline(file, lineContent)){
 		if (lineContent.length() == 0) continue;
-        textScript += lineContent;
+        textScript += lineContent + "\n";
 		parser.setStringToParse(lineContent);
 		bool rightCmd = false;
 			wordContent = parser.extractWord();
