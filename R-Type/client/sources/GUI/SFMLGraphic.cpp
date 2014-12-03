@@ -19,19 +19,25 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
-#include <iostream>
-#define TIME 1000
-
-bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, float y)
+bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, float y, uint32_t id)
 {
-	uint32_t index;
+	// set time elapse by id
+	if (!mIdTimeElapse.count(id))
+		mIdTimeElapse[id] = 0;
+	mIdTimeElapse[id] += delta;
 
+	// set index of frame sprite
+	uint32_t index;
 	if (mContentManager.getSprites()->getResource(key).isLoop())
-		index = mContentManager.getSprites()->getResource(key).getSize() * (delta % TIME) / TIME;
+		index = mContentManager.getSprites()->getResource(key).getSize() * (mIdTimeElapse[id] % 1000) / 1000;
 	else
 		index = mContentManager.getSprites()->getResource(key).getCurrentIndex();
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);
+
+	// set position of sprite
 	mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()).setPosition(x, y);
+
+	// draw sprite on window
 	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()));
 	return true;
 }

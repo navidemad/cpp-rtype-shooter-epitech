@@ -19,5 +19,5 @@ void	DrawableSystem::process(Entity &entity, uint32_t /* */)
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Drawable *sprite = static_cast<Drawable *>(entity.getSpecificComponent(ComponentType::DRAWABLE));
 
-	entity.getEntityManager()->getClient()->getGui()->drawSprite(sprite->getName(), 0, pos->getX(), pos->getY());
+	entity.getEntityManager()->getClient()->getGui()->drawSprite(sprite->getName(), 0, pos->getX(), pos->getY(), entity.getId());
 }

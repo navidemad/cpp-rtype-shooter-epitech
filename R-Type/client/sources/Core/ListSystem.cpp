@@ -30,7 +30,7 @@ void	ListSystem::displayRoom(Entity &entity, Font *font, Position *pos, List *li
 	{
 		if (list->mCurrentRoom == it)
 		{
-			entity.getEntityManager()->getClient()->getGui()->drawSprite("cursor", 0, x - 85 ,y + 30);
+			entity.getEntityManager()->getClient()->getGui()->drawSprite("cursor", 0, x - 85 ,y + 30, entity.getId());
 		}
 		entity.getEntityManager()->getClient()->getGui()->drawFont(font->getFont(), (*(*it)).mName, x, y, 100);
 		y += 100;

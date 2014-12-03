@@ -98,14 +98,15 @@ void		SpriteModel::init()
 	mSprite.setTexture(mTexture);
 
 	// set container of frame rectangle
-	sf::Vector2u size = mTexture.getSize();
+	sf::Vector2u const size = mTexture.getSize();
 	if (size == sf::Vector2u(0, 0))
 		throw std::runtime_error("Prevents Division by zero");
-	int rectWidth = size.x / mColumns;
-	int rectHeight = size.y / mLines;
+	uint32_t rectWidth = size.x / mColumns;
+	uint32_t rectHeight = size.y / mLines;
 
 	// sprite generator
-	for (uint32_t i = 0; i < mLines * mColumns; ++i)
+	uint32_t const n = mLines * mColumns;
+	for (uint32_t i = 0; i < n; ++i)
 	{
 		sf::IntRect rect((i % rectWidth) * rectWidth, (i / rectWidth) * rectHeight, rectWidth, rectHeight);
 		sf::Sprite sprite(mTexture, rect);
