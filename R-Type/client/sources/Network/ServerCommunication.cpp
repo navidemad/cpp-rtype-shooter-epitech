@@ -51,39 +51,38 @@ void ServerCommunication::ExecServerCommand(ICommand *command){
 }
 void ServerCommunication::ExecDestroyResource(ICommand *command){
 	CommandDestroyResource *cmd = reinterpret_cast<CommandDestroyResource *>(command);
-	(void)cmd;
+	mListenerEcs->OnDestroyResource(cmd->getId());
 }
 void ServerCommunication::ExecEndGame(ICommand *command){
 	CommandEndGame*cmd = reinterpret_cast<CommandEndGame *>(command);
-	(void)cmd;
+	mListenerEcs->OnEndGame(cmd->getName());
 }
 void ServerCommunication::ExecError(ICommand *command){
 	CommandError *cmd = reinterpret_cast<CommandError *>(command);
-	(void)cmd;
+	mListenerEcs->OnError(cmd->getInstructionCode(), cmd->getErrorCode());
 }
 void ServerCommunication::ExecMoveResource(ICommand *command){
 	CommandMoveResource *cmd = reinterpret_cast<CommandMoveResource*>(command);
-	(void)cmd;
+	mListenerEcs->OnMoveResource(cmd->getType(), cmd->getX(), cmd->getY(), cmd->getAngle(), cmd->getId());
 }
 void ServerCommunication::ExecShowGame(ICommand *command){
 	CommandShowGame *cmd = reinterpret_cast<CommandShowGame *>(command);
-	(void)cmd;
+	mListenerEcs->OnShowGame(cmd->getName(), cmd->getLevelName(), cmd->getNbPlayers(), cmd->getMaxPlayers(), cmd->getNbObservers(), cmd->getMaxObservers());
 }
 void ServerCommunication::ExecShowLevel(ICommand *command){
 	CommandShowLevel *cmd = reinterpret_cast<CommandShowLevel *>(command);
-	(void)cmd;
+	mListenerEcs->OnShowLevel(cmd->getName(), cmd->getScript());
 }
 void ServerCommunication::ExecTimeElapse(ICommand *command){
 	CommandTimeElapsedPing *cmd = reinterpret_cast<CommandTimeElapsedPing *>(command);
-	(void)cmd;
+	mListenerEcs->OnTimeElapse(cmd->getTimeElapsed());
 }
 void ServerCommunication::ExecUpdateScore(ICommand *command){
 	CommandUpdateScore *cmd = reinterpret_cast<CommandUpdateScore *>(command);
-	(void)cmd;
+	mListenerEcs->OnUpdateScore(cmd->getPseudo(), cmd->getId(), cmd->getScore());
 }
-void ServerCommunication::ExecHandShake(ICommand *command){
-	CommandHandshake *cmd = reinterpret_cast<CommandHandshake *>(command);
-	(void)cmd;
+void ServerCommunication::ExecHandShake(ICommand * /*command*/){
+	
 }
 
 /*

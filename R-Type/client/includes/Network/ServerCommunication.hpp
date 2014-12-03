@@ -86,4 +86,5 @@ class ServerCommunication : ClientPacketBuilder::OnClientPacketBuilderEvent, Pla
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
         PlayerPacketBuilder mCmdUdp;
+        OnServerEvent *mListenerEcs;
 };
