@@ -43,13 +43,14 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         void	leaveGame(const Peer &peer, bool throwExcept = true);
 		void	updatePseudo(const Peer &peer, const std::string &pseudo);
         const NGame::Properties &getGameProperties(const std::string &name);
-        const std::list<NGame::Properties> &getGamesProperties(void) const;
-        std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByName(const std::string& name);
-        std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByHost(const Peer &peer);
-
-    // getter
-    public:
-        const ScriptLoader& getScriptLoader(void) const;
+        std::list<NGame::Properties> getGamesProperties(void) const;
+		std::list<std::pair<std::string, std::string>> getScripts(void) const;
+		
+	// internal methods
+	private:
+		void	removeClientsFromWhitelist(const std::shared_ptr<NGame::Game> &game);
+		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByName(const std::string& name);
+		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByHost(const Peer &peer);
 
     // attributes
     private:
