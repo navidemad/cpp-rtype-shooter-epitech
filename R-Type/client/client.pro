@@ -97,6 +97,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/ClientPacketBuilder.hpp     \
 			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
 			../shared/includes/Network/Peer.hpp                     \
+			../shared/includes/Network/SocketException.hpp 					\
 			../shared/includes/Commands/CommandFactory.hpp			\
 			../shared/includes/Error/ErrorStatus.hpp
 

@@ -51,55 +51,57 @@ void ServerCommunication::ExecServerCommand(ICommand *command){
 }
 void ServerCommunication::ExecDestroyResource(ICommand *command){
 	CommandDestroyResource *cmd = reinterpret_cast<CommandDestroyResource *>(command);
-	//mListenerEcs->OnDestroyResource(cmd->getId());
+	emit SignalDestroyResource(cmd->getId());
 }
 void ServerCommunication::ExecEndGame(ICommand *command){
 	CommandEndGame*cmd = reinterpret_cast<CommandEndGame *>(command);
-	//mListenerEcs->OnEndGame(cmd->getName());
+	emit SignalEndGame(cmd->getName());
 }
 void ServerCommunication::ExecError(ICommand *command){
 	CommandError *cmd = reinterpret_cast<CommandError *>(command);
-	//mListenerEcs->OnError(cmd->getInstructionCode(), cmd->getErrorCode());
+	emit SignalError(cmd->getInstructionCode(), cmd->getErrorCode());
 }
 void ServerCommunication::ExecMoveResource(ICommand *command){
 	CommandMoveResource *cmd = reinterpret_cast<CommandMoveResource*>(command);
-	//mListenerEcs->OnMoveResource(cmd->getType(), cmd->getX(), cmd->getY(), cmd->getAngle(), cmd->getId());
+	emit SignalMoveResource(cmd->getType(), cmd->getX(), cmd->getY(), cmd->getAngle(), cmd->getId());
 }
 void ServerCommunication::ExecShowGame(ICommand *command){
 	CommandShowGame *cmd = reinterpret_cast<CommandShowGame *>(command);
-	//mListenerEcs->OnShowGame(cmd->getName(), cmd->getLevelName(), cmd->getNbPlayers(), cmd->getMaxPlayers(), cmd->getNbObservers(), cmd->getMaxObservers());
+	emit SignalShowGame(cmd->getName(), cmd->getLevelName(), cmd->getNbPlayers(), cmd->getMaxPlayers(), cmd->getNbObservers(), cmd->getMaxObservers());
 }
 void ServerCommunication::ExecShowLevel(ICommand *command){
 	CommandShowLevel *cmd = reinterpret_cast<CommandShowLevel *>(command);
-	//mListenerEcs->OnShowLevel(cmd->getName(), cmd->getScript());
+	emit SignalShowLevel(cmd->getName(), cmd->getScript());
 }
 void ServerCommunication::ExecTimeElapse(ICommand *command){
 	CommandTimeElapsedPing *cmd = reinterpret_cast<CommandTimeElapsedPing *>(command);
-	//mListenerEcs->OnTimeElapse(cmd->getTimeElapsed());
+	emit SignalTimeElapse(cmd->getTimeElapsed());
 }
 void ServerCommunication::ExecUpdateScore(ICommand *command){
 	CommandUpdateScore *cmd = reinterpret_cast<CommandUpdateScore *>(command);
-	//mListenerEcs->OnUpdateScore(cmd->getPseudo(), cmd->getId(), cmd->getScore());
+	emit SignalUpdateScore(cmd->getPseudo(), cmd->getId(), cmd->getScore());
 }
 void ServerCommunication::ExecHandShake(ICommand * /*command*/){
-	
+	std::shared_ptr<ICommand> command(new CommandHandshake);
+	mCmdTcp.sendCommand(command.get());
+	return ;
 }
 
 /*
 ** Callback from ClientPacketBuilder
 */
-void    ServerCommunication::onPacketAvailable(const ClientPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &/*command*/){
-
+void    ServerCommunication::onPacketAvailable(const ClientPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &command){
+	ExecServerCommand(command.get());
 }
 void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientPacketBuilder*/){
-
+	return ;
 }
 
 /*
 ** Callback from PlayerPacketBuilder
 */
-void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &/*command*/, const Peer &/*peer*/){
-
+void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &command, const Peer &/*peer*/){
+	ExecServerCommand(command.get());
 }
 
 /*
