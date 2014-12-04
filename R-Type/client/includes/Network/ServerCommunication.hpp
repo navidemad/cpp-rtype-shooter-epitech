@@ -35,6 +35,21 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void SignalTimeElapse(int64_t time);
         void SignalUpdateScore(const std::string &name, int id, int score);
 
+    //slots
+    public slots:
+        void OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
+        void OnDeleteGame(const std::string &name);
+        void OnDiconect(void);
+        void OnFire(void);
+        void OnJoinGame(const std::string &name);
+        void OnLeaveGame(void);
+        void OnListGame(void);
+        void OnListLevel(void);
+        void OnMove(IResource::Direction direction);
+        void OnObserveGame(const std::string &name);
+        void OnShowGame(const std::string &name);
+        void OnUpdatePseudo(const std::string &pseudo);
+
     //handle command from server
     public:
         struct HandleServerCommand {
