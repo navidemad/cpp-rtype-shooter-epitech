@@ -1,4 +1,5 @@
 #include "Network/UdpClient.hpp"
+#include "SocketException.hpp"
 
 UdpClient::UdpClient(void)
 : mQUdpSocket(new QUdpSocket(this)), mIsReadable(false), mListener(NULL) {
@@ -12,7 +13,7 @@ UdpClient::~UdpClient(void){
 void	UdpClient::connect(const std::string &/*addr*/, int port) {
 	close();
 	if (mQUdpSocket->bind(QHostAddress::Any, port) == false)
-		throw std::string("fail QUdpSocket::bind");
+		throw SocketException("fail QUdpSocket::bind");
 
 	QObject::connect(mQUdpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQUdpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
@@ -58,7 +59,7 @@ IClientSocket::Message	UdpClient::receive(unsigned int sizeToRead) {
 
 	ret = mQUdpSocket->readDatagram(buffer.get(), sizeToRead, &host, &port);
 	if (ret == -1)
-		throw std::string("fail QUdpSocket::read");
+		throw SocketException("fail QUdpSocket::read");
 
 	message.msgSize = ret;
 	message.msg.insert(message.msg.end(), buffer.get(), buffer.get() + message.msgSize);

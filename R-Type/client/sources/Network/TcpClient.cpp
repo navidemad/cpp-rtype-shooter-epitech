@@ -1,5 +1,7 @@
 #include <qhostaddress.h>
 #include "Network/TcpClient.hpp"
+#include "SocketException.hpp"
+
 
 TcpClient::TcpClient(void)
   : mQTcpSocket(new QTcpSocket(this)), mAddr(""), mPort(0), mListener(NULL) {
@@ -13,7 +15,7 @@ void	TcpClient::connect(const std::string &addr, int port) {
 	mQTcpSocket->connectToHost(QString(addr.c_str()), port);
 
 	if (mQTcpSocket->waitForConnected(-1) == false)
-		throw std::string("fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected");
+		throw SocketException("fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected");
 
 	QObject::connect(mQTcpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQTcpSocket.get(), SIGNAL(disconnected()), this, SLOT(close()));
@@ -52,7 +54,7 @@ void	TcpClient::send(const IClientSocket::Message &message) {
 	int ret = mQTcpSocket->write(msg_str.c_str(), message.msgSize);
 
 	if (ret == -1)
-		throw std::string("fail QTcpSocket::write");
+		throw SocketException("fail QTcpSocket::write");
 }
 
 IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
@@ -69,7 +71,7 @@ IClientSocket::Message	TcpClient::receive(unsigned int sizeToRead) {
 
 	ret = mQTcpSocket->read(buffer.get(), sizeToRead);
 	if (ret == -1)
-		throw std::string("fail QTcpSocket::read");
+		throw SocketException("fail QTcpSocket::read");
 
 	message.msgSize = ret;
 	message.msg.insert(message.msg.end(), buffer.get(), buffer.get() + message.msgSize);
