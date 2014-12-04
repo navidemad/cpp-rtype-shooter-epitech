@@ -20,12 +20,8 @@ std::shared_ptr<TextureManager>	TextureManager::getInstance(void)
 	return mInstance;
 }
 
-void		TextureManager::loadResources()
+void		TextureManager::loadResources(std::string const &/*key*/, std::string const &/*path*/)
 {
-	std::ifstream	resourceFile;
-
-	resourceFile.open("");
-	resourceFile.close();
 }
 
 void		TextureManager::unloadResources()

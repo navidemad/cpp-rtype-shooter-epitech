@@ -19,15 +19,13 @@ std::shared_ptr<FontManager>	FontManager::getInstance()
     return mInstance;
 }
 
-void	FontManager::loadResources()
+void	FontManager::loadResources(std::string const &key, std::string const &path)
 {
-	{
-		sf::Font font;
+	sf::Font font;
 
-		if (!font.loadFromFile("./assets/fonts/RemachineScript_Personal_Use.ttf"))
-			throw std::runtime_error("Failed to load fonts...");
-		mListResources.insert(std::pair<std::string, sf::Font>("0", font));
-	}
+	if (!font.loadFromFile("./assets/fonts/RemachineScript_Personal_Use.ttf"))
+		throw std::runtime_error("Failed to load fonts...");
+	mListResources.insert(std::pair<std::string, sf::Font>("0", font));
 }
 
 void	FontManager::unloadResources()

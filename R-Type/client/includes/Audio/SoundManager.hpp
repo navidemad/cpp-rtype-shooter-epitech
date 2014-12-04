@@ -39,7 +39,7 @@ class SoundManager : public IResourceManager<sf::sSound>
 
 	// methods
 	public:
-		void					loadResources();
+		void					loadResources(std::string const &key, std::string const &path);
 		void					unloadResources();
 		sf::sSound				&getResource(std::string const &key);
 

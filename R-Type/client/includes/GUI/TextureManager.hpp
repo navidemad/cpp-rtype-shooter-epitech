@@ -29,7 +29,7 @@ class TextureManager : public IResourceManager<sf::Texture>
 
 	// methods
 	public:
-		void		loadResources();
+		void		loadResources(std::string const &key, std::string const &path);
 		void		unloadResources();
 		sf::Texture	&getResource(std::string const &key);
 

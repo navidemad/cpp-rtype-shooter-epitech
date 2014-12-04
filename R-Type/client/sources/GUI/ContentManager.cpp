@@ -16,27 +16,27 @@ ContentManager::~ContentManager()
 
 void	ContentManager::loadTextures()
 {
-	mTextures->loadResources();
+	mTextures->loadResources("", "");
 }
 
 void	ContentManager::loadSprites()
 {
-	mSprites->loadResources();
+	mSprites->loadResources("", "");
 }
 
 void	ContentManager::loadFonts()
 {
-	mFonts->loadResources();
+	mFonts->loadResources("", "");
 }
 
 void	ContentManager::loadMusics()
 {
-	mMusics->loadResources();
+	mMusics->loadResources("", "");
 }
 
 void	ContentManager::loadSounds()
 {
-	mSounds->loadResources();
+	mSounds->loadResources("", "");
 }
 
 std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTextures() const

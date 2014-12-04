@@ -19,7 +19,7 @@ std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
     return mInstance;
 }
 
-void			SpriteManager::loadResources()
+void			SpriteManager::loadResources(std::string const &key, std::string const &path)
 {
 	{
 		SpriteModel model("assets/sprites/menu.png", 1, 1);

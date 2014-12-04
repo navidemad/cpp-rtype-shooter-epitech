@@ -29,7 +29,7 @@ class MusicManager : public IResourceManager<std::string>
 
 	// methods
 	public:
-		void					loadResources();
+		void					loadResources(std::string const &key, std::string const &path);
 		void					unloadResources();
 		std::string				&getResource(std::string const &key);
 

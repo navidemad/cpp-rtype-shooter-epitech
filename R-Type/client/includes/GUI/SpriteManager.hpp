@@ -29,7 +29,7 @@ class SpriteManager : public IResourceManager<SpriteModel>
 
 	// methods
 	public:
-		void		loadResources();
+		void		loadResources(std::string const &key, std::string const &path);
 		void		unloadResources();
 		SpriteModel	&getResource(std::string const &key);
 

@@ -32,29 +32,29 @@ class SFMLGraphic : public IGraphic
 	// public methods
 	public:
 		bool				drawSprite(std::string const &key, uint32_t delta, float x, float y, uint32_t id);
-		void				update();
 		bool				drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t size);
 		bool				playMusic(std::string const &key, bool onLoop = true);
 		bool				playSound(std::string const &key, bool onLoop = false);
 		void				stopMusic();
 		void				stopSound(std::string const &key);
 		void				setVolume(std::string const &key, float volume = 100.0);
-		bool				isOpen() const;
-		void				handleEvent();
-		void				show();
-		void				clear();
-		bool				isPressed(std::string);
-		uint32_t			getDelta();
 		std::string	const	&getInputText() const;
 
+		void				loadSprite(std::string const &key, std::string const &path);
+		void				loadSound(std::string const &key, std::string const &path);
 
+		bool				isOpen() const;
+		void				handleEvent();
+		void				init();
+		void				update();
+		void				clear();
+		void				show();
+		bool				isPressed(std::string);
+		uint32_t			getDelta();
 		void				close();
+
 		sf::RenderWindow	&getWindow();
 		void				setScale(std::string const &key, float sizeX, float sizeY);
-
-	// public method
-	public:
-		void	init();
 
 	// attributes
 	private:
