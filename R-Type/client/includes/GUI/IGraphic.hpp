@@ -19,8 +19,8 @@ class IGraphic
 		virtual void				setVolume(std::string const &key, float volume = 100.0) = 0;
 		virtual std::string	const	&getInputText() const = 0;
 
-		virtual void				loadSprite(std::string const &key, std::string const &path) = 0;
-		virtual void				loadSound(std::string const &key, std::string const &path) = 0;
+//		virtual void				loadSprite(std::string const &key, std::string const &path) = 0;
+//		virtual void				loadSound(std::string const &key, std::string const &path) = 0;
 
 		virtual bool				isOpen() const = 0;
 		virtual void				handleEvent() = 0;

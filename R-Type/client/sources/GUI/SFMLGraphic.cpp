@@ -92,16 +92,6 @@ std::string	const		&SFMLGraphic::getInputText() const
 	return mInputManager.getEnteredKey();
 }
 
-void				SFMLGraphic::loadSprite(std::string const &key, std::string const &path)
-{
-
-}
-
-void				SFMLGraphic::loadSound(std::string const &key, std::string const &path)
-{
-
-}
-
 uint32_t	SFMLGraphic::getDelta()
 {
 	sf::Time	delta = mDeltaClock.restart();

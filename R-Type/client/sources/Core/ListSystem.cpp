@@ -21,8 +21,8 @@ ListSystem::ListSystem()
 
 void	ListSystem::displayRoom(Entity &entity, Font *font, Position *pos, List *list)
 {
-	unsigned int	x = pos->getX();
-	unsigned int	y = pos->getY();
+	unsigned int	x = static_cast<unsigned int>(pos->getX());
+	unsigned int	y = static_cast<unsigned int>(pos->getY());
 
 	std::vector<std::list<information_room>::iterator>::iterator it = list->mListRoomButton.begin();
 
@@ -30,9 +30,9 @@ void	ListSystem::displayRoom(Entity &entity, Font *font, Position *pos, List *li
 	{
 		if (list->mCurrentRoom == it)
 		{
-			entity.getEntityManager()->getClient()->getGui()->drawSprite("cursor", 0, x - 85 ,y + 30, entity.getId());
+			entity.getEntityManager()->getClient()->getGui()->drawSprite("cursor", 0, static_cast<float>(x - 85) ,static_cast<float>(y + 30), entity.getId());
 		}
-		entity.getEntityManager()->getClient()->getGui()->drawFont(font->getFont(), (*(*it)).mName, x, y, 100);
+		entity.getEntityManager()->getClient()->getGui()->drawFont(font->getFont(), (*(*it)).mName, static_cast<float>(x), static_cast<float>(y), 100);
 		y += 100;
 	}
 }
