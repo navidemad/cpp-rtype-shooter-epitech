@@ -40,7 +40,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         void    joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo = "Anonymous");
         void    playGame(const Peer &peer, const std::string &name, const std::string &pseudo);
         void    spectateGame(const Peer &peer, const std::string &name);
-        void	leaveGame(const Peer &peer, bool throwExcept = true);
+	void	leaveGame(const Peer &peer);
 		void	updatePseudo(const Peer &peer, const std::string &pseudo);
         const NGame::Properties &getGameProperties(const std::string &name);
         std::list<NGame::Properties> getGamesProperties(void) const;
