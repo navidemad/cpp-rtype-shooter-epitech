@@ -20,7 +20,7 @@ std::shared_ptr<SoundManager>	SoundManager::getInstance()
     return mInstance;
 }
 
-void	SoundManager::loadResources(std::string const &key, std::string const &path)
+void	SoundManager::loadResources(std::string const &, std::string const &)
 {
 	{
 		sf::sSound ssound;

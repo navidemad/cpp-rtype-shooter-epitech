@@ -48,7 +48,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 				virtual void	onClientListGames(const Client &client) = 0;
 				virtual void	onClientListLevels(const Client &client) = 0;
 				virtual void	onClientDisconnect(const Client &client) = 0;
-				virtual void	onClientHandshake(Client &client) = 0;
+				virtual void	onClientHandshake(Client &client, int udpPort) = 0;
 				virtual void	onClientObserveGame(const Client &client, const std::string &name) = 0;
 				virtual void	onClientLeaveGame(const Client &client) = 0;
 				virtual void	onClientUpdatePseudo(Client &client, const std::string &pseudo) = 0;
@@ -74,6 +74,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 		bool isAuthenticated(void) const;
 		void setIsAuthenticated(bool isAuthenticated);
 		void setPseudo(const std::string &pseudo);
+		void setUdpPort(int udpPort);
 
 	// attributes
 	private:

@@ -15,6 +15,7 @@ GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMute
 
 GamesManager::~GamesManager(void) {
     mGames.clear();
+    mThreadPool->stop();
 }
 
 void GamesManager::run(void) {

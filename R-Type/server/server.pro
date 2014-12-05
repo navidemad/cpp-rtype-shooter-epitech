@@ -105,7 +105,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Game/GameComponent.hpp		\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp								\
-				includes/Network/Peer.hpp
+				../shared/includes/Network/Peer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\

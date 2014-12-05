@@ -7,7 +7,7 @@
 #include "CommandUpdateScore.hpp"
 #include "CommandTimeElapsedPing.hpp"
 #include <algorithm>
-#include <iostream>
+#include "Utils.hpp"
 
 const PlayerCommunicationManager::CommandExec PlayerCommunicationManager::commandExecTab[] = {
 	{ ICommand::Instruction::MOVE, &PlayerCommunicationManager::recvMove },
@@ -26,14 +26,11 @@ PlayerCommunicationManager::~PlayerCommunicationManager(void) {
 }
 
 void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const Peer &peer) {
-  std::cout << "PACKET AVAILABLE" << std::endl;
-  std::cout << "peer>" << peer.host << "@" << peer.port << std::endl;
 	{
 		ScopedLock scopedLock(mMutex);
-		std::cout << "lock" << std::endl;
+
 		if (findPeer(peer) == mAllowedPeers.end())
 			return;
-		std::cout << "find" << std::endl;
 	}
 
 	for (const auto &instr : commandExecTab)
@@ -44,7 +41,7 @@ void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, 
 }
 
 void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &command, const Peer &peer) {
-  std::cout << "recv move" << std::endl;
+  Utils::logInfo("recv move");
 
 	if (mListener) {
 		std::shared_ptr<CommandMove> commandMove = std::static_pointer_cast<CommandMove>(command);
@@ -54,7 +51,7 @@ void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &comma
 }
 
 void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, const Peer &peer) {
-  std::cout << "recv fire" << std::endl;
+  Utils::logInfo("recv fire");
 
 	if (mListener)
 		mListener->onPlayerFire(*this, peer);
@@ -74,11 +71,9 @@ void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {
 	if (peerIt != mAllowedPeers.end())
 		mAllowedPeers.erase(peerIt);
 }
-#include <iostream>
+
 std::list<Peer>::iterator PlayerCommunicationManager::findPeer(const Peer &peer) {
   return std::find_if(mAllowedPeers.begin(), mAllowedPeers.end(), [&](const Peer &peerIt) { 
-      std::cout << peer.host << "@" << peer.port << std::endl;
-      std::cout << peerIt.host << "@" << peerIt.port << std::endl;
       return peer == peerIt;
     });
 }

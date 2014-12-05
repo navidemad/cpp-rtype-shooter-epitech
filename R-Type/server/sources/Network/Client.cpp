@@ -31,7 +31,7 @@ const Client::CommandExec Client::commandExecTab[] = {
 };
 
 Client::Client(const std::shared_ptr<IClientSocket> &client)
-	: mPeer({client->getAddr(), client->getPort()}), mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client)
+	: mPeer(client->getAddr(), client->getPort()), mPseudo(""), mIsAuthenticated(false), mListener(nullptr), mClientPacketBuilder(client)
 {
 	mClientPacketBuilder.setListener(this);
 }
@@ -107,9 +107,12 @@ void	Client::recvDisconnect(const std::shared_ptr<ICommand> &) {
 		mListener->onClientDisconnect(*this);
 }
 
-void	Client::recvHandshake(const std::shared_ptr<ICommand> &) {
-	if (mListener)
-		mListener->onClientHandshake(*this);
+void	Client::recvHandshake(const std::shared_ptr<ICommand> &command) {
+	if (mListener) {
+		const std::shared_ptr<CommandHandshake> commandHandshake = std::static_pointer_cast<CommandHandshake>(command);
+
+		mListener->onClientHandshake(*this, commandHandshake->getUdpPort());
+	}
 }
 
 void	Client::recvObserveGame(const std::shared_ptr<ICommand> &command) {
@@ -190,4 +193,8 @@ void	Client::sendShowLevel(const std::string &name, const std::string &script) {
 	commandShowLevel.setName(name);
 	commandShowLevel.setScript(script);
 	mClientPacketBuilder.sendCommand(&commandShowLevel);
+}
+
+void Client::setUdpPort(int udpPort) {
+	mPeer.udpPort = udpPort;
 }

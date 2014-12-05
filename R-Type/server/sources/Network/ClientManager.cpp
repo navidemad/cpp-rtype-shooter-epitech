@@ -2,6 +2,7 @@
 #include "PortabilityBuilder.hpp"
 #include "Utils.hpp"
 #include <algorithm>
+#include <iostream>
 
 ClientManager::ClientManager(void) : mListener(nullptr), mServer(PortabilityBuilder::getTcpServer()) {
 }
@@ -83,10 +84,11 @@ void	ClientManager::onClientDisconnect(const Client &client) {
 	onClientDisconnect(client);
 }
 
-void	ClientManager::onClientHandshake(Client &client) {
+void	ClientManager::onClientHandshake(Client &client, int udpPort) {
 	Utils::logInfo("client handshake");
 
 	client.setIsAuthenticated(true);
+	client.setUdpPort(udpPort);
 }
 
 void	ClientManager::onClientObserveGame(const Client &client, const std::string &name) {
@@ -163,5 +165,7 @@ void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::strin
 }
 
 std::list<std::shared_ptr<Client>>::iterator ClientManager::findClient(const Peer &peer) {
-	return std::find_if(mClients.begin(), mClients.end(), [&](const std::shared_ptr<Client> &client) { return client->getPeer() == peer; });
+	return std::find_if(mClients.begin(), mClients.end(), [&](const std::shared_ptr<Client> &client) {
+		return client->getPeer() == peer;
+	});
 }

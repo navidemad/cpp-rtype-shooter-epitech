@@ -19,7 +19,7 @@ std::shared_ptr<MusicManager>	MusicManager::getInstance()
 	return mInstance;
 }
 
-void			MusicManager::loadResources(std::string const &key, std::string const &path)
+void			MusicManager::loadResources(std::string const &, std::string const &)
 {
 	mListResources.insert(std::pair<std::string, std::string>("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg"));
 	mListResources.insert(std::pair<std::string, std::string>("Game", "./assets/musics/Touhou_8/[02] Illusionary Night ~ Ghostly Eyes.ogg"));

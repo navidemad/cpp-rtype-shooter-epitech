@@ -46,7 +46,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		void	onClientListGames(const Client &client);
 		void	onClientListLevels(const Client &client);
 		void	onClientDisconnect(const Client &client);
-		void	onClientHandshake(Client &client);
+		void	onClientHandshake(Client &client, int udpPort);
 		void	onClientObserveGame(const Client &client, const std::string &name);
 		void	onClientLeaveGame(const Client &client);
 		void	onClientUpdatePseudo(Client &client, const std::string &pseudo);
@@ -70,7 +70,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		std::list<std::shared_ptr<Client>> mClients;
 		std::shared_ptr<IServerSocket> mServer;
 
-		static const int SERVER_TCP_PORT = 4243;
+		static const int SERVER_TCP_PORT = 4242;
 		static const int SERVER_TCP_QUEUE = 1024;
 
 };

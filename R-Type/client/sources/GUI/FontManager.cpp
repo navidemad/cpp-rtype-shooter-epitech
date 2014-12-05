@@ -19,7 +19,7 @@ std::shared_ptr<FontManager>	FontManager::getInstance()
     return mInstance;
 }
 
-void	FontManager::loadResources(std::string const &key, std::string const &path)
+void	FontManager::loadResources(std::string const &, std::string const &)
 {
 	sf::Font font;
 
