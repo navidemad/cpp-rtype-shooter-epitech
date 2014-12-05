@@ -1,14 +1,29 @@
 #include "RTypeServer.hpp"
 #include "PortabilityBuilder.hpp"
 #include "GamesManagerException.hpp"
+#include "PlayerCommunicationManager.hpp"
+#include <iostream>
 
 RTypeServer::RTypeServer(void) {
 	mClientManager.setListener(this);
 }
 
 void RTypeServer::run(void) {
+	startInfo();
 	mClientManager.run();
-    mGamesManager.run();	
+	mGamesManager.run();	
+}
+
+void RTypeServer::startInfo(void) const {
+	std::cout << "#######################" << std::endl
+						<< "#    R-Type Server    #" << std::endl
+						<< "#       Welcome       #" << std::endl
+						<< "#######################" << std::endl
+						<< std::endl
+						<< "Port configuration:" << std::endl
+						<< "$> TCP Port: " << ClientManager::SERVER_TCP_PORT << std::endl
+						<< "$> UDP Port: " << PlayerCommunicationManager::UDP_PORT << std::endl
+						<< std::endl; 
 }
 
 void RTypeServer::onClientDisconnected(const Peer &peer) {

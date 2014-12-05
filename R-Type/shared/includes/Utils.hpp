@@ -24,4 +24,8 @@ namespace Utils
 
     void logInfo(const std::string &log);
     void logError(const std::string &log);
+
+    const std::string YELLOW = "\e[1;33m";
+    const std::string WHITE = "\e[0;37m";
+    const std::string RED = "\e[1;31m";
 }

@@ -48,7 +48,6 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     public slots:
         void OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
         void OnDeleteGame(const std::string &name);
-        void OnDiconect(void);
         void OnFire(void);
         void OnJoinGame(const std::string &name);
         void OnLeaveGame(void);

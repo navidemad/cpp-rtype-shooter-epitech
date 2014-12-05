@@ -5,7 +5,6 @@
 #include "CommandDeleteGame.hpp"
 #include "CommandListGames.hpp"
 #include "CommandListLevels.hpp"
-#include "CommandDisconnect.hpp"
 #include "CommandObserveGame.hpp"
 #include "CommandHandshake.hpp"
 #include "CommandLeaveGame.hpp"
@@ -23,7 +22,6 @@ const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::DELETE_GAME,	&Client::recvDeleteGame		},
 	{ ICommand::Instruction::LIST_GAMES,	&Client::recvListGames		},
 	{ ICommand::Instruction::LIST_LEVELS,	&Client::recvListLevels		},
-	{ ICommand::Instruction::DISCONNECT,	&Client::recvDisconnect		},
 	{ ICommand::Instruction::HANDSHAKE,		&Client::recvHandshake		},
 	{ ICommand::Instruction::OBSERVE_GAME,	&Client::recvObserveGame	},
 	{ ICommand::Instruction::LEAVE_GAME,	&Client::recvLeaveGame		},
@@ -100,11 +98,6 @@ void	Client::recvListGames(const std::shared_ptr<ICommand> &) {
 void	Client::recvListLevels(const std::shared_ptr<ICommand> &) {
 	if (mListener)
 		mListener->onClientListLevels(*this);
-}
-
-void	Client::recvDisconnect(const std::shared_ptr<ICommand> &) {
-	if (mListener)
-		mListener->onClientDisconnect(*this);
 }
 
 void	Client::recvHandshake(const std::shared_ptr<ICommand> &command) {

@@ -22,7 +22,10 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		const PlayerCommunicationManager &operator=(const PlayerCommunicationManager &) = delete;
 		const PlayerCommunicationManager &operator=(PlayerCommunicationManager &&) = delete;
 
+	// internal methods
+	private:
 		std::list<Peer>::iterator findPeer(const Peer &peer);
+		void logInfo(const Peer &peer, const std::string &log);
 
 	public:
 		void	addPeerToWhiteList(const Peer &peer);

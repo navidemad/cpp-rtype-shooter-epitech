@@ -11,7 +11,6 @@
 #include "CommandHandshake.hpp"
 #include "CommandCreateGame.hpp"
 #include "CommandDeleteGame.hpp"
-#include "CommandDisconnect.hpp"
 #include "CommandFire.hpp"
 #include "CommandJoinGame.hpp"
 #include "CommandLeaveGame.hpp"
@@ -60,13 +59,6 @@ void ServerCommunication::OnDeleteGame(const std::string &name){
 	fill->setName(name);
 
 	std::cout << "Send DeleteGame" << std::endl;
-	mCmdTcp.sendCommand(command.get());
-}
-
-void ServerCommunication::OnDiconect(void){
-	std::shared_ptr<ICommand> command(new CommandDisconnect);
-
-	std::cout << "Send Disconect" << std::endl;
 	mCmdTcp.sendCommand(command.get());
 }
 

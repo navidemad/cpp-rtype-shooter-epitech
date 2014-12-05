@@ -29,8 +29,13 @@ class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEven
 		void onClientLeaveGame(const Peer &peer);
 		void onClientUpdatePseudo(const Peer &peer, const std::string &pseudo);
 
-    // attributes
-    private:
-        ClientManager mClientManager;
-        GamesManager mGamesManager;
+	// internal methods
+	private:
+		void startInfo(void) const;
+
+	// attributes
+	private:
+		ClientManager mClientManager;
+		GamesManager mGamesManager;
+
 };

@@ -16,7 +16,6 @@ class ICommand {
 			DELETE_GAME 		= 0x04,
 			LIST_GAMES 			= 0x05,
 			UPDATE_PSEUDO 		= 0x06,
-			DISCONNECT 			= 0x07,
 			MOVE 				= 0x08,
 			FIRE 				= 0x09,
 			HANDSHAKE 			= 0x0A,

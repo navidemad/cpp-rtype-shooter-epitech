@@ -30,7 +30,6 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 		void	recvDeleteGame(const std::shared_ptr<ICommand> &command);
 		void	recvListGames(const std::shared_ptr<ICommand> &command);
 		void	recvListLevels(const std::shared_ptr<ICommand> &command);
-		void	recvDisconnect(const std::shared_ptr<ICommand> &command);
 		void	recvHandshake(const std::shared_ptr<ICommand> &command);
 		void	recvObserveGame(const std::shared_ptr<ICommand> &command);
 		void	recvLeaveGame(const std::shared_ptr<ICommand> &command);
@@ -47,7 +46,6 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 				virtual void	onClientDeleteGame(const Client &client, const std::string &name) = 0;
 				virtual void	onClientListGames(const Client &client) = 0;
 				virtual void	onClientListLevels(const Client &client) = 0;
-				virtual void	onClientDisconnect(const Client &client) = 0;
 				virtual void	onClientHandshake(Client &client, int udpPort) = 0;
 				virtual void	onClientObserveGame(const Client &client, const std::string &name) = 0;
 				virtual void	onClientLeaveGame(const Client &client) = 0;
