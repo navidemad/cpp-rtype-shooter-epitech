@@ -31,7 +31,7 @@ class SFMLGraphic : public IGraphic
 
 	// public methods
 	public:
-		bool				drawSprite(std::string const &key, uint32_t delta, float x, float y, uint32_t id);
+		bool				drawSprite(std::string const &key, uint64_t delta, float x, float y, uint32_t id);
 		bool				drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t size);
 		bool				playMusic(std::string const &key, bool onLoop = true);
 		bool				playSound(std::string const &key, bool onLoop = false);
@@ -50,7 +50,7 @@ class SFMLGraphic : public IGraphic
 		void				clear();
 		void				show();
 		bool				isPressed(std::string);
-		uint32_t			getDelta();
+		uint64_t			getDelta();
 		void				close();
 
 		sf::RenderWindow	&getWindow();
@@ -67,5 +67,5 @@ private:
 		sf::Clock							mDeltaClock;
 		sf::Music							mMusic;
 		std::string							mMusicCurrentKey;
-		std::map<uint32_t, uint32_t>		mIdTimeElapse;
+		std::map<uint32_t, uint64_t>		mIdTimeElapse;
 };

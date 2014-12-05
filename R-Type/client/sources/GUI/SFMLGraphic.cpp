@@ -19,7 +19,7 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
-bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, float y, uint32_t id)
+bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, float y, uint32_t id)
 {
 	// set time elapse by id
 	if (!mIdTimeElapse.count(id))
@@ -29,7 +29,7 @@ bool	SFMLGraphic::drawSprite(std::string const &key, uint32_t delta, float x, fl
 	// set index of frame sprite
 	uint32_t index;
 	if (mContentManager.getSprites()->getResource(key).isLoop())
-		index = mContentManager.getSprites()->getResource(key).getSize() * (mIdTimeElapse[id] % 1000) / 1000;
+		index = mContentManager.getSprites()->getResource(key).getSize() * ((mIdTimeElapse[id] / 1000) % 1000) / 1000;
 	else
 		index = mContentManager.getSprites()->getResource(key).getCurrentIndex();
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);
@@ -102,11 +102,11 @@ void				SFMLGraphic::loadSound(std::string const &key, std::string const &path)
 
 }
 
-uint32_t	SFMLGraphic::getDelta()
+uint64_t	SFMLGraphic::getDelta()
 {
 	sf::Time	delta = mDeltaClock.restart();
 
-	return delta.asMilliseconds();
+	return delta.asMicroseconds();
 }
 
 void	SFMLGraphic::close()

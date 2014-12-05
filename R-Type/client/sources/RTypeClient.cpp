@@ -59,7 +59,7 @@ RTypeClient::~RTypeClient()
 //RTypeClient::RTypeClient(RTypeClient const &) : mEngine(this) {}
 
 RTypeClient const	&RTypeClient::operator=(RTypeClient const &) { return *this; }
-
+#include <iostream>
 void	RTypeClient::run()
 {
 	mGui->init();
@@ -67,7 +67,7 @@ void	RTypeClient::run()
 
 	while (mGui->isOpen())
 	{
-		uint32_t delta = mGui->getDelta();
+		uint64_t delta = mGui->getDelta();
 		unsigned int	id = mCurrentId;
 
 		mGui->clear(); // clear graphic engine

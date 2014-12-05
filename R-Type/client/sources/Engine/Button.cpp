@@ -20,7 +20,7 @@ Button::~Button()
 
 bool	Button::hasTimeElapsed() const
 {
-	return mTimeElapsed > mCycle;
+	return mTimeElapsed / 1000 > mCycle;
 }
 
 void	Button::resetTimer()
