@@ -14,6 +14,7 @@
 #include "CommandEndGame.hpp"
 #include "CommandShowLevel.hpp"
 #include "ErrorStatus.hpp"
+#include "Utils.hpp"
 
 const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::CREATE_GAME,	&Client::recvCreateGame		},
@@ -56,6 +57,8 @@ void	Client::setListener(Client::OnClientEvent *listener) {
 }
 
 void	Client::recvCreateGame(const std::shared_ptr<ICommand> &command) {
+	Utils::logInfo("recvCreateGame");
+
 	if (mListener) {
 		const std::shared_ptr<CommandCreateGame> commandCreateGame = std::static_pointer_cast<CommandCreateGame>(command);
 
@@ -68,6 +71,8 @@ void	Client::recvCreateGame(const std::shared_ptr<ICommand> &command) {
 }
 
 void	Client::recvJoinGame(const std::shared_ptr<ICommand> &command) {
+	Utils::logInfo("recvJoinGame");
+
 	if (mListener) {
 		const std::shared_ptr<CommandJoinGame> commandJoinGame = std::static_pointer_cast<CommandJoinGame>(command);
 
@@ -76,6 +81,8 @@ void	Client::recvJoinGame(const std::shared_ptr<ICommand> &command) {
 }
 
 void	Client::recvShowGame(const std::shared_ptr<ICommand> &command) {
+	Utils::logInfo("recvShowGame");
+
 	if (mListener) {
 		const std::shared_ptr<CommandShowGame> commandShowGame = std::static_pointer_cast<CommandShowGame>(command);
 
@@ -84,6 +91,8 @@ void	Client::recvShowGame(const std::shared_ptr<ICommand> &command) {
 }
 
 void	Client::recvDeleteGame(const std::shared_ptr<ICommand> &command) {
+	Utils::logInfo("recvDeleteGame");
+
 	if (mListener) {
 		const std::shared_ptr<CommandDeleteGame> commandDeleteGame = std::static_pointer_cast<CommandDeleteGame>(command);
 
@@ -92,26 +101,36 @@ void	Client::recvDeleteGame(const std::shared_ptr<ICommand> &command) {
 }
 
 void	Client::recvListGames(const std::shared_ptr<ICommand> &) {
+	Utils::logInfo("recvListGames");
+
 	if (mListener)
 		mListener->onClientListGames(*this);
 }
 
 void	Client::recvListLevels(const std::shared_ptr<ICommand> &) {
+	Utils::logInfo("recvListLevels");
+
 	if (mListener)
 		mListener->onClientListLevels(*this);
 }
 
 void	Client::recvDisconnect(const std::shared_ptr<ICommand> &) {
+	Utils::logInfo("recvDisconnect");
+
 	if (mListener)
 		mListener->onClientDisconnect(*this);
 }
 
 void	Client::recvHandshake(const std::shared_ptr<ICommand> &) {
+	Utils::logInfo("recvHandshake");
+
 	if (mListener)
 		mListener->onClientHandshake(*this);
 }
 
 void	Client::recvObserveGame(const std::shared_ptr<ICommand> &command) {
+	Utils::logInfo("recvObserveGame");
+
 	if (mListener) {
 		const std::shared_ptr<CommandObserveGame> commandObserveGame = std::static_pointer_cast<CommandObserveGame>(command);
 
@@ -120,11 +139,15 @@ void	Client::recvObserveGame(const std::shared_ptr<ICommand> &command) {
 }
 
 void	Client::recvLeaveGame(const std::shared_ptr<ICommand> &) {
+	Utils::logInfo("recvLeaveGame");
+
 	if (mListener)
 		mListener->onClientLeaveGame(*this);
 }
 
 void	Client::recvUpdatePseudo(const std::shared_ptr<ICommand> &command) {
+	Utils::logInfo("recvUpdateGame");
+
 	if (mListener) {
 		const std::shared_ptr<CommandUpdatePseudo> commandUpdatePseudo = std::static_pointer_cast<CommandUpdatePseudo>(command);
 
@@ -163,6 +186,8 @@ void	Client::sendError(const ErrorStatus &errorStatus) {
 
 	commandError.setErrorCode(errorStatus.getErrorCode());
 	mClientPacketBuilder.sendCommand(&commandError);
+
+	Utils::logInfo("sendError");
 }
 
 void	Client::sendShowGame(const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers) {
@@ -175,12 +200,16 @@ void	Client::sendShowGame(const std::string &name, const std::string &levelName,
 	commandShowGame.setNbObservers(nbObservers);
 	commandShowGame.setMaxObservers(maxObservers);
 	mClientPacketBuilder.sendCommand(&commandShowGame);
+
+	Utils::logInfo("sendShowGame");
 }
 
 void	Client::sendEndGame(void) {
 	CommandEndGame commandEndGame;
 
 	mClientPacketBuilder.sendCommand(&commandEndGame);
+
+	Utils::logInfo("sendEndGame");
 }
 
 void	Client::sendShowLevel(const std::string &name, const std::string &script) {
@@ -189,4 +218,6 @@ void	Client::sendShowLevel(const std::string &name, const std::string &script) {
 	commandShowLevel.setName(name);
 	commandShowLevel.setScript(script);
 	mClientPacketBuilder.sendCommand(&commandShowLevel);
+
+	Utils::logInfo("sendShowLevel");
 }
