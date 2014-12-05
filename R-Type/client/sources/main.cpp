@@ -4,18 +4,19 @@
 #include "Network/ServerCommunication.hpp"
 
 int trySocket(int ac, char **av){
-	QApplication	app(ac, av);
 	
-	ServerCommunication server;
+
 	try {
+		QApplication	app(ac, av);
+	ServerCommunication server;
 	server.setServerTcp(4244, "10.41.173.139");
 	server.connectSocketTcp();
+	return app.exec();
 	}
 
 	catch (...){
 
 	}
-	return app.exec();
 }
 
 int		main(int ac, char ** av)
