@@ -21,7 +21,7 @@ ButtonSystem::~ButtonSystem()
 
 bool		ButtonSystem::hasTimeElapsed() const
 {
-	return mTimeElapsed > 100;
+	return mTimeElapsed / 1000 > 100;
 }
 
 void		ButtonSystem::process(Entity &entity, uint32_t delta)
