@@ -38,31 +38,43 @@ void	ClientManager::onClientDisconnected(const Client &client) {
 }
 
 void	ClientManager::onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) {
+	Utils::logInfo("client create game");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientCreateGame(client.getPeer(), name, levelName, nbPlayers, nbObservers);
 }
 
 void	ClientManager::onClientJoinGame(const Client &client, const std::string &name) {
+	Utils::logInfo("client join game");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientJoinGame(client.getPeer(), name, client.getPseudo());
 }
 
 void	ClientManager::onClientShowGame(const Client &client, const std::string &name) {
+	Utils::logInfo("client show game");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientShowGame(client.getPeer(), name);
 }
 
 void	ClientManager::onClientDeleteGame(const Client &client, const std::string &name) {
+	Utils::logInfo("client delete game");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientDeleteGame(client.getPeer(), name);
 }
 
 void	ClientManager::onClientListGames(const Client &client) {
+	Utils::logInfo("client list games");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientListGames(client.getPeer());
 }
 
 void	ClientManager::onClientListLevels(const Client &client) {
+	Utils::logInfo("client list levels");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientListLevels(client.getPeer());
 }
@@ -72,20 +84,28 @@ void	ClientManager::onClientDisconnect(const Client &client) {
 }
 
 void	ClientManager::onClientHandshake(Client &client) {
+	Utils::logInfo("client handshake");
+
 	client.setIsAuthenticated(true);
 }
 
 void	ClientManager::onClientObserveGame(const Client &client, const std::string &name) {
+	Utils::logInfo("client observe game");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientObserveGame(client.getPeer(), name);
 }
 
 void	ClientManager::onClientLeaveGame(const Client &client) {
+	Utils::logInfo("client leave game");
+
 	if (client.isAuthenticated() && mListener)
 		mListener->onClientLeaveGame(client.getPeer());
 }
 
 void	ClientManager::onClientUpdatePseudo(Client &client, const std::string &pseudo) {
+	Utils::logInfo("client update pseudo");
+
 	if (client.isAuthenticated()) {
 		client.setPseudo(pseudo);
 
@@ -99,6 +119,8 @@ void	ClientManager::setListener(ClientManager::OnClientManagerEvent *listener) {
 }
 
 void	ClientManager::sendError(const std::list<Peer> &peers, const ErrorStatus &errorStatus) {
+	Utils::logInfo("send error to client");
+
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
 
@@ -108,6 +130,8 @@ void	ClientManager::sendError(const std::list<Peer> &peers, const ErrorStatus &e
 }
 
 void	ClientManager::sendShowGame(const std::list<Peer> &peers, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers) {
+	Utils::logInfo("send show game to client");
+
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
 			
@@ -117,6 +141,8 @@ void	ClientManager::sendShowGame(const std::list<Peer> &peers, const std::string
 }
 
 void	ClientManager::sendEndGame(const std::list<Peer> &peers) {
+	Utils::logInfo("send end game to client");
+
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
 
@@ -126,6 +152,8 @@ void	ClientManager::sendEndGame(const std::list<Peer> &peers) {
 }
 
 void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::string &name, const std::string &script) {
+	Utils::logInfo("send show level to client");
+
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
 

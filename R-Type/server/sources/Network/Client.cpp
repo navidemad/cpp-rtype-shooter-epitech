@@ -14,6 +14,7 @@
 #include "CommandEndGame.hpp"
 #include "CommandShowLevel.hpp"
 #include "ErrorStatus.hpp"
+#include "Utils.hpp"
 
 const Client::CommandExec Client::commandExecTab[] = {
 	{ ICommand::Instruction::CREATE_GAME,	&Client::recvCreateGame		},
