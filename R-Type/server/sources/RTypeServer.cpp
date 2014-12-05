@@ -6,6 +6,7 @@
 
 RTypeServer::RTypeServer(void) {
 	mClientManager.setListener(this);
+	mGamesManager.setListener(this);
 }
 
 void RTypeServer::run(void) {
@@ -24,6 +25,10 @@ void RTypeServer::startInfo(void) const {
 						<< "$> TCP Port: " << ClientManager::SERVER_TCP_PORT << std::endl
 						<< "$> UDP Port: " << PlayerCommunicationManager::UDP_PORT << std::endl
 						<< std::endl; 
+}
+
+void RTypeServer::onEndGame(const std::string &, const std::list<Peer> &gameUsers) {
+		mClientManager.sendEndGame(gameUsers);
 }
 
 void RTypeServer::onClientDisconnected(const Peer &peer) {

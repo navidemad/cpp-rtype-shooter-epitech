@@ -9,7 +9,7 @@
 #include <functional>
 #include <iostream>
 
-GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMutex(PortabilityBuilder::getMutex()) {
+GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMutex(PortabilityBuilder::getMutex()), mListener(nullptr) {
 	mPlayerCommunicationManager.setListener(this);
 }
 
@@ -117,6 +117,15 @@ void GamesManager::onTerminatedGame(const std::string &name) {
 
     if (game == mGames.end())
         throw GamesManagerException("Try to terminate an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
+
+    if (mListener) {
+        std::list<Peer> gameUsers;
+
+        for (const auto &user : (*game)->getUsers())
+            gameUsers.push_back(user.getPeer());
+
+        mListener->onEndGame(name, gameUsers);
+    }
 
 	removeClientsFromWhitelist(*game);
     mGames.erase(game);
@@ -237,4 +246,8 @@ std::list<std::pair<std::string, std::string>> GamesManager::getScripts(void) co
 		scripts.push_back(std::pair<std::string, std::string> { script.first, script.second->getTextScript() });
 
 	return scripts;
+}
+
+void    GamesManager::setListener(GamesManager::OnGamesManagerEvent *listener) {
+    mListener = listener;
 }
