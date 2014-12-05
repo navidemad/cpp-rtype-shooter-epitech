@@ -3,6 +3,7 @@
 #include "Utils.hpp"
 #include <algorithm>
 #include <iostream>
+#include "PlayerCommunicationManager.hpp"
 
 ClientManager::ClientManager(void) : mListener(nullptr), mServer(PortabilityBuilder::getTcpServer()) {
 }
@@ -16,7 +17,7 @@ void ClientManager::onNewConnection(IServerSocket *socket) {
 
 	std::shared_ptr<Client> client(new Client(socket->getNewClient()));
 	client->setListener(this);
-	client->handshake();
+	client->handshake(PlayerCommunicationManager::UDP_PORT);
 	mClients.push_back(client);
 
 	Utils::logInfo("new client connected");

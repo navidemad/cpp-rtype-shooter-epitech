@@ -156,9 +156,10 @@ void Client::setIsAuthenticated(bool isAuthenticated) {
 	mIsAuthenticated = isAuthenticated;
 }
 
-void Client::handshake(void) {
+void Client::handshake(int port) {
 	CommandHandshake commandHandShake;
 
+	commandHandShake.setUdpPort(port);
 	mClientPacketBuilder.sendCommand(&commandHandShake);
 }
 

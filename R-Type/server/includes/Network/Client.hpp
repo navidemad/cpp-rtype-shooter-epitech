@@ -61,7 +61,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 
 	// send command
 	public:
-		void	handshake(void);
+		void	handshake(int udpPort);
 		void	sendError(const ErrorStatus &errorStatus);
 		void	sendShowGame(const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
 		void	sendEndGame(void);
