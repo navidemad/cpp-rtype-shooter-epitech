@@ -124,12 +124,13 @@ void GamesManager::onTerminatedGame(const std::string &name) {
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
+    auto existingGame = findGameByHost(peer);
+    if (existingGame != mGames.end())
+      (*existingGame)->delUser(peer);
+
     auto game = findGameByName(name);
-    
     if (game == mGames.end())
-       throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
-    
-    leaveGame(peer, false);
+      throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
     (*game)->addUser(typeUser, peer, pseudo);
 }
 
@@ -153,18 +154,15 @@ void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
     }
 }
 
-void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
+void GamesManager::leaveGame(const Peer &peer) {
     ScopedLock scopedLock(mMutex);
 
     try {
         auto game = findGameByHost(peer);
+
         if (game == mGames.end())
-        {
-            if (throwExcept)
                 throw GamesManagerException("Try to leave a player who isn't in a game", ErrorStatus(ErrorStatus::Error::KO));
-            else
-                return;
-        }
+
         (*game)->delUser(peer);
         mPlayerCommunicationManager.removePeerFromWhiteList(peer);
     }
