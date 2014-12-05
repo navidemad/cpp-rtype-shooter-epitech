@@ -29,7 +29,7 @@ std::shared_ptr<ICommand> CommandFactory::getCommand(ICommand::Instruction instr
 	case ICommand::Instruction::JOIN_GAME:
 		return getCommand<CommandJoinGame>();
 	case ICommand::Instruction::SHOW_GAME:
-		return getCommand<CommandJoinGame>();
+		return getCommand<CommandShowGame>();
 	case ICommand::Instruction::DELETE_GAME:
 		return getCommand<CommandDeleteGame>();
 	case ICommand::Instruction::LIST_GAMES:
