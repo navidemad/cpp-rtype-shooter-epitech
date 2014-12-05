@@ -9,6 +9,15 @@
 #include "ErrorStatus.hpp"
 #include <memory>
 
+/*
+    envoyer signal a guigui quand socket est deco
+    ou en cas de fail connection
+    enlever diconect
+    faire des catch
+*/
+
+
+
 class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
     Q_OBJECT
 
