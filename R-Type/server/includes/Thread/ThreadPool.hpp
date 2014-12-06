@@ -30,6 +30,7 @@ class ThreadPool : public NoCopyable {
 	public:
 		const ThreadPool	&operator<<(std::function<void()> task);
 		void				operator()(void *);
+		void				stop(void);
 
 	// attributes
 	private:

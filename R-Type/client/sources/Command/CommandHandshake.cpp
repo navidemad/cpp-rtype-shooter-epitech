@@ -8,7 +8,7 @@ IClientSocket::Message CommandHandshake::getMessage(void) const {
 }
 
 unsigned int CommandHandshake::getSizeToRead(void) const {
-	return sizeof(CommandHandshake::PacketFromServer);
+	return 0;
 }
 
 void CommandHandshake::initFromMessage(const IClientSocket::Message &) {

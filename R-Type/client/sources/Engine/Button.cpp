@@ -8,7 +8,7 @@
 #include "Engine/Compenent/Button.hpp"
 #include "Engine/Compenent/TextInput.hpp"
 
-Button::Button(uint32_t cycle) : Component(ComponentType::BUTTON), mCycle(cycle), mTimeElapsed(0)
+Button::Button(uint32_t cycle) : Component(ComponentType::BUTTON), mTimeElapsed(0), mCycle(cycle)
 {
 
 }
@@ -20,7 +20,7 @@ Button::~Button()
 
 bool	Button::hasTimeElapsed() const
 {
-	return mTimeElapsed > mCycle;
+	return mTimeElapsed / 1000 > mCycle;
 }
 
 void	Button::resetTimer()

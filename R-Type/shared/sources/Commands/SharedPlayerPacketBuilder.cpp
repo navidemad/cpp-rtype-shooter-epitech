@@ -80,7 +80,7 @@ void	PlayerPacketBuilder::fetchBody(void) {
 	}
 
 	if (error == false && mListener)
-		mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort});
+		mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort, 0});
 
 	mCurrentState = PlayerPacketBuilder::State::HEADER;
 	fetchHeader();
@@ -132,7 +132,7 @@ void	PlayerPacketBuilder::sendCommand(const ICommand *command, const Peer &peer)
 	message.msg.insert(message.msg.end(), bodyMessage.msg.begin(), bodyMessage.msg.end());
 	message.msgSize = sizeof(ICommand::Header) + bodyMessage.msgSize;
 	message.host = peer.host;
-	message.port = peer.port;
+	message.port = peer.udpPort;
 
 	mClient->send(message);
 }

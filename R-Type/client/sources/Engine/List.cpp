@@ -8,7 +8,7 @@
 
 bool	List::hasTimeElapsed() const
 {
-	return mTimeElapsed > mCycle;
+	return mTimeElapsed / 1000 > mCycle;
 }
 
 void	List::resetTimer()

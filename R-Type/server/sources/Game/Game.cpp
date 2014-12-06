@@ -166,7 +166,7 @@ std::vector<NGame::User>::iterator NGame::Game::findUserById(uint64_t id) {
 }
 
 void NGame::Game::tryAddPlayer(const NGame::User& user) {
-    if (mProperties.getNbPlayers() < mProperties.getMaxPlayers())
+    if (mProperties.getNbPlayers() >= mProperties.getMaxPlayers())
         throw GameException("No place for new players");
 
     mUsers.push_back(user);
@@ -175,7 +175,7 @@ void NGame::Game::tryAddPlayer(const NGame::User& user) {
 }
 
 void NGame::Game::tryAddSpectator(const NGame::User& user) {
-    if (mProperties.getNbSpectators() < mProperties.getMaxSpectators())
+    if (mProperties.getNbSpectators() >= mProperties.getMaxSpectators())
         throw GameException("No place for new spectators");
 
     mUsers.push_back(user);

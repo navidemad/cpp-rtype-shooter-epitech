@@ -8,6 +8,7 @@ NetworkManager::NetworkManager(void) : mMaxFd(-1), mMutex(PortabilityBuilder::ge
 }
 
 NetworkManager::~NetworkManager(void) {
+	mThreadPool->stop();
 }
 
 std::list<NetworkManager::Socket>::iterator NetworkManager::findSocket(int socketFd) {

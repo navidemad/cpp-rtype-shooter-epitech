@@ -15,6 +15,20 @@ class ECSManagerNetwork : public QObject, public ECSManager
 {
 	Q_OBJECT
 
+	signals:
+		void SignalCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
+        void SignalDeleteGame(const std::string &name);
+        void SignalDiconect(void);
+        void SignalFire(void);
+        void SignalJoinGame(const std::string &name);
+        void SignalLeaveGame(void);
+        void SignalListGame(void);
+        void SignalListLevel(void);
+        void SignalMove(IResource::Direction direction);
+        void SignalObserveGame(const std::string &name);
+        void SignalShowGame(const std::string &name);
+        void SignalUpdatePseudo(const std::string &pseudo);
+
 	public slots:
 		void OnDestroyResource(int id);
 		void OnEndGame(const std::string &name);

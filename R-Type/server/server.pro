@@ -56,7 +56,6 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
                                 ../shared/includes/Commands/CommandCreateGame.hpp	\
                                 ../shared/includes/Commands/CommandDeleteGame.hpp	\
                                 ../shared/includes/Commands/CommandDestroyResource.hpp	\
-                                ../shared/includes/Commands/CommandDisconnect.hpp	\
                                 ../shared/includes/Commands/CommandEndGame.hpp		\
                                 ../shared/includes/Commands/CommandError.hpp		\
                                 ../shared/includes/Commands/CommandFire.hpp		\
@@ -105,7 +104,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Game/GameComponent.hpp		\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp								\
-				includes/Network/Peer.hpp
+				../shared/includes/Network/Peer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\
@@ -145,7 +144,6 @@ SOURCES			+=	sources/main.cpp						\
                                 ../shared/sources/Commands/SharedCommandCreateGame.cpp		\
                                 ../shared/sources/Commands/SharedCommandDeleteGame.cpp		\
                                 ../shared/sources/Commands/SharedCommandDestroyResource.cpp	\
-                                ../shared/sources/Commands/SharedCommandDisconnect.cpp		\
                                 ../shared/sources/Commands/SharedCommandEndGame.cpp		\
                                 ../shared/sources/Commands/SharedCommandError.cpp		\
                                 ../shared/sources/Commands/SharedCommandFire.cpp		\
@@ -165,7 +163,6 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Commands/CommandCreateGame.cpp				\
                                 sources/Commands/CommandDeleteGame.cpp				\
                                 sources/Commands/CommandDestroyResource.cpp			\
-                                sources/Commands/CommandDisconnect.cpp				\
                                 sources/Commands/CommandEndGame.cpp				\
                                 sources/Commands/CommandError.cpp				\
                                 sources/Commands/CommandFire.cpp				\

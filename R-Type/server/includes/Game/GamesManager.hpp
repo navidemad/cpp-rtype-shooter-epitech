@@ -31,7 +31,17 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // game events
     public:
-        void onTerminatedGame(const std::string &name);
+    // events
+    public:
+        class OnGamesManagerEvent {
+            public:
+                virtual ~OnGamesManagerEvent(void) {}
+                virtual void onEndGame(const std::string &gameName, const std::list<Peer> &gameUsers) = 0;
+        };
+
+        void    onTerminatedGame(const std::string &name);
+        void    setListener(GamesManager::OnGamesManagerEvent *listener);
+
 
 	// network workflow utils functions
 	public:
@@ -40,16 +50,17 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         void    joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo = "Anonymous");
         void    playGame(const Peer &peer, const std::string &name, const std::string &pseudo);
         void    spectateGame(const Peer &peer, const std::string &name);
-        void	leaveGame(const Peer &peer, bool throwExcept = true);
+        void	leaveGame(const Peer &peer);
 		void	updatePseudo(const Peer &peer, const std::string &pseudo);
         const NGame::Properties &getGameProperties(const std::string &name);
-        const std::list<NGame::Properties> &getGamesProperties(void) const;
-        std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByName(const std::string& name);
-        std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByHost(const Peer &peer);
-
-    // getter
-    public:
-        const ScriptLoader& getScriptLoader(void) const;
+        std::list<NGame::Properties> getGamesProperties(void) const;
+		std::list<std::pair<std::string, std::string>> getScripts(void) const;
+		
+	// internal methods
+	private:
+		void	removeClientsFromWhitelist(const std::shared_ptr<NGame::Game> &game);
+		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByName(const std::string& name);
+		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByHost(const Peer &peer);
 
     // attributes
     private:
@@ -58,5 +69,6 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         std::vector<std::shared_ptr<NGame::Game>> mGames;
         std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager mPlayerCommunicationManager;
+        GamesManager::OnGamesManagerEvent *mListener;
 
 };

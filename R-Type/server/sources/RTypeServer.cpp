@@ -1,14 +1,34 @@
 #include "RTypeServer.hpp"
 #include "PortabilityBuilder.hpp"
 #include "GamesManagerException.hpp"
+#include "PlayerCommunicationManager.hpp"
+#include <iostream>
 
 RTypeServer::RTypeServer(void) {
 	mClientManager.setListener(this);
+	mGamesManager.setListener(this);
 }
 
 void RTypeServer::run(void) {
+	startInfo();
 	mClientManager.run();
-    mGamesManager.run();	
+	mGamesManager.run();	
+}
+
+void RTypeServer::startInfo(void) const {
+	std::cout << "#######################" << std::endl
+						<< "#    R-Type Server    #" << std::endl
+						<< "#       Welcome       #" << std::endl
+						<< "#######################" << std::endl
+						<< std::endl
+						<< "Port configuration:" << std::endl
+						<< "$> TCP Port: " << ClientManager::SERVER_TCP_PORT << std::endl
+						<< "$> UDP Port: " << PlayerCommunicationManager::UDP_PORT << std::endl
+						<< std::endl; 
+}
+
+void RTypeServer::onEndGame(const std::string &, const std::list<Peer> &gameUsers) {
+		mClientManager.sendEndGame(gameUsers);
 }
 
 void RTypeServer::onClientDisconnected(const Peer &peer) {
@@ -75,10 +95,10 @@ void RTypeServer::onClientListGames(const Peer &peer) {
 }
 
 void RTypeServer::onClientListLevels(const Peer &peer) {
-    auto levels = mGamesManager.getScriptLoader().getScripts();
+    auto levels = mGamesManager.getScripts();
 
     for (const auto &level : levels)
-        mClientManager.sendShowLevel(std::list<Peer>{peer}, level.first, level.second->getTextScript());
+        mClientManager.sendShowLevel(std::list<Peer>{peer}, level.first, level.second);
 }
 
 void RTypeServer::onClientObserveGame(const Peer &peer, const std::string &name) {
@@ -104,9 +124,9 @@ void RTypeServer::onClientLeaveGame(const Peer &peer) {
 void RTypeServer::onClientUpdatePseudo(const Peer &peer, const std::string &pseudo) {
 	try {
 		mGamesManager.updatePseudo(peer, pseudo);
-		mClientManager.sendError(std::list<Peer>{peer}, ErrorStatus(ErrorStatus::Error::OK));
 	}
-	catch (const GamesManagerException& e) {
-		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+	catch (const GamesManagerException&) {
 	}
+
+	mClientManager.sendError(std::list<Peer>{peer}, ErrorStatus(ErrorStatus::Error::OK));
 }

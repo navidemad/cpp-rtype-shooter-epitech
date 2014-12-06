@@ -77,7 +77,6 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandCreateGame.hpp	\
 			../shared/includes/Commands/CommandDeleteGame.hpp	\
 			../shared/includes/Commands/CommandDestroyResource.hpp	\
-			../shared/includes/Commands/CommandDisconnect.hpp	\
 			../shared/includes/Commands/CommandEndGame.hpp		\
 			../shared/includes/Commands/CommandError.hpp		\
 			../shared/includes/Commands/CommandFire.hpp		\
@@ -151,8 +150,6 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Command/CommandDeleteGame.cpp				\
 			../shared/sources/Commands/SharedCommandDestroyResource.cpp	\
 			sources/Command/CommandDestroyResource.cpp			\
-			../shared/sources/Commands/SharedCommandDisconnect.cpp		\
-			sources/Command/CommandDisconnect.cpp				\
 			../shared/sources/Commands/SharedCommandEndGame.cpp		\
 			sources/Command/CommandEndGame.cpp				\
 			../shared/sources/Commands/SharedCommandError.cpp		\
