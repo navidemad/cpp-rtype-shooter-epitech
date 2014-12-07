@@ -1,11 +1,13 @@
 #include <algorithm>
+#include <stdexcept>
+#include "Engine/Compenent/List.hpp"
 #include "Engine/ComponentType.h"
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
 
-void ECSManagerNetwork::OnDestroyResource(int /*id*/)
+void ECSManagerNetwork::OnDestroyResource(int id)
 {
-
+	mRemoveId.push_back(id);
 }
 
 void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
@@ -23,9 +25,18 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float /*x*/, fl
 
 }
 
-void ECSManagerNetwork::OnShowGame(const std::string &/*name*/, const std::string &/*levelName*/, int /*nbPlayer*/, int /*maxPlayer*/, int /*nbObserver*/, int /*maxObserver*/)
+void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/*levelName*/, int nbPlayer, int maxPlayer, int /*nbObserver*/, int /*maxObserver*/)
 {
+	try
+	{
+		Entity &entity = getEntityWithSpecificCompenent(ComponentType::LIST);
 
+		List *list = static_cast<List *>(entity.getSpecificComponent(ComponentType::LIST));
+		list->addRoom(information_room(name, nbPlayer, maxPlayer));
+	}
+	catch (std::runtime_error &error)
+	{
+	}
 }
 
 void ECSManagerNetwork::OnShowLevel(const std::string &/*name*/, const std::string &/*script*/)

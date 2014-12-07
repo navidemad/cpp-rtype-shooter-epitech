@@ -35,6 +35,7 @@ class ECSManager
 		// Entity
 		Entity									&createEntity();
 		Entity									&getEntity(const int);
+		Entity									&getEntityWithSpecificCompenent(ComponentType::Type);
 
 		// Component
 		bool									addComponent(const unsigned int, Component *);
@@ -45,6 +46,11 @@ class ECSManager
 		void									updateSystem(uint32_t);
 		virtual void							start() { }
 		virtual void							stop() { }
+
+	private:
+		void	removeEntity(unsigned int);
+		void	removeAllEntity();
+
 	private:
 		RTypeClient									*mClient;
 
@@ -56,4 +62,6 @@ class ECSManager
 		std::list<System *>								mSystem;
 		unsigned int									mCurrentId;
 
+	protected:
+		std::list<unsigned int>							mRemoveId;
 };

@@ -59,7 +59,7 @@ RTypeClient::~RTypeClient()
 //RTypeClient::RTypeClient(RTypeClient const &) : mEngine(this) {}
 
 RTypeClient const	&RTypeClient::operator=(RTypeClient const &) { return *this; }
-#include <iostream>
+
 void	RTypeClient::run()
 {
 	mGui->init();
@@ -165,6 +165,7 @@ void			RTypeClient::initSearchMenu()
 
 void			RTypeClient::simulateReceiveClient(unsigned int id)
 {
+
 	ECSManager &engine = *mEngine[RTypeClient::SEARCH_MENU];
 
 	Entity	&entity = engine.getEntity(id);
@@ -365,7 +366,7 @@ void	RTypeClient::startRtype()
 
 void	RTypeClient::startSearchMenu()
 {
-
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
 }
 
 void	RTypeClient::stopMenu()

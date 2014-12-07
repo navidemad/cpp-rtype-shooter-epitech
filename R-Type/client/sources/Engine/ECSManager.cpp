@@ -79,3 +79,38 @@ void			ECSManager::updateSystem(uint32_t delta)
 		}
 	});
 }
+
+void	ECSManager::removeEntity(unsigned int id)
+{
+	auto clean = [](Component *component) {
+		delete component;
+	};
+
+	std::list<Component *>	&list = mEntityComponent[id];
+	std::for_each(list.begin(), list.end(), clean);
+	list.clear();
+	mEntityBitset[id] = 0;
+}
+
+void	ECSManager::removeAllEntity()
+{
+	while (!mRemoveId.empty())
+	{
+		unsigned int	id = mRemoveId.front();
+		mRemoveId.pop_front();
+
+		removeEntity(id);
+	}
+}
+
+Entity		&ECSManager::getEntityWithSpecificCompenent(ComponentType::Type typeToSearch)
+{
+	const size_t	limit = mCurrentId;
+
+	for (size_t i = 0; i != limit; ++i)
+	{
+		if (mEntityBitset[i][typeToSearch])
+			return mEntity[i];
+	}
+	throw std::runtime_error("Entity not found");
+}

@@ -91,14 +91,12 @@ void	List::addRoom(const information_room &room)
 	mListRoom.push_back(room);
 	if (mListRoom.size() <= mNbRoomButton)
 	{
-		unsigned int i = 0;
+		mListRoomButton.clear();
 
-		for (std::list<information_room>::iterator it = mListRoom.begin();
-			it != mListRoom.end();
-			++it, ++i)
+		for (std::list<information_room>::iterator it = mListRoom.begin(); it != mListRoom.end(); ++it)
 		{
-			mListRoomButton[i] = it;
+			mListRoomButton.push_back(it);
 		}
-
+		mCurrentRoom = mListRoomButton.begin();
 	}
 }
