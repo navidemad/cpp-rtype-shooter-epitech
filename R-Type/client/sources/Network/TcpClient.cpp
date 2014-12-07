@@ -2,6 +2,7 @@
 #include "Network/TcpClient.hpp"
 #include "SocketException.hpp"
 
+#include <iostream>
 
 TcpClient::TcpClient(void)
   : mQTcpSocket(new QTcpSocket(this)), mAddr(""), mPort(0), mListener(NULL) {

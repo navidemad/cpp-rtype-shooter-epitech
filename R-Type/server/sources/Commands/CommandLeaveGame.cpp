@@ -6,10 +6,8 @@ IClientSocket::Message CommandLeaveGame::getMessage(void) const {
 }
 
 unsigned int CommandLeaveGame::getSizeToRead(void) const {
-	return sizeof(CommandLeaveGame::PacketFromClient);
+	return 0;
 }
 
-void CommandLeaveGame::initFromMessage(const IClientSocket::Message &message) {
-	if (message.msgSize != sizeof(CommandLeaveGame::PacketFromClient))
-		throw CommandException("Packet has an invalid size");
+void CommandLeaveGame::initFromMessage(const IClientSocket::Message &) {
 }

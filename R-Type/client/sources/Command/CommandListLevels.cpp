@@ -4,7 +4,6 @@
 IClientSocket::Message CommandListLevels::getMessage(void) const {
 	IClientSocket::Message message;
 	message.msgSize = 0;
-	message.msg.clear();
 
 	return message;
 }

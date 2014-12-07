@@ -6,7 +6,7 @@ IClientSocket::Message CommandFire::getMessage(void) const {
 }
 
 unsigned int CommandFire::getSizeToRead(void) const {
-	return sizeof(CommandFire::PacketFromClient);
+	return 0;
 }
 
 void CommandFire::initFromMessage(const IClientSocket::Message &) {

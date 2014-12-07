@@ -16,15 +16,22 @@ ThreadPool::ThreadPool(unsigned int nbThreads)
 }
 
 ThreadPool::~ThreadPool(void) {
+	stop();
+}
+
+void ThreadPool::stop(void) {
 	{
         ScopedLock scopedLock(mMutex);
+
+    if (mIsRunning == false)
+    	return ;
 
 		mIsRunning = false;
 		mCondVar->notifyAll();
 	}
 
 	for (const auto &worker : mWorkers)
-		worker->wait(nullptr);
+		worker->cancel();
 }
 
 void ThreadPool::operator()(void *) {
@@ -48,7 +55,6 @@ void ThreadPool::operator()(void *) {
 	}
 }
 
-#include <iostream>
 const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 	ScopedLock scopedLock(mMutex);
 

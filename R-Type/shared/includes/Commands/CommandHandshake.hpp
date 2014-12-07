@@ -9,11 +9,13 @@ class CommandHandshake : public NoCopyable, public ICommand {
 	public:
 		#pragma pack(push, 1)
 		struct PacketFromServer {
+			int udpPort;
 		};
 		#pragma pack(pop)
 
 		#pragma pack(push, 1)
 		struct PacketFromClient {
+			int udpPort;
 		};
 		#pragma pack(pop)
 
@@ -28,5 +30,14 @@ class CommandHandshake : public NoCopyable, public ICommand {
 		IClientSocket::Message	getMessage(void) const;
 		unsigned int			getSizeToRead(void) const;
 		void					initFromMessage(const IClientSocket::Message &message);
+
+	// getter setter
+	public:
+		int getUdpPort(void) const;
+		void setUdpPort(int udpPort);
+
+	// attributes
+	private:
+		int mUdpPort;
 
 };

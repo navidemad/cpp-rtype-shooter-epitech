@@ -9,6 +9,15 @@
 #include "ErrorStatus.hpp"
 #include <memory>
 
+/*
+    envoyer signal a guigui quand socket est deco
+    ou en cas de fail connection
+    enlever diconect
+    faire des catch
+*/
+
+
+
 class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
     Q_OBJECT
 
@@ -39,7 +48,6 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     public slots:
         void OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
         void OnDeleteGame(const std::string &name);
-        void OnDiconect(void);
         void OnFire(void);
         void OnJoinGame(const std::string &name);
         void OnLeaveGame(void);

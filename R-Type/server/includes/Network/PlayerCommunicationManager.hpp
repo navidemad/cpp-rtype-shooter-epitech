@@ -22,7 +22,10 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		const PlayerCommunicationManager &operator=(const PlayerCommunicationManager &) = delete;
 		const PlayerCommunicationManager &operator=(PlayerCommunicationManager &&) = delete;
 
+	// internal methods
+	private:
 		std::list<Peer>::iterator findPeer(const Peer &peer);
+		void logInfo(const Peer &peer, const std::string &log);
 
 	public:
 		void	addPeerToWhiteList(const Peer &peer);
@@ -67,6 +70,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *mListener;
 
-		static const int UDP_PORT = 4242;
+	public:
+		static const int UDP_PORT = 4243;
 
 };

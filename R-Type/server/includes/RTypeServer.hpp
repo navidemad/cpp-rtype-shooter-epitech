@@ -5,7 +5,7 @@
 #include "GamesManager.hpp"
 #include "NoCopyable.hpp"
 
-class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEvent {
+class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEvent, public GamesManager::OnGamesManagerEvent {
 
     // ctor / dtor
     public:
@@ -28,9 +28,15 @@ class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEven
 		void onClientObserveGame(const Peer &peer, const std::string &name);
 		void onClientLeaveGame(const Peer &peer);
 		void onClientUpdatePseudo(const Peer &peer, const std::string &pseudo);
+		void onEndGame(const std::string &gameName, const std::list<Peer> &gameUsers);
 
-    // attributes
-    private:
-        ClientManager mClientManager;
-        GamesManager mGamesManager;
+	// internal methods
+	private:
+		void startInfo(void) const;
+
+	// attributes
+	private:
+		ClientManager mClientManager;
+		GamesManager mGamesManager;
+
 };

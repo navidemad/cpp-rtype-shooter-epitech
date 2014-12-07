@@ -9,12 +9,13 @@
 #include <functional>
 #include <iostream>
 
-GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMutex(PortabilityBuilder::getMutex()) {
+GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMutex(PortabilityBuilder::getMutex()), mListener(nullptr) {
 	mPlayerCommunicationManager.setListener(this);
 }
 
 GamesManager::~GamesManager(void) {
     mGames.clear();
+    mThreadPool->stop();
 }
 
 void GamesManager::run(void) {
@@ -117,6 +118,15 @@ void GamesManager::onTerminatedGame(const std::string &name) {
     if (game == mGames.end())
         throw GamesManagerException("Try to terminate an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
 
+    if (mListener) {
+        std::list<Peer> gameUsers;
+
+        for (const auto &user : (*game)->getUsers())
+            gameUsers.push_back(user.getPeer());
+
+        mListener->onEndGame(name, gameUsers);
+    }
+
 	removeClientsFromWhitelist(*game);
     mGames.erase(game);
 }
@@ -124,12 +134,13 @@ void GamesManager::onTerminatedGame(const std::string &name) {
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
 
+    auto existingGame = findGameByHost(peer);
+    if (existingGame != mGames.end())
+      (*existingGame)->delUser(peer);
+
     auto game = findGameByName(name);
-    
     if (game == mGames.end())
-       throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
-    
-    leaveGame(peer, false);
+      throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
     (*game)->addUser(typeUser, peer, pseudo);
 }
 
@@ -153,18 +164,15 @@ void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
     }
 }
 
-void GamesManager::leaveGame(const Peer &peer, bool throwExcept) {
+void GamesManager::leaveGame(const Peer &peer) {
     ScopedLock scopedLock(mMutex);
 
     try {
         auto game = findGameByHost(peer);
+
         if (game == mGames.end())
-        {
-            if (throwExcept)
                 throw GamesManagerException("Try to leave a player who isn't in a game", ErrorStatus(ErrorStatus::Error::KO));
-            else
-                return;
-        }
+
         (*game)->delUser(peer);
         mPlayerCommunicationManager.removePeerFromWhiteList(peer);
     }
@@ -238,4 +246,8 @@ std::list<std::pair<std::string, std::string>> GamesManager::getScripts(void) co
 		scripts.push_back(std::pair<std::string, std::string> { script.first, script.second->getTextScript() });
 
 	return scripts;
+}
+
+void    GamesManager::setListener(GamesManager::OnGamesManagerEvent *listener) {
+    mListener = listener;
 }
