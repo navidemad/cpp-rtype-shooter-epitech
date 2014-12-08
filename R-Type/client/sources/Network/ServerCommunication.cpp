@@ -128,6 +128,18 @@ void ServerCommunication::OnUpdatePseudo(const std::string &pseudo){
 	mCmdTcp.sendCommand(command.get());
 }
 
+void ServerCommunication::OnSetServerIp(const std::string &ip){
+	mServerPeer.host = ip;
+}
+
+void ServerCommunication::OnSetServerPortTcp(int port){
+	mServerPeer.tcpPort = port;
+}
+
+void ServerCommunication::OnConnectServer(void){
+	mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
+}
+
 /*
 **handle command from server
 */

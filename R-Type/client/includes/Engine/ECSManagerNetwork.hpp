@@ -28,6 +28,9 @@ class ECSManagerNetwork : public QObject, public ECSManager
         void SignalObserveGame(const std::string &name);
         void SignalShowGame(const std::string &name);
         void SignalUpdatePseudo(const std::string &pseudo);
+        void SignalSetServerIp(const std::string &ip);
+        void SignalSetServerPortTcp(int port);
+        void SignalConnectServer(void);
 
 	public slots:
 		void OnDestroyResource(int id);
