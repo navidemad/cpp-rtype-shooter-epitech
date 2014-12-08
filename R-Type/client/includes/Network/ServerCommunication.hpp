@@ -23,7 +23,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
 
     // ctor - dtor
     public:
-        explicit ServerCommunication();
+        explicit ServerCommunication(int ClientUdpPort);
         ~ServerCommunication();
 
     // copy operators
@@ -102,7 +102,9 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     private:
         std::list<ICommand *> mListCommand;
         int mPortTcp;
-        std::string mIpTcp;
+        int mServerPortUdp;
+        int mClientPortUdp;
+        std::string mServerIp;
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
         PlayerPacketBuilder mCmdUdp;

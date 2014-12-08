@@ -27,8 +27,8 @@
 /*
 ** ctor - dtor
 */
-ServerCommunication::ServerCommunication()
-: QObject(), mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp), mCmdUdp(4242){
+ServerCommunication::ServerCommunication(int ClientPortUdp)
+: QObject(), mClientPortUdp(ClientPortUdp), mSocketTcp(new TcpClient()), mCmdTcp(mSocketTcp), mCmdUdp(mClientPortUdp){
 	mCmdTcp.setListener(this);
 	mCmdUdp.setListener(this);
 }
@@ -210,10 +210,13 @@ void ServerCommunication::ExecUpdateScore(ICommand *command){
 	emit SignalUpdateScore(cmd->getPseudo(), cmd->getId(), cmd->getScore());
 }
 
-void ServerCommunication::ExecHandShake(ICommand * /*command*/){
-	std::shared_ptr<ICommand> command(new CommandHandshake);
+void ServerCommunication::ExecHandShake(ICommand * command){
+	CommandHandshake *cmd = reinterpret_cast<CommandHandshake *>(command);
 
-	mCmdTcp.sendCommand(command.get());
+	mServerPortUdp = cmd->getUdpPort();
+	cmd->setUdpPort(mClientPortUdp);
+
+	mCmdTcp.sendCommand(cmd);
 }
 
 /*
@@ -238,7 +241,7 @@ void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientP
 ** Handle socket
 */
 void ServerCommunication::connectSocketTcp(void){
-	mSocketTcp->connect(mIpTcp, mPortTcp);
+	mSocketTcp->connect(mServerIp, mPortTcp);
 }
 
 /*
@@ -253,6 +256,6 @@ std::list<ICommand *> &ServerCommunication::getCommand(void) {
 */
 void ServerCommunication::setServerTcp(int port, std::string ip){
 	mPortTcp = port;
-	mIpTcp = ip;
+	mServerIp = ip;
 }
 
