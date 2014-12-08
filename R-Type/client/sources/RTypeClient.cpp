@@ -50,9 +50,10 @@ RTypeClient::RTypeClient()
 	}
 
 	//connect ecs and serverCom
-	//ECSManagerNetwork *searchMenu = reinterpret_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU]);
-	//ECSManagerNetwork *rtype = reinterpret_cast<ECSManagerNetwork *>(mEngine[RTYPE]);
+	ECSManagerNetwork *searchMenu	= static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU]);
+	ECSManagerNetwork *rtype		= static_cast<ECSManagerNetwork *>(mEngine[RTYPE]);
 
+	searchMenu->OnDestroyResource(5);
 	/*QObject::connect(searchMenu, SIGNAL(SignalCreateGame(const std::string &, const std::string &, int, int)), &mServer, SLOT(OnCreateGame(const std::string &, const std::string &, int, int)));
 	QObject::connect(searchMenu, SIGNAL(SignalDeleteGame(const std::string &)), &mServer, SLOT(OnDeleteGame(const std::string &)));
 	QObject::connect(searchMenu, SIGNAL(SignalFire()), &mServer, SLOT(OnFire()));
@@ -80,7 +81,10 @@ RTypeClient::RTypeClient()
 
 RTypeClient::~RTypeClient()
 {
-
+	for (auto engine : mEngine)
+	{
+		delete engine;
+	}
 }
 
 //RTypeClient::RTypeClient(RTypeClient const &) : mEngine(this) {}
