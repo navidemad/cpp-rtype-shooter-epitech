@@ -50,10 +50,10 @@ RTypeClient::RTypeClient()
 	}
 
 	//connect ecs and serverCom
-	ECSManagerNetwork *searchMenu = reinterpret_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU]);
+	//ECSManagerNetwork *searchMenu = reinterpret_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU]);
 	//ECSManagerNetwork *rtype = reinterpret_cast<ECSManagerNetwork *>(mEngine[RTYPE]);
 
-	QObject::connect(searchMenu, SIGNAL(SignalCreateGame(const std::string &, const std::string &, int, int)), &mServer, SLOT(OnCreateGame(const std::string &, const std::string &, int, int)));
+	/*QObject::connect(searchMenu, SIGNAL(SignalCreateGame(const std::string &, const std::string &, int, int)), &mServer, SLOT(OnCreateGame(const std::string &, const std::string &, int, int)));
 	QObject::connect(searchMenu, SIGNAL(SignalDeleteGame(const std::string &)), &mServer, SLOT(OnDeleteGame(const std::string &)));
 	QObject::connect(searchMenu, SIGNAL(SignalFire()), &mServer, SLOT(OnFire()));
 	QObject::connect(searchMenu, SIGNAL(SignalJoinGame(const std::string &const std::string &)), &mServer, SLOT(OnJoinGame(const std::string &)));
@@ -75,7 +75,7 @@ RTypeClient::RTypeClient()
 	QObject::connect(&mServer, SIGNAL(SignalShowGame(const std::string &, const std::string &, int, int, int, int)), searchMenu, SLOT(OnShowGame(const std::string &, const std::string &, int, int, int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalShowLevel(const std::string &, const std::string &)), searchMenu, SLOT(OnShowLevel(const std::string &, const std::string &)));
 	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), searchMenu, SLOT(OnTimeElapse(int64_t)));
-	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), searchMenu, SLOT(OnUpdateScore(const std::string & , int, int)));
+	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), searchMenu, SLOT(OnUpdateScore(const std::string & , int, int)));*/
 }
 
 RTypeClient::~RTypeClient()
