@@ -8,17 +8,6 @@
 #include "ErrorStatus.hpp"
 #include <memory>
 
-/*
-    envoyer signal a guigui quand socket est deco
-    ou en cas de fail connection
-
-    enlever diconect
-    
-    faire des catch
-*/
-
-
-
 class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
     Q_OBJECT
 
@@ -60,7 +49,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void OnUpdatePseudo(const std::string &pseudo);
         void OnSetServerIp(const std::string &ip);
         void OnSetServerPortTcp(int port);
-        void OnConnectServer(void);
+        bool OnConnectToServer(void);
 
     //handle command from server
     public:

@@ -30,7 +30,7 @@ class ECSManagerNetwork : public QObject, public ECSManager
         void SignalUpdatePseudo(const std::string &pseudo);
         void SignalSetServerIp(const std::string &ip);
         void SignalSetServerPortTcp(int port);
-        void SignalConnectServer(void);
+        bool SignalConnectToServer(void);
 
 	public slots:
 		void OnDestroyResource(int id);
