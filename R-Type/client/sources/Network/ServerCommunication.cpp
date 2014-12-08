@@ -228,26 +228,3 @@ void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientP
 void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &command, const Peer &/*peer*/){
 	ExecServerCommand(command.get());
 }
-
-/*
-** Handle socket
-*/
-void ServerCommunication::connectSocketTcp(void){
-	mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
-}
-
-/*
-** Getter
-*/
-std::list<ICommand *> &ServerCommunication::getCommand(void) {
-	return mListCommand;
-}
-
-/*
-** Setter
-*/
-void ServerCommunication::setServerTcp(int port, std::string ip){
-	mServerPeer.tcpPort = port;
-	mServerPeer.host = ip;
-}
-

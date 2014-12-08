@@ -1,6 +1,5 @@
 #pragma once
 #include <QObject>
-#include <list>
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
 #include "ClientPacketBuilder.hpp"
@@ -86,26 +85,9 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     public:
         void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer);
 
-    //handle socket
-    public:
-        void connectSocketTcp(void);
-
-    //getter
-    public:
-        std::list<ICommand *> &getCommand(void);
-
-
-    //setter
-    public:
-        void setServerTcp(int port, std::string ip);
-
     //attribut
     private:
-        std::list<ICommand *> mListCommand;
-        int mPortTcp;
-        int mServerPortUdp;
         int mClientPortUdp;
-        std::string mServerIp;
         Peer mServerPeer;
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
