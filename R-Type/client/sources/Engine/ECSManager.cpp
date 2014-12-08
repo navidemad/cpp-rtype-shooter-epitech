@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <stdexcept>
 #include "Engine/ComponentType.h"
 #include "Engine/ECSManager.hpp"
 #include "Engine/Entity.hpp"
