@@ -3,6 +3,7 @@
 #include <memory>
 #include "Engine/ECSManager.hpp"
 #include "GUI/IGraphic.hpp"
+#include "Network/ServerCommunication.hpp"
 
 class ECSManager;
 
@@ -43,6 +44,8 @@ public:
 		unsigned int							mCurrentId;
 		std::vector<ECSManager *>					mEngine;
 		std::shared_ptr<IGraphic>				mGui;
+
+		ServerCommunication						mServer;
 
 		std::vector<void (RTypeClient::*)()>	mInit;
 		std::vector<void (RTypeClient::*)()>	mStart;

@@ -1,22 +1,13 @@
 #include "RTypeClient.hpp"
 
-//#include <QApplication>
-//#include "Network/ServerCommunication.hpp"
+#include <QApplication>
 
-/*int trySocket(int ac, char **av){
+int		main(int ac, char ** av)
+{
 	QApplication	app(ac, av);
 
-	ServerCommunication server;
-	server.setServerTcp(4242, "127.0.0.1");
-	server.connectSocketTcp();
+	RTypeClient		rtype;
+	rtype.run();
 
 	return app.exec();
-}*/
-
-int		main(int /*ac*/, char ** /*av*/)
-{
-	RTypeClient	app;
-
-	app.run();
-	return (0);
 }

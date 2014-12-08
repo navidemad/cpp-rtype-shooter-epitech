@@ -136,7 +136,7 @@ void ServerCommunication::OnSetServerPortTcp(int port){
 	mServerPeer.tcpPort = port;
 }
 
-void ServerCommunication::OnConnectToServer(void){
+bool ServerCommunication::OnConnectToServer(void){
 	mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
 	return true;
 }
