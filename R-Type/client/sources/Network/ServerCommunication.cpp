@@ -61,13 +61,9 @@ void ServerCommunication::OnDeleteGame(const std::string &name){
 }
 
 void ServerCommunication::OnFire(void){
-	Peer peer;
 	std::shared_ptr<ICommand> command(new CommandFire);
 
-	peer.host = "10.41.173.139";
-	peer.udpPort = 4242;
-
-	mCmdUdp.sendCommand(command.get(), peer);
+	mCmdUdp.sendCommand(command.get(), mServerPeer);
 }
 
 void ServerCommunication::OnJoinGame(const std::string &name){
@@ -97,16 +93,12 @@ void ServerCommunication::OnListLevel(void){
 }
 
 void ServerCommunication::OnMove(IResource::Direction direction){
-	Peer peer;
 	std::shared_ptr<ICommand> command(new CommandMove);
 	CommandMove *fill = reinterpret_cast<CommandMove *>(command.get());
 
 	fill->setDirection(direction);
 
-	peer.host = "10.41.173.139";
-	peer.udpPort = 4242;
-
-	mCmdUdp.sendCommand(command.get(), peer);
+	mCmdUdp.sendCommand(command.get(), mServerPeer);
 }
 
 void ServerCommunication::OnObserveGame(const std::string &name){
@@ -213,7 +205,7 @@ void ServerCommunication::ExecUpdateScore(ICommand *command){
 void ServerCommunication::ExecHandShake(ICommand * command){
 	CommandHandshake *cmd = reinterpret_cast<CommandHandshake *>(command);
 
-	mServerPortUdp = cmd->getUdpPort();
+	mServerPeer.udpPort = cmd->getUdpPort();
 	cmd->setUdpPort(mClientPortUdp);
 
 	mCmdTcp.sendCommand(cmd);
@@ -241,7 +233,7 @@ void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientP
 ** Handle socket
 */
 void ServerCommunication::connectSocketTcp(void){
-	mSocketTcp->connect(mServerIp, mPortTcp);
+	mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
 }
 
 /*
@@ -255,7 +247,7 @@ std::list<ICommand *> &ServerCommunication::getCommand(void) {
 ** Setter
 */
 void ServerCommunication::setServerTcp(int port, std::string ip){
-	mPortTcp = port;
-	mServerIp = ip;
+	mServerPeer.tcpPort = port;
+	mServerPeer.host = ip;
 }
 

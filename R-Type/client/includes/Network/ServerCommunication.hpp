@@ -94,6 +94,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     public:
         std::list<ICommand *> &getCommand(void);
 
+
     //setter
     public:
         void setServerTcp(int port, std::string ip);
@@ -105,6 +106,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         int mServerPortUdp;
         int mClientPortUdp;
         std::string mServerIp;
+        Peer mServerPeer;
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
         PlayerPacketBuilder mCmdUdp;
