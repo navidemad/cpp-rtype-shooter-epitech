@@ -30,6 +30,7 @@ class SpriteManager : public IResourceManager<SpriteModel>
 	// methods
 	public:
 		void		loadResources(std::string const &key, std::string const &path);
+		void		loadResources(std::string const &key, std::string const &path, uint32_t columns, uint32_t lines, bool loop = false);
 		void		unloadResources();
 		SpriteModel	&getResource(std::string const &key);
 

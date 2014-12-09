@@ -2,14 +2,14 @@
 #include <memory>
 #include "GUI/SpriteModel.hpp"
 
-SpriteModel::SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns) :
+SpriteModel::SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines) :
 	mLoop(true), 
 	mFileName(filename), 
 	mCurrentIndex(0), 
 	mBegin(0), 
 	mEnd(0), 
-	mLines(lines), 
-	mColumns(columns), 
+	mColumns(columns),
+	mLines(lines),
 	mX(0),
 	mY(0)
 {

@@ -21,14 +21,14 @@ void	ContentManager::loadTextures()
 
 void	ContentManager::loadSprites()
 {
-	mSprites->loadResources("menu", "assets/sprites/menu.png");
-	mSprites->loadResources("logo", "assets/sprites/logo.png");
-	mSprites->loadResources("logoCharacter", "assets/sprites/logoCharacter.png");
-	mSprites->loadResources("logoSearch", "assets/sprites/logoSearch.png");
-	mSprites->loadResources("logoOption", "assets/sprites/logoOption.png");
-	mSprites->loadResources("searchBar", "assets/sprites/search_bar.png");
-	mSprites->loadResources("ball", "assets/sprites/r-typesheet3.gif");
-	mSprites->loadResources("cursor", "assets/sprites/cursor.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("menu", "assets/sprites/menu.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("logo", "assets/sprites/logo.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("logoCharacter", "assets/sprites/logoCharacter.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("logoSearch", "assets/sprites/logoSearch.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("logoOption", "assets/sprites/logoOption.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("searchBar", "assets/sprites/search_bar.png");
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("ball", "assets/sprites/r-typesheet3.gif", 12, 1, true);
+	std::static_pointer_cast<SpriteManager>(mSprites)->loadResources("cursor", "assets/sprites/cursor.png");
 }
 
 void	ContentManager::loadFonts()

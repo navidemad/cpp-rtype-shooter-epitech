@@ -9,7 +9,7 @@ class SpriteModel
 {
     // ctor - dtor
     public:
-        explicit SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns);
+		explicit SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines);
         ~SpriteModel();
 
     // copy operators
@@ -50,8 +50,8 @@ class SpriteModel
 		uint32_t					mCurrentIndex;
 		uint32_t					mBegin;
 		uint32_t					mEnd;
-		uint32_t					mLines;
 		uint32_t					mColumns;
+		uint32_t					mLines;
 		uint32_t					mX;
 		uint32_t					mY;
 };
