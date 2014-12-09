@@ -1,5 +1,5 @@
 #pragma once
-
+#include <QtCore>
 #include <memory>
 #include "Engine/ECSManager.hpp"
 #include "GUI/IGraphic.hpp"
@@ -7,7 +7,7 @@
 
 class ECSManager;
 
-class RTypeClient
+class RTypeClient : public QThread
 {
 public:
 	enum Game : unsigned int
@@ -30,7 +30,7 @@ public:
 //		RTypeClient(RTypeClient const &);
 		RTypeClient const	&operator=(RTypeClient const &);
 
-	public:
+	private:
 		void run();
 
 	// setter getter
