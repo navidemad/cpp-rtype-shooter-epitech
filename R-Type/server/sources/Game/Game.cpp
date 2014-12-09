@@ -124,7 +124,10 @@ void NGame::Game::check(void) {
         for (const auto& fct : functionsCheck)
         {
             if (fct(*it_cur))
+            {
+                // deleteRessource
                 it_cur = mComponents.erase(it_cur);
+            }
             else
                 ++it_cur;
         }
