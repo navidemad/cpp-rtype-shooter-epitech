@@ -25,24 +25,24 @@ class ScriptParser : public NoCopyable {
 	// internal functions
 	public:
 		std::shared_ptr<Script>			parseFile(std::ifstream &);
-		std::string						getName(void) const;
-		std::string						getRequire(void) const;
-		int								getActionFrame(void) const;
-		std::string						getActionMobAction(void) const;
+		const std::string&				getName(void) const;
+		const std::string&				getRequire(void) const;
+		double							getActionFrame(void) const;
+		const std::string&				getActionMobAction(void) const;
 		int								getActionSpawnIdMonster(void) const;
-		std::string						getActionSpawnName(void) const;
-		int								getActionSpawnXpos(void) const;
-		int								getActionSpawnYpos(void) const;
-		int								getActionSpawnAngle(void) const;
+		const std::string&				getActionSpawnName(void) const;
+		double							getActionSpawnXpos(void) const;
+		double							getActionSpawnYpos(void) const;
+		double							getActionSpawnAngle(void) const;
 		int								getActionMoveMobIdMonster(void) const;
-		int								getActionMoveMobAngle(void) const;
+		double							getActionMoveMobAngle(void) const;
 		int								getAddCronFrame(void) const;
-		int								getAddCronTimer(void) const;
+		double							getAddCronTimer(void) const;
 		int								getAddCronIdCron(void) const;
 		std::string						getAddCronFireMob(void) const;
 		int								getAddCronIdMonster(void) const;
-		int								getAddCronAngle(void) const;
-		int								getRemoveCronFrame(void) const;
+		double							getAddCronAngle(void) const;
+		double							getRemoveCronFrame(void) const;
 		int								getRemoveCronIdCron(void) const;
 		std::shared_ptr<ScriptAction::IActionType> fctSpawnMob(void);
 		std::shared_ptr<ScriptAction::IActionType> fctMoveMob(void);
