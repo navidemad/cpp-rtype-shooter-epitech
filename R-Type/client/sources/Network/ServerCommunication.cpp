@@ -20,6 +20,7 @@
 #include "CommandObserveGame.hpp"
 #include "CommandShowGame.hpp"
 #include "CommandUpdatePseudo.hpp"
+#include "SocketException.hpp"
 #include <memory>
 
 #include <iostream>
@@ -39,7 +40,7 @@ ServerCommunication::~ServerCommunication() {
 /*
 **slots
 */
-void ServerCommunication::OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver){
+bool ServerCommunication::OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver){
 	std::shared_ptr<ICommand> command(new CommandCreateGame);
 	CommandCreateGame *fill = reinterpret_cast<CommandCreateGame *>(command.get());
 
@@ -48,84 +49,85 @@ void ServerCommunication::OnCreateGame(const std::string &name, const std::strin
 	fill->setNbPlayers(nbPlayer);
 	fill->setNbSpectators(nbObserver);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnDeleteGame(const std::string &name){
+bool ServerCommunication::OnDeleteGame(const std::string &name){
 	std::shared_ptr<ICommand> command(new CommandDeleteGame);
 	CommandDeleteGame *fill = reinterpret_cast<CommandDeleteGame *>(command.get());
 
 	fill->setName(name);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnFire(void){
+bool ServerCommunication::OnFire(void){
 	std::shared_ptr<ICommand> command(new CommandFire);
 
-	mCmdUdp.sendCommand(command.get(), mServerPeer);
+	return sendCommand(command.get(), false);
 }
 
-void ServerCommunication::OnJoinGame(const std::string &name){
+bool ServerCommunication::OnJoinGame(const std::string &name){
 	std::shared_ptr<ICommand> command(new CommandJoinGame);
 	CommandJoinGame *fill = reinterpret_cast<CommandJoinGame *>(command.get());
 
 	fill->setName(name);
-	mCmdTcp.sendCommand(command.get());
+
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnLeaveGame(void){
+bool ServerCommunication::OnLeaveGame(void){
 	std::shared_ptr<ICommand> command(new CommandLeaveGame);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnListGame(void){
+bool ServerCommunication::OnListGame(void){
 	std::shared_ptr<ICommand> command(new CommandListGames);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnListLevel(void){
+bool ServerCommunication::OnListLevel(void){
 	std::shared_ptr<ICommand> command(new CommandListLevels);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnMove(IResource::Direction direction){
+bool ServerCommunication::OnMove(IResource::Direction direction){
 	std::shared_ptr<ICommand> command(new CommandMove);
 	CommandMove *fill = reinterpret_cast<CommandMove *>(command.get());
 
 	fill->setDirection(direction);
 
-	mCmdUdp.sendCommand(command.get(), mServerPeer);
+	return sendCommand(command.get(), false);
 }
 
-void ServerCommunication::OnObserveGame(const std::string &name){
+bool ServerCommunication::OnObserveGame(const std::string &name){
 	std::shared_ptr<ICommand> command(new CommandObserveGame);
 	CommandObserveGame *fill = reinterpret_cast<CommandObserveGame *>(command.get());
 
 	fill->setName(name);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnShowGame(const std::string &name){
+bool ServerCommunication::OnShowGame(const std::string &name){
 	std::shared_ptr<ICommand> command(new CommandShowGame);
 	CommandShowGame *fill = reinterpret_cast<CommandShowGame *>(command.get());
 
 	fill->setName(name);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
-void ServerCommunication::OnUpdatePseudo(const std::string &pseudo){
+bool ServerCommunication::OnUpdatePseudo(const std::string &pseudo){
 	std::shared_ptr<ICommand> command(new CommandUpdatePseudo);
 	CommandUpdatePseudo *fill = reinterpret_cast<CommandUpdatePseudo *>(command.get());
 
 	fill->setPseudo(pseudo);
 
-	mCmdTcp.sendCommand(command.get());
+	return sendCommand(command.get(), true);
 }
 
 void ServerCommunication::OnSetServerIp(const std::string &ip){
@@ -137,7 +139,12 @@ void ServerCommunication::OnSetServerPortTcp(int port){
 }
 
 bool ServerCommunication::OnConnectToServer(void){
-	mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
+	try {
+		mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
+	}
+	catch (SocketException){
+		return false;
+	}
 	return true;
 }
 
@@ -221,7 +228,7 @@ void ServerCommunication::ExecHandShake(ICommand * command){
 	mServerPeer.udpPort = cmd->getUdpPort();
 	cmd->setUdpPort(mClientPortUdp);
 
-	mCmdTcp.sendCommand(cmd);
+	sendCommand(command, true);
 }
 
 /*
@@ -232,7 +239,7 @@ void    ServerCommunication::onPacketAvailable(const ClientPacketBuilder &/*clie
 }
 
 void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientPacketBuilder*/){
-	return ;
+	emit SignalCloseSocket();
 }
 
 /*
@@ -240,4 +247,20 @@ void    ServerCommunication::onSocketClosed(const ClientPacketBuilder &/*clientP
 */
 void ServerCommunication::onPacketAvailable(const PlayerPacketBuilder &/*clientPacketBuilder*/, const std::shared_ptr<ICommand> &command, const Peer &/*peer*/){
 	ExecServerCommand(command.get());
+}
+
+/*
+**dry
+*/
+bool ServerCommunication::sendCommand(ICommand *command, bool isTcpCommand){
+	try {
+		if (isTcpCommand)
+			mCmdTcp.sendCommand(command);
+		else
+			mCmdUdp.sendCommand(command, mServerPeer);
+	}
+	catch (SocketException) {
+		return false;
+	}
+	return true;
 }

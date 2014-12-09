@@ -77,6 +77,7 @@ RTypeClient::RTypeClient()
 	QObject::connect(&mServer, SIGNAL(SignalShowLevel(const std::string &, const std::string &)), searchMenu, SLOT(OnShowLevel(const std::string &, const std::string &)));
 	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), searchMenu, SLOT(OnTimeElapse(int64_t)));
 	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), searchMenu, SLOT(OnUpdateScore(const std::string & , int, int)));
+	QObject::connect(&mServer, SIGNAL(SignalCloseSocket()), searchMenu, SLOT(OnCloseSocket()));
 }
 
 RTypeClient::~RTypeClient()
