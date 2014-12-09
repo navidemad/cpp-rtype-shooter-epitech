@@ -10,7 +10,7 @@ class System
 	// ctor - dtor
 	public:
 		System();
-		~System();
+		virtual ~System();
 
 	// coplien form
 	private:

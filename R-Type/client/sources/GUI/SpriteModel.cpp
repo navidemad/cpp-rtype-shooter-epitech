@@ -27,23 +27,8 @@ SpriteModel::SpriteModel(const SpriteModel &sm) :
 	mCurrentIndex(sm.getCurrentIndex()), 
 	mBegin(sm.getBegin()), 
 	mEnd(sm.getEnd()), 
-	mLines(sm.getLines()), 
 	mColumns(sm.getColumns()), 
-	mX(sm.getX()), 
-	mY(sm.getY())
-{
-	init();
-}
-
-SpriteModel::SpriteModel(SpriteModel &&sm) :
-	mTexture(sm.getTexture()), 
-	mLoop(sm.isLoop()), 
-	mFileName(sm.getFileName()), 
-	mCurrentIndex(sm.getCurrentIndex()), 
-	mBegin(sm.getBegin()), 
-	mEnd(sm.getEnd()), 
 	mLines(sm.getLines()), 
-	mColumns(sm.getColumns()), 
 	mX(sm.getX()), 
 	mY(sm.getY())
 {
@@ -51,22 +36,6 @@ SpriteModel::SpriteModel(SpriteModel &&sm) :
 }
 
 const SpriteModel &SpriteModel::operator=(const SpriteModel &sm)
-{
-	mTexture = sm.getTexture();
-	mLoop = sm.isLoop();
-	mFileName = sm.getFileName();
-	mCurrentIndex = sm.getCurrentIndex();
-	mBegin = sm.getBegin();
-	mEnd = sm.getEnd();
-	mLines = sm.getLines();
-	mColumns = sm.getColumns();
-	mX = sm.getX();
-	mY = sm.getY();
-	init();
-	return *this;
-}
-
-const SpriteModel &SpriteModel::operator=(SpriteModel &&sm)
 {
 	mTexture = sm.getTexture();
 	mLoop = sm.isLoop();
