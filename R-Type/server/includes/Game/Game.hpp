@@ -86,8 +86,8 @@ namespace NGame
 
 	private:
 		struct tokenExec {
-			std::string		cmd;
-			void			(NGame::Game::*Ptr)();
+			IScriptCommand::cmdAction	cmd;
+			void						(NGame::Game::*Ptr)();
 		};
 		static const NGame::Game::tokenExec tokenExecTab[];
 

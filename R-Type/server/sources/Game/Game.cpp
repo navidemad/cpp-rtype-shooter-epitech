@@ -6,16 +6,16 @@
 #include <iostream>
 
 const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
-	{ "frame", &NGame::Game::cmdFrame },
-	{ "spawnMobAt", &NGame::Game::cmdSpawnMobAt },
-	{ "moveMobTo", &NGame::Game::cmdMoveMobTo },
-	{ "idMonster", &NGame::Game::cmdIdMonster },
-	{ "name", &NGame::Game::cmdName },
-	{ "x", &NGame::Game::cmdX },
-	{ "y", &NGame::Game::cmdY },
-	{ "angle", &NGame::Game::cmdAngle },
-	{ "idCron", &NGame::Game::cmdIdCron },
-	{ "timer", &NGame::Game::cmdTimer }
+	{ IScriptCommand::cmdAction::FRAME, &NGame::Game::cmdFrame },
+	{ IScriptCommand::cmdAction::SPAWNMOBAT, &NGame::Game::cmdSpawnMobAt },
+	{ IScriptCommand::cmdAction::MOVEMOBTO, &NGame::Game::cmdMoveMobTo },
+	{ IScriptCommand::cmdAction::IDMONSTER, &NGame::Game::cmdIdMonster },
+	{ IScriptCommand::cmdAction::NAME, &NGame::Game::cmdName },
+	{ IScriptCommand::cmdAction::X, &NGame::Game::cmdX },
+	{ IScriptCommand::cmdAction::Y, &NGame::Game::cmdY },
+	{ IScriptCommand::cmdAction::ANGLE, &NGame::Game::cmdAngle },
+	{ IScriptCommand::cmdAction::IDCRON, &NGame::Game::cmdIdCron },
+	{ IScriptCommand::cmdAction::TIMER, &NGame::Game::cmdTimer }
 };
 
 
@@ -120,15 +120,7 @@ void NGame::Game::stateGame(void) {
 }
 
 void NGame::Game::actions(void) {
-	//	double currentFrame = mTimer.frame;
-	auto it = mCommands.begin();
-	auto end = mCommands.end();
-
-	std::cout << " coucou " << std::endl;
-	while (it != end){
-
-		++it;
-	}
+	return;
 }
 
 void NGame::Game::check(void) {
