@@ -3,6 +3,21 @@
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
 #include <algorithm>
+#include <iostream>
+
+const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
+	{ IScriptCommand::cmdAction::FRAME, &NGame::Game::cmdFrame },
+	{ IScriptCommand::cmdAction::SPAWNMOBAT, &NGame::Game::cmdSpawnMobAt },
+	{ IScriptCommand::cmdAction::MOVEMOBTO, &NGame::Game::cmdMoveMobTo },
+	{ IScriptCommand::cmdAction::IDMONSTER, &NGame::Game::cmdIdMonster },
+	{ IScriptCommand::cmdAction::NAME, &NGame::Game::cmdName },
+	{ IScriptCommand::cmdAction::X, &NGame::Game::cmdX },
+	{ IScriptCommand::cmdAction::Y, &NGame::Game::cmdY },
+	{ IScriptCommand::cmdAction::ANGLE, &NGame::Game::cmdAngle },
+	{ IScriptCommand::cmdAction::IDCRON, &NGame::Game::cmdIdCron },
+	{ IScriptCommand::cmdAction::TIMER, &NGame::Game::cmdTimer }
+};
+
 
 const float NGame::Game::XMAX = 100.f;
 const float NGame::Game::YMAX = 100.f;
@@ -102,6 +117,10 @@ void NGame::Game::stateGame(void) {
         if (mIsRunning)
             mAlreadyRunOneTime = true;
     }
+}
+
+void NGame::Game::actions(void) {
+	return;
 }
 
 void NGame::Game::check(void) {
@@ -235,4 +254,44 @@ void NGame::Game::terminateGame(void) {
 
 const NGame::Properties& NGame::Game::getProperties(void) const {
     return mProperties;
+}
+
+void	NGame::Game::cmdTimer(void){
+
+}
+
+void	NGame::Game::cmdMoveMobTo(void){
+
+}
+
+void	NGame::Game::cmdSpawnMobAt(void){
+
+}
+
+void	NGame::Game::cmdIdMonster(void){
+
+}
+
+void	NGame::Game::cmdY(void){
+
+}
+
+void	NGame::Game::cmdX(void){
+
+}
+
+void	NGame::Game::cmdAngle(void){
+
+}
+
+void	NGame::Game::cmdIdCron(void){
+
+}
+
+void	NGame::Game::cmdName(void){
+
+}
+
+void	NGame::Game::cmdFrame(void){
+
 }

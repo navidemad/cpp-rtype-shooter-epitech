@@ -30,6 +30,7 @@ void GamesManager::run(void) {
         }
         for (const auto &game : games) {
             *mThreadPool << std::bind(&NGame::Game::stateGame, game);
+			*mThreadPool << std::bind(&NGame::Game::actions, game);
             *mThreadPool << std::bind(&NGame::Game::check, game);
             *mThreadPool << std::bind(&NGame::Game::update, game);
         }

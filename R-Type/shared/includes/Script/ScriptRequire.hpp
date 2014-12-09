@@ -12,6 +12,7 @@ class ScriptRequire : public IScriptCommand {
 	// public pure methods
 	public:
 		virtual IScriptCommand::Instruction	getInstruction(void) const { return IScriptCommand::Instruction::REQUIRE; }
+		virtual double						getFrame(void) const { return 0.0; }
 
 	// getter-setter
 	public:

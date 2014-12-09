@@ -12,7 +12,7 @@ class ScriptAction : public IScriptCommand {
 	// public pure methods
 	public:
 		IScriptCommand::Instruction	getInstruction(void) const { return IScriptCommand::Instruction::ACTION; }
-
+		virtual double						getFrame(void) const { return mActionFrame; }
 	// actions enum
 	public:
 		enum class TYPE { SPAWN_MOB, MOVE_MOB };
@@ -26,12 +26,12 @@ class ScriptAction : public IScriptCommand {
 
 	// getter-setter
 	public:
-		int								getActionFrame(void) const { return mActionFrame; }
+		double							getActionFrame(void) const { return mActionFrame; }
 		const std::string&				getActionMobAction(void) const { return mActionMobAction; }
 		ScriptAction::TYPE				getActionType(void) const { return mType; }
 		std::shared_ptr<IActionType>	getActionParams(void) const { return mParams; }
 
-		void							setActionFrame(const int& frame) { mActionFrame = frame; }
+		void							setActionFrame(double frame) { mActionFrame = frame; }
 		void							setActionMobAction(const std::string& mobAction) { mActionMobAction = mobAction; }
 		void							setActionType(ScriptAction::TYPE type) { mType = type; }
 		void							setActionParams(std::shared_ptr<IActionType> params) { mParams = params; }
@@ -91,7 +91,7 @@ class ScriptAction : public IScriptCommand {
 
 	// attribut
 	public:
-		int								mActionFrame;
+		double							mActionFrame;
 		std::string						mActionMobAction;
 		std::shared_ptr<IActionType>	mParams;
 		ScriptAction::TYPE				mType;

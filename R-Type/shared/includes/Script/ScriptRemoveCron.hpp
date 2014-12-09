@@ -12,10 +12,10 @@ class ScriptRemoveCron : public IScriptCommand {
 	// public pure methods
 	public:
 		virtual IScriptCommand::Instruction	getInstruction(void) const { return IScriptCommand::Instruction::REMOVE_CRON; }
-
+		virtual double						getFrame(void) const { return this->mRemoveCronFrame; }
 	// getter-setter
 	public:
-		int					getRemoveCronFrame(void) const { return mRemoveCronFrame; }
+		double				getRemoveCronFrame(void) const { return mRemoveCronFrame; }
 		int					getRemoveCronIdCron(void) const { return mRemoveCronIdCron; }
 
 		void				setRemoveCronFrame(const int& frame) { mRemoveCronFrame = frame; }
@@ -23,6 +23,6 @@ class ScriptRemoveCron : public IScriptCommand {
 
 	// attribut
 	public:
-		int					mRemoveCronFrame;
+		double				mRemoveCronFrame;
 		int					mRemoveCronIdCron;
 };

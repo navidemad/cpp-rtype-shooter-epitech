@@ -26,6 +26,8 @@ void ClientManager::onNewConnection(IServerSocket *socket) {
 	client->handshake(PlayerCommunicationManager::UDP_PORT);
 	mClients.push_back(client);
 
+	onClientHandshake(*client.get(), PlayerCommunicationManager::UDP_PORT); // debug
+	onClientCreateGame(*client.get(), "game name", "level name", 4, 4); // debug
 	logInfo(client->getPeer(), "Connected");
 }
 
