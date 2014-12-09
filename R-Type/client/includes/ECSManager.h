@@ -8,7 +8,7 @@ class ECSManager
 {
 public: // ctor dtor
 	ECSManager(RType &);
-	~ECSManager();
+	virtual ~ECSManager();
 	
 public: // getter
 	RType &getClient() const;

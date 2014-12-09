@@ -7,15 +7,15 @@ class RTypeClient;
 #include <stdint.h>
 #include "Entity.hpp"
 #include "Component.hpp"
-#include "../Core/System.hpp"
+#include "Core/System.hpp"
 
 class ECSManager
 {
     // ctor - dtor
     public:
-		explicit ECSManager() : mClient(nullptr), mCurrentId(0) { }
+	ECSManager() : mClient(nullptr), mCurrentId(0) { }
         ECSManager(RTypeClient *);
-        ~ECSManager();
+	virtual ~ECSManager();
 
     // copy operators
     public:

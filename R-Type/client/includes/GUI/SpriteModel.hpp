@@ -15,9 +15,7 @@ class SpriteModel
     // copy operators
     public:
         SpriteModel(const SpriteModel &);
-        SpriteModel(SpriteModel &&);
         const SpriteModel &operator=(const SpriteModel &);
-        const SpriteModel &operator=(SpriteModel &&);
 
 	// methods
 	public:
