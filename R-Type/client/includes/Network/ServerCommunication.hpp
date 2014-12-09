@@ -33,20 +33,21 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void SignalShowLevel(const std::string &name, const std::string &script);
         void SignalTimeElapse(int64_t time);
         void SignalUpdateScore(const std::string &name, int id, int score);
+        void SignalCloseSocket(void);
 
     //slots
     public slots:
-        void OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
-        void OnDeleteGame(const std::string &name);
-        void OnFire(void);
-        void OnJoinGame(const std::string &name);
-        void OnLeaveGame(void);
-        void OnListGame(void);
-        void OnListLevel(void);
-        void OnMove(IResource::Direction direction);
-        void OnObserveGame(const std::string &name);
-        void OnShowGame(const std::string &name);
-        void OnUpdatePseudo(const std::string &pseudo);
+        bool OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
+        bool OnDeleteGame(const std::string &name);
+        bool OnFire(void);
+        bool OnJoinGame(const std::string &name);
+        bool OnLeaveGame(void);
+        bool OnListGame(void);
+        bool OnListLevel(void);
+        bool OnMove(IResource::Direction direction);
+        bool OnObserveGame(const std::string &name);
+        bool OnShowGame(const std::string &name);
+        bool OnUpdatePseudo(const std::string &pseudo);
         void OnSetServerIp(const std::string &ip);
         void OnSetServerPortTcp(int port);
         bool OnConnectToServer(void);
@@ -78,6 +79,10 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     //callback from PlayerPacketBuilder
     public:
         void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer);
+
+    //dry
+    private:
+        bool sendCommand(ICommand *command, bool isTcpCommand);
 
     //attribut
     private:

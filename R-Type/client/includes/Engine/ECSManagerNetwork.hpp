@@ -17,17 +17,17 @@ class ECSManagerNetwork : public QObject, public ECSManager
 
 	signals:
 		void SignalCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
-        void SignalDeleteGame(const std::string &name);
-        void SignalDiconect(void);
-        void SignalFire(void);
-        void SignalJoinGame(const std::string &name);
-        void SignalLeaveGame(void);
-        void SignalListGame(void);
-        void SignalListLevel(void);
-        void SignalMove(IResource::Direction direction);
-        void SignalObserveGame(const std::string &name);
-        void SignalShowGame(const std::string &name);
-        void SignalUpdatePseudo(const std::string &pseudo);
+        bool SignalDeleteGame(const std::string &name);
+        bool SignalDiconect(void);
+        bool SignalFire(void);
+        bool SignalJoinGame(const std::string &name);
+        bool SignalLeaveGame(void);
+        bool SignalListGame(void);
+        bool SignalListLevel(void);
+        bool SignalMove(IResource::Direction direction);
+        bool SignalObserveGame(const std::string &name);
+        bool SignalShowGame(const std::string &name);
+        bool SignalUpdatePseudo(const std::string &pseudo);
         void SignalSetServerIp(const std::string &ip);
         void SignalSetServerPortTcp(int port);
         bool SignalConnectToServer(void);
@@ -41,4 +41,5 @@ class ECSManagerNetwork : public QObject, public ECSManager
 		void OnShowLevel(const std::string &name, const std::string &script);
 		void OnTimeElapse(int64_t time);
 		void OnUpdateScore(const std::string &name, int id, int score);
+                void OnCloseSocket(void);
 };

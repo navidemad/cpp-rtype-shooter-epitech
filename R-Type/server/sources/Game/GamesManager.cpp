@@ -21,11 +21,19 @@ GamesManager::~GamesManager(void) {
 void GamesManager::run(void) {
 	mScriptLoader.loadAll();
 
-    for (;;) for (const auto &game : mGames) {
-        *mThreadPool << std::bind(&NGame::Game::stateGame, game);
-        *mThreadPool << std::bind(&NGame::Game::check, game);
-		//*mThreadPool << std::bind(&NGame::Game::actions, game);
-        *mThreadPool << std::bind(&NGame::Game::update, game);
+    for (;;)
+    {
+        std::vector<std::shared_ptr<NGame::Game>> games;
+        {
+            ScopedLock scopedLock(mMutex);
+            games = mGames;
+        }
+        for (const auto &game : games) {
+            *mThreadPool << std::bind(&NGame::Game::stateGame, game);
+			*mThreadPool << std::bind(&NGame::Game::actions, game);
+            *mThreadPool << std::bind(&NGame::Game::check, game);
+            *mThreadPool << std::bind(&NGame::Game::update, game);
+        }
     }
 }
 

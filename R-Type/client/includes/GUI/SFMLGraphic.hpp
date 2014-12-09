@@ -68,4 +68,6 @@ private:
 		sf::Music							mMusic;
 		std::string							mMusicCurrentKey;
 		std::map<uint32_t, uint64_t>		mIdTimeElapse;
+
+#define TIME 1000000
 };

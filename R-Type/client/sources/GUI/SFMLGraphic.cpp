@@ -29,7 +29,7 @@ bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, fl
 	// set index of frame sprite
 	uint32_t index;
 	if (mContentManager.getSprites()->getResource(key).isLoop())
-		index = mContentManager.getSprites()->getResource(key).getSize() * ((mIdTimeElapse[id] / 1000) % 1000) / 1000;
+		index = (mContentManager.getSprites()->getResource(key).getSize() * (mIdTimeElapse[id] % TIME)) / TIME;
 	else
 		index = mContentManager.getSprites()->getResource(key).getCurrentIndex();
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);

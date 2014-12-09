@@ -25,6 +25,13 @@ void			SpriteManager::loadResources(std::string const &key, std::string const &p
 	mListResources.insert(std::pair<std::string, SpriteModel>(key, model));
 }
 
+void			SpriteManager::loadResources(std::string const &key, std::string const &path, uint32_t columns, uint32_t lines, bool loop)
+{
+	SpriteModel model(path, columns, lines);
+	model.setLoop(loop);
+	mListResources.insert(std::pair<std::string, SpriteModel>(key, model));
+}
+
 void			SpriteManager::unloadResources()
 {
 
