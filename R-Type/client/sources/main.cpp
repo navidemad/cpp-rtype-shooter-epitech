@@ -1,13 +1,13 @@
 #include "RTypeClient.hpp"
+#include <QtCore>
 
-#include <QApplication>
-
-int		main(int ac, char ** av)
+int main(int ac, char **av)
 {
-	QApplication	app(ac, av);
+    QCoreApplication app(ac, av);
 
-	RTypeClient		rtype;
-	rtype.run();
+    RTypeClient		rtype;
+    QObject::connect(&rtype, SIGNAL(finished()), &app, SLOT(quit()));
 
-	return app.exec();
+    rtype.start();
+    return app.exec();
 }
