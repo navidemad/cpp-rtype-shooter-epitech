@@ -2,22 +2,17 @@
 #include "GameException.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
+#include "Utils.hpp"
 #include <algorithm>
 #include <iostream>
 
 const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
-	{ IScriptCommand::cmdAction::FRAME, &NGame::Game::cmdFrame },
-	{ IScriptCommand::cmdAction::SPAWNMOBAT, &NGame::Game::cmdSpawnMobAt },
-	{ IScriptCommand::cmdAction::MOVEMOBTO, &NGame::Game::cmdMoveMobTo },
-	{ IScriptCommand::cmdAction::IDMONSTER, &NGame::Game::cmdIdMonster },
-	{ IScriptCommand::cmdAction::NAME, &NGame::Game::cmdName },
-	{ IScriptCommand::cmdAction::X, &NGame::Game::cmdX },
-	{ IScriptCommand::cmdAction::Y, &NGame::Game::cmdY },
-	{ IScriptCommand::cmdAction::ANGLE, &NGame::Game::cmdAngle },
-	{ IScriptCommand::cmdAction::IDCRON, &NGame::Game::cmdIdCron },
-	{ IScriptCommand::cmdAction::TIMER, &NGame::Game::cmdTimer }
+	{ IScriptCommand::Instruction::NAME, &NGame::Game::recvName },
+	{ IScriptCommand::Instruction::REQUIRE, &NGame::Game::recvRequire },
+	{ IScriptCommand::Instruction::ACTION, &NGame::Game::recvAction },
+	{ IScriptCommand::Instruction::ADD_CRON, &NGame::Game::recvAddCron },
+	{ IScriptCommand::Instruction::REMOVE_CRON, &NGame::Game::recvRemoveCron }
 };
-
 
 const float NGame::Game::XMAX = 100.f;
 const float NGame::Game::YMAX = 100.f;
@@ -30,6 +25,17 @@ mAlreadyRunOneTime(false),
 mMutex(PortabilityBuilder::getMutex())
 {
 
+}
+
+void NGame::Game::logInfo(const std::string &log) {
+	std::stringstream ss;
+
+	ss << Utils::RED << "[SCRIPT]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
+	Utils::logInfo(ss.str());
+}
+
+bool NGame::Game::isRunningGame(void) const {
+	return mIsRunning;
 }
 
 void NGame::Game::setListener(NGame::Game::OnGameEvent *listener) {
@@ -109,7 +115,8 @@ void NGame::Game::stateGame(void) {
 
     if (mAlreadyRunOneTime && !mIsRunning)
     {
-        terminateGame();
+		if (mListener)
+			mListener->onTerminatedGame(mProperties.getName());
     }
     else
     {
@@ -120,7 +127,26 @@ void NGame::Game::stateGame(void) {
 }
 
 void NGame::Game::actions(void) {
-	return;
+	ScopedLock scopedLock(mMutex);
+
+	double currentFrame = mTimer.frame();
+
+	static auto it = mCommands.begin();
+	static auto it_end = mCommands.end();
+
+	while (it != it_end)
+	{
+		if ((*it)->getFrame() > currentFrame)
+			return;
+		for (const auto &instr : tokenExecTab) {
+			if (instr.cmd == (*it)->getInstruction()) {
+				(this->*instr.ftPtr)();
+				break;
+			}
+		}
+		++it;
+	}
+	mIsRunning = false;
 }
 
 void NGame::Game::check(void) {
@@ -131,9 +157,6 @@ void NGame::Game::check(void) {
         std::bind(&NGame::Game::outOfScreen, this, std::placeholders::_1),
         std::bind(&NGame::Game::collision, this, std::placeholders::_1)
     };
-
-    if (!mIsRunning)
-        return;
 
     auto it_cur = mComponents.begin();
     auto it_end = mComponents.end();
@@ -164,8 +187,6 @@ void NGame::Game::move(const Peer&, IResource::Direction) {
 void NGame::Game::update(void) {
     ScopedLock scopedLock(mMutex);
 
-    if (!mIsRunning)
-        return;
     for (auto& component : mComponents)
     {
         (void)component;
@@ -194,6 +215,7 @@ void NGame::Game::tryAddPlayer(const NGame::User& user) {
     mUsers.push_back(user);
 
     mProperties.setNbPlayers(mProperties.getNbPlayers() + 1);
+	mIsRunning = true;
 }
 
 void NGame::Game::tryAddSpectator(const NGame::User& user) {
@@ -247,51 +269,26 @@ const std::vector<NGame::User>& NGame::Game::getUsers() const {
     return mUsers;
 }
 
-void NGame::Game::terminateGame(void) {
-    if (mListener)
-        mListener->onTerminatedGame(mProperties.getName());
-}
-
 const NGame::Properties& NGame::Game::getProperties(void) const {
     return mProperties;
 }
 
-void	NGame::Game::cmdTimer(void){
-
+void	NGame::Game::recvName(void) {
+	logInfo(__FUNCTION__);
 }
 
-void	NGame::Game::cmdMoveMobTo(void){
-
+void	NGame::Game::recvRequire(void) {
+	logInfo(__FUNCTION__);
 }
 
-void	NGame::Game::cmdSpawnMobAt(void){
-
+void	NGame::Game::recvAction(void) {
+	logInfo(__FUNCTION__);
 }
 
-void	NGame::Game::cmdIdMonster(void){
-
+void	NGame::Game::recvAddCron(void) {
+	logInfo(__FUNCTION__);
 }
 
-void	NGame::Game::cmdY(void){
-
-}
-
-void	NGame::Game::cmdX(void){
-
-}
-
-void	NGame::Game::cmdAngle(void){
-
-}
-
-void	NGame::Game::cmdIdCron(void){
-
-}
-
-void	NGame::Game::cmdName(void){
-
-}
-
-void	NGame::Game::cmdFrame(void){
-
+void	NGame::Game::recvRemoveCron(void) {
+	logInfo(__FUNCTION__);
 }

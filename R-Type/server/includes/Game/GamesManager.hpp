@@ -17,7 +17,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // ctor / dtor
     public:
-        explicit GamesManager(void);
+        GamesManager(void);
         ~GamesManager(void);
 
     // entry point

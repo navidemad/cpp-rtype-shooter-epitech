@@ -59,6 +59,8 @@ namespace NGame
 
         // internal functions
     public:
+		bool isRunningGame(void) const;
+		void logInfo(const std::string &log);
         void fire(const Peer&);
         void move(const Peer&, IResource::Direction);
         int countUserByType(NGame::USER_TYPE type) const;
@@ -70,24 +72,18 @@ namespace NGame
         void delUser(const Peer &peer);
         void transferPlayerToSpectators(NGame::User& user);
         const std::vector<NGame::User>& getUsers() const;
-        void terminateGame(void);
         const NGame::Properties& getProperties(void) const;
 
-		void cmdFrame(void);
-		void cmdIdMonster(void);
-		void cmdSpawnMobAt(void);
-		void cmdMoveMobTo(void);
-		void cmdX(void);
-		void cmdY(void);
-		void cmdName(void);
-		void cmdTimer(void);
-		void cmdAngle(void);
-		void cmdIdCron(void);
+		void recvName(void);
+		void recvRequire(void);
+		void recvAction(void);
+		void recvAddCron(void);
+		void recvRemoveCron(void);
 
 	private:
 		struct tokenExec {
-			IScriptCommand::cmdAction	cmd;
-			void						(NGame::Game::*Ptr)();
+			IScriptCommand::Instruction	cmd;
+			void						(NGame::Game::*ftPtr)();
 		};
 		static const NGame::Game::tokenExec tokenExecTab[];
 
