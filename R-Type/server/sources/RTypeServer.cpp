@@ -12,7 +12,7 @@ RTypeServer::RTypeServer(void) {
 void RTypeServer::run(void) {
 	startInfo();
 	mClientManager.run();
-	mGamesManager.run();	
+	mGamesManager.run();
 }
 
 void RTypeServer::startInfo(void) const {

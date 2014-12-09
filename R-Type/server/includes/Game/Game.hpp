@@ -8,6 +8,7 @@
 #include "GameProperties.hpp"
 #include "GameUser.hpp"
 #include "GameComponent.hpp"
+#include "IScriptCommand.hpp"
 
 #include <string>
 #include <memory>
@@ -16,7 +17,7 @@
 
 namespace NGame
 {
-
+	
     class Game : public NoCopyable {
 
         // ctor / dtor
@@ -44,6 +45,7 @@ namespace NGame
     public:
         void stateGame(void);
         void check(void);
+		void actions(void);
         void update(void);
 
         // ressources workflow functions
@@ -71,10 +73,29 @@ namespace NGame
         void terminateGame(void);
         const NGame::Properties& getProperties(void) const;
 
+		void cmdFrame(void);
+		void cmdIdMonster(void);
+		void cmdSpawnMobAt(void);
+		void cmdMoveMobTo(void);
+		void cmdX(void);
+		void cmdY(void);
+		void cmdName(void);
+		void cmdTimer(void);
+		void cmdAngle(void);
+		void cmdIdCron(void);
+
+	private:
+		struct tokenExec {
+			std::string		cmd;
+			void			(NGame::Game::*Ptr)();
+		};
+		static const NGame::Game::tokenExec tokenExecTab[];
+
         // attributes
     private:
         NGame::Game::OnGameEvent *mListener;
         Timer mTimer;
+		std::vector<std::shared_ptr<IScriptCommand>> mCommands;
         NGame::Properties mProperties;
         std::vector<NGame::User> mUsers;
         std::vector<NGame::Component> mComponents;
