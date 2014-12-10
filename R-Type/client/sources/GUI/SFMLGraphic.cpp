@@ -5,6 +5,7 @@ std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 SFMLGraphic::SFMLGraphic()
 	: mWindow(sf::VideoMode::getDesktopMode(), "R-type", sf::Style::Fullscreen), mInputManager(this), mMusicCurrentKey("")
 {
+	mWindow.setActive(false);
 }
 
 SFMLGraphic::~SFMLGraphic()
