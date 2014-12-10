@@ -17,6 +17,8 @@
 #include "Engine/Compenent/Font.hpp"
 #include "Engine/Compenent/TextInput.hpp"
 
+Q_DECLARE_METATYPE(std::string)
+
 RTypeClient::RTypeClient()
 : mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(4243), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
 {
