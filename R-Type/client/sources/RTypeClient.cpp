@@ -91,9 +91,10 @@ RTypeClient::~RTypeClient()
 //RTypeClient::RTypeClient(RTypeClient const &) : mEngine(this) {}
 
 RTypeClient const	&RTypeClient::operator=(RTypeClient const &) { return *this; }
-
+#include <iostream>
 void	RTypeClient::run()
 {
+
 	mGui->init();
 	init();
 
@@ -198,28 +199,6 @@ void			RTypeClient::initSearchMenu()
 void			RTypeClient::simulateReceiveClient(unsigned int id)
 {
 
-	ECSManager &engine = *mEngine[RTypeClient::SEARCH_MENU];
-
-	Entity	&entity = engine.getEntity(id);
-	List *button = static_cast<List *>(entity.getSpecificComponent(ComponentType::LIST));
-
-	{
-		information_room room("MON PETIT PONEY", 2, 4);
-		button->addRoom(room);
-	}
-	{
-		information_room room("I WANT TO BE FREE", 2, 4);
-		button->addRoom(room);
-	}
-	{
-		information_room room("I WANT TO BREAK FREE", 2, 4);
-		button->addRoom(room);
-	}
-	{
-		information_room room("BOOST CA LEAK", 2, 4);
-		button->addRoom(room);
-	}
-	
 }
 
 void			RTypeClient::initOption()
@@ -398,7 +377,16 @@ void	RTypeClient::startRtype()
 
 void	RTypeClient::startSearchMenu()
 {
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
+	std::cout << "lol" << std::endl;
+
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp("127.0.0.1");
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4242);
+	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer() == false)
+		std::cout << "connect" << std::endl;
+	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame() == true)
+		std::cout << "ok" << std::endl;
+	else
+		std::cout << "bad" << std::endl;
 }
 
 void	RTypeClient::stopMenu()
