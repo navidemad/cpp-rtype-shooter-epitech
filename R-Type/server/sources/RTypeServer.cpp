@@ -17,14 +17,14 @@ void RTypeServer::run(void) {
 
 void RTypeServer::startInfo(void) const {
 	std::cout << "#######################" << std::endl
-						<< "#    R-Type Server    #" << std::endl
-						<< "#       Welcome       #" << std::endl
-						<< "#######################" << std::endl
-						<< std::endl
-						<< "Port configuration:" << std::endl
-						<< "$> TCP Port: " << ClientManager::SERVER_TCP_PORT << std::endl
-						<< "$> UDP Port: " << PlayerCommunicationManager::UDP_PORT << std::endl
-						<< std::endl; 
+			  << "#    R-Type Server    #" << std::endl
+		      << "#       Welcome       #" << std::endl
+			  << "#######################" << std::endl
+			  << std::endl
+			  << "Port configuration:" << std::endl
+			  << "$> TCP Port: " << ClientManager::SERVER_TCP_PORT << std::endl
+			  << "$> UDP Port: " << PlayerCommunicationManager::UDP_PORT << std::endl
+			  << std::endl; 
 }
 
 void RTypeServer::onEndGame(const std::string &, const std::list<Peer> &gameUsers) {

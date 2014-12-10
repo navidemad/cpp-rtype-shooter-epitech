@@ -17,88 +17,109 @@
 
 namespace NGame
 {
-	
+
     class Game : public NoCopyable {
 
         // ctor / dtor
-    public:
-        explicit Game(const NGame::Properties& properties);
-        ~Game(void) = default;
+        public:
+            explicit Game(const NGame::Properties& properties);
+            ~Game(void) = default;
 
         // events
-    public:
-        class OnGameEvent {
         public:
-            virtual ~OnGameEvent(void) {}
-            virtual void onTerminatedGame(const std::string &name) = 0;
-        };
-        void	    setListener(NGame::Game::OnGameEvent *listener);
-        void        setOwner(const Peer& owner);
-        const Peer& getOwner(void) const;
+            class OnGameEvent {
+            public:
+                virtual ~OnGameEvent(void) = default;
+                virtual void onTerminatedGame(const std::string &name) = 0;
+            };
+        
+        // pull function called by threadPool
+        public:
+            void pull(void);
+        private:
+            void check(void);
+            void actions(void);
+            void update(void);
 
-        // referentiel
-    public:
-        static const float XMAX;
-        static const float YMAX;
+        // getters
+        public:
+            bool isRunningGame(void) const;
+            const Peer& getOwner(void) const;
+            const std::vector<NGame::User>& getUsers() const;
+            const NGame::Properties& getProperties(void) const;
 
-        // threadpool running functions
-    public:
-        void stateGame(void);
-        void check(void);
-		void actions(void);
-        void update(void);
+        // setters
+        public:
+            void setListener(NGame::Game::OnGameEvent *listener);
+            void setOwner(const Peer& owner);
 
-        // ressources workflow functions
-    public:
-        bool outOfScreen(const NGame::Component& component);
-        bool collisionTouch(const NGame::Component& component, const NGame::Component& obstacle) const;
-        bool collisionWithBonus(const NGame::Component& component, const NGame::Component& obstacle);
-        bool collisionWithBullet(const NGame::Component& component, const NGame::Component& obstacle);
-        bool collisionWithMonster(const NGame::Component& component, const NGame::Component& obstacle);
-        bool collision(const NGame::Component& component);
+        // utils
+        private:
+            void logInfo(const std::string &log);
 
-        // internal functions
-    public:
-		bool isRunningGame(void) const;
-		void logInfo(const std::string &log);
-        void fire(const Peer&);
-        void move(const Peer&, IResource::Direction);
-        int countUserByType(NGame::USER_TYPE type) const;
-        std::vector<NGame::User>::iterator findUserByHost(const Peer &peer);
-        std::vector<NGame::User>::iterator findUserById(uint64_t id);
-        void tryAddPlayer(const NGame::User& user);
-        void tryAddSpectator(const NGame::User& user);
-        void addUser(NGame::USER_TYPE type, const Peer &peer, const std::string& pseudo);
-        void delUser(const Peer &peer);
-        void transferPlayerToSpectators(NGame::User& user);
-        const std::vector<NGame::User>& getUsers() const;
-        const NGame::Properties& getProperties(void) const;
+        // static values
+        private:
+            struct tokenExec {
+                IScriptCommand::Instruction	cmd;
+                void						(NGame::Game::*ftPtr)();
+            };
+            static const NGame::Game::tokenExec tokenExecTab[];
+            static const float XMAX;
+            static const float YMAX;
 
-		void recvName(void);
-		void recvRequire(void);
-		void recvAction(void);
-		void recvAddCron(void);
-		void recvRemoveCron(void);
+        // check :: outOfScreen
+        private:
+            bool outOfScreen(const NGame::Component&);
 
-	private:
-		struct tokenExec {
-			IScriptCommand::Instruction	cmd;
-			void						(NGame::Game::*ftPtr)();
-		};
-		static const NGame::Game::tokenExec tokenExecTab[];
+        // check :: collision
+        private:
+            bool collision(const NGame::Component& component);
+            bool collisionTouch(const NGame::Component&, const NGame::Component&) const;
+            bool collisionWithBonus(const NGame::Component&, const NGame::Component&);
+            bool collisionWithBullet(const NGame::Component&, const NGame::Component&);
+            bool collisionWithMonster(const NGame::Component&, const NGame::Component&);
+
+        // workflow STL
+        private:
+            int NGame::Game::countUserByType(NGame::USER_TYPE) const;
+        public:
+            std::vector<NGame::User>::iterator NGame::Game::findUserByHost(const Peer &);
+            std::vector<NGame::User>::iterator NGame::Game::findUserById(uint64_t);
+
+        // workflow internal game
+        private:
+            void NGame::Game::tryAddPlayer(const NGame::User&);
+            void NGame::Game::tryAddSpectator(const NGame::User&);
+            void NGame::Game::transferPlayerToSpectators(NGame::User &);
+        public:
+            void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
+            void NGame::Game::delUser(const Peer &);
+            
+        // workflow gaming fire + move
+        public:
+            void NGame::Game::fire(const Peer&);
+            void NGame::Game::move(const Peer&, IResource::Direction);
+
+        // workflow scripts actions
+        private:
+            void recvName(void);
+            void recvRequire(void);
+            void recvAction(void);
+            void recvAddCron(void);
+            void recvRemoveCron(void);
 
         // attributes
-    private:
-        NGame::Game::OnGameEvent *mListener;
-        Timer mTimer;
-		std::vector<std::shared_ptr<IScriptCommand>> mCommands;
-        NGame::Properties mProperties;
-        std::vector<NGame::User> mUsers;
-        std::vector<NGame::Component> mComponents;
-        bool mIsRunning;
-        bool mAlreadyRunOneTime;
-        std::shared_ptr<IMutex> mMutex;
-        Peer mOwner;
+        private:
+            NGame::Game::OnGameEvent *mListener;
+            Timer mTimer;
+		    std::vector<std::shared_ptr<IScriptCommand>> mCommands;
+            NGame::Properties mProperties;
+            std::vector<NGame::User> mUsers;
+            std::vector<NGame::Component> mComponents;
+            bool mIsRunning;
+            bool mAlreadyRunOneTime;
+            std::shared_ptr<IMutex> mMutex;
+            Peer mOwner;
 
     };
 

@@ -29,13 +29,7 @@ void GamesManager::run(void) {
             games = mGames;
         }
         for (const auto &game : games) {
-            *mThreadPool << std::bind(&NGame::Game::stateGame, game);
-			if (game->isRunningGame())
-			{
-				*mThreadPool << std::bind(&NGame::Game::actions, game);
-				*mThreadPool << std::bind(&NGame::Game::check, game);
-				*mThreadPool << std::bind(&NGame::Game::update, game);
-			}
+            *mThreadPool << std::bind(&NGame::Game::pull, game);
         }
     }
 }
@@ -126,7 +120,7 @@ void GamesManager::onTerminatedGame(const std::string &name) {
     ScopedLock scopedLock(mMutex);
 
     auto game = findGameByName(name);
-	std::cout << std::endl << "findGameByName returned: '" << &game << "'" << std::endl << "mGames.end()   returned: '" << &mGames.end() << "'" << std::endl;
+
 	if (game == mGames.end())
 		throw GamesManagerException("Try to terminate undefined game", ErrorStatus(ErrorStatus::Error::KO));
 

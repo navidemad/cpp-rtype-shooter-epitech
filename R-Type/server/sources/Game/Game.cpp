@@ -24,20 +24,110 @@ mIsRunning(false),
 mAlreadyRunOneTime(false), 
 mMutex(PortabilityBuilder::getMutex())
 {
-
 }
 
-void NGame::Game::logInfo(const std::string &log) {
-	std::stringstream ss;
+/*
+** pull function called by threadPool
+*/
+void NGame::Game::pull(void) {
+    ScopedLock scopedLock(mMutex);
 
-	ss << Utils::RED << "[SCRIPT]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
-	Utils::logInfo(ss.str());
+    if (mAlreadyRunOneTime && !mIsRunning)
+    {
+        if (mListener)
+            mListener->onTerminatedGame(mProperties.getName());
+    }
+    else
+    {
+        mIsRunning = mProperties.getNbPlayers() > 0;
+        if (mIsRunning)
+        {
+            mAlreadyRunOneTime = true;
+            /*
+            actions();
+            check();
+            update();
+            */
+        }
+    }
 }
 
+void NGame::Game::actions(void) {
+    ScopedLock scopedLock(mMutex);
+
+    double currentFrame = mTimer.frame();
+
+    static auto it = mCommands.begin();
+    static auto it_end = mCommands.end();
+
+    while (it != it_end)
+    {
+        if ((*it)->getFrame() > currentFrame)
+            return;
+        for (const auto &instr : tokenExecTab) {
+            if (instr.cmd == (*it)->getInstruction()) {
+                (this->*instr.ftPtr)();
+                break;
+            }
+        }
+        ++it;
+    }
+    mIsRunning = false;
+}
+
+void NGame::Game::check(void) {
+    ScopedLock scopedLock(mMutex);
+
+    static auto functionsCheck = std::vector<std::function<bool(const NGame::Component&)>>
+    {
+        std::bind(&NGame::Game::outOfScreen, this, std::placeholders::_1),
+        std::bind(&NGame::Game::collision, this, std::placeholders::_1)
+    };
+
+    auto it_cur = mComponents.begin();
+    auto it_end = mComponents.end();
+
+    while (it_cur != it_end)
+    {
+        for (const auto& fct : functionsCheck)
+        {
+            if (fct(*it_cur))
+            {
+                // deleteRessource
+                it_cur = mComponents.erase(it_cur);
+            }
+            else
+                ++it_cur;
+        }
+    }
+}
+
+void NGame::Game::update(void) {
+    ScopedLock scopedLock(mMutex);
+}
+
+/*
+** getters
+*/
 bool NGame::Game::isRunningGame(void) const {
-	return mIsRunning;
+    return mIsRunning;
 }
 
+const Peer& NGame::Game::getOwner(void) const {
+    return mOwner;
+}
+
+const std::vector<NGame::User>& NGame::Game::getUsers() const {
+    return mUsers;
+}
+
+const NGame::Properties& NGame::Game::getProperties(void) const {
+    return mProperties;
+}
+
+/*
+** setters
+*/
 void NGame::Game::setListener(NGame::Game::OnGameEvent *listener) {
     mListener = listener;
 }
@@ -46,10 +136,19 @@ void NGame::Game::setOwner(const Peer& owner) {
     mOwner = owner;
 }
 
-const Peer& NGame::Game::getOwner(void) const {
-    return mOwner;
+/*
+** utils
+*/
+void NGame::Game::logInfo(const std::string &log) {
+	std::stringstream ss;
+
+	ss << Utils::RED << "[SCRIPT]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
+	Utils::logInfo(ss.str());
 }
 
+/*
+** check :: outOfScreen
+*/
 bool NGame::Game::outOfScreen(const NGame::Component& component) {
     bool eraseAsked = (component.getX() < 0.0f || component.getX() > NGame::Game::XMAX || component.getY() < 0.0f || component.getX() > NGame::Game::YMAX) != 0;
     if (eraseAsked)
@@ -59,6 +158,24 @@ bool NGame::Game::outOfScreen(const NGame::Component& component) {
             transferPlayerToSpectators(*user);
     }
     return (eraseAsked);
+}
+
+/*
+** check :: collision
+*/
+bool NGame::Game::collision(const NGame::Component& component) {
+    static auto functionsHandleCollision = std::vector<std::function<bool(const NGame::Component&, const NGame::Component&)>>
+    {
+        std::bind(&NGame::Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
+            std::bind(&NGame::Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
+            std::bind(&NGame::Game::collisionWithMonster, this, std::placeholders::_1, std::placeholders::_2)
+    };
+    for (const NGame::Component& obstacle : mComponents)
+        if (collisionTouch(component, obstacle))
+            for (const auto& fct : functionsHandleCollision)
+                if (fct(component, obstacle))
+                    return true;
+    return (false);
 }
 
 bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame::Component& obstacle) const {
@@ -92,110 +209,9 @@ bool NGame::Game::collisionWithMonster(const NGame::Component& /*component*/, co
     return true;
 }
 
-bool NGame::Game::collision(const NGame::Component& component) {
-
-    static auto functionsHandleCollision = std::vector<std::function<bool(const NGame::Component&, const NGame::Component&)>>
-    {
-        std::bind(&NGame::Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
-        std::bind(&NGame::Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
-        std::bind(&NGame::Game::collisionWithMonster, this, std::placeholders::_1, std::placeholders::_2)
-    };
-
-    for (const NGame::Component& obstacle : mComponents)
-        if (collisionTouch(component, obstacle))
-            for (const auto& fct : functionsHandleCollision)
-                if (fct(component, obstacle))
-                    return true;
-
-    return (false);
-}
-
-void NGame::Game::stateGame(void) {
-    ScopedLock scopedLock(mMutex);
-
-    if (mAlreadyRunOneTime && !mIsRunning)
-    {
-		if (mListener)
-			mListener->onTerminatedGame(mProperties.getName());
-    }
-    else
-    {
-        mIsRunning = mProperties.getNbPlayers() > 0;
-        if (mIsRunning)
-            mAlreadyRunOneTime = true;
-    }
-}
-
-void NGame::Game::actions(void) {
-	ScopedLock scopedLock(mMutex);
-
-	double currentFrame = mTimer.frame();
-
-	static auto it = mCommands.begin();
-	static auto it_end = mCommands.end();
-
-	while (it != it_end)
-	{
-		if ((*it)->getFrame() > currentFrame)
-			return;
-		for (const auto &instr : tokenExecTab) {
-			if (instr.cmd == (*it)->getInstruction()) {
-				(this->*instr.ftPtr)();
-				break;
-			}
-		}
-		++it;
-	}
-	mIsRunning = false;
-}
-
-void NGame::Game::check(void) {
-    ScopedLock scopedLock(mMutex);
-
-    static auto functionsCheck = std::vector<std::function<bool(const NGame::Component&)>>
-    {
-        std::bind(&NGame::Game::outOfScreen, this, std::placeholders::_1),
-        std::bind(&NGame::Game::collision, this, std::placeholders::_1)
-    };
-
-    auto it_cur = mComponents.begin();
-    auto it_end = mComponents.end();
-
-    while (it_cur != it_end)
-    {
-        for (const auto& fct : functionsCheck)
-        {
-            if (fct(*it_cur))
-            {
-                // deleteRessource
-                it_cur = mComponents.erase(it_cur);
-            }
-            else
-                ++it_cur;
-        }
-    }
-}
-
-void NGame::Game::fire(const Peer&) {
-
-}
-
-void NGame::Game::move(const Peer&, IResource::Direction) {
-
-}
-
-void NGame::Game::update(void) {
-    ScopedLock scopedLock(mMutex);
-
-    for (auto& component : mComponents)
-    {
-        (void)component;
-        /*
-        ** changer la position en fonction du delta et de la vitesse (delta * speed) les setX et setY
-        */
-    }
-}
-
+/*
+** workflow STL
+*/
 int NGame::Game::countUserByType(NGame::USER_TYPE type) const {
     return std::count_if(mUsers.begin(), mUsers.end(), [&type](const NGame::User& user) { return user.getType() == type; });
 }
@@ -208,6 +224,9 @@ std::vector<NGame::User>::iterator NGame::Game::findUserById(uint64_t id) {
     return std::find_if(mUsers.begin(), mUsers.end(), [&id](const NGame::User& user) { return user.getId() == id; });
 }
 
+/*
+** workflow internal game
+*/
 void NGame::Game::tryAddPlayer(const NGame::User& user) {
     if (mProperties.getNbPlayers() >= mProperties.getMaxPlayers())
         throw GameException("No place for new players");
@@ -215,7 +234,7 @@ void NGame::Game::tryAddPlayer(const NGame::User& user) {
     mUsers.push_back(user);
 
     mProperties.setNbPlayers(mProperties.getNbPlayers() + 1);
-	mIsRunning = true;
+    mIsRunning = true;
 }
 
 void NGame::Game::tryAddSpectator(const NGame::User& user) {
@@ -265,14 +284,20 @@ void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
     //sendMessage that user die
 }
 
-const std::vector<NGame::User>& NGame::Game::getUsers() const {
-    return mUsers;
+/*
+** workflow gaming fire + move
+*/
+void NGame::Game::fire(const Peer&) {
+
 }
 
-const NGame::Properties& NGame::Game::getProperties(void) const {
-    return mProperties;
+void NGame::Game::move(const Peer&, IResource::Direction) {
+
 }
 
+/*
+** workflow scripts actions
+*/
 void	NGame::Game::recvName(void) {
 	logInfo(__FUNCTION__);
 }
