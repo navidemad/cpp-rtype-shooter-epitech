@@ -16,7 +16,7 @@ class ECSManagerNetwork : public QObject, public ECSManager
 	Q_OBJECT
 
 	signals:
-		void SignalCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
+	bool SignalCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
         bool SignalDeleteGame(const std::string &name);
         bool SignalDiconect(void);
         bool SignalFire(void);
