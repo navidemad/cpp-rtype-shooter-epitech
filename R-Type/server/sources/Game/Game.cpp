@@ -56,7 +56,7 @@ void NGame::Game::actions(void) {
 		{
 			currentCommand = mScript.currentAction();
 
-			if (currentCommand->getFrame() > mTimer.frame())
+			if (mTimer.frame() < currentCommand->getFrame())
 				return;
 
 			std::cout << "CE TEXTE DEVRAIT ETRE AFFICHEE 13 FOIS" << std::endl;
@@ -107,26 +107,38 @@ void NGame::Game::update(void) {
 ** getters
 */
 NGame::Game::State NGame::Game::getState(void) const {
+    ScopedLock scopedLock(mMutex);
+
 	return mState;
 }
 
 const Peer& NGame::Game::getOwner(void) const {
+    ScopedLock scopedLock(mMutex);
+
 	return mOwner;
 }
 
 const std::vector<NGame::User>& NGame::Game::getUsers() const {
+    ScopedLock scopedLock(mMutex);
+
 	return mUsers;
 }
 
 const NGame::Properties& NGame::Game::getProperties(void) const {
+    ScopedLock scopedLock(mMutex);
+
 	return mProperties;
 }
 
 bool NGame::Game::pullEnded(void) const {
+    ScopedLock scopedLock(mMutex);
+
 	return mPullEnded;
 }
 
 void NGame::Game::setPullEnded(bool pullEnded) {
+    ScopedLock scopedLock(mMutex);
+
 	mPullEnded = pullEnded;
 }
 
@@ -138,6 +150,8 @@ void NGame::Game::setListener(NGame::Game::OnGameEvent *listener) {
 }
 
 void NGame::Game::setOwner(const Peer& owner) {
+    ScopedLock scopedLock(mMutex);
+
 	mOwner = owner;
 }
 
@@ -265,6 +279,8 @@ void NGame::Game::tryDelSpectator(void) {
 }
 
 void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::string& pseudo) {
+    ScopedLock scopedLock(mMutex);
+
 	if (type != NGame::USER_TYPE::PLAYER && type != NGame::USER_TYPE::SPECTATOR)
 		throw GameException("Invalid user type");
 
@@ -281,6 +297,8 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
+    ScopedLock scopedLock(mMutex);
+
 	auto user = findUserByHost(peer);
 
 	if (user == mUsers.end())

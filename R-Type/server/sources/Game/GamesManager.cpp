@@ -30,24 +30,23 @@ void GamesManager::run(void) {
             games = mGames;
         }
 
-		for (auto it = mGames.begin(); it != mGames.end();)
+		for (auto it = games.begin(); it != games.end();)
 		{
-			switch ((*it)->getState())
-			{
-			case NGame::Game::State::RUNNING:
-				if ((*it)->pullEnded() == true) {
-					*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+            if ((*it)->pullEnded() == true)
+        		switch ((*it)->getState())
+        		{
+        		case NGame::Game::State::RUNNING:
                     (*it)->setPullEnded(false);
-                }
-				++it;
-				break;
-			case NGame::Game::State::DONE:
-				it = terminatedGame(it);
-				break;
-			default:
-				++it;
-				break;
-			}
+    				*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+        			break;
+        		case NGame::Game::State::DONE:
+        			terminatedGame(findGameByName((*it)->getProperties().getName()));
+        			break;
+                default:
+                    break;
+        		}
+
+            ++it;
 		}
     }
 }
