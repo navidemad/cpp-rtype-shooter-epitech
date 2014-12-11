@@ -55,8 +55,9 @@ namespace NGame
 				void						(NGame::Game::*fctPtr)();
 			};
 			static const NGame::Game::tokenExec tokenExecTab[];
-			static const float XMAX;
-			static const float YMAX;
+			static const double XMAX;
+			static const double YMAX;
+			static const double FRAMES_PER_SEC;
 
         // getters
         public:

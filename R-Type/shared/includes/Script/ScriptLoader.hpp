@@ -18,6 +18,7 @@ public:
 
 	// internal functions
 public:
+	bool isExist(const std::string& stage_name) const;
 	const Script& getScript(const std::string& stage_name) const;
 	void loadAll(void);
     const std::map<std::string, Script>& getScripts() const;
