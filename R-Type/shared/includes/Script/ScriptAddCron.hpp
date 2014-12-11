@@ -6,8 +6,8 @@
 class ScriptAddCron : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptAddCron(void) { }
-		~ScriptAddCron(void) { }
+		ScriptAddCron(void) = default;
+		~ScriptAddCron(void) = default;
 
 	// public pure methods
 	public:

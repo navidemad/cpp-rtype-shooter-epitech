@@ -11,7 +11,7 @@ class WindowsThread : public NoCopyable, public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		explicit WindowsThread(void) : mIsRunning(false) {}
+		WindowsThread(void) : mIsRunning(false) {}
         ~WindowsThread(void) { cancel(); }
 
 	// enum ret value

@@ -6,8 +6,8 @@
 class ScriptAction : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptAction(void) { }
-		~ScriptAction(void) { }
+		ScriptAction(void) = default;
+		~ScriptAction(void) = default;
 
 	// public pure methods
 	public:
@@ -49,23 +49,23 @@ class ScriptAction : public IScriptCommand {
 			public:
 				int						getActionIdMonster(void) const { return mIdMonster; }
 				std::string				getActionName(void) const { return mName; }
-				int						getActionXpos(void) const { return mXpos; }
-				int						getActionYpos(void) const { return mYpos; }
-				int						getActionAngle(void) const { return mAngle; }
+				double					getActionXpos(void) const { return mXpos; }
+				double					getActionYpos(void) const { return mYpos; }
+				double					getActionAngle(void) const { return mAngle; }
 
-				void					setActionIdMonster(const int& idMonster) { mIdMonster = idMonster; }
+				void					setActionIdMonster(int idMonster) { mIdMonster = idMonster; }
 				void					setActionName(const std::string& name) { mName = name; }
-				void					setActionXpos(const int& xPos) { mXpos = xPos; }
-				void					setActionYpos(const int& yPos) { mYpos = yPos; }
-				void					setActionAngle(const int& angle) { mAngle = angle; }
+				void					setActionXpos(double xPos) { mXpos = xPos; }
+				void					setActionYpos(double yPos) { mYpos = yPos; }
+				void					setActionAngle(double angle) { mAngle = angle; }
 
 			// attributes
 			public:
 				int mIdMonster;
 				std::string mName;
-				int mXpos;
-				int mYpos;
-				int mAngle;
+				double mXpos;
+				double mYpos;
+				double mAngle;
 		};
 
 		class MoveMob : public IActionType {
@@ -78,15 +78,15 @@ class ScriptAction : public IScriptCommand {
 			// getter-setter
 			public:
 				int						getActionIdMonster(void) const { return mIdMonster; }
-				int						getActionAngle(void) const { return mAngle; }
+				double					getActionAngle(void) const { return mAngle; }
 
-				void					setActionIdMonster(const int& idMonster) { mIdMonster = idMonster; }
-				void					setActionAngle(const int& angle) { mAngle = angle; }
+				void					setActionIdMonster(int idMonster) { mIdMonster = idMonster; }
+				void					setActionAngle(double angle) { mAngle = angle; }
 
 			// attributes
 			public:
 				int						mIdMonster;
-				int						mAngle;
+				double					mAngle;
 		};
 
 	// attribut

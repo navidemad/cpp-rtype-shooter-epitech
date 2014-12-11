@@ -12,7 +12,7 @@ class WindowsTcpClient : public NoCopyable, public IClientSocket, public Network
 
 	// ctor - dtor
 	public:
-		explicit WindowsTcpClient(void);
+		WindowsTcpClient(void);
 		~WindowsTcpClient(void);
 
 	// start - stop

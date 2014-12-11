@@ -210,6 +210,6 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 win32:LIBS	+= -lWs2_32
 unix:LIBS	+= -lpthread -ldl
 
-win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
+win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
 DEFINES        += _DEBUG

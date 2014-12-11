@@ -17,7 +17,7 @@ class CommandLeaveGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandLeaveGame(void);
+		CommandLeaveGame(void);
 		~CommandLeaveGame(void);
 
 	// public pure methods

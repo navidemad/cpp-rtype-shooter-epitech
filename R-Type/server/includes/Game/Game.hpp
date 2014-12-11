@@ -9,6 +9,7 @@
 #include "GameUser.hpp"
 #include "GameComponent.hpp"
 #include "IScriptCommand.hpp"
+#include "Script.hpp"
 
 #include <string>
 #include <memory>
@@ -22,7 +23,7 @@ namespace NGame
 
         // ctor / dtor
         public:
-            explicit Game(const NGame::Properties& properties);
+            explicit Game(const NGame::Properties& properties, const Script&);
             ~Game(void) = default;
 
         // events
@@ -30,7 +31,7 @@ namespace NGame
             class OnGameEvent {
             public:
                 virtual ~OnGameEvent(void) = default;
-                virtual void onTerminatedGame(const std::string &name) = 0;
+                //virtual void onTerminatedGame(const std::string &name) = 0;
             };
         
         // pull function called by threadPool
@@ -41,10 +42,26 @@ namespace NGame
             void actions(void);
             void update(void);
 
+		// static values
+		public:
+			enum class State {
+				NOT_STARTED = 0,
+				RUNNING,
+				DONE
+			};
+		private:
+			struct tokenExec {
+				IScriptCommand::Instruction	commandCode;
+				void						(NGame::Game::*fctPtr)();
+			};
+			static const NGame::Game::tokenExec tokenExecTab[];
+			static const float XMAX;
+			static const float YMAX;
+
         // getters
         public:
-            bool isRunningGame(void) const;
-            const Peer& getOwner(void) const;
+			NGame::Game::State getState(void) const;
+			const Peer& getOwner(void) const;
             const std::vector<NGame::User>& getUsers() const;
             const NGame::Properties& getProperties(void) const;
 
@@ -56,16 +73,6 @@ namespace NGame
         // utils
         private:
             void logInfo(const std::string &log);
-
-        // static values
-        private:
-            struct tokenExec {
-                IScriptCommand::Instruction	cmd;
-                void						(NGame::Game::*ftPtr)();
-            };
-            static const NGame::Game::tokenExec tokenExecTab[];
-            static const float XMAX;
-            static const float YMAX;
 
         // check :: outOfScreen
         private:
@@ -88,17 +95,19 @@ namespace NGame
 
         // workflow internal game
         private:
-            void NGame::Game::tryAddPlayer(const NGame::User&);
-            void NGame::Game::tryAddSpectator(const NGame::User&);
-            void NGame::Game::transferPlayerToSpectators(NGame::User &);
+            void tryAddPlayer(const NGame::User&);
+			void tryDelPlayer(void);
+            void tryAddSpectator(const NGame::User&);
+			void tryDelSpectator(void);
+            void transferPlayerToSpectators(NGame::User &);
         public:
-            void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
-            void NGame::Game::delUser(const Peer &);
+            void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
+            void delUser(const Peer &);
             
         // workflow gaming fire + move
         public:
-            void NGame::Game::fire(const Peer&);
-            void NGame::Game::move(const Peer&, IResource::Direction);
+            void fire(const Peer&);
+            void move(const Peer&, IResource::Direction);
 
         // workflow scripts actions
         private:
@@ -110,14 +119,13 @@ namespace NGame
 
         // attributes
         private:
+			Script mScript;
             NGame::Game::OnGameEvent *mListener;
             Timer mTimer;
-		    std::vector<std::shared_ptr<IScriptCommand>> mCommands;
             NGame::Properties mProperties;
             std::vector<NGame::User> mUsers;
             std::vector<NGame::Component> mComponents;
-            bool mIsRunning;
-            bool mAlreadyRunOneTime;
+			NGame::Game::State mState;
             std::shared_ptr<IMutex> mMutex;
             Peer mOwner;
 

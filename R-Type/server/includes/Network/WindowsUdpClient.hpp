@@ -10,7 +10,7 @@ class WindowsUdpClient : public NoCopyable, public IClientSocket, public Network
 
 	// ctor - dtor
 	public:
-		explicit WindowsUdpClient(void);
+		WindowsUdpClient(void);
 		~WindowsUdpClient(void);
 
 	// start - stop

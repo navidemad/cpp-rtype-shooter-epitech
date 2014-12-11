@@ -28,9 +28,25 @@ void GamesManager::run(void) {
             ScopedLock scopedLock(mMutex);
             games = mGames;
         }
-        for (const auto &game : games) {
-            *mThreadPool << std::bind(&NGame::Game::pull, game);
-        }
+		auto it = games.begin();
+		auto it_end = games.end();
+		while (it != it_end)
+		{
+			switch ((*it)->getState())
+			{
+				case NGame::Game::State::RUNNING:
+					*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+					++it;
+					break;
+				case NGame::Game::State::DONE:
+					it = mGames.erase(it);
+					//it = terminatedGame(it);
+					break;
+				default:
+					++it;
+					break;
+			}
+		}
     }
 }
 
@@ -44,7 +60,7 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 	if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > 4)
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
 
-	auto game = std::make_shared<NGame::Game>(properties);
+	auto game = std::make_shared<NGame::Game>(properties, mScriptLoader.getScript(properties.getLevelName()));
 
     game->setListener(this);
     game->setOwner(peer);
@@ -116,6 +132,21 @@ void GamesManager::onPlayerMove(const PlayerCommunicationManager &, IResource::D
 /*
 ** Game::OnGameEvent
 */
+std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it) {
+	if (mListener) {
+		std::list<Peer> gameUsers;
+
+		for (const auto &user : (*it)->getUsers())
+			gameUsers.push_back(user.getPeer());
+
+		mListener->onEndGame((*it)->getProperties().getName(), gameUsers);
+	}
+
+	removeClientsFromWhitelist(*it);
+	return mGames.erase(it);
+}
+
+/*
 void GamesManager::onTerminatedGame(const std::string &name) {
     ScopedLock scopedLock(mMutex);
 
@@ -136,6 +167,7 @@ void GamesManager::onTerminatedGame(const std::string &name) {
 	removeClientsFromWhitelist(*game);
     mGames.erase(game);
 }
+*/
 
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     ScopedLock scopedLock(mMutex);
@@ -249,7 +281,7 @@ std::list<std::pair<std::string, std::string>> GamesManager::getScripts(void) co
 	std::list<std::pair<std::string, std::string>> scripts;
 
 	for (const auto &script : mScriptLoader.getScripts())
-		scripts.push_back(std::pair<std::string, std::string> { script.first, script.second->getTextScript() });
+		scripts.push_back(std::pair<std::string, std::string> { script.first, script.second.getTextScript() });
 
 	return scripts;
 }

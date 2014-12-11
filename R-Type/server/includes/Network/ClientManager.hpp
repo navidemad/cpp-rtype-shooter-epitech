@@ -13,7 +13,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 
 	// ctor / dtor
 	public:
-        explicit ClientManager(void);
+        ClientManager(void);
 		~ClientManager(void);
 
 	// handle client manager

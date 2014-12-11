@@ -21,7 +21,7 @@ class CommandHandshake : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandHandshake(void);
+		CommandHandshake(void);
 		~CommandHandshake(void);
 
 	// public pure methods

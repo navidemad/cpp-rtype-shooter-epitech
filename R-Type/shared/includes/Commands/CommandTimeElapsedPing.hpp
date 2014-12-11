@@ -15,7 +15,7 @@ class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandTimeElapsedPing(void);
+		CommandTimeElapsedPing(void);
 		~CommandTimeElapsedPing(void);
 
 	// getter - setters

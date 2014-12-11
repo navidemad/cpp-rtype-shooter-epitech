@@ -20,7 +20,7 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandMoveResource(void);
+		CommandMoveResource(void);
 		~CommandMoveResource(void);
 
 	// getter - setters

@@ -15,7 +15,7 @@ class CommandDestroyResource : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandDestroyResource(void);
+		CommandDestroyResource(void);
 		~CommandDestroyResource(void);
 
 	// getter - setters

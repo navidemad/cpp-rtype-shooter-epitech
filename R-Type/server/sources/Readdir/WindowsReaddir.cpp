@@ -8,24 +8,28 @@ WindowsReaddir::WindowsReaddir(void) {
 WindowsReaddir::~WindowsReaddir(void) {
 }
 
-std::list<std::string> WindowsReaddir::readFolder(std::string pathFolder) {
+std::list<std::string> WindowsReaddir::readFolder(const std::string &folderName) {
 	std::list<std::string> files;
 
 	HANDLE hFind;
-	WIN32_FIND_DATA data;
+	WIN32_FIND_DATA file_data;
+	const std::string pattern = folderName + "/*";
 
-	pathFolder += "\\*.*";
-	hFind = FindFirstFile(s2ws(pathFolder).c_str(), &data);
-	if (hFind != INVALID_HANDLE_VALUE) {
+	if ((hFind = FindFirstFile(s2ws(pattern).c_str(), &file_data)) != INVALID_HANDLE_VALUE) {
 		do {
-			if (strcmp(reinterpret_cast<char*>(data.cFileName), ".") && strcmp(reinterpret_cast<char*>(data.cFileName), "..")) {
-				const std::wstring ws = std::wstring(data.cFileName);			
-				const std::string file(ws.begin(), ws.end());
-				files.push_back(file);
-			}
-		} while (FindNextFile(hFind, &data));
+			const std::wstring ws = std::wstring(file_data.cFileName);
+			const std::string file_name(ws.begin(), ws.end());
+			const std::string full_file_name = folderName + "/" + file_name;
+			const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+			if (file_name[0] == '.' || is_directory)
+				continue;
+
+			files.push_back(full_file_name);
+		} while (FindNextFile(hFind, &file_data));
 		FindClose(hFind);
 	}
+
 	return files;
 }
 

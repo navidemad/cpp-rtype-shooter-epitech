@@ -12,7 +12,7 @@
 class ScriptParser : public NoCopyable {
 	// ctor / dtor
 	public:
-		explicit ScriptParser(void);
+		ScriptParser(void);
 		~ScriptParser(void);
 
 	// copy / move operators
@@ -24,26 +24,7 @@ class ScriptParser : public NoCopyable {
 
 	// internal functions
 	public:
-		std::shared_ptr<Script>			parseFile(std::ifstream &);
-		const std::string&				getName(void) const;
-		const std::string&				getRequire(void) const;
-		double							getActionFrame(void) const;
-		const std::string&				getActionMobAction(void) const;
-		int								getActionSpawnIdMonster(void) const;
-		const std::string&				getActionSpawnName(void) const;
-		double							getActionSpawnXpos(void) const;
-		double							getActionSpawnYpos(void) const;
-		double							getActionSpawnAngle(void) const;
-		int								getActionMoveMobIdMonster(void) const;
-		double							getActionMoveMobAngle(void) const;
-		int								getAddCronFrame(void) const;
-		double							getAddCronTimer(void) const;
-		int								getAddCronIdCron(void) const;
-		std::string						getAddCronFireMob(void) const;
-		int								getAddCronIdMonster(void) const;
-		double							getAddCronAngle(void) const;
-		double							getRemoveCronFrame(void) const;
-		int								getRemoveCronIdCron(void) const;
+		Script										parseFile(std::ifstream &);
 		std::shared_ptr<ScriptAction::IActionType> fctSpawnMob(void);
 		std::shared_ptr<ScriptAction::IActionType> fctMoveMob(void);
 		std::shared_ptr<IScriptCommand>				cmdName(void);

@@ -7,27 +7,24 @@
 #include <memory>
 #include <cstdint>
 
-class Script : public NoCopyable {
+class Script {
 
     // ctor / dtor
     public:
-        explicit Script(void);
+        Script(void);
         ~Script(void);
+		Script(const Script &);
+		const Script &operator=(const Script &);
 
 	// internal functions
 	public:
 		void addAction(std::shared_ptr<IScriptCommand> command);
-		std::shared_ptr<IScriptCommand> currentAction(void) const;
-		std::vector<std::shared_ptr<IScriptCommand>> getCommands(void) const;
-		void restart(void);
-		bool goToNextAction(void);
-		bool goToPrevAction(void);
+		const std::vector<std::shared_ptr<IScriptCommand>>& getCommands(void) const;
         const std::string& getTextScript(void) const;
         void setTextScript(const std::string&);
 
 	// attributes
 	private:
 		std::vector<std::shared_ptr<IScriptCommand>> mCommands;
-		uint32_t mIndex;
         std::string mTextScript;
 };

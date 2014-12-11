@@ -14,7 +14,7 @@ class CommandListLevels : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandListLevels(void);
+		CommandListLevels(void);
 		~CommandListLevels(void);
 
 	// public pure methods

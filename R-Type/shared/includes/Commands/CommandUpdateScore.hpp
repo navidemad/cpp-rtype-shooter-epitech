@@ -19,7 +19,7 @@ class CommandUpdateScore : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandUpdateScore(void);
+		CommandUpdateScore(void);
 		~CommandUpdateScore(void);
 
 	// getter - setters

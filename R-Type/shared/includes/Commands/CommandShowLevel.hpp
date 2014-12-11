@@ -19,7 +19,7 @@ class CommandShowLevel : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandShowLevel(void);
+		CommandShowLevel(void);
 		~CommandShowLevel(void);
 
 	// getter - setters
