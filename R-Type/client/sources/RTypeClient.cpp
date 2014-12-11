@@ -142,7 +142,7 @@ void			RTypeClient::init()
 	(this->*(this->mStart[this->mCurrentId]))();
 	std::for_each(mInit.begin(), mInit.end(), init);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp("127.0.0.1");
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4242);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4245);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
@@ -461,12 +461,12 @@ void	RTypeClient::startPressStart()
 void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
-	/*	if (*/static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel);/* == false)
+	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel) == false)
 	{
 		mCurrentId = MENU;
 		stopRtype();
 		startMenu();
-	}*/
+	}
 }
 
 void	RTypeClient::startSearchMenu()

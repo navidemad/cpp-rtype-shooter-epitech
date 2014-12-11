@@ -5,6 +5,11 @@
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
 
+ECSManagerNetwork::ECSManagerNetwork()
+{
+
+}
+
 void ECSManagerNetwork::OnDestroyResource(int id)
 {
 	mRemoveId.push_back(id);
@@ -15,6 +20,7 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 
 }
 #include <iostream>
+
 void ECSManagerNetwork::OnError(ICommand::Instruction instruction, ErrorStatus::Error err)
 {
 	switch (err)
