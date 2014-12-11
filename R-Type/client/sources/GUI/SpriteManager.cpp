@@ -36,7 +36,12 @@ void			SpriteManager::loadResources(std::string const &key, std::string const &p
 												uint32_t columns, uint32_t lines,
 												SpriteOffset const &so, bool loop)
 {
-
+	SpriteModel model(path, columns, lines, sf::IntRect(so.getRectLeft(), 
+														so.getRectTop(), 
+														so.getRectWidth(), 
+														so.getRectHeight()));
+	model.setLoop(loop);
+	mListResources.insert(std::pair<std::string, SpriteModel>(key, model));
 }
 
 void			SpriteManager::unloadResources()
@@ -63,4 +68,24 @@ SpriteManager::SpriteOffset::SpriteOffset(uint32_t rectLeft, uint32_t rectTop, u
 SpriteManager::SpriteOffset::~SpriteOffset()
 {
 
+}
+
+uint32_t	SpriteManager::SpriteOffset::getRectLeft() const
+{
+	return mRectLeft;
+}
+
+uint32_t	SpriteManager::SpriteOffset::getRectTop() const
+{
+	return mRectTop;
+}
+
+uint32_t	SpriteManager::SpriteOffset::getRectWidth() const
+{
+	return mRectWidth;
+}
+
+uint32_t	SpriteManager::SpriteOffset::getRectHeight() const
+{
+	return mRectHeight;
 }

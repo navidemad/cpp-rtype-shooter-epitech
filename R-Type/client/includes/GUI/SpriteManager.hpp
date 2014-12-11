@@ -49,13 +49,20 @@ class SpriteManager : public IResourceManager<SpriteModel>
 				uint32_t	mRectTop;
 				uint32_t	mRectWidth;
 				uint32_t	mRectHeight;
+
+			// methods
+			public:
+				uint32_t	getRectLeft() const;
+				uint32_t	getRectTop() const;
+				uint32_t	getRectWidth() const;
+				uint32_t	getRectHeight() const;
 		};
 
 	// methods
 	public:
 		void		loadResources(std::string const &key, std::string const &path);
 		void		loadResources(std::string const &key, std::string const &path, uint32_t columns, uint32_t lines, bool loop = false);
-		void		loadResources(std::string const &key, std::string const &path, uint32_t columns, uint32_t lines, SpriteOffset const &si, bool loop = false);
+		void		loadResources(std::string const &key, std::string const &path, uint32_t columns, uint32_t lines, SpriteOffset const &so, bool loop = false);
 		void		unloadResources();
 		SpriteModel	&getResource(std::string const &key);
 

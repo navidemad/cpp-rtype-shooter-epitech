@@ -20,6 +20,7 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
+#include <iostream>
 bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, float y, uint32_t id)
 {
 	// set time elapse by id
