@@ -15,8 +15,9 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 	{ IScriptCommand::Instruction::REMOVE_CRON, &NGame::Game::recvRemoveCron }
 };
 
-const float NGame::Game::XMAX = 100.f;
-const float NGame::Game::YMAX = 100.f;
+const double NGame::Game::XMAX = 100.;
+const double NGame::Game::YMAX = 100.;
+const double NGame::Game::FRAMES_PER_SEC = 60.;
 
 NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
 mScript(script),
@@ -35,15 +36,17 @@ void NGame::Game::pull(void) {
     ScopedLock scopedLock(mMutex);
 
 	mIsThreadRunning = false;
-	double FRAME_PER_SEC = 60.0;
 	double start_time = mTimer.frame();
 	double delta_time;
 	do {
-		actions(); // script loading
-		check(); // check collisions
-		update(); // update positions
+		if (mState == NGame::Game::State::RUNNING)
+			actions();
+		if (mState == NGame::Game::State::RUNNING)
+			check();
+		if (mState == NGame::Game::State::RUNNING)
+			update();
 		delta_time = mTimer.frame() - start_time;
-	} while (delta_time < 1 / FRAME_PER_SEC);
+	} while (delta_time < 1 / NGame::Game::FRAMES_PER_SEC);
 	mIsThreadRunning = false;
 }
 
@@ -82,22 +85,18 @@ void NGame::Game::check(void) {
         std::bind(&NGame::Game::collision, this, std::placeholders::_1)
     };
 
-    auto it_cur = mComponents.begin();
-    auto it_end = mComponents.end();
-
-    while (it_cur != it_end)
-    {
-        for (const auto& fct : functionsCheck)
-        {
-            if (fct(*it_cur))
-            {
-                // deleteRessource
-                it_cur = mComponents.erase(it_cur);
-            }
-            else
-                ++it_cur;
-        }
-    }
+	for (auto it = mComponents.begin(); it != mComponents.end();) {
+		for (const auto& fct : functionsCheck)
+		{
+			if (fct(*it))
+			{
+				// deleteRessource
+				it = mComponents.erase(it);
+			}
+			else
+				++it;
+		}
+	}
 }
 
 void NGame::Game::update(void) {
@@ -184,10 +183,10 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
     if (&obstacle == &component)
         return false;
 
-    float x = component.getX() - (component.getWidth() / 2);
-    float y = component.getY() - (component.getHeight() / 2);
-    float obsX = obstacle.getX() - (obstacle.getWidth() / 2);
-    float obsY = obstacle.getY() - (obstacle.getHeight() / 2);
+	double x = component.getX() - (component.getWidth() / 2);
+	double y = component.getY() - (component.getHeight() / 2);
+	double obsX = obstacle.getX() - (obstacle.getWidth() / 2);
+	double obsY = obstacle.getY() - (obstacle.getHeight() / 2);
 
     return ((y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) &&
         (x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));

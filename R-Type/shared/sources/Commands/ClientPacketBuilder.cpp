@@ -67,6 +67,7 @@ void	ClientPacketBuilder::onSocketReadable(IClientSocket *, unsigned int) {
 }
 
 void	ClientPacketBuilder::onSocketClosed(IClientSocket *) {
+	std::cout << "ClientPacketBuilder::onSocketClosed" << std::endl;
 	if (mListener)
 		mListener->onSocketClosed(*this);
 }

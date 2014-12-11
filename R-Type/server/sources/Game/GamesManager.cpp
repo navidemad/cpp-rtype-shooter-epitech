@@ -23,29 +23,24 @@ void GamesManager::run(void) {
 
     for (;;)
     {
-        std::vector<std::shared_ptr<NGame::Game>> games;
-        {
-            ScopedLock scopedLock(mMutex);
-            games = mGames;
-        }
-		auto it = games.begin();
-		auto it_end = games.end();
-		while (it != it_end)
+		if (mGames.size()) // bizarre de devoir faire ça, un .begin sur mGames vide devrait retourner .end non ?
 		{
-			switch ((*it)->getState())
+			for (auto it = mGames.begin(); it != mGames.end();)
 			{
+				switch ((*it)->getState())
+				{
 				case NGame::Game::State::RUNNING:
 					if ((*it)->isThreadRunning() == false)
 						*mThreadPool << std::bind(&NGame::Game::pull, (*it));
 					++it;
 					break;
 				case NGame::Game::State::DONE:
-					it = mGames.erase(it);
-					//it = terminatedGame(it);
+					it = terminatedGame(it);
 					break;
 				default:
 					++it;
 					break;
+				}
 			}
 		}
     }
@@ -60,7 +55,8 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 		throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
 	if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > 4)
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
-
+	if (mScriptLoader.isExist(properties.getLevelName()) == false)
+		throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));
 	auto game = std::make_shared<NGame::Game>(properties, mScriptLoader.getScript(properties.getLevelName()));
 
     game->setListener(this);

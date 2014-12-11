@@ -12,8 +12,12 @@ ScriptLoader::ScriptLoader(void) : mReaddir(PortabilityBuilder::getReaddir()) {
 ScriptLoader::~ScriptLoader(void) {
 }
 
+bool ScriptLoader::isExist(const std::string& stage_name) const {
+	return mScripts.count(stage_name) > 0;
+}
+
 const Script& ScriptLoader::getScript(const std::string& stage_name) const {
-	if (mScripts.count(stage_name) == 0)
+	if (isExist(stage_name) == false)
 	{
 		std::cerr << "mScripts[" << stage_name << "] n'existe pas" << std::endl;
 		std::cerr << "Voici les stage_name disponibles:" << std::endl;
