@@ -16,13 +16,13 @@ ECSManager::~ECSManager()
 	{
 		for (auto compenent : vec)
 		{
-			delete compenent;
+	//		delete compenent;
 		}
 	}
 
 	for (auto system : mSystem)
 	{
-		delete system;
+		//delete system;
 	}
 }
 
@@ -54,7 +54,7 @@ bool		ECSManager::addComponent(const unsigned int id, Component *component)
 	{
 		return component->getComponentId() == _component->getComponentId();
 	};
-	
+	 
 	std::list<Component *>	&listComponent = mEntityComponent.at(id);
 
 	if (std::find_if(listComponent.begin(), listComponent.end(), searchId) == listComponent.end())

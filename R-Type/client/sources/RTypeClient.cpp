@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <sstream>
 #include "RTypeClient.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManagerNetwork.hpp"
@@ -20,29 +21,33 @@
 Q_DECLARE_METATYPE(std::string)
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(4243), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(4243), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT), mCurrentLevel("")
 {
 	mEngine[PRESS_START] = new ECSManager;
 	mEngine[MENU] = new ECSManager;
 	mEngine[OPTION] = new ECSManager;
+	mEngine[CREATE_MENU] = new ECSManager;
 	mEngine[SEARCH_MENU] = new ECSManagerNetwork;
 	mEngine[RTYPE] = new ECSManagerNetwork;
 
 	mInit[PRESS_START] = &RTypeClient::initPressStart;
 	mInit[MENU] = &RTypeClient::initMenu;
 	mInit[OPTION] = &RTypeClient::initOption;
+	mInit[CREATE_MENU] = &RTypeClient::initCreateMenu;
 	mInit[SEARCH_MENU] = &RTypeClient::initSearchMenu;
 	mInit[RTYPE] = &RTypeClient::initRtype;
 
 	mStart[PRESS_START] = &RTypeClient::startPressStart;
 	mStart[MENU] = &RTypeClient::startMenu;
 	mStart[OPTION] = &RTypeClient::startOption;
+	mStart[CREATE_MENU] = &RTypeClient::startCreateMenu;
 	mStart[SEARCH_MENU] = &RTypeClient::startSearchMenu;
 	mStart[RTYPE] = &RTypeClient::startRtype;
 
 	mStop[PRESS_START] = &RTypeClient::stopPressStart;
 	mStop[MENU] = &RTypeClient::stopMenu;
 	mStop[OPTION] = &RTypeClient::stopOption;
+	mStop[CREATE_MENU] = &RTypeClient::stopCreateMenu;
 	mStop[SEARCH_MENU] = &RTypeClient::stopSearchMenu;
 	mStop[RTYPE] = &RTypeClient::stopRtype;
 
@@ -93,7 +98,7 @@ RTypeClient::~RTypeClient()
 //RTypeClient::RTypeClient(RTypeClient const &) : mEngine(this) {}
 
 RTypeClient const	&RTypeClient::operator=(RTypeClient const &) { return *this; }
-#include <iostream>
+
 void	RTypeClient::run()
 {
 
@@ -136,6 +141,9 @@ void			RTypeClient::init()
 	};
 	(this->*(this->mStart[this->mCurrentId]))();
 	std::for_each(mInit.begin(), mInit.end(), init);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp("127.0.0.1");
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4242);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
 void			RTypeClient::initRtype()
@@ -182,7 +190,7 @@ void			RTypeClient::initSearchMenu()
 
 	unsigned int	id = searchMenu.getId();
 	searchMenu.addComponent(new Position(1000, 500));
-	searchMenu.addComponent(new List(3));
+	searchMenu.addComponent(new List(&RTypeClient::setLevel));
 	searchMenu.addComponent(new Font("0", ""));
 
 	Entity		&logoCharacter = engine.createEntity();
@@ -235,7 +243,7 @@ void			RTypeClient::initOption()
 
 	portGame.addComponent(new Position(1020, 400));
 	portGame.addComponent(new Font("0", "Port server "));
-	portGame.addComponent(new ButtonInput(fontPortGame));
+	portGame.addComponent(new ButtonInput(fontPortGame, &RTypeClient::setPort));
 
 	Entity		inputAdressGame = engine.createEntity();
 	Font	*fontAdressGame = new Font("0", "127.0.0.1");
@@ -253,7 +261,21 @@ void			RTypeClient::initOption()
 
 	adressGame.addComponent(new Position(960, 500));
 	adressGame.addComponent(new Font("0", "Adress server "));
-	adressGame.addComponent(new ButtonInput(fontAdressGame));
+	adressGame.addComponent(new ButtonInput(fontAdressGame, &RTypeClient::setIpAdresse));
+
+	Entity		pseudoGame = engine.createEntity();
+	Font	*fontPseudoGame = new Font("0", "Anon en mousse");
+
+	pseudoGame.addComponent(new Position(1400, 600));
+	pseudoGame.addComponent(fontPseudoGame);
+
+	Entity		pseudoGameButton = engine.createEntity();
+	cursor->addEntity(pseudoGameButton.getId());
+
+	pseudoGameButton.addComponent(new Position(1170, 600));
+	pseudoGameButton.addComponent(new Font("0", "Pseudo"));
+	pseudoGameButton.addComponent(new ButtonInput(fontPseudoGame, &RTypeClient::setPseudo));
+
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -265,6 +287,65 @@ void			RTypeClient::initOption()
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
+}
+
+void			RTypeClient::initCreateMenu()
+{
+	ECSManager &engine = *mEngine[RTypeClient::CREATE_MENU];
+
+	Entity		&menuScreen = engine.createEntity();
+
+	menuScreen.addComponent(new Position(0, 0));
+	menuScreen.addComponent(new Drawable("menu"));
+
+	Entity		&logoScreen = engine.createEntity();
+
+	logoScreen.addComponent(new Position(900, 60));
+	logoScreen.addComponent(new Drawable("logo"));
+
+	Entity		&cursorGame = engine.createEntity();
+	Cursor		*cursor = new Cursor();
+
+	cursorGame.addComponent(new Position(0, 500));
+	cursorGame.addComponent(cursor);
+	cursorGame.addComponent(new Drawable("searchBar"));
+
+	Entity		inputPortGame = engine.createEntity();
+	Font	*fontPortGame = new Font("0", "Simon suce des ours");
+
+	inputPortGame.addComponent(new Position(800, 400));
+	inputPortGame.addComponent(fontPortGame);
+
+	Entity		portGame = engine.createEntity();
+	cursor->addEntity(portGame.getId());
+
+	portGame.addComponent(new Position(420, 400));
+	portGame.addComponent(new Font("0", "Nom du game "));
+	portGame.addComponent(new ButtonInput(fontPortGame, &RTypeClient::setPseudo));
+
+	Entity		&logoCharacter = engine.createEntity();
+
+	logoCharacter.addComponent(new Position(0, 400));
+	logoCharacter.addComponent(new Drawable("logoOption"));
+
+	Entity		&createGame = engine.createEntity();
+	cursor->addEntity(createGame.getId());
+
+	createGame.addComponent(new Position(420, 500));
+	createGame.addComponent(new Font("0", "Créer la partie "));
+	createGame.addComponent(new ButtonCreateGame());
+
+	Entity		backGame = engine.createEntity();
+	cursor->addEntity(backGame.getId());
+
+	backGame.addComponent(new Position(1150, 900));
+	backGame.addComponent(new Font("0", "Go back !"));
+	backGame.addComponent(new ButtonMenuGame());
+
+	engine.addSystem(new DrawableSystem);
+	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new DrawableFontSystem);
+
 }
 
 void			RTypeClient::initPressStart()
@@ -375,20 +456,22 @@ void	RTypeClient::startPressStart()
 void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
+	/*	if (*/static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel);/* == false)
+	{
+		mCurrentId = MENU;
+		stopRtype();
+		startMenu();
+	}*/
 }
 
 void	RTypeClient::startSearchMenu()
 {
-	std::cout << "lol" << std::endl;
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
+}
 
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp("127.0.0.1");
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4242);
-	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer() == false)
-		std::cout << "connect" << std::endl;
-	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame() == true)
-		std::cout << "ok" << std::endl;
-	else
-		std::cout << "bad" << std::endl;
+void			RTypeClient::startCreateMenu()
+{
+
 }
 
 void	RTypeClient::stopMenu()
@@ -410,5 +493,43 @@ void	RTypeClient::stopRtype()
 }
 void	RTypeClient::stopSearchMenu()
 {
+	Entity &entity = mEngine[SEARCH_MENU]->getEntityWithSpecificCompenent(ComponentType::LIST);
 
+	List *component = static_cast<List *>(entity.getSpecificComponent(ComponentType::LIST));
+	component->clear();
+}
+
+void			RTypeClient::stopCreateMenu()
+{
+
+}
+
+void	RTypeClient::setPort(std::string const &port)
+{
+	std::istringstream buffer(port);
+	int value;
+	buffer >> value;
+
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(value);
+}
+
+void	RTypeClient::setIpAdresse(std::string const &addr)
+{
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(addr);
+}
+
+void	RTypeClient::setPseudo(std::string const &pseudo)
+{
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(pseudo);
+}
+
+void	RTypeClient::setLevel(std::string const &level)
+{
+	mCurrentLevel = level;
+}
+
+bool	RTypeClient::createGame()
+{
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame("game name", "level name", 4, 4);
+	return true;
 }

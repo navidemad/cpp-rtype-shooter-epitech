@@ -31,8 +31,14 @@ void	ListSystem::displayRoom(Entity &entity, Font *font, Position *pos, List *li
 		if (list->mCurrentRoom == it)
 		{
 			entity.getEntityManager()->getClient()->getGui()->drawSprite("cursor", 0, static_cast<float>(x - 85) ,static_cast<float>(y + 30), entity.getId());
+			list->applyFunction((*(*it)).mName, entity.getEntityManager()->getClient());
 		}
-		entity.getEntityManager()->getClient()->getGui()->drawFont(font->getFont(), (*(*it)).mName, static_cast<float>(x), static_cast<float>(y), 100);
+
+		std::string output = (*(*it)).mName;
+		output.resize(13);
+		output += std::string(13 - output.size(), ' ') + std::to_string((*(*it)).mNbPlayerInRoom) + "/" + std::to_string((*(*it)).mNbPlayerInRoom);
+
+		entity.getEntityManager()->getClient()->getGui()->drawFont(font->getFont(), output, static_cast<float>(x), static_cast<float>(y), 100);
 		y += 100;
 	}
 }

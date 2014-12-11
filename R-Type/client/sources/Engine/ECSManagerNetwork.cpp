@@ -14,10 +14,20 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
 
 }
-
-void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error)
+#include <iostream>
+void ECSManagerNetwork::OnError(ICommand::Instruction instruction, ErrorStatus::Error err)
 {
-
+	switch (err)
+	{
+	case ErrorStatus::Error::OK:
+		std::cout << "ok" << std::endl;
+		break;
+	case ErrorStatus::Error::KO:
+		std::cout << "ko" << std::endl;
+		break;
+	default:
+		std::cout << "bad" << std::endl;
+	}
 }
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float /*x*/, float /*y*/, short /*angle*/, int /*id*/)
