@@ -4,6 +4,12 @@
 #include "ScopedLock.hpp"
 #include "Utils.hpp"
 #include "Script.hpp"
+#include "ScriptName.hpp"
+#include "ScriptRequire.hpp"
+#include "ScriptAction.hpp"
+#include "ScriptAddCron.hpp"
+#include "ScriptRemoveCron.hpp"
+#include <memory>
 #include <algorithm>
 #include <iostream>
 
@@ -63,7 +69,7 @@ void NGame::Game::actions(void) {
 			{
 				if (instr.commandCode == currentCommand->getInstruction())
 				{
-					(this->*instr.fctPtr)();
+					(this->*instr.fctPtr)(currentCommand);
 					break;
 				}
 			}
@@ -330,22 +336,32 @@ void NGame::Game::move(const Peer&, IResource::Direction) {
 /*
 ** workflow scripts actions
 */
-void	NGame::Game::scriptCommandName(void) {
-	logInfo(__FUNCTION__);
+void	NGame::Game::scriptCommandName(const std::shared_ptr<IScriptCommand> &command) {
+	const std::shared_ptr<ScriptName> commandScriptName = std::static_pointer_cast<ScriptName>(command);
+	
+    std::cout << commandScriptName << std::endl;
 }
 
-void	NGame::Game::scriptCommandRequire(void) {
-	logInfo(__FUNCTION__);
+void	NGame::Game::scriptCommandRequire(const std::shared_ptr<IScriptCommand> &command) {
+    const std::shared_ptr<ScriptRequire> commandScriptRequire = std::static_pointer_cast<ScriptRequire>(command);
+
+    std::cout << commandScriptRequire << std::endl;
 }
 
-void	NGame::Game::scriptCommandAction(void) {
-	logInfo(__FUNCTION__);
+void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &command) {
+    const std::shared_ptr<ScriptAction> commandScriptAction = std::static_pointer_cast<ScriptAction>(command);
+
+    std::cout << commandScriptAction << std::endl;
 }
 
-void	NGame::Game::scriptCommandAddCron(void) {
-	logInfo(__FUNCTION__);
+void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command) {
+    const std::shared_ptr<ScriptAddCron> commandScriptAddCron = std::static_pointer_cast<ScriptAddCron>(command);
+
+    std::cout << commandScriptAddCron << std::endl;
 }
 
-void	NGame::Game::scriptCommandRemoveCron(void) {
-	logInfo(__FUNCTION__);
+void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command) {
+    const std::shared_ptr<ScriptRemoveCron> commandScriptRemoveCron = std::static_pointer_cast<ScriptRemoveCron>(command);
+
+    std::cout << commandScriptRemoveCron << std::endl;
 }

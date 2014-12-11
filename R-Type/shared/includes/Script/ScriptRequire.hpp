@@ -23,4 +23,13 @@ class ScriptRequire : public IScriptCommand {
 	// attribut
 	public:
 		std::string				mRessourceName;
+
+    // overload << display
+    public:
+        friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<ScriptRequire> rhs) {
+            os <<
+                "[ScriptRequire] [Frame #" << rhs->getFrame() << "]" << std::endl <<
+                "  - mRessourceName: '" << rhs->getRessourceName() << std::endl;
+            return os;
+        }
 };

@@ -66,6 +66,18 @@ class ScriptAction : public IScriptCommand {
 				double mXpos;
 				double mYpos;
 				double mAngle;
+
+            // overload << display
+            public:
+                friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<SpawnMob> rhs) {
+                    os << "  [ SpawnMob ]" << std::endl <<
+                        "    * mIdMonster: '" << rhs->getActionIdMonster() << std::endl <<
+                        "    * mName: '" << rhs->getActionName() << std::endl <<
+                        "    * mXpos: '" << rhs->getActionXpos() << std::endl <<
+                        "    * mYpos: '" << rhs->getActionYpos() << std::endl <<
+                        "    * mAngle: '" << rhs->getActionAngle() << std::endl;
+                    return os;
+                }
 		};
 
 		class MoveMob : public IActionType {
@@ -87,6 +99,15 @@ class ScriptAction : public IScriptCommand {
 			public:
 				int						mIdMonster;
 				double					mAngle;
+
+            // overload << display
+            public:
+                friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<MoveMob> rhs) {
+                    os << "  [ MoveMob ]" << std::endl <<
+                        "    * mIdMonster: '" << rhs->getActionIdMonster() << std::endl <<
+                        "    * mAngle: '" << rhs->getActionAngle() << std::endl;
+                    return os;
+                }
 		};
 
 	// attribut
@@ -95,4 +116,15 @@ class ScriptAction : public IScriptCommand {
 		std::string						mActionMobAction;
 		std::shared_ptr<IActionType>	mParams;
 		ScriptAction::TYPE				mType;
+
+    // overload << display
+    public:
+        friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<ScriptAction> rhs) {
+            os <<
+                "[ScriptAction] [Frame #" << rhs->getFrame() << "]" << std::endl <<
+                "  - mActionFrame: '" << rhs->getActionFrame() << std::endl <<
+                "  - mActionMobAction: '" << rhs->getActionMobAction() << std::endl <<
+                "  - mParams: '" << rhs->getActionParams() << std::endl;
+            return os;
+        }
 };

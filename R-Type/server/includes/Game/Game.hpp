@@ -52,7 +52,7 @@ namespace NGame
 		private:
 			struct tokenExec {
 				IScriptCommand::Instruction	commandCode;
-				void						(NGame::Game::*fctPtr)();
+				void						(NGame::Game::*fctPtr)(const std::shared_ptr<IScriptCommand> &command);
 			};
 			static const NGame::Game::tokenExec tokenExecTab[];
 			static const double XMAX;
@@ -114,11 +114,11 @@ namespace NGame
 
         // workflow scripts actions
         private:
-            void scriptCommandName(void);
-            void scriptCommandRequire(void);
-            void scriptCommandAction(void);
-            void scriptCommandAddCron(void);
-            void scriptCommandRemoveCron(void);
+            void scriptCommandName(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandRequire(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandAction(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command);
 
         // attributes
         private:

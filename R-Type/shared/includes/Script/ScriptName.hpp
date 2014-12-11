@@ -16,11 +16,21 @@ class ScriptName : public IScriptCommand {
 
 	// getter-setter
 	public:
-		std::string				getName(void) const { return mStageName; }
+		std::string				            getName(void) const { return mStageName; }
 
-		void					setName(const std::string &name) { mStageName = name; }
+		void					            setName(const std::string &name) { mStageName = name; }
 
 	// attribut
 	public:
-		std::string				mStageName;
+		std::string				            mStageName;
+
+    // overload << display
+    public:
+        friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<ScriptName> rhs) {
+            os << 
+                "[ScriptName] [Frame #" << rhs->getFrame() << "]" << std::endl <<
+                "  - mStageName: '" << rhs->getName();
+            return os;
+        }
 };
+

@@ -38,4 +38,18 @@ class ScriptAddCron : public IScriptCommand {
 		std::string				mAddCronFireMob;
 		int						mAddCronIdMonster;
 		double					mAddCronAngle;
+
+    // overload << display
+    public:
+        friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<ScriptAddCron> rhs) {
+            os <<
+                "[ScriptAddCron] [Frame #" << rhs->getFrame() << "]" << std::endl <<
+                "  - mAddCronFrame: '" << rhs->getAddCronFrame() << std::endl << 
+                "  - mAddCronTimer: '" << rhs->getAddCronTimer() << std::endl <<
+                "  - mAddCronIdCron: '" << rhs->getAddCronIdCron() << std::endl <<
+                "  - mAddCronFireMob: '" << rhs->getAddCronFireMob() << std::endl <<
+                "  - mAddCronIdMonster: '" << rhs->getAddCronIdMonster() << std::endl <<
+                "  - mAddCronAngle: '" << rhs->getAddCronAngle() << std::endl;
+            return os;
+        }
 };
