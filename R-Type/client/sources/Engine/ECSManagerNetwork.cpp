@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 #include "Engine/Compenent/List.hpp"
 #include "Engine/ComponentType.h"
 #include "Engine/ECSManagerNetwork.hpp"
@@ -19,9 +20,8 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
 
 }
-#include <iostream>
 
-void ECSManagerNetwork::OnError(ICommand::Instruction instruction, ErrorStatus::Error err)
+void ECSManagerNetwork::OnError(ICommand::Instruction /* instruction */, ErrorStatus::Error err)
 {
 	switch (err)
 	{
