@@ -131,7 +131,6 @@ void	ButtonCreateGame::process(Entity &entity, uint32_t delta)
 			entity.getEntityManager()->getClient()->getGui()->playSound("option");
 			entity.getEntityManager()->stop();
 			entity.getEntityManager()->getClient()->setIdGame(RTypeClient::RTYPE);
-			entity.getEntityManager()->getClient()->setLevel("game name");
 		}
 	}
 
