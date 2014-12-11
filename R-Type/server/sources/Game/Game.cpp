@@ -23,7 +23,8 @@ mScript(script),
 mListener(nullptr),
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED), 
-mMutex(PortabilityBuilder::getMutex())
+mMutex(PortabilityBuilder::getMutex()),
+mIsThreadRunning(false)
 {
 }
 
@@ -33,9 +34,17 @@ mMutex(PortabilityBuilder::getMutex())
 void NGame::Game::pull(void) {
     ScopedLock scopedLock(mMutex);
 
-	actions(); // script loading
-	check(); // check collisions
-	update(); // update positions
+	mIsThreadRunning = false;
+	double FRAME_PER_SEC = 60.0;
+	double start_time = mTimer.frame();
+	double delta_time;
+	do {
+		actions(); // script loading
+		check(); // check collisions
+		update(); // update positions
+		delta_time = mTimer.frame() - start_time;
+	} while (delta_time < 1 / FRAME_PER_SEC);
+	mIsThreadRunning = false;
 }
 
 void NGame::Game::actions(void) {
@@ -112,6 +121,10 @@ const std::vector<NGame::User>& NGame::Game::getUsers() const {
 
 const NGame::Properties& NGame::Game::getProperties(void) const {
     return mProperties;
+}
+
+bool NGame::Game::isThreadRunning(void) const {
+	return mIsThreadRunning;
 }
 
 /*

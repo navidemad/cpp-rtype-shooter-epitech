@@ -35,7 +35,8 @@ void GamesManager::run(void) {
 			switch ((*it)->getState())
 			{
 				case NGame::Game::State::RUNNING:
-					*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+					if ((*it)->isThreadRunning() == false)
+						*mThreadPool << std::bind(&NGame::Game::pull, (*it));
 					++it;
 					break;
 				case NGame::Game::State::DONE:

@@ -64,6 +64,7 @@ namespace NGame
 			const Peer& getOwner(void) const;
             const std::vector<NGame::User>& getUsers() const;
             const NGame::Properties& getProperties(void) const;
+			bool isThreadRunning(void) const;
 
         // setters
         public:
@@ -128,7 +129,7 @@ namespace NGame
 			NGame::Game::State mState;
             std::shared_ptr<IMutex> mMutex;
             Peer mOwner;
-
+			bool mIsThreadRunning;
     };
 
 }
