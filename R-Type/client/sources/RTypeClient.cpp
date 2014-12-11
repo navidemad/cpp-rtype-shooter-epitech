@@ -535,6 +535,6 @@ void	RTypeClient::setLevel(std::string const &level)
 
 bool	RTypeClient::createGame()
 {
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame("game name", "level name", 4, 4);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentLevel, "level name", 4, 4);
 	return true;
 }
