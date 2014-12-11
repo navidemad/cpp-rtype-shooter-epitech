@@ -59,9 +59,6 @@ void NGame::Game::actions(void) {
 			if (mTimer.frame() < currentCommand->getFrame())
 				return;
 
-			std::cout << "CE TEXTE DEVRAIT ETRE AFFICHEE 13 FOIS" << std::endl;
-
-			/*
 			for (const auto &instr : tokenExecTab)
 			{
 				if (instr.commandCode == currentCommand->getInstruction())
@@ -70,7 +67,6 @@ void NGame::Game::actions(void) {
 					break;
 				}
 			}
-			*/
 
 		} while (mScript.goToNextAction());
 	}
