@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
+#include <iostream>
 #include "Engine/Compenent/List.hpp"
 #include "Engine/Compenent/Position.hpp"
 #include "Engine/Compenent/Drawable.hpp"

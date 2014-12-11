@@ -21,7 +21,7 @@
 Q_DECLARE_METATYPE(std::string)
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(4545), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT), mCurrentLevel("")
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mCurrentLevel(""), mServer(4245), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
 {
 	mEngine[PRESS_START] = new ECSManager;
 	mEngine[MENU] = new ECSManager;

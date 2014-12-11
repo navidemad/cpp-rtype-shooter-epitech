@@ -114,11 +114,11 @@ namespace NGame
 
         // workflow scripts actions
         private:
-            void recvName(void);
-            void recvRequire(void);
-            void recvAction(void);
-            void recvAddCron(void);
-            void recvRemoveCron(void);
+            void scriptCommandName(void);
+            void scriptCommandRequire(void);
+            void scriptCommandAction(void);
+            void scriptCommandAddCron(void);
+            void scriptCommandRemoveCron(void);
 
         // attributes
         private:
