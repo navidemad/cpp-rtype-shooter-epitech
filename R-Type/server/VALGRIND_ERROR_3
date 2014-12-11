@@ -1,0 +1,67 @@
+==4340== Thread 2:
+==4340== Invalid read of size 8
+==4340==    at 0x40676B: __distance<std::_List_const_iterator<NetworkManager::Socket> > (stl_iterator_base_funcs.h:80)
+==4340==    by 0x40676B: distance<std::_List_const_iterator<NetworkManager::Socket> > (stl_iterator_base_funcs.h:118)
+==4340==    by 0x40676B: size (stl_list.h:887)
+==4340==    by 0x40676B: NetworkManager::doSelect() (NetworkManager.cpp:65)
+==4340==    by 0x40788F: operator() (functional:2439)
+==4340==    by 0x40788F: ThreadPool::operator()(void*) (ThreadPool.cpp:73)
+==4340==    by 0x408EB0: start (UnixThread.hpp:48)
+==4340==    by 0x408EB0: void* start_thread_trampoline<ThreadPool*, void*>(void*) (IThread.hpp:10)
+==4340==    by 0x50430A4: start_thread (pthread_create.c:309)
+==4340==    by 0x587984C: clone (clone.S:111)
+==4340==  Address 0x5e4b578 is 296 bytes inside a block of size 312 free'd
+==4340==    at 0x4C2C2E0: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4340==    by 0x407356: _M_dispose (shared_ptr_base.h:373)
+==4340==    by 0x407356: _M_release (shared_ptr_base.h:149)
+==4340==    by 0x407356: ~__shared_count (shared_ptr_base.h:666)
+==4340==    by 0x407356: ~__shared_ptr (shared_ptr_base.h:914)
+==4340==    by 0x407356: std::shared_ptr<NetworkManager>::~shared_ptr() (shared_ptr.h:93)
+==4340==    by 0x57B9598: __run_exit_handlers (exit.c:82)
+==4340==    by 0x57B95E4: exit (exit.c:104)
+==4340==    by 0x57A0ECB: (below main) (libc-start.c:321)
+==4340== 
+==4340== 
+==4340== HEAP SUMMARY:
+==4340==     in use at exit: 3,456 bytes in 6 blocks
+==4340==   total heap usage: 640 allocs, 634 frees, 84,074 bytes allocated
+==4340== 
+==4340== Thread 1:
+==4340== 3,456 bytes in 6 blocks are possibly lost in loss record 1 of 1
+==4340==    at 0x4C2CC90: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4340==    by 0x4012E44: allocate_dtv (dl-tls.c:296)
+==4340==    by 0x4012E44: _dl_allocate_tls (dl-tls.c:460)
+==4340==    by 0x5043CC0: allocate_stack (allocatestack.c:589)
+==4340==    by 0x5043CC0: pthread_create@@GLIBC_2.2.5 (pthread_create.c:495)
+==4340==    by 0x407E5A: create (UnixThread.hpp:34)
+==4340==    by 0x407E5A: ThreadPool::ThreadPool(unsigned int) (ThreadPool.cpp:18)
+==4340==    by 0x408469: ThreadPool::getInstance() (ThreadPool.cpp:91)
+==4340==    by 0x4069BA: NetworkManager::NetworkManager() (NetworkManager.cpp:7)
+==4340==    by 0x406A84: NetworkManager::getInstance() (NetworkManager.cpp:59)
+==4340==    by 0x430082: UnixTcpServer::UnixTcpServer() (UnixTcpServer.cpp:12)
+==4340==    by 0x433D9A: construct<UnixTcpServer> (shared_ptr_base.h:511)
+==4340==    by 0x433D9A: _S_construct<UnixTcpServer> (alloc_traits.h:253)
+==4340==    by 0x433D9A: construct<UnixTcpServer> (alloc_traits.h:399)
+==4340==    by 0x433D9A: _Sp_counted_ptr_inplace<> (shared_ptr_base.h:515)
+==4340==    by 0x433D9A: construct<std::_Sp_counted_ptr_inplace<UnixTcpServer, std::allocator<UnixTcpServer>, (__gnu_cxx::_Lock_policy)2u>, const std::allocator<UnixTcpServer> > (new_allocator.h:120)
+==4340==    by 0x433D9A: _S_construct<std::_Sp_counted_ptr_inplace<UnixTcpServer, std::allocator<UnixTcpServer>, (__gnu_cxx::_Lock_policy)2u>, const std::allocator<UnixTcpServer> > (alloc_traits.h:253)
+==4340==    by 0x433D9A: construct<std::_Sp_counted_ptr_inplace<UnixTcpServer, std::allocator<UnixTcpServer>, (__gnu_cxx::_Lock_policy)2u>, const std::allocator<UnixTcpServer> > (alloc_traits.h:399)
+==4340==    by 0x433D9A: __shared_count<UnixTcpServer, std::allocator<UnixTcpServer> > (shared_ptr_base.h:619)
+==4340==    by 0x433D9A: __shared_ptr<std::allocator<UnixTcpServer> > (shared_ptr_base.h:1090)
+==4340==    by 0x433D9A: shared_ptr<std::allocator<UnixTcpServer> > (shared_ptr.h:316)
+==4340==    by 0x433D9A: allocate_shared<UnixTcpServer, std::allocator<UnixTcpServer> > (shared_ptr.h:588)
+==4340==    by 0x433D9A: make_shared<UnixTcpServer> (shared_ptr.h:604)
+==4340==    by 0x433D9A: PortabilityBuilder::getTcpServer() (UnixPortabilityBuilder.cpp:24)
+==4340==    by 0x40958B: ClientManager::ClientManager() (ClientManager.cpp:9)
+==4340==    by 0x41813A: RTypeServer::RTypeServer() (RTypeServer.cpp:7)
+==4340==    by 0x404DA8: main (main.cpp:39)
+==4340== 
+==4340== LEAK SUMMARY:
+==4340==    definitely lost: 0 bytes in 0 blocks
+==4340==    indirectly lost: 0 bytes in 0 blocks
+==4340==      possibly lost: 3,456 bytes in 6 blocks
+==4340==    still reachable: 0 bytes in 0 blocks
+==4340==         suppressed: 0 bytes in 0 blocks
+==4340== 
+==4340== For counts of detected and suppressed errors, rerun with: -v
+==4340== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

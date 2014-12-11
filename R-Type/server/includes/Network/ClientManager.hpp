@@ -13,7 +13,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 
 	// ctor / dtor
 	public:
-        explicit ClientManager(void);
+        ClientManager(void);
 		~ClientManager(void);
 
 	// handle client manager
@@ -71,7 +71,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		std::shared_ptr<IServerSocket> mServer;
 
 	public:
-		static const int SERVER_TCP_PORT = 4242;
+		static const int SERVER_TCP_PORT = 4245;
 		static const int SERVER_TCP_QUEUE = 1024;
 
 };

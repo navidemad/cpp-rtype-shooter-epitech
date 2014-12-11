@@ -39,9 +39,9 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
                 virtual void onEndGame(const std::string &gameName, const std::list<Peer> &gameUsers) = 0;
         };
 
-        void    onTerminatedGame(const std::string &name);
+        //void    onTerminatedGame(const std::string &name);
         void    setListener(GamesManager::OnGamesManagerEvent *listener);
-
+		std::vector<std::shared_ptr<NGame::Game>>::iterator terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it);
 
 	// network workflow utils functions
 	public:

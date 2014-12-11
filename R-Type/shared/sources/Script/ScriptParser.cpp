@@ -33,28 +33,35 @@ ScriptParser::~ScriptParser(void) {
 
 }
 
-std::shared_ptr<Script>		ScriptParser::parseFile(std::ifstream &file){
+Script ScriptParser::parseFile(std::ifstream &file){
 	std::string lineContent;
 	std::string wordContent;
-	auto		script = std::make_shared<Script>();
+	Script script;
     std::string textScript;
 
 	while (file && std::getline(file, lineContent)){
-		if (lineContent.length() == 0) continue;
+		if (lineContent.length() == 0) 
+			continue;
         textScript += lineContent + "\n";
 		parser.setStringToParse(lineContent);
 		bool rightCmd = false;
-			wordContent = parser.extractWord();
-			for (const auto &instr : tokenExecTab) {
-				if (instr.cmd == wordContent) {
-					script->addAction((this->*instr.Ptr)());
-					rightCmd = true;
+		wordContent = parser.extractWord();
+		for (const auto &instr : tokenExecTab) {
+			if (instr.cmd == wordContent) {
+				try {
+					auto commandAction = (this->*instr.Ptr)();
+					script.addAction(commandAction);
 				}
+				catch (const std::exception& e) {
+					throw ScriptException(e.what());
+				}
+				rightCmd = true;
 			}
-			if (rightCmd == false)
-				throw ScriptException("Wrong Command Action");
+		}
+		if (rightCmd == false)
+			throw ScriptException("Wrong Command Action");
 	}
-    script->setTextScript(textScript);
+    script.setTextScript(textScript);
 	return script;
 }
 
@@ -77,12 +84,12 @@ std::shared_ptr<IScriptCommand>		ScriptParser::cmdRequire(void){
 std::shared_ptr<IScriptCommand>		ScriptParser::cmdAddCron(void){
 	auto command = std::make_shared<ScriptAddCron>();
 
-	command->setAddCronFrame(parser.extractValue<int>());
-	command->setAddCronTimer(parser.extractValue<int>());
+	command->setAddCronFrame(parser.extractValue<double>());
+	command->setAddCronTimer(parser.extractValue<double>());
 	command->setAddCronIdCron(parser.extractValue<int>());
 	command->setAddCronFireMob(parser.extractWord());
 	command->setAddCronIdMonster(parser.extractValue<int>());
-	command->setAddCronAngle(parser.extractValue<int>());
+	command->setAddCronAngle(parser.extractValue<double>());
 
 	return command;
 }
@@ -90,7 +97,7 @@ std::shared_ptr<IScriptCommand>		ScriptParser::cmdAddCron(void){
 std::shared_ptr<IScriptCommand>		ScriptParser::cmdRemoveCron(void){
 	auto command = std::make_shared<ScriptRemoveCron>();
 
-	command->setRemoveCronFrame(parser.extractValue<int>());
+	command->setRemoveCronFrame(parser.extractValue<double>());
 	command->setRemoveCronIdCron(parser.extractValue<int>());
 	return command;
 }
@@ -98,7 +105,7 @@ std::shared_ptr<IScriptCommand>		ScriptParser::cmdRemoveCron(void){
 std::shared_ptr<IScriptCommand>		ScriptParser::cmdAction(void){
 	auto command = std::make_shared<ScriptAction>();
 
-	command->setActionFrame(parser.extractValue<int>());
+	command->setActionFrame(parser.extractValue<double>());
 	command->setActionMobAction(parser.extractWord());
 
 	for (const auto &instr : MonsterCmdTab)
@@ -113,9 +120,9 @@ std::shared_ptr<ScriptAction::IActionType> ScriptParser::fctSpawnMob(void){
 
 	params->setActionIdMonster(parser.extractValue<int>());
 	params->setActionName(parser.extractWord());
-	params->setActionXpos(parser.extractValue<int>());
-	params->setActionYpos(parser.extractValue<int>());
-	params->setActionAngle(parser.extractValue<int>());
+	params->setActionXpos(parser.extractValue<double>());
+	params->setActionYpos(parser.extractValue<double>());
+	params->setActionAngle(parser.extractValue<double>());
 
 	return params;
 }
@@ -124,7 +131,7 @@ std::shared_ptr<ScriptAction::IActionType> ScriptParser::fctMoveMob(void){
 	auto params = std::make_shared<ScriptAction::MoveMob>();
 
 	params->setActionIdMonster(parser.extractValue<int>());
-	params->setActionAngle(parser.extractValue<int>());
+	params->setActionAngle(parser.extractValue<double>());
 
 	return params;
 }

@@ -13,7 +13,7 @@ namespace NGame
 
         // ctor / dtor
         public:
-            explicit User(void) { }
+            User(void) { }
             ~User(void) { }
 
         // setters

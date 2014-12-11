@@ -13,17 +13,18 @@ class ScriptLoader : public NoCopyable {
 
 	// ctor / dtor
 public:
-	explicit ScriptLoader(void);
+	ScriptLoader(void);
 	~ScriptLoader(void);
 
 	// internal functions
 public:
-	std::shared_ptr<Script> loadScript(const std::string& stage_name);
+	bool isExist(const std::string& stage_name) const;
+	const Script& getScript(const std::string& stage_name) const;
 	void loadAll(void);
-    const std::map<std::string, std::shared_ptr<Script>>& getScripts() const;
+    const std::map<std::string, Script>& getScripts() const;
 
 	// attributes
 private:
-	std::map<std::string, std::shared_ptr<Script>> mScripts;
+	std::map<std::string, Script> mScripts;
 	std::shared_ptr<IReaddir> mReaddir;
 };

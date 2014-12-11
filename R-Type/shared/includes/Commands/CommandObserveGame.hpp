@@ -17,7 +17,7 @@ class CommandObserveGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandObserveGame(void);
+		CommandObserveGame(void);
 		~CommandObserveGame(void);
 
 	// getter - setters

@@ -12,33 +12,56 @@ ScriptLoader::ScriptLoader(void) : mReaddir(PortabilityBuilder::getReaddir()) {
 ScriptLoader::~ScriptLoader(void) {
 }
 
-std::shared_ptr<Script> ScriptLoader::loadScript(const std::string& stage_name) {
-	return mScripts[stage_name];
+bool ScriptLoader::isExist(const std::string& stage_name) const {
+	return mScripts.count(stage_name) > 0;
+}
+
+const Script& ScriptLoader::getScript(const std::string& stage_name) const {
+	if (isExist(stage_name) == false)
+	{
+		std::cerr << "mScripts[" << stage_name << "] n'existe pas" << std::endl;
+		std::cerr << "Voici les stage_name disponibles:" << std::endl;
+		for (const auto &p : mScripts)
+			std::cout << "mScripts[" << p.first << "]" << std::endl;
+	}
+	return mScripts.at(stage_name);
 }
 
 void ScriptLoader::loadAll(void) {
+	Utils::logInfo("Loading scripts:");
 	ScriptParser Parser;
-	const std::string& pathFolder = "../shared/scripts";
+
+	const std::string& pathFolder = "./files";
 	auto files = mReaddir->readFolder(pathFolder);
-	for (const auto& file : files)
+
+	for (const auto& pathFile : files)
 	{
-		std::ifstream fs(pathFolder + "/" + file);
+		std::ifstream fs(pathFile);
+
+		std::stringstream ss;
+		ss << Utils::RED << "[SCRIPT]" << Utils::YELLOW << "[" << pathFile << "]> " << Utils::WHITE;
+
 		if (!fs.good() || fs.fail())
-			throw ScriptException("impossible d'ouvrir le fichier");
+		{
+			ss << "impossible d'ouvrir le fichier";
+			Utils::logError(ss.str());
+		}
 		else
 		{
 			try
 			{
-				mScripts[file] = Parser.parseFile(fs);
-				std::cout << mScripts[file]->getTextScript();
+				mScripts[Utils::removeExtension(Utils::basename(pathFile))] = Parser.parseFile(fs);
+				ss << "done";
+				Utils::logInfo(ss.str());
 			}
 			catch (const std::exception& e){
-				Utils::logError(e.what());
+				ss << e.what();
+				Utils::logError(ss.str());
 			}
 		}
 	}
 }
 
-const std::map<std::string, std::shared_ptr<Script>>& ScriptLoader::getScripts() const {
+const std::map<std::string, Script>& ScriptLoader::getScripts() const {
     return mScripts;
 }

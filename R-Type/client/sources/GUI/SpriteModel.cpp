@@ -2,7 +2,8 @@
 #include <memory>
 #include "GUI/SpriteModel.hpp"
 
-SpriteModel::SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines) :
+SpriteModel::SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines, sf::IntRect const &rect) :
+	mRect(rect),
 	mLoop(true), 
 	mFileName(filename), 
 	mCurrentIndex(0), 
@@ -22,6 +23,7 @@ SpriteModel::SpriteModel(std::string const &filename, uint32_t columns, uint32_t
 
 SpriteModel::SpriteModel(const SpriteModel &sm) :
 	mTexture(sm.getTexture()), 
+	mRect(sm.getRect()), 
 	mLoop(sm.isLoop()), 
 	mFileName(sm.getFileName()), 
 	mCurrentIndex(sm.getCurrentIndex()), 
@@ -38,6 +40,7 @@ SpriteModel::SpriteModel(const SpriteModel &sm) :
 const SpriteModel &SpriteModel::operator=(const SpriteModel &sm)
 {
 	mTexture = sm.getTexture();
+	mRect = sm.getRect();
 	mLoop = sm.isLoop();
 	mFileName = sm.getFileName();
 	mCurrentIndex = sm.getCurrentIndex();
@@ -59,7 +62,7 @@ SpriteModel::~SpriteModel()
 void		SpriteModel::init()
 {
 	// load file image
-	if (!mTexture.loadFromFile(mFileName))
+	if (!mTexture.loadFromFile(mFileName, mRect))
 		throw std::runtime_error("failed to load texture"); // faire une class SpriteModelException
 
 	// set params and sprite
@@ -87,6 +90,11 @@ void		SpriteModel::init()
 sf::Texture const	&SpriteModel::getTexture() const
 {
 	return mTexture;
+}
+
+sf::IntRect const	&SpriteModel::getRect() const
+{
+	return mRect;
 }
 
 sf::Sprite			&SpriteModel::getSprite(uint32_t index)

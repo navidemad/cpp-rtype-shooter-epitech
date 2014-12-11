@@ -16,7 +16,7 @@ class WindowsCondVar : public NoCopyable, public ICondVar {
 
 	// ctor dtor
 	public:
-		explicit WindowsCondVar(void);
+		WindowsCondVar(void);
 		~WindowsCondVar(void);
 
 	// interface implementation

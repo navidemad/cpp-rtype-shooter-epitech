@@ -3,6 +3,7 @@
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
 #include "Utils.hpp"
+#include "Script.hpp"
 #include <algorithm>
 #include <iostream>
 
@@ -14,15 +15,17 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 	{ IScriptCommand::Instruction::REMOVE_CRON, &NGame::Game::recvRemoveCron }
 };
 
-const float NGame::Game::XMAX = 100.f;
-const float NGame::Game::YMAX = 100.f;
+const double NGame::Game::XMAX = 100.;
+const double NGame::Game::YMAX = 100.;
+const double NGame::Game::FRAMES_PER_SEC = 60.;
 
-NGame::Game::Game(const NGame::Properties& properties) :
-mListener(nullptr), 
-mProperties(properties), 
-mIsRunning(false), 
-mAlreadyRunOneTime(false), 
-mMutex(PortabilityBuilder::getMutex())
+NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
+mScript(script),
+mListener(nullptr),
+mProperties(properties),
+mState(NGame::Game::State::NOT_STARTED), 
+mMutex(PortabilityBuilder::getMutex()),
+mIsThreadRunning(false)
 {
 }
 
@@ -32,24 +35,19 @@ mMutex(PortabilityBuilder::getMutex())
 void NGame::Game::pull(void) {
     ScopedLock scopedLock(mMutex);
 
-    if (mAlreadyRunOneTime && !mIsRunning)
-    {
-        if (mListener)
-            mListener->onTerminatedGame(mProperties.getName());
-    }
-    else
-    {
-        mIsRunning = mProperties.getNbPlayers() > 0;
-        if (mIsRunning)
-        {
-            mAlreadyRunOneTime = true;
-            /*
-            actions();
-            check();
-            update();
-            */
-        }
-    }
+	mIsThreadRunning = false;
+	double start_time = mTimer.frame();
+	double delta_time;
+	do {
+		if (mState == NGame::Game::State::RUNNING)
+			actions();
+		if (mState == NGame::Game::State::RUNNING)
+			check();
+		if (mState == NGame::Game::State::RUNNING)
+			update();
+		delta_time = mTimer.frame() - start_time;
+	} while (delta_time < 1 / NGame::Game::FRAMES_PER_SEC);
+	mIsThreadRunning = false;
 }
 
 void NGame::Game::actions(void) {
@@ -57,22 +55,25 @@ void NGame::Game::actions(void) {
 
     double currentFrame = mTimer.frame();
 
-    static auto it = mCommands.begin();
-    static auto it_end = mCommands.end();
+    static auto it = mScript.getCommands().begin();
+    static auto it_end = mScript.getCommands().end();
 
     while (it != it_end)
     {
-        if ((*it)->getFrame() > currentFrame)
+		auto scriptCommand = (*it);
+		if (scriptCommand->getFrame() > currentFrame)
             return;
         for (const auto &instr : tokenExecTab) {
-            if (instr.cmd == (*it)->getInstruction()) {
-                (this->*instr.ftPtr)();
+            if (instr.commandCode == scriptCommand->getInstruction())
+			{
+                (this->*instr.fctPtr)();
                 break;
             }
         }
         ++it;
     }
-    mIsRunning = false;
+    mState = NGame::Game::State::DONE;
+	logInfo("Level finished");
 }
 
 void NGame::Game::check(void) {
@@ -84,22 +85,18 @@ void NGame::Game::check(void) {
         std::bind(&NGame::Game::collision, this, std::placeholders::_1)
     };
 
-    auto it_cur = mComponents.begin();
-    auto it_end = mComponents.end();
-
-    while (it_cur != it_end)
-    {
-        for (const auto& fct : functionsCheck)
-        {
-            if (fct(*it_cur))
-            {
-                // deleteRessource
-                it_cur = mComponents.erase(it_cur);
-            }
-            else
-                ++it_cur;
-        }
-    }
+	for (auto it = mComponents.begin(); it != mComponents.end();) {
+		for (const auto& fct : functionsCheck)
+		{
+			if (fct(*it))
+			{
+				// deleteRessource
+				it = mComponents.erase(it);
+			}
+			else
+				++it;
+		}
+	}
 }
 
 void NGame::Game::update(void) {
@@ -109,8 +106,8 @@ void NGame::Game::update(void) {
 /*
 ** getters
 */
-bool NGame::Game::isRunningGame(void) const {
-    return mIsRunning;
+NGame::Game::State NGame::Game::getState(void) const {
+    return mState;
 }
 
 const Peer& NGame::Game::getOwner(void) const {
@@ -123,6 +120,10 @@ const std::vector<NGame::User>& NGame::Game::getUsers() const {
 
 const NGame::Properties& NGame::Game::getProperties(void) const {
     return mProperties;
+}
+
+bool NGame::Game::isThreadRunning(void) const {
+	return mIsThreadRunning;
 }
 
 /*
@@ -142,7 +143,7 @@ void NGame::Game::setOwner(const Peer& owner) {
 void NGame::Game::logInfo(const std::string &log) {
 	std::stringstream ss;
 
-	ss << Utils::RED << "[SCRIPT]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
+	ss << Utils::RED << "[GAME]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
 	Utils::logInfo(ss.str());
 }
 
@@ -182,10 +183,10 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
     if (&obstacle == &component)
         return false;
 
-    float x = component.getX() - (component.getWidth() / 2);
-    float y = component.getY() - (component.getHeight() / 2);
-    float obsX = obstacle.getX() - (obstacle.getWidth() / 2);
-    float obsY = obstacle.getY() - (obstacle.getHeight() / 2);
+	double x = component.getX() - (component.getWidth() / 2);
+	double y = component.getY() - (component.getHeight() / 2);
+	double obsX = obstacle.getX() - (obstacle.getWidth() / 2);
+	double obsY = obstacle.getY() - (obstacle.getHeight() / 2);
 
     return ((y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) &&
         (x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
@@ -234,7 +235,16 @@ void NGame::Game::tryAddPlayer(const NGame::User& user) {
     mUsers.push_back(user);
 
     mProperties.setNbPlayers(mProperties.getNbPlayers() + 1);
-    mIsRunning = true;
+    mState = NGame::Game::State::RUNNING;
+}
+
+void NGame::Game::tryDelPlayer(void) {
+	mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
+	if (mProperties.getNbPlayers() == 0)
+	{
+		logInfo("tryDelPlayer > mProperties.getNbPlayers() == 0");
+		mState = NGame::Game::State::DONE;
+	}
 }
 
 void NGame::Game::tryAddSpectator(const NGame::User& user) {
@@ -244,6 +254,10 @@ void NGame::Game::tryAddSpectator(const NGame::User& user) {
     mUsers.push_back(user);
 
     mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
+}
+
+void NGame::Game::tryDelSpectator(void) {
+	mProperties.setNbSpectators(mProperties.getNbSpectators() - 1);
 }
 
 void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::string& pseudo) {
@@ -268,18 +282,18 @@ void NGame::Game::delUser(const Peer &peer) {
     if (user == mUsers.end())
         throw GameException("Try to delete an undefined address ip");
 
-    if ((*user).getType() == NGame::USER_TYPE::PLAYER)
-        mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
+	if ((*user).getType() == NGame::USER_TYPE::PLAYER)
+		tryDelPlayer();
     else if ((*user).getType() == NGame::USER_TYPE::SPECTATOR)
-        mProperties.setNbSpectators(mProperties.getNbSpectators() - 1);
+		tryDelSpectator();
 
     mUsers.erase(user);
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
-    mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
-    mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
-    user.setType(NGame::USER_TYPE::SPECTATOR);
+	tryDelPlayer();
+	tryAddPlayer(user);
+	user.setType(NGame::USER_TYPE::SPECTATOR);
     // remove from peer list mPlayerCommunication
     //sendMessage that user die
 }

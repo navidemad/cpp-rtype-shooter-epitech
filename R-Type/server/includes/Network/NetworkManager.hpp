@@ -32,7 +32,7 @@ class NetworkManager : public NoCopyable {
 
 	// ctor - dtor
 	private:
-		explicit NetworkManager(void);
+		NetworkManager(void);
 	public:
 		~NetworkManager(void);
 

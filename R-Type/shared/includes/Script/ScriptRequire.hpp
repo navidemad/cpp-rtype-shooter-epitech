@@ -6,8 +6,8 @@
 class ScriptRequire : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptRequire(void) { }
-		~ScriptRequire(void) { }
+		ScriptRequire(void) = default;
+		~ScriptRequire(void) = default;
 
 	// public pure methods
 	public:

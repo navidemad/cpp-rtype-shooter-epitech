@@ -10,7 +10,7 @@ class WindowsMutex : public NoCopyable, public IMutex {
 
 	// ctor dtor
 	public:
-		explicit WindowsMutex(void);
+		WindowsMutex(void);
 		~WindowsMutex(void);
 
 	// interface implementation

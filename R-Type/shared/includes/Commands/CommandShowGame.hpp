@@ -28,7 +28,7 @@ class CommandShowGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandShowGame(void);
+		CommandShowGame(void);
 		~CommandShowGame(void);
 
 	// getter - setters

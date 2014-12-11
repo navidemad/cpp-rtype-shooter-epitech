@@ -9,7 +9,7 @@ class Timer : public NoCopyable {
 
     // ctor / dtor
     public:
-        explicit Timer(void);
+        Timer(void);
         ~Timer(void);
 
     // internal functions

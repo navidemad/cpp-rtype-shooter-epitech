@@ -17,7 +17,7 @@ class CommandDeleteGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandDeleteGame(void);
+		CommandDeleteGame(void);
 		~CommandDeleteGame(void);
 
 	// getter - setters

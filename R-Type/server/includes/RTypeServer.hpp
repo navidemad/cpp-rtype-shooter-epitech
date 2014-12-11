@@ -9,7 +9,7 @@ class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEven
 
     // ctor / dtor
     public:
-        explicit RTypeServer(void);
+        RTypeServer(void);
         ~RTypeServer(void) = default;
 
     // exec function

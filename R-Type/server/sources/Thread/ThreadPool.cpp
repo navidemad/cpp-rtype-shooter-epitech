@@ -2,6 +2,9 @@
 #include "ScopedLock.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ThreadPoolException.hpp"
+#include "ThreadException.hpp"
+#include "CondVarException.hpp"
+#include <iostream>
 
 ThreadPool::ThreadPool(unsigned int nbThreads)
 	:	mIsRunning(true),
@@ -11,7 +14,11 @@ ThreadPool::ThreadPool(unsigned int nbThreads)
 {
 	for (auto &worker : mWorkers) {
 		worker = PortabilityBuilder::getThread<ThreadPool *, void *>();
-		worker->create(this, nullptr);
+		try {
+			worker->create(this, nullptr);
+		} catch (const ThreadException& e) {
+			std::cerr << e.what() << std::endl;
+		}
 	}
 }
 
@@ -27,11 +34,14 @@ void ThreadPool::stop(void) {
     	return ;
 
 		mIsRunning = false;
-		mCondVar->notifyAll();
+		try {
+			mCondVar->notifyAll();
+		} catch (const CondVarException& e) {
+			std::cerr << e.what() << std::endl;
+		}
 	}
 
-	for (const auto &worker : mWorkers)
-		worker->cancel();
+	mWorkers.clear();
 }
 
 void ThreadPool::operator()(void *) {
@@ -41,8 +51,13 @@ void ThreadPool::operator()(void *) {
 		{
 			ScopedLock scopedLock(mMutex);
 
-			while (mIsRunning && mTasks.empty())
-				mCondVar->wait(mMutex);
+			while (mIsRunning && mTasks.empty()) {
+				try {
+					mCondVar->wait(mMutex);
+				} catch (const CondVarException& e) {
+					std::cerr << e.what() << std::endl;
+				}
+			}
 
 			if (mIsRunning == false)
 				return;
@@ -59,7 +74,11 @@ const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 	ScopedLock scopedLock(mMutex);
 
 	mTasks.push_back(task);
-	mCondVar->notifyOne();
+	try {
+		mCondVar->notifyOne();
+	} catch (const CondVarException& e) {
+		std::cerr << e.what() << std::endl;
+	}
 
 	return *this;
 }

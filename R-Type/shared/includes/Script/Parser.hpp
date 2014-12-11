@@ -9,7 +9,7 @@ class Parser : public NoCopyable {
 
     // ctor / dtor
     public:
-        explicit Parser(void);
+        Parser(void);
         ~Parser(void);
 
 	public:

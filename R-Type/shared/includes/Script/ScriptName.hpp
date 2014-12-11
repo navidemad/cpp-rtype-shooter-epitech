@@ -6,8 +6,8 @@
 class ScriptName : public IScriptCommand {
 	// virtual destructor
 	public:
-		explicit ScriptName(void) { }
-		~ScriptName(void) { }
+		ScriptName(void) = default;
+		~ScriptName(void) = default;
 
 	// public pure methods
 	public:

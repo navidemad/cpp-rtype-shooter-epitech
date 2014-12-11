@@ -9,8 +9,8 @@ class SpriteModel
 {
     // ctor - dtor
     public:
-		explicit SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines);
-        ~SpriteModel();
+		SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines, sf::IntRect const &rect = sf::IntRect());
+		~SpriteModel();
 
     // copy operators
     public:
@@ -20,6 +20,7 @@ class SpriteModel
 	// methods
 	public:
 		sf::Texture const	&getTexture() const;
+		sf::IntRect const	&getRect() const;
 		sf::Sprite			&getSprite(uint32_t index = 0);
 		bool				isLoop() const;
 		std::string const	&getFileName() const;
@@ -41,6 +42,7 @@ class SpriteModel
 	// attributes
 	private:
 		sf::Texture					mTexture;
+		sf::IntRect					mRect;
 		sf::Sprite					mSprite;
 		std::vector<sf::Sprite>		mSprites;
 		bool						mLoop;

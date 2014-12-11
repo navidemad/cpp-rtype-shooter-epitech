@@ -46,6 +46,7 @@ void	Client::onPacketAvailable(const ClientPacketBuilder &, const std::shared_pt
 }
 
 void	Client::onSocketClosed(const ClientPacketBuilder &) {
+	std::cout << "Client::onSocketClosed" << std::endl;
 	if (mListener)
 		mListener->onClientDisconnected(*this);
 }
