@@ -88,10 +88,10 @@ namespace NGame
 
         // workflow STL
         private:
-            int NGame::Game::countUserByType(NGame::USER_TYPE) const;
+            int countUserByType(NGame::USER_TYPE) const;
         public:
-            std::vector<NGame::User>::iterator NGame::Game::findUserByHost(const Peer &);
-            std::vector<NGame::User>::iterator NGame::Game::findUserById(uint64_t);
+            std::vector<NGame::User>::iterator findUserByHost(const Peer &);
+            std::vector<NGame::User>::iterator findUserById(uint64_t);
 
         // workflow internal game
         private:

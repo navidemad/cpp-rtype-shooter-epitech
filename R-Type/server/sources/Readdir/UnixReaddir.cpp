@@ -1,4 +1,6 @@
 #include <dirent.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <iostream>
 #include <string>
 #include <list>
@@ -20,8 +22,8 @@ std::list<std::string> UnixReaddir::readFolder(const std::string& folderName){
   if ((dir = opendir(folderName.c_str())) != NULL)
   {
     while ((ent = readdir(dir)) != NULL) {
-        const string file_name = ent->d_name;
-        const string full_file_name = directory + "/" + file_name;
+        const std::string file_name = ent->d_name;
+        const std::string full_file_name = folderName + "/" + file_name;
 
         if (file_name[0] == '.' || stat(full_file_name.c_str(), &st) == -1 || (st.st_mode & S_IFDIR) != 0)
             continue;
