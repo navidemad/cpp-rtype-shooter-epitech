@@ -1,6 +1,9 @@
 #include <algorithm>
+#include <iostream>
 #include <stdexcept>
 #include "Engine/Compenent/List.hpp"
+#include "Engine/Compenent/Position.hpp"
+#include "Engine/Compenent/Drawable.hpp"
 #include "Engine/ComponentType.h"
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
@@ -19,9 +22,8 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
 
 }
-#include <iostream>
 
-void ECSManagerNetwork::OnError(ICommand::Instruction instruction, ErrorStatus::Error err)
+void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)
 {
 	switch (err)
 	{
@@ -36,9 +38,24 @@ void ECSManagerNetwork::OnError(ICommand::Instruction instruction, ErrorStatus::
 	}
 }
 
-void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float /*x*/, float /*y*/, short /*angle*/, int /*id*/)
+void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
 {
+	if (!isEntityCreated(id))
+	{
+		createEntity(id);
 
+		Entity &entity = getEntity(id);
+		entity.addComponent(new Position(x, y));
+		entity.addComponent(new Drawable("ball"));
+	}
+	else
+	{
+		Entity &entity = getEntity(id);
+		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
+
+		pos->setX(x);
+		pos->setY(y);
+	}
 }
 
 void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/*levelName*/, int nbPlayer, int maxPlayer, int /*nbObserver*/, int /*maxObserver*/)
@@ -50,7 +67,7 @@ void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/
 		List *list = static_cast<List *>(entity.getSpecificComponent(ComponentType::LIST));
 		list->addRoom(information_room(name, nbPlayer, maxPlayer));
 	}
-	catch (std::runtime_error &error)
+	catch (std::runtime_error &/*error*/)
 	{
 	}
 }

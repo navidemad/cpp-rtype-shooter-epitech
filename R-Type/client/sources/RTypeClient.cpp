@@ -58,17 +58,17 @@ RTypeClient::RTypeClient()
 
 	//connect ecs and serverCom
 	ECSManagerNetwork *searchMenu	= static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU]);
-	//ECSManagerNetwork *rtype		= static_cast<ECSManagerNetwork *>(mEngine[RTYPE]);
+	ECSManagerNetwork *rtype		= static_cast<ECSManagerNetwork *>(mEngine[RTYPE]);
 
 	searchMenu->OnDestroyResource(5);
 	QObject::connect(searchMenu, SIGNAL(SignalCreateGame(const std::string &, const std::string &, int, int)), &mServer, SLOT(OnCreateGame(const std::string &, const std::string &, int, int)));
 	QObject::connect(searchMenu, SIGNAL(SignalDeleteGame(const std::string &)), &mServer, SLOT(OnDeleteGame(const std::string &)));
-	QObject::connect(searchMenu, SIGNAL(SignalFire()), &mServer, SLOT(OnFire()));
+	QObject::connect(rtype, SIGNAL(SignalFire()), &mServer, SLOT(OnFire()));
 	QObject::connect(searchMenu, SIGNAL(SignalJoinGame(const std::string &)), &mServer, SLOT(OnJoinGame(const std::string &)));
 	QObject::connect(searchMenu, SIGNAL(SignalLeaveGame()), &mServer, SLOT(OnLeaveGame()));
 	QObject::connect(searchMenu, SIGNAL(SignalListGame()), &mServer, SLOT(OnListGame()));
 	QObject::connect(searchMenu, SIGNAL(SignalListLevel()), &mServer, SLOT(OnListLevel()));
-	QObject::connect(searchMenu, SIGNAL(SignalMove(IResource::Direction)), &mServer, SLOT(OnMove(IResource::Direction)));
+	QObject::connect(rtype, SIGNAL(SignalMove(IResource::Direction)), &mServer, SLOT(OnMove(IResource::Direction)));
 	QObject::connect(searchMenu, SIGNAL(SignalObserveGame(const std::string &)), &mServer, SLOT(OnObserveGame(const std::string &)));
 	QObject::connect(searchMenu, SIGNAL(SignalShowGame(const std::string &)), &mServer, SLOT(OnShowGame(const std::string &)));
 	QObject::connect(searchMenu, SIGNAL(SignalUpdatePseudo(const std::string &)), &mServer, SLOT(OnUpdatePseudo(const std::string &)));
@@ -76,14 +76,14 @@ RTypeClient::RTypeClient()
 	QObject::connect(searchMenu, SIGNAL(SignalSetServerPortTcp(int)), &mServer, SLOT(OnSetServerPortTcp(int)));
 	QObject::connect(searchMenu, SIGNAL(SignalConnectToServer()), &mServer, SLOT(OnConnectToServer()));
 
-	QObject::connect(&mServer, SIGNAL(SignalDestroyResource(int)), searchMenu, SLOT(OnDestroyResource(int)));
-	QObject::connect(&mServer, SIGNAL(SignalEndGame(const std::string &)), searchMenu, SLOT(OnEndGame(const std::string &)));
+	QObject::connect(&mServer, SIGNAL(SignalDestroyResource(int)), rtype, SLOT(OnDestroyResource(int)));
+	QObject::connect(&mServer, SIGNAL(SignalEndGame(const std::string &)), rtype, SLOT(OnEndGame(const std::string &)));
 	QObject::connect(&mServer, SIGNAL(SignalError(ICommand::Instruction, ErrorStatus::Error)), searchMenu, SLOT(OnError(ICommand::Instruction, ErrorStatus::Error)));
-	QObject::connect(&mServer, SIGNAL(SignalMoveResource(IResource::Type, float, float, short, int)), searchMenu, SLOT(OnMoveResource(IResource::Type, float, float, short, int)));
+	QObject::connect(&mServer, SIGNAL(SignalMoveResource(IResource::Type, float, float, short, int)), rtype, SLOT(OnMoveResource(IResource::Type, float, float, short, int)));
 	QObject::connect(&mServer, SIGNAL(SignalShowGame(const std::string &, const std::string &, int, int, int, int)), searchMenu, SLOT(OnShowGame(const std::string &, const std::string &, int, int, int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalShowLevel(const std::string &, const std::string &)), searchMenu, SLOT(OnShowLevel(const std::string &, const std::string &)));
-	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), searchMenu, SLOT(OnTimeElapse(int64_t)));
-	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), searchMenu, SLOT(OnUpdateScore(const std::string & , int, int)));
+	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), rtype, SLOT(OnTimeElapse(int64_t)));
+	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), rtype, SLOT(OnUpdateScore(const std::string & , int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalCloseSocket()), searchMenu, SLOT(OnCloseSocket()));
 }
 
@@ -148,7 +148,11 @@ void			RTypeClient::init()
 
 void			RTypeClient::initRtype()
 {
+	ECSManager &engine = *mEngine[RTypeClient::RTYPE];
 
+	engine.addSystem(new DrawableSystem);
+	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new DrawableFontSystem);
 }
 
 void			RTypeClient::initSearchMenu()
@@ -206,7 +210,7 @@ void			RTypeClient::initSearchMenu()
 	simulateReceiveClient(id);
 }
 
-void			RTypeClient::simulateReceiveClient(unsigned int id)
+void			RTypeClient::simulateReceiveClient(unsigned int /*id*/)
 {
 
 }
@@ -461,12 +465,7 @@ void	RTypeClient::startPressStart()
 void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
-	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel) == false)
-	{
-		mCurrentId = MENU;
-		stopRtype();
-		startMenu();
-	}
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel);
 }
 
 void	RTypeClient::startSearchMenu()
@@ -537,6 +536,6 @@ void	RTypeClient::setLevel(std::string const &level)
 
 bool	RTypeClient::createGame()
 {
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentLevel, "level name", 4, 4);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentLevel, "stage_1", 4, 4);
 	return true;
 }
