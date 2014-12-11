@@ -21,7 +21,7 @@
 Q_DECLARE_METATYPE(std::string)
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(4243), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT), mCurrentLevel("")
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mCurrentLevel(""), mServer(4245), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
 {
 	mEngine[PRESS_START] = new ECSManager;
 	mEngine[MENU] = new ECSManager;
@@ -142,7 +142,7 @@ void			RTypeClient::init()
 	(this->*(this->mStart[this->mCurrentId]))();
 	std::for_each(mInit.begin(), mInit.end(), init);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp("127.0.0.1");
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4242);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(4245);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
@@ -206,7 +206,7 @@ void			RTypeClient::initSearchMenu()
 	simulateReceiveClient(id);
 }
 
-void			RTypeClient::simulateReceiveClient(unsigned int id)
+void			RTypeClient::simulateReceiveClient(unsigned int /*id*/)
 {
 
 }
@@ -461,12 +461,12 @@ void	RTypeClient::startPressStart()
 void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
-	/*	if (*/static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel);/* == false)
+	if (static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentLevel) == false)
 	{
 		mCurrentId = MENU;
 		stopRtype();
 		startMenu();
-	}*/
+	}
 }
 
 void	RTypeClient::startSearchMenu()
@@ -516,11 +516,13 @@ void	RTypeClient::setPort(std::string const &port)
 	buffer >> value;
 
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(value);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
 void	RTypeClient::setIpAdresse(std::string const &addr)
 {
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(addr);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
 void	RTypeClient::setPseudo(std::string const &pseudo)

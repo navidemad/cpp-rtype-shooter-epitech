@@ -12,6 +12,7 @@ ECSManager::ECSManager(RTypeClient *client)
 
 ECSManager::~ECSManager()
 {
+  /*
 	for (auto vec : mEntityComponent)
 	{
 		for (auto compenent : vec)
@@ -24,6 +25,7 @@ ECSManager::~ECSManager()
 	{
 		//delete system;
 	}
+  */
 }
 
 inline unsigned int	ECSManager::getCurrentId() const

@@ -80,11 +80,11 @@ void NGame::Game::actions(void) {
 
 void NGame::Game::check(void) {
 
-	static auto functionsCheck = std::vector<std::function<bool(const NGame::Component&)>>
-	{
-		std::bind(&NGame::Game::outOfScreen, this, std::placeholders::_1),
-			std::bind(&NGame::Game::collision, this, std::placeholders::_1)
-	};
+    static auto functionsCheck = std::vector<std::function<bool(const NGame::Component&)>>
+    {
+        std::bind(&NGame::Game::outOfScreen, this, std::placeholders::_1),
+        std::bind(&NGame::Game::collision, this, std::placeholders::_1)
+    };
 
 	for (auto it = mComponents.begin(); it != mComponents.end();) {
 		for (const auto& fct : functionsCheck)
