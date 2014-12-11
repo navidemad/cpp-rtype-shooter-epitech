@@ -48,8 +48,6 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::actions(void) {
-    ScopedLock scopedLock(mMutex);
-
     double currentFrame = mTimer.frame();
 
     static auto it = mScript.getCommands().begin();
@@ -74,8 +72,6 @@ void NGame::Game::actions(void) {
 }
 
 void NGame::Game::check(void) {
-    ScopedLock scopedLock(mMutex);
-
     static auto functionsCheck = std::vector<std::function<bool(const NGame::Component&)>>
     {
         std::bind(&NGame::Game::outOfScreen, this, std::placeholders::_1),
@@ -97,7 +93,6 @@ void NGame::Game::check(void) {
 }
 
 void NGame::Game::update(void) {
-    ScopedLock scopedLock(mMutex);
 }
 
 /*
