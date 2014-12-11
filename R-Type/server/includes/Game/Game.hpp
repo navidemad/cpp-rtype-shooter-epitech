@@ -65,12 +65,13 @@ namespace NGame
 			const Peer& getOwner(void) const;
             const std::vector<NGame::User>& getUsers() const;
             const NGame::Properties& getProperties(void) const;
-			bool isThreadRunning(void) const;
+            bool pullEnded(void) const;
 
         // setters
         public:
             void setListener(NGame::Game::OnGameEvent *listener);
             void setOwner(const Peer& owner);
+            void setPullEnded(bool pullEnded);
 
         // utils
         private:
@@ -130,7 +131,7 @@ namespace NGame
 			NGame::Game::State mState;
             std::shared_ptr<IMutex> mMutex;
             Peer mOwner;
-			bool mIsThreadRunning;
+			bool mPullEnded;
     };
 
 }

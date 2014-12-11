@@ -14,7 +14,7 @@ void	UdpClient::connect(const std::string &/*addr*/, int port) {
 	if (mQUdpSocket->bind(QHostAddress::Any, port) == false)
 		throw SocketException("fail QUdpSocket::bind");
 
-	std::cout << mQUdpSocket->localPort() << std::endl;
+	std::cout << port << std::endl;
 
 	QObject::connect(mQUdpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQUdpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));

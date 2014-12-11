@@ -20,27 +20,33 @@ GamesManager::~GamesManager(void) {
 
 void GamesManager::run(void) {
 	mScriptLoader.loadAll();
-    return;
-    for (;;)
+
+    std::vector<std::shared_ptr<NGame::Game>> games;
+    while (true)
     {
-		if (mGames.size()) // bizarre de devoir faire ça, un .begin sur mGames vide devrait retourner .end non ?
+        {
+            ScopedLock scopedLock(mMutex);
+
+            games = mGames;
+        }
+
+		for (auto it = mGames.begin(); it != mGames.end();)
 		{
-			for (auto it = mGames.begin(); it != mGames.end();)
+			switch ((*it)->getState())
 			{
-				switch ((*it)->getState())
-				{
-				case NGame::Game::State::RUNNING:
-					if ((*it)->isThreadRunning() == false)
-						*mThreadPool << std::bind(&NGame::Game::pull, (*it));
-					++it;
-					break;
-				case NGame::Game::State::DONE:
-					it = terminatedGame(it);
-					break;
-				default:
-					++it;
-					break;
-				}
+			case NGame::Game::State::RUNNING:
+				if ((*it)->pullEnded() == true) {
+					*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+                    (*it)->setPullEnded(false);
+                }
+				++it;
+				break;
+			case NGame::Game::State::DONE:
+				it = terminatedGame(it);
+				break;
+			default:
+				++it;
+				break;
 			}
 		}
     }
