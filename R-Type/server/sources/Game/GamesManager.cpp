@@ -20,7 +20,7 @@ GamesManager::~GamesManager(void) {
 
 void GamesManager::run(void) {
 	mScriptLoader.loadAll();
-
+    return;
     for (;;)
     {
 		if (mGames.size()) // bizarre de devoir faire ça, un .begin sur mGames vide devrait retourner .end non ?
