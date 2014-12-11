@@ -25,7 +25,7 @@ mListener(nullptr),
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED), 
 mMutex(PortabilityBuilder::getMutex()),
-mIsThreadRunning(false)
+mPullEnded(true)
 {
 }
 
@@ -35,19 +35,16 @@ mIsThreadRunning(false)
 void NGame::Game::pull(void) {
     ScopedLock scopedLock(mMutex);
 
-	mIsThreadRunning = false;
-	double start_time = mTimer.frame();
-	double delta_time;
-	do {
-		if (mState == NGame::Game::State::RUNNING)
-			actions();
-		if (mState == NGame::Game::State::RUNNING)
-			check();
-		if (mState == NGame::Game::State::RUNNING)
-			update();
-		delta_time = mTimer.frame() - start_time;
-	} while (delta_time < 1 / NGame::Game::FRAMES_PER_SEC);
-	mIsThreadRunning = false;
+	mPullEnded = false;
+
+	if (mState == NGame::Game::State::RUNNING)
+		actions();
+	if (mState == NGame::Game::State::RUNNING)
+		check();
+	if (mState == NGame::Game::State::RUNNING)
+		update();
+
+	mPullEnded = true;
 }
 
 void NGame::Game::actions(void) {
@@ -122,8 +119,12 @@ const NGame::Properties& NGame::Game::getProperties(void) const {
     return mProperties;
 }
 
-bool NGame::Game::isThreadRunning(void) const {
-	return mIsThreadRunning;
+bool NGame::Game::pullEnded(void) const {
+	return mPullEnded;
+}
+
+void NGame::Game::setPullEnded(bool pullEnded) {
+    mPullEnded = pullEnded;
 }
 
 /*
