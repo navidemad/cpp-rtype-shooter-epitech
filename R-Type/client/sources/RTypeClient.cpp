@@ -516,11 +516,13 @@ void	RTypeClient::setPort(std::string const &port)
 	buffer >> value;
 
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(value);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
 void	RTypeClient::setIpAdresse(std::string const &addr)
 {
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(addr);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
 void	RTypeClient::setPseudo(std::string const &pseudo)
