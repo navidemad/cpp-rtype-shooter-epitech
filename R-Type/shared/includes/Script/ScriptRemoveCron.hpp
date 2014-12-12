@@ -25,4 +25,14 @@ class ScriptRemoveCron : public IScriptCommand {
 	public:
 		double				mRemoveCronFrame;
 		int					mRemoveCronIdCron;
+
+    // overload << display
+    public:
+        friend std::ostream&                operator << (std::ostream& os, std::shared_ptr<ScriptRemoveCron> rhs) {
+            os <<
+                "[ScriptRemoveCron] [Frame #" << rhs->getFrame() << "]" << std::endl <<
+                "  - mRemoveCronFrame: '" << rhs->getRemoveCronFrame() << std::endl <<
+                "  - mRemoveCronIdCron: '" << rhs->getRemoveCronIdCron() << std::endl;
+            return os;
+        }
 };

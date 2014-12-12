@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RTypeClient.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/Component.hpp"
 #include "Engine/ComponentType.h"
@@ -69,11 +70,11 @@ public:
 public:
 	void	process(Entity &, uint32_t delta);
 };
-
+#include <iostream>
 class ButtonInput : public Button
 {
 public:
-	ButtonInput(Font *font) : Button(100), mFont(font) { }
+	ButtonInput(Font *font, void (RTypeClient::*fct)(std::string const &)) : Button(100), mFont(font) { mFct = fct; }
 	~ButtonInput() { }
 
 public:
@@ -81,6 +82,7 @@ public:
 
 private:
 	Font	*mFont;
+	void (RTypeClient::*mFct)(std::string const &);
 };
 
 class ButtonSearchMenu : public Button
@@ -91,4 +93,14 @@ class ButtonSearchMenu : public Button
 
 	public:
 		void	process(Entity &, uint32_t delta);
+};
+
+class ButtonCreateGame : public Button
+{
+public:
+	ButtonCreateGame() : Button(100) {}
+	~ButtonCreateGame() {}
+
+public:
+	void	process(Entity &, uint32_t delta);
 };

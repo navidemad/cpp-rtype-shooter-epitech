@@ -97,9 +97,8 @@ void	PlayerPacketBuilder::onSocketReadable(IClientSocket *, unsigned int) {
 
 void	PlayerPacketBuilder::onBytesWritten(IClientSocket *, unsigned int) {
 }
-#include <iostream>
+
 void	PlayerPacketBuilder::onSocketClosed(IClientSocket *) {
-	std::cout << "PlayerPacketBuilder::onSocketClosed" << std::endl;
 }
 
 void	PlayerPacketBuilder::setListener(PlayerPacketBuilder::OnPlayerPacketBuilderEvent *listener) {

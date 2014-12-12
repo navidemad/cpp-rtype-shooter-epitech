@@ -12,18 +12,19 @@ ECSManager::ECSManager(RTypeClient *client)
 
 ECSManager::~ECSManager()
 {
+  /*
 	for (auto vec : mEntityComponent)
 	{
 		for (auto compenent : vec)
 		{
-			delete compenent;
+	//		delete compenent;
 		}
 	}
 
 	for (auto system : mSystem)
 	{
-		delete system;
-	}
+		//delete system;
+	}*/
 }
 
 inline unsigned int	ECSManager::getCurrentId() const
@@ -38,9 +39,33 @@ Entity						&ECSManager::createEntity()
 	mEntity.push_back(Entity(mCurrentId, this));
 	mEntityComponent.push_back(list); // must initialize an empty list
 	mEntityBitset.push_back(0); // bitset set to 0
+	mLivingEntity.push_back(true);
 
 	++mCurrentId;
 	return mEntity.back();
+}
+
+Entity		&ECSManager::createEntity(const unsigned int id)
+{
+	if (id > mCurrentId)
+	{
+		std::list<Component *> list;
+		for (; mCurrentId != id; ++mCurrentId)
+		{
+			mEntity.push_back(Entity(mCurrentId, this));
+			mEntityComponent.push_back(list);
+			mEntityBitset.push_back(0);
+			mLivingEntity.push_back(false);
+		}
+	}
+	mLivingEntity[mCurrentId] = true;
+	++mCurrentId;
+	return mEntity[id];
+}
+
+bool		ECSManager::isEntityCreated(const unsigned int id) const
+{
+	return mEntity.size() <= id && mLivingEntity[id];
 }
 
 Entity		&ECSManager::getEntity(const int id)
@@ -54,7 +79,7 @@ bool		ECSManager::addComponent(const unsigned int id, Component *component)
 	{
 		return component->getComponentId() == _component->getComponentId();
 	};
-	
+	 
 	std::list<Component *>	&listComponent = mEntityComponent.at(id);
 
 	if (std::find_if(listComponent.begin(), listComponent.end(), searchId) == listComponent.end())

@@ -132,17 +132,22 @@ bool ServerCommunication::OnUpdatePseudo(const std::string &pseudo){
 
 void ServerCommunication::OnSetServerIp(const std::string &ip){
 	mServerPeer.host = ip;
+	std::cout << "set de lip=>" << mServerPeer.host <<std::endl;
 }
 
 void ServerCommunication::OnSetServerPortTcp(int port){
+	std::cout << "set le port => " << mServerPeer.tcpPort << std::endl;
 	mServerPeer.tcpPort = port;
 }
 
 bool ServerCommunication::OnConnectToServer(void){
 	try {
+		std::cout << "ip=>" << mServerPeer.host <<std::endl;
+		std::cout << "port => " << mServerPeer.tcpPort << std::endl;
 		mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
 	}
-	catch (SocketException){
+	catch (SocketException e){
+		std::cout << e.what() << std::endl;
 		return false;
 	}
 	return true;
@@ -259,7 +264,8 @@ bool ServerCommunication::sendCommand(ICommand *command, bool isTcpCommand){
 		else
 			mCmdUdp.sendCommand(command, mServerPeer);
 	}
-	catch (SocketException) {
+	catch (SocketException e) {
+		std::cout << e.what() << std::endl;
 		return false;
 	}
 	return true;

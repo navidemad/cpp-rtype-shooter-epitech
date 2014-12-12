@@ -78,11 +78,23 @@ void		List::displayRoom(Entity &entity)
 	}
 }*/
 
-List::List(unsigned int const nbRoomButton) : Component(ComponentType::LIST), mListRoomButton(nbRoomButton), mNbRoomButton(nbRoomButton)
+List::List(void (RTypeClient::*fct)(std::string const &), unsigned int const nbRoomButton) : Component(ComponentType::LIST), mListRoomButton(nbRoomButton), mNbRoomButton(nbRoomButton)
 {
+	mFct = fct;
 	mCycle = 100;
 	mTimeElapsed = 0;
 	mCurrentRoom = mListRoomButton.begin();
+}
+
+void	List::applyFunction(std::string const &str, RTypeClient *client)
+{
+	(client->*mFct)(str);
+}
+
+void	List::clear()
+{
+	mListRoom.clear();
+	mListRoomButton.clear();
 }
 
 

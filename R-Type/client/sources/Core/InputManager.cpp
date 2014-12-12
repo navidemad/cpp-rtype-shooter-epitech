@@ -13,7 +13,8 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 	mKeyboard[sf::Keyboard::BackSpace] = "delete";
 	mKeyboard[sf::Keyboard::Z] = "z";
 	mKeyboard[sf::Keyboard::S] = "s";
-
+	mKeyboard[sf::Keyboard::Q] = "q";
+	mKeyboard[sf::Keyboard::D] = "d";
 
 	mPoolEvent["down"] = false;
 	mPoolEvent["up"] = false;
@@ -22,6 +23,8 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 	mPoolEvent["delete"] = false;
 	mPoolEvent["z"] = false;
 	mPoolEvent["a"] = false;
+	mPoolEvent["q"] = false;
+	mPoolEvent["d"] = false;
 
 	mEnteredKey = "";
 }

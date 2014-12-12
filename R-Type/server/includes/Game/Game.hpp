@@ -52,7 +52,7 @@ namespace NGame
 		private:
 			struct tokenExec {
 				IScriptCommand::Instruction	commandCode;
-				void						(NGame::Game::*fctPtr)();
+				void						(NGame::Game::*fctPtr)(const std::shared_ptr<IScriptCommand> &command);
 			};
 			static const NGame::Game::tokenExec tokenExecTab[];
 			static const double XMAX;
@@ -65,12 +65,13 @@ namespace NGame
 			const Peer& getOwner(void) const;
             const std::vector<NGame::User>& getUsers() const;
             const NGame::Properties& getProperties(void) const;
-			bool isThreadRunning(void) const;
+            bool pullEnded(void) const;
 
         // setters
         public:
             void setListener(NGame::Game::OnGameEvent *listener);
             void setOwner(const Peer& owner);
+            void setPullEnded(bool pullEnded);
 
         // utils
         private:
@@ -113,11 +114,11 @@ namespace NGame
 
         // workflow scripts actions
         private:
-            void recvName(void);
-            void recvRequire(void);
-            void recvAction(void);
-            void recvAddCron(void);
-            void recvRemoveCron(void);
+            void scriptCommandName(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandRequire(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandAction(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command);
+            void scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command);
 
         // attributes
         private:
@@ -130,7 +131,7 @@ namespace NGame
 			NGame::Game::State mState;
             std::shared_ptr<IMutex> mMutex;
             Peer mOwner;
-			bool mIsThreadRunning;
+			bool mPullEnded;
     };
 
 }

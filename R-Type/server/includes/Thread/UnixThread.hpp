@@ -1,17 +1,23 @@
 #pragma once
 
 #include "IThread.hpp"
-#include <pthread.h>
 #include "ThreadException.hpp"
+#include "NoCopyable.hpp"
+#include <pthread.h>
+#include <iostream>
 
 template <typename U, typename T>
-class UnixThread : public IThread<U, T> {
+class UnixThread : public NoCopyable, public IThread<U, T> {
 
 	// ctor dtor
 	public:
 		UnixThread(void) : mIsRunning(false) {}
 		~UnixThread(void) {
-			cancel();
+			try {
+				cancel();
+			} catch (const ThreadException& e) {
+				std::cerr << "UnixThread :: " << e.what() << std::endl;
+			}
 		}
 
 	// copy / move operators

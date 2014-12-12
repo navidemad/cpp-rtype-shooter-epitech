@@ -41,13 +41,7 @@ void ThreadPool::stop(void) {
 		}
 	}
 
-	for (const auto &worker : mWorkers) {
-		try {
-			worker->cancel();
-		} catch (const ThreadException& e) {
-			std::cerr << e.what() << std::endl;
-		}
-	}
+	mWorkers.clear();
 }
 
 void ThreadPool::operator()(void *) {

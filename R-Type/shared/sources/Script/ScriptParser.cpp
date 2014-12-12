@@ -11,6 +11,7 @@
 #include <fstream>
 #include <map>
 #include <memory>
+#include <algorithm>
 
 const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
 	{ "name", &ScriptParser::cmdName },
@@ -49,8 +50,7 @@ Script ScriptParser::parseFile(std::ifstream &file){
 		for (const auto &instr : tokenExecTab) {
 			if (instr.cmd == wordContent) {
 				try {
-					auto commandAction = (this->*instr.Ptr)();
-					script.addAction(commandAction);
+					script << (this->*instr.Ptr)();
 				}
 				catch (const std::exception& e) {
 					throw ScriptException(e.what());
@@ -62,6 +62,12 @@ Script ScriptParser::parseFile(std::ifstream &file){
 			throw ScriptException("Wrong Command Action");
 	}
     script.setTextScript(textScript);
+
+	/*
+	std::sort(script.getCommands().begin(), script.getCommands().end(), [] (const std::shared_ptr<IScriptCommand> &lhs, const std::shared_ptr<IScriptCommand> &rhs) -> bool {
+		return lhs->getFrame() > rhs->getFrame();
+	});
+	*/
 	return script;
 }
 

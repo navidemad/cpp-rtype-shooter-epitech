@@ -34,9 +34,10 @@ class ECSManager
 	public:
 		// Entity
 		Entity									&createEntity();
+		Entity									&createEntity(const unsigned int);
 		Entity									&getEntity(const int);
 		Entity									&getEntityWithSpecificCompenent(ComponentType::Type);
-
+		bool									isEntityCreated(const unsigned int) const;
 		// Component
 		bool									addComponent(const unsigned int, Component *);
 		const std::list<Component *>			&getComponent(const unsigned int) const;
@@ -60,6 +61,8 @@ class ECSManager
 		std::vector<std::list<Component *> >			mEntityComponent;
 		std::vector<std::bitset<ComponentType::LIMIT> >	mEntityBitset;
 		std::list<System *>								mSystem;
+		std::vector<bool>								mLivingEntity;
+
 		unsigned int									mCurrentId;
 
 	protected:

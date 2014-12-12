@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManager.hpp"
 #include "Engine/Compenent/Button.hpp"
@@ -43,7 +44,7 @@ void	ButtonGame::process(Entity &entity, uint32_t delta)
 		resetTimer();
 		entity.getEntityManager()->getClient()->getGui()->playSound("option");
 		entity.getEntityManager()->stop();
-		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::RTYPE);
+		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::CREATE_MENU);
 	}
 	
 }
@@ -112,7 +113,25 @@ void	ButtonInput::process(Entity &entity, uint32_t delta)
 		text = mFont->getText();
 		text = text.substr(0, text.size() - 1);
 		mFont->setText(text);
+		RTypeClient *client = entity.getEntityManager()->getClient();
+		(client->*mFct)(text);
 		resetTimer();
 	}
 }
 
+void	ButtonCreateGame::process(Entity &entity, uint32_t delta)
+{
+	updateTimer(delta);
+
+	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	{
+		resetTimer();
+		if (entity.getEntityManager()->getClient()->createGame() == true)
+		{
+			entity.getEntityManager()->getClient()->getGui()->playSound("option");
+			entity.getEntityManager()->stop();
+			entity.getEntityManager()->getClient()->setIdGame(RTypeClient::RTYPE);
+		}
+	}
+
+}
