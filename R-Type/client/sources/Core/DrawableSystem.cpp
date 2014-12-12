@@ -14,10 +14,10 @@ DrawableSystem::DrawableSystem()
 	setComponentNeeded(ComponentType::MOVABLE);
 }
 
-void	DrawableSystem::process(Entity &entity, uint32_t /* */)
+void	DrawableSystem::process(Entity &entity, uint32_t delta)
 {
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 	Drawable *sprite = static_cast<Drawable *>(entity.getSpecificComponent(ComponentType::DRAWABLE));
 
-	entity.getEntityManager()->getClient()->getGui()->drawSprite(sprite->getName(), 0, pos->getX(), pos->getY(), entity.getId());
+	entity.getEntityManager()->getClient()->getGui()->drawSprite(sprite->getName(), delta, pos->getX(), pos->getY(), entity.getId());
 }

@@ -33,10 +33,11 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
+                        includes/Core/ButtonGameSystem.hpp			\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
 			includes/Core/InputManager.hpp				\
-                        includes/Core/TextInputSystem.hpp				\
+                        includes/Core/TextInputSystem.hpp			\
 			includes/Core/MovementSystem.hpp			\
                         includes/Core/ListSystem.hpp                    	\
 			includes/Core/System.hpp				\
@@ -96,8 +97,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/ClientPacketBuilder.hpp     \
 			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
 			../shared/includes/Network/Peer.hpp                     \
-			../shared/includes/Network/SocketException.hpp 					\
-			../shared/includes/Commands/CommandFactory.hpp			\
+			../shared/includes/Network/SocketException.hpp 		\
+			../shared/includes/Commands/CommandFactory.hpp		\
 			../shared/includes/Error/ErrorStatus.hpp
 
 unix:HEADERS += includes/UnixPortabilityBuilder.hpp
@@ -112,7 +113,8 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Core/DrawableSystem.cpp					\
                         sources/Core/DrawableFontSystem.cpp				\
                         sources/Core/TextInputSystem.cpp				\
-                        sources/Core/ListSystem.cpp				\
+                        sources/Core/ListSystem.cpp					\
+                        sources/Core/ButtonGameSystem.cpp					\
                         sources/Core/ButtonSystem.cpp					\
 			sources/Core/InputManager.cpp					\
 			sources/Core/MovementSystem.cpp					\

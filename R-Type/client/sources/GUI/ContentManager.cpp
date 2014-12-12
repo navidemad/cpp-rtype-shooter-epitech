@@ -30,7 +30,7 @@ void	ContentManager::loadSprites()
 	sprites->loadResources("logoOption", "assets/sprites/logoOption.png");
 	sprites->loadResources("searchBar", "assets/sprites/search_bar.png");
 	sprites->loadResources("ball", "assets/sprites/r-typesheet3.gif", 12, 1, true);
-	sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(156, 34, 288, 24), true);
+	sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(157, 34, 288, 24), true);
 	sprites->loadResources("cursor", "assets/sprites/cursor.png");
 }
 

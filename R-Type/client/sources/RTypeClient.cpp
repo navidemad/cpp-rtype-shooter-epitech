@@ -198,7 +198,7 @@ void			RTypeClient::initSearchMenu()
 	simulateReceiveClient(id);
 }
 
-void			RTypeClient::simulateReceiveClient(unsigned int id)
+void			RTypeClient::simulateReceiveClient(unsigned int /*id*/)
 {
 
 }
@@ -352,11 +352,6 @@ void			RTypeClient::initMenu()
 
 	logoCharacter.addComponent(new Position(0, 100));
 	logoCharacter.addComponent(new Drawable("logoCharacter"));
-
-	// test sub sprites
-	Entity		&satellite = engine.createEntity();
-	satellite.addComponent(new Position(150, 175));
-	satellite.addComponent(new Drawable("satellite"));
 
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
