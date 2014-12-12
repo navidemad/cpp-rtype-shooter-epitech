@@ -1,6 +1,7 @@
-#include "Engine/Script.hpp"
+#include "Engine/ComponentType.h"
+#include "Engine/Compenent/Script.hpp"
 
-Script::Script()
+Script::Script() : Component(ComponentType::SCRIPT)
 {
 
 }

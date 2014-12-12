@@ -12,6 +12,7 @@
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/Button.hpp"
 #include "Engine/Compenent/List.hpp"
+#include "Core/ScriptSystem.hpp"
 #include "Core/DrawableSystem.hpp"
 #include "Core/TextInputSystem.hpp"
 #include "Core/DrawableFontSystem.hpp"
@@ -167,15 +168,20 @@ void			RTypeClient::initRtype()
 	Entity		&down = engine.createEntity();
 	down.addComponent(new Down);
 
+
+	//gameplay system
 	engine.addSystem(new UpSystem);
 	engine.addSystem(new DownSystem);
 	engine.addSystem(new LeftSystem);
 	engine.addSystem(new RightSystem);
 	engine.addSystem(new FireSystem);
+	engine.addSystem(new ScriptSystem);
 
+	// content system
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
+
 }
 
 void			RTypeClient::initSearchMenu()

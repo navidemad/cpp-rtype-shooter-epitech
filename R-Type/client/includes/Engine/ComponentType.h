@@ -18,6 +18,7 @@ namespace ComponentType
 		DOWN,
 		LEFT,
 		RIGHT,
+		SCRIPT,
 		LIMIT
 	};
 }
