@@ -33,7 +33,6 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/CollisionSystem.hpp			\
 			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
-                        includes/Core/ButtonGameSystem.hpp			\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
 			includes/Core/InputManager.hpp				\
@@ -116,7 +115,6 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Core/DrawableFontSystem.cpp				\
                         sources/Core/TextInputSystem.cpp				\
                         sources/Core/ListSystem.cpp					\
-                        sources/Core/ButtonGameSystem.cpp					\
                         sources/Core/ButtonSystem.cpp					\
 			sources/Core/InputManager.cpp					\
 			sources/Core/MovementSystem.cpp					\
