@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <sstream>
 #include "RTypeClient.hpp"
+#include "Gameplay/Gameplay.hpp"
+#include "Gameplay/GameplaySystem.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/ECSManagerNetwork.hpp"
 #include "GUI/SFMLGraphic.hpp"
@@ -149,6 +151,27 @@ void			RTypeClient::init()
 void			RTypeClient::initRtype()
 {
 	ECSManager &engine = *mEngine[RTypeClient::RTYPE];
+
+	Entity		&fire = engine.createEntity();
+	fire.addComponent(new Fire);
+
+	Entity		&left = engine.createEntity();
+	left.addComponent(new Left);
+
+	Entity		&up = engine.createEntity();
+	up.addComponent(new Up);
+
+	Entity		&right = engine.createEntity();
+	right.addComponent(new Right);
+
+	Entity		&down = engine.createEntity();
+	down.addComponent(new Down);
+
+	engine.addSystem(new UpSystem);
+	engine.addSystem(new DownSystem);
+	engine.addSystem(new LeftSystem);
+	engine.addSystem(new RightSystem);
+	engine.addSystem(new FireSystem);
 
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
