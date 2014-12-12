@@ -68,6 +68,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Network/ServerCommunication.hpp		\
 			includes/Network/TcpClient.hpp				\
 			includes/Network/UdpClient.hpp				\
+			includes/Gameplay/Gameplay.hpp				\
+			includes/Gameplay/GameplaySystem.hpp				\
 			../shared/includes/Config.hpp				\
 			../shared/includes/IResource.hpp			\
 			../shared/includes/Network/IClientSocket.hpp		\
@@ -140,6 +142,8 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Network/ServerCommunication.cpp				\
 			sources/Network/TcpClient.cpp					\
 			sources/Network/UdpClient.cpp 					\
+			sources/Gameplay/Gameplay.cpp 					\
+			sources/Gameplay/GameplaySystem.cpp 					\
                         sources/Command/PlayerPacketBuilder.cpp                         \
 			../shared/sources/Commands/CommandFactory.cpp                   \
 			../shared/sources/Commands/SharedPlayerPacketBuilder.cpp        \
