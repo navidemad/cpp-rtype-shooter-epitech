@@ -25,7 +25,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 	// internal methods
 	private:
 		std::list<Peer>::iterator findPeer(const Peer &peer);
-		void logInfo(const Peer &peer, const std::string &log);
+		void logInfo(const Peer &peer, const std::string &log) const;
 
 	public:
 		void	addPeerToWhiteList(const Peer &peer);
@@ -36,8 +36,8 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		class OnPlayerCommunicationManagerEvent {
 		public:
 			virtual ~OnPlayerCommunicationManagerEvent(void) {}
-			virtual void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) = 0;
-			virtual void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) = 0;
+			virtual void onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) = 0;
+			virtual void onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) = 0;
 		};
 
 		void	setListener(PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *listener);
@@ -46,10 +46,10 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 
 	// send commands
 	public:
-		void	sendMoveResource(const Peer &peer, int id, IResource::Type type, float x, float y, short angle);
-		void	sendDestroyResource(const Peer &peer, int id);
-		void	sendUpdateScore(const Peer &peer, int id, const std::string &pseudo, int score);
-		void	sendTimeElapsedPing(const Peer &peer, int64_t timeElapsed);
+		void	sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, double x, double y, short angle);
+		void	sendDestroyResource(const Peer &peer, uint64_t id);
+		void	sendUpdateScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score);
+		void	sendTimeElapsedPing(const Peer &peer, double timeElapsed);
 
 	// build cmd
 	private:

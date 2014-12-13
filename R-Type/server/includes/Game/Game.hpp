@@ -10,6 +10,7 @@
 #include "GameComponent.hpp"
 #include "IScriptCommand.hpp"
 #include "Script.hpp"
+#include "PlayerCommunicationManager.hpp"
 
 #include <string>
 #include <memory>
@@ -31,7 +32,10 @@ namespace NGame
             class OnGameEvent {
             public:
                 virtual ~OnGameEvent(void) = default;
-                //virtual void onTerminatedGame(const std::string &name) = 0;
+				virtual void onRemovePeerFromWhiteList(const Peer&) = 0;
+				virtual void onNotifyUsersComponentRemoved(const std::vector<NGame::User>&, uint64_t) = 0;
+				virtual void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t) = 0;
+				virtual void onNotifyTimeElapsedPing(const Peer &, double) = 0;
             };
         
         // pull function called by threadPool
@@ -54,14 +58,21 @@ namespace NGame
 				IScriptCommand::Instruction	commandCode;
 				void						(NGame::Game::*fctPtr)(const std::shared_ptr<IScriptCommand> &command);
 			};
+			struct tokenAngle {
+				IResource::Direction		directionCode;
+				short						angle;
+			};
 			static const NGame::Game::tokenExec tokenExecTab[];
+			static const NGame::Game::tokenAngle tokenAngleTab[];
 			static const double XMAX;
 			static const double YMAX;
 			static const double FRAMES_PER_SEC;
+			static const uint64_t START_ID_COMPONENT;
 
         // getters
         public:
 			NGame::Game::State getState(void) const;
+			uint64_t getCurrentComponentMaxId(void) const;
 			const Peer& getOwner(void) const;
             const std::vector<NGame::User>& getUsers() const;
             const NGame::Properties& getProperties(void) const;
@@ -75,42 +86,45 @@ namespace NGame
 
         // utils
         private:
-            void logInfo(const std::string &log);
-
-        // check :: outOfScreen
-        private:
-            bool outOfScreen(const NGame::Component&);
+            void logInfo(const std::string &log) const;
 
         // check :: collision
         private:
-            bool collision(const NGame::Component& component);
+            bool collision(NGame::Component& component);
             bool collisionTouch(const NGame::Component&, const NGame::Component&) const;
-            bool collisionWithBonus(const NGame::Component&, const NGame::Component&);
-            bool collisionWithBullet(const NGame::Component&, const NGame::Component&);
-            bool collisionWithMonster(const NGame::Component&, const NGame::Component&);
+			bool collisionWithNoLife(NGame::Component& component);
+			bool collisionWithBorders(NGame::Component& component);
+            bool collisionWithBonus(NGame::Component&, NGame::Component&);
+            bool collisionWithBullet(NGame::Component&, NGame::Component&);
+            bool collisionWithEnnemy(NGame::Component&, NGame::Component&);
 
         // workflow STL
         private:
             int countUserByType(NGame::USER_TYPE) const;
+
         public:
             std::vector<NGame::User>::iterator findUserByHost(const Peer &);
             std::vector<NGame::User>::iterator findUserById(uint64_t);
+			std::vector<NGame::Component>::iterator findComponentById(uint64_t);
 
         // workflow internal game
         private:
-            void tryAddPlayer(const NGame::User&);
+			void cronSendPingToSyncronizeClientTimer(void) const;
+            void tryAddPlayer(NGame::User&);
 			void tryDelPlayer(void);
             void tryAddSpectator(const NGame::User&);
 			void tryDelSpectator(void);
             void transferPlayerToSpectators(NGame::User &);
+			void updatePositionComponent(NGame::Component&);
+
         public:
             void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
             void delUser(const Peer &);
             
         // workflow gaming fire + move
         public:
-            void fire(const Peer&);
-            void move(const Peer&, IResource::Direction);
+			NGame::Component fire(const Peer &);
+			const NGame::Component& move(const Peer &, IResource::Direction);
 
         // workflow scripts actions
         private:
@@ -132,6 +146,7 @@ namespace NGame
             std::shared_ptr<IMutex> mMutex;
             Peer mOwner;
 			bool mPullEnded;
+			uint64_t mCurrentComponentMaxId;
     };
 
 }

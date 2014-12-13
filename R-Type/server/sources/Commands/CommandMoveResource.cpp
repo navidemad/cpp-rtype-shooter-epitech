@@ -5,7 +5,8 @@ IClientSocket::Message CommandMoveResource::getMessage(void) const {
 	CommandMoveResource::PacketFromServer packet;
 
 	packet.id = mId;
-	packet.type = static_cast<int>(mType);
+	packet.type = static_cast<char>(mType);
+	// packet.type = static_cast<uint64_t>(mType);
 	packet.x = mX;
 	packet.y = mY;
 	packet.angle = mAngle;

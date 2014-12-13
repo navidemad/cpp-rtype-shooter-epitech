@@ -33,13 +33,13 @@ class ICommand {
 
 	// header
 	public:
-		static const int32_t		MAGIC_CODE;
+		static const uint64_t		MAGIC_CODE;
 		static const unsigned int	HEADER_SIZE;
 
 		#pragma pack(push, 1)
 		struct Header {
-			int32_t	magicCode;
-			int32_t	instructionCode;
+			uint64_t	magicCode;
+			uint64_t	instructionCode;
 		};
 		#pragma pack(pop)
 

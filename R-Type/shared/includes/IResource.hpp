@@ -2,15 +2,15 @@
 
 namespace IResource {
 
-	enum class Direction {
+	enum class Direction : char {
 		LEFT	= 0x00,
 		RIGHT	= 0x01,
 		TOP		= 0x02,
 		BOTTOM	= 0x03,
-        UNKNOWN
+		UNKNOWN
 	};
 
-	enum class Type {
+	enum class Type : char {
 		PLAYER	= 0x00,
 		BULLET	= 0x01,
 		ENNEMY	= 0x02,

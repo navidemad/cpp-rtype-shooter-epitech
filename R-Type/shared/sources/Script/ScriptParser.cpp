@@ -95,7 +95,7 @@ std::shared_ptr<IScriptCommand>		ScriptParser::cmdAddCron(void){
 	command->setAddCronIdCron(parser.extractValue<int>());
 	command->setAddCronFireMob(parser.extractWord());
 	command->setAddCronIdMonster(parser.extractValue<int>());
-	command->setAddCronAngle(parser.extractValue<double>());
+	command->setAddCronAngle(parser.extractValue<short>());
 
 	return command;
 }
@@ -128,7 +128,7 @@ std::shared_ptr<ScriptAction::IActionType> ScriptParser::fctSpawnMob(void){
 	params->setActionName(parser.extractWord());
 	params->setActionXpos(parser.extractValue<double>());
 	params->setActionYpos(parser.extractValue<double>());
-	params->setActionAngle(parser.extractValue<double>());
+	params->setActionAngle(parser.extractValue<short>());
 
 	return params;
 }
@@ -137,7 +137,7 @@ std::shared_ptr<ScriptAction::IActionType> ScriptParser::fctMoveMob(void){
 	auto params = std::make_shared<ScriptAction::MoveMob>();
 
 	params->setActionIdMonster(parser.extractValue<int>());
-	params->setActionAngle(parser.extractValue<double>());
+	params->setActionAngle(parser.extractValue<short>());
 
 	return params;
 }

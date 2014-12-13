@@ -13,6 +13,7 @@ class ScriptRemoveCron : public IScriptCommand {
 	public:
 		virtual IScriptCommand::Instruction	getInstruction(void) const { return IScriptCommand::Instruction::REMOVE_CRON; }
 		virtual double						getFrame(void) const { return this->mRemoveCronFrame; }
+
 	// getter-setter
 	public:
 		double				getRemoveCronFrame(void) const { return mRemoveCronFrame; }

@@ -13,7 +13,7 @@ ClientManager::~ClientManager(void) {
 	mServer->closeServer();
 }
 
-void ClientManager::logInfo(const Peer &peer, const std::string &log) {
+void ClientManager::logInfo(const Peer &peer, const std::string &log) const {
 	std::stringstream ss;
 
 	ss << Utils::RED << "[TCP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.tcpPort << "]> " << Utils::WHITE << log; 

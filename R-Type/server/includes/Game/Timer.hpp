@@ -14,10 +14,12 @@ class Timer : public NoCopyable {
 
     // internal functions
     public:
-        void restart();
-        double frame() const;
+        void reset(void);
+		bool ping(void);
+		double frame() const;
 
     // attributes
     private:
-        std::clock_t mStart;
+        std::clock_t mStartTime;
+		std::clock_t mPingTime;
 };

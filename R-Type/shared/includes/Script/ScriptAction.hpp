@@ -51,13 +51,13 @@ class ScriptAction : public IScriptCommand {
 				std::string				getActionName(void) const { return mName; }
 				double					getActionXpos(void) const { return mXpos; }
 				double					getActionYpos(void) const { return mYpos; }
-				double					getActionAngle(void) const { return mAngle; }
+				short					getActionAngle(void) const { return mAngle; }
 
 				void					setActionIdMonster(int idMonster) { mIdMonster = idMonster; }
 				void					setActionName(const std::string& name) { mName = name; }
 				void					setActionXpos(double xPos) { mXpos = xPos; }
 				void					setActionYpos(double yPos) { mYpos = yPos; }
-				void					setActionAngle(double angle) { mAngle = angle; }
+				void					setActionAngle(short angle) { mAngle = angle; }
 
 			// attributes
 			public:
@@ -65,7 +65,7 @@ class ScriptAction : public IScriptCommand {
 				std::string mName;
 				double mXpos;
 				double mYpos;
-				double mAngle;
+				short mAngle;
 
             // overload << display
             public:
@@ -90,15 +90,15 @@ class ScriptAction : public IScriptCommand {
 			// getter-setter
 			public:
 				int						getActionIdMonster(void) const { return mIdMonster; }
-				double					getActionAngle(void) const { return mAngle; }
+				short					getActionAngle(void) const { return mAngle; }
 
 				void					setActionIdMonster(int idMonster) { mIdMonster = idMonster; }
-				void					setActionAngle(double angle) { mAngle = angle; }
+				void					setActionAngle(short angle) { mAngle = angle; }
 
 			// attributes
 			public:
 				int						mIdMonster;
-				double					mAngle;
+				short					mAngle;
 
             // overload << display
             public:

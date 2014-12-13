@@ -55,7 +55,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 	// intern methods
 	private:
 		std::list<std::shared_ptr<Client>>::iterator findClient(const Peer &peer);
-		void logInfo(const Peer &peer, const std::string &log);
+		void logInfo(const Peer &peer, const std::string &log) const;
 
 	// send commands
 	public:

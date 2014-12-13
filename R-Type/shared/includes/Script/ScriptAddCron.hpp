@@ -21,14 +21,14 @@ class ScriptAddCron : public IScriptCommand {
 		int					getAddCronIdCron(void) const { return mAddCronIdCron; }
 		std::string			getAddCronFireMob(void) const { return mAddCronFireMob; }
 		int					getAddCronIdMonster(void) const { return mAddCronIdMonster; }
-		double				getAddCronAngle(void) const { return mAddCronAngle; }
+		short				getAddCronAngle(void) const { return mAddCronAngle; }
 
 		void				setAddCronFrame(double frame) { mAddCronFrame = frame; }
 		void				setAddCronTimer(double timer) { mAddCronTimer = timer; }
 		void				setAddCronIdCron(int idCron) { mAddCronIdCron = idCron; }
 		void				setAddCronFireMob(const std::string& fireMob) { mAddCronFireMob = fireMob; }
 		void				setAddCronIdMonster(int idMonster) { mAddCronIdMonster = idMonster; }
-		void				setAddCronAngle(double angle) { mAddCronAngle = angle; }
+		void				setAddCronAngle(short angle) { mAddCronAngle = angle; }
 
 	// attribut
 	public:
@@ -37,7 +37,7 @@ class ScriptAddCron : public IScriptCommand {
 		int						mAddCronIdCron;
 		std::string				mAddCronFireMob;
 		int						mAddCronIdMonster;
-		double					mAddCronAngle;
+		short					mAddCronAngle;
 
     // overload << display
     public:

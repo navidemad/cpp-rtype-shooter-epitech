@@ -11,9 +11,9 @@ class CommandUpdateScore : public NoCopyable, public ICommand {
 	public:
 		#pragma pack(push, 1)
 		struct PacketFromServer {
-			int32_t	id;
+			uint64_t	id;
 			char	pseudo[64];
-			int32_t score;
+			uint64_t score;
 		};
 		#pragma pack(pop)
 
@@ -24,13 +24,13 @@ class CommandUpdateScore : public NoCopyable, public ICommand {
 
 	// getter - setters
 	public:
-		int getId(void) const;
+		uint64_t getId(void) const;
 		const std::string &getPseudo(void) const;
-		int getScore(void) const;
+		uint64_t getScore(void) const;
 
-		void setId(int id);
+		void setId(uint64_t id);
 		void setPseudo(const std::string &pseudo);
-		void setScore(int score);
+		void setScore(uint64_t score);
 
 	// public pure methods
 	public:
@@ -41,8 +41,8 @@ class CommandUpdateScore : public NoCopyable, public ICommand {
 
 	// attributes
 	private:
-		int 		mId;
-		std::string mPseudo;
-		int 		mScore;
+		uint64_t 		mId;
+		std::string		mPseudo;
+		uint64_t 		mScore;
 
 };

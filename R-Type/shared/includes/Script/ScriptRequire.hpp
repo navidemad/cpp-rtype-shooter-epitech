@@ -17,7 +17,6 @@ class ScriptRequire : public IScriptCommand {
 	// getter-setter
 	public:
 		std::string				getRessourceName(void) const { return mRessourceName; }
-
 		void					setRessourceName(const std::string &name) { mRessourceName = name; }
 
 	// attribut

@@ -25,7 +25,7 @@ PlayerCommunicationManager::~PlayerCommunicationManager(void) {
 
 }
 
-void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &log) {
+void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &log) const {
 	std::stringstream ss;
 
 	ss << Utils::RED << "[UDP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.udpPort << "]> " << Utils::WHITE << log; 
@@ -93,7 +93,7 @@ void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlaye
 	mListener = listener;
 }
 
-void PlayerCommunicationManager::sendMoveResource(const Peer &peer, int id, IResource::Type type, float x, float y, short angle) {
+void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, double x, double y, short angle) {
 	CommandMoveResource commandMoveResource;
 
 	commandMoveResource.setId(id);
@@ -104,14 +104,14 @@ void PlayerCommunicationManager::sendMoveResource(const Peer &peer, int id, IRes
 	mPlayerPacketBuilder.sendCommand(&commandMoveResource, peer);
 }
 
-void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, int id) {
+void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, uint64_t id) {
 	CommandDestroyResource commandDestroyResource;
 
 	commandDestroyResource.setId(id);
 	mPlayerPacketBuilder.sendCommand(&commandDestroyResource, peer);
 }
 
-void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, int id, const std::string &pseudo, int score) {
+void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
 	CommandUpdateScore commandUpdateScore;
 
 	commandUpdateScore.setId(id);
@@ -120,7 +120,7 @@ void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, int id, const
 	mPlayerPacketBuilder.sendCommand(&commandUpdateScore, peer);
 }
 
-void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, int64_t timeElapsed) {
+void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, double timeElapsed) {
 	CommandTimeElapsedPing commandTimeElapsedPing;
 
 	commandTimeElapsedPing.setTimeElapsed(timeElapsed);

@@ -13,8 +13,8 @@ namespace NGame
 
         // ctor / dtor
         public:
-            User(void) { }
-            ~User(void) { }
+			User(void) = default;
+			~User(void) = default;
 
         // setters
         public:
@@ -22,6 +22,7 @@ namespace NGame
             void setPseudo(const std::string& pseudo) { mPseudo = pseudo; }
             void setType(NGame::USER_TYPE type) { mType = type; }
             void setId(uint64_t id) { mUserId = id; }
+			void setScore(uint64_t score) { mScore = score; }
 
         // getters
         public:
@@ -29,6 +30,7 @@ namespace NGame
             const std::string& getPseudo(void) const { return mPseudo; }
             NGame::USER_TYPE getType(void) const { return mType; }
             uint64_t getId(void) const { return mUserId; }
+			uint64_t getScore(void) const { return mScore; }
 
         // attributes
         private:
@@ -36,6 +38,7 @@ namespace NGame
             std::string mPseudo;
             NGame::USER_TYPE mType;
             uint64_t mUserId;
+			uint64_t mScore;
 
     };
 

@@ -26,8 +26,8 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
 	// player communication manager events
 	public:
-		void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const Peer &peer);
-		void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer);
+		void onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer);
+		void onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer);
 
     // game events
     public:
@@ -39,7 +39,11 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
                 virtual void onEndGame(const std::string &gameName, const std::list<Peer> &gameUsers) = 0;
         };
 
-        //void    onTerminatedGame(const std::string &name);
+		void onRemovePeerFromWhiteList(const Peer&);
+		void onNotifyUsersComponentRemoved(const std::vector<NGame::User>&, uint64_t);
+		void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t);
+		void onNotifyTimeElapsedPing(const Peer &, double);
+
         void    setListener(GamesManager::OnGamesManagerEvent *listener);
 		std::vector<std::shared_ptr<NGame::Game>>::iterator terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it);
 
