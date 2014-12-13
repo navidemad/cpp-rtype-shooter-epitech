@@ -35,6 +35,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/DrawableSystem.hpp			\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
+                        includes/Core/ScriptSystem.hpp			\
 			includes/Core/InputManager.hpp				\
                         includes/Core/TextInputSystem.hpp			\
 			includes/Core/MovementSystem.hpp			\
@@ -46,6 +47,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Engine/Compenent/Controllable.hpp		\
                         includes/Engine/Compenent/List.hpp              	\
                         includes/Engine/Compenent/Cursor.hpp            	\
+                        includes/Engine/Compenent/Script.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
                         includes/Engine/Compenent/TextInput.hpp			\
@@ -54,7 +56,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Engine/Entity.hpp				\
                         includes/Engine/Compenent/Position.hpp			\
                         includes/Engine/Compenent/Font.hpp			\
-			includes/Engine/Script.hpp				\
+			includes/Engine/Compenent/Script.hpp				\
 			includes/GUI/ContentManager.hpp				\
 			includes/GUI/FontManager.hpp				\
 			includes/GUI/IGraphic.hpp				\
@@ -113,6 +115,7 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Core/DamageSystem.cpp					\
 			sources/Core/DrawableSystem.cpp					\
                         sources/Core/DrawableFontSystem.cpp				\
+                        sources/Core/ScriptSystem.cpp				\
                         sources/Core/TextInputSystem.cpp				\
                         sources/Core/ListSystem.cpp					\
                         sources/Core/ButtonSystem.cpp					\
@@ -123,6 +126,7 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Engine/Button.cpp					\
                         sources/Engine/List.cpp                 			\
                         sources/Engine/Cursor.cpp					\
+                        sources/Engine/Script.cpp					\
 			sources/Engine/Component.cpp					\
 			sources/Engine/Controllable.cpp					\
                         sources/Engine/Font.cpp                         		\

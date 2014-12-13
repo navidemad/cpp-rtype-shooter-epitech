@@ -28,19 +28,20 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 {
 	switch (err)
 	{
-	case ErrorStatus::Error::OK:
-		std::cout << "ok" << std::endl;
-		break;
-	case ErrorStatus::Error::KO:
-		std::cout << "ko" << std::endl;
-		break;
-	default:
-		std::cout << "bad" << std::endl;
+		case ErrorStatus::Error::OK:
+			std::cout << "ok" << std::endl;
+			break;
+		case ErrorStatus::Error::KO:
+			std::cout << "ko" << std::endl;
+			break;
+		default:
+			std::cout << "bad" << std::endl;
 	}
 }
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
 {
+	std::cout << "ok" << std::endl;
 	if (!isEntityCreated(id))
 	{
 		createEntity(id);
