@@ -50,32 +50,36 @@ mCurrentComponentMaxId(NGame::Game::START_ID_COMPONENT)
 ** pull function called by threadPool
 */
 void NGame::Game::pull(void) {
-	ScopedLock scopedLock(mMutex);
+	setPullEnded(false);
 
-	mPullEnded = false;
+	try {
+		if (getState() == NGame::Game::State::RUNNING)
+			actions();
+		if (getState() == NGame::Game::State::RUNNING)
+			check();
+		if (getState() == NGame::Game::State::RUNNING)
+			update();
+		if (getTimer().ping())
+			cronSendPingToSyncronizeClientTimer();
+	}
+	catch (...) {
+		std::cerr << "Game finished with error not handled" << std::endl;
+		setState(NGame::Game::State::DONE);
+	}
 
-	if (mState == NGame::Game::State::RUNNING)
-		actions();
-	if (mState == NGame::Game::State::RUNNING)
-		check();
-	if (mState == NGame::Game::State::RUNNING)
-		update();
-	if (mTimer.ping())
-		cronSendPingToSyncronizeClientTimer();
-
-	mPullEnded = true;
+	setPullEnded(true);
 }
 
 void NGame::Game::actions(void) {
 	std::shared_ptr<IScriptCommand> currentCommand;
 
-	if (mScript.getCommands().size()) 
+	if (getScript().getCommands().size()) 
 	{
 		do
 		{
-			currentCommand = mScript.currentAction();
+			currentCommand = getScript().currentAction();
 
-			if (mTimer.frame() < currentCommand->getFrame())
+			if (getTimer().frame() < currentCommand->getFrame())
 				return;
 
 			for (const auto &instr : tokenExecTab)
@@ -87,19 +91,19 @@ void NGame::Game::actions(void) {
 				}
 			}
 
-		} while (mScript.goToNextAction());
+		} while (getScript().goToNextAction());
 	}
-	mState = NGame::Game::State::DONE;
+	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
 
 void NGame::Game::check(void) {
-	for (auto it = mComponents.begin(); it != mComponents.end();) {
+	for (auto it = getComponents().begin(); it != getComponents().end();) {
 		if (collision(*it))
 		{
-			if (mListener)
-				mListener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
-			it = mComponents.erase(it);
+			if (getListener())
+				getListener()->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
+			it = getComponents().erase(it);
 		}
 		else
 			++it;
@@ -107,7 +111,7 @@ void NGame::Game::check(void) {
 }
 
 void NGame::Game::update(void) {
-	for (auto& component : mComponents)
+	for (auto& component : getComponents())
 		if (component.getType() != IResource::Type::PLAYER)
 			updatePositionComponent(component);
 }
@@ -115,59 +119,129 @@ void NGame::Game::update(void) {
 /*
 ** getters
 */
-NGame::Game::State NGame::Game::getState(void) const {
-    ScopedLock scopedLock(mMutex);
+Script& NGame::Game::getScript(void) {
+	ScopedLock scopedLock(getMutex());
 
-	return mState;
+	return mScript;
 }
 
-uint64_t NGame::Game::getCurrentComponentMaxId(void) const {
-	ScopedLock scopedLock(mMutex);
+NGame::Game::OnGameEvent* NGame::Game::getListener(void) {
+	ScopedLock scopedLock(getMutex());
 
-	return mCurrentComponentMaxId;
+	return mListener;
 }
 
-const Peer& NGame::Game::getOwner(void) const {
-    ScopedLock scopedLock(mMutex);
+Timer& NGame::Game::getTimer(void) {
+	ScopedLock scopedLock(getMutex());
 
-	return mOwner;
+	return mTimer;
 }
 
-const std::vector<NGame::User>& NGame::Game::getUsers() const {
-    ScopedLock scopedLock(mMutex);
-
-	return mUsers;
-}
-
-const NGame::Properties& NGame::Game::getProperties(void) const {
-    ScopedLock scopedLock(mMutex);
+NGame::Properties& NGame::Game::getProperties(void) {
+	ScopedLock scopedLock(getMutex());
 
 	return mProperties;
 }
 
-bool NGame::Game::pullEnded(void) const {
-    ScopedLock scopedLock(mMutex);
+std::vector<NGame::User>& NGame::Game::getUsers(void) {
+	ScopedLock scopedLock(getMutex());
+
+	return mUsers;
+}
+
+std::vector<NGame::Component>& NGame::Game::getComponents(void) {
+	ScopedLock scopedLock(getMutex());
+
+	return mComponents;
+}
+
+NGame::Game::State NGame::Game::getState(void) {
+	ScopedLock scopedLock(getMutex());
+
+	return mState;
+}
+
+std::shared_ptr<IMutex>& NGame::Game::getMutex(void) {
+	return mMutex;
+}
+
+Peer& NGame::Game::getOwner(void) {
+	ScopedLock scopedLock(getMutex());
+
+	return mOwner;
+}
+
+bool NGame::Game::getPullEnded(void) {
+	ScopedLock scopedLock(getMutex());
 
 	return mPullEnded;
 }
 
-void NGame::Game::setPullEnded(bool pullEnded) {
-    ScopedLock scopedLock(mMutex);
+uint64_t NGame::Game::getCurrentComponentMaxId(void) {
+	ScopedLock scopedLock(getMutex());
 
-	mPullEnded = pullEnded;
+	return mCurrentComponentMaxId;
 }
 
 /*
 ** setters
 */
-void NGame::Game::setListener(NGame::Game::OnGameEvent *listener) {
+void NGame::Game::setScript(Script& script) {
+	ScopedLock scopedLock(getMutex());
+
+	mScript = script;
+}
+
+void NGame::Game::setListener(NGame::Game::OnGameEvent* listener) {
+	ScopedLock scopedLock(getMutex());
+
 	mListener = listener;
 }
 
+void NGame::Game::setProperties(NGame::Properties& properties) {
+	ScopedLock scopedLock(getMutex());
+
+	mProperties = properties;
+}
+
+void NGame::Game::setUsers(std::vector<NGame::User>& users) {
+	ScopedLock scopedLock(getMutex());
+
+	mUsers = users;
+}
+
+void NGame::Game::setComponents(std::vector<NGame::Component>& components) {
+	ScopedLock scopedLock(getMutex());
+
+	mComponents = components;
+}
+
+void NGame::Game::setState(NGame::Game::State state) {
+	ScopedLock scopedLock(getMutex());
+
+	mState = state;
+}
+
+void NGame::Game::setMutex(std::shared_ptr<IMutex>& mutex) {
+	mMutex = mutex;
+}
+
 void NGame::Game::setOwner(const Peer& owner) {
-    ScopedLock scopedLock(mMutex);
+	ScopedLock scopedLock(getMutex());
 
 	mOwner = owner;
+}
+
+void NGame::Game::setPullEnded(bool pullEnded) {
+	ScopedLock scopedLock(getMutex());
+
+	mPullEnded = pullEnded;
+}
+
+void NGame::Game::setCurrentComponentMaxId(uint64_t currentComponentMaxId) {
+	ScopedLock scopedLock(getMutex());
+
+	mCurrentComponentMaxId = currentComponentMaxId;
 }
 
 /*
@@ -193,7 +267,7 @@ bool NGame::Game::collision(NGame::Component& component) {
 		std::bind(&NGame::Game::collisionWithEnnemy, this, std::placeholders::_1, std::placeholders::_2)
 	};
 
-	for (NGame::Component& obstacle : mComponents) {
+	for (NGame::Component& obstacle : getComponents()) {
 		if (collisionTouch(component, obstacle)) {
 			for (const auto& fct : functionsHandleCollision) {
 				if (fct(component, obstacle)) {
@@ -222,12 +296,12 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 }
 
 bool NGame::Game::collisionWithNoLife(NGame::Component& component) {
-	return findUserById(component.getId()) != mUsers.end() && component.getLife() == 0;
+	return findUserById(component.getId()) != getUsers().end() && component.getLife() == 0;
 }
 
 bool NGame::Game::collisionWithBorders(NGame::Component& component) {
 	auto user = findUserById(component.getId());
-	if (user != mUsers.end())
+	if (user != getUsers().end())
 		transferPlayerToSpectators(*user);
 	return true;
 }
@@ -244,7 +318,7 @@ bool NGame::Game::collisionWithBullet(NGame::Component& component, NGame::Compon
 	if (obstacle.getType() == IResource::Type::BULLET)
 	{
 		auto user = findUserById(obstacle.getId());
-		bool friendBullet = user != mUsers.end();
+		bool friendBullet = user != getUsers().end();
 		switch (component.getType())
 		{
 		case IResource::Type::PLAYER:
@@ -263,7 +337,7 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Compon
 	if (obstacle.getType() == IResource::Type::ENNEMY)
 	{
 		auto user = findUserById(component.getId());
-		bool friendBullet = user != mUsers.end();
+		bool friendBullet = user != getUsers().end();
 		switch (component.getType())
 		{
 		case IResource::Type::PLAYER:
@@ -274,8 +348,8 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Compon
 			if (friendBullet)
 			{
 				user->setScore(user->getScore() + 1);
-				if (mListener)
-					mListener->onNotifyUserGainScore(user->getPeer(), user->getId(), user->getPseudo(), user->getScore());
+				if (getListener())
+					getListener()->onNotifyUserGainScore(user->getPeer(), user->getId(), user->getPseudo(), user->getScore());
 				component.setLife(component.getLife() - 1);
 				return component.getLife() == 0;
 			}
@@ -289,33 +363,35 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Compon
 /*
 ** workflow STL
 */
-int NGame::Game::countUserByType(NGame::USER_TYPE type) const {
-	return std::count_if(mUsers.begin(), mUsers.end(), [&type](const NGame::User& user) { return user.getType() == type; });
+int NGame::Game::countUserByType(NGame::USER_TYPE type) {
+	return std::count_if(getUsers().begin(), getUsers().end(), [&type](const NGame::User& user) { return user.getType() == type; });
 }
 
 std::vector<NGame::User>::iterator NGame::Game::findUserByHost(const Peer &peer) {
-	return std::find_if(mUsers.begin(), mUsers.end(), [&](const NGame::User& user) { return user.getPeer() == peer; });
+	return std::find_if(getUsers().begin(), getUsers().end(), [&](const NGame::User& user) { return user.getPeer() == peer; });
 }
 
 std::vector<NGame::User>::iterator NGame::Game::findUserById(uint64_t id) {
-	return std::find_if(mUsers.begin(), mUsers.end(), [&id](const NGame::User& user) { return user.getId() == id; });
+	return std::find_if(getUsers().begin(), getUsers().end(), [&id](const NGame::User& user) { return user.getId() == id; });
 }
 
 std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t id) {
-	return std::find_if(mComponents.begin(), mComponents.end(), [&id](const NGame::Component& component) { return component.getId() == id; });
+	return std::find_if(getComponents().begin(), getComponents().end(), [&id](const NGame::Component& component) { return component.getId() == id; });
 }
 
 /*
 ** workflow internal game
 */
-void NGame::Game::cronSendPingToSyncronizeClientTimer(void) const {
-	if (mListener)
+void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
+	ScopedLock scopedLock(getMutex());
+
+	if (getListener())
 		for (const auto &user : getUsers())
-			mListener->onNotifyTimeElapsedPing(user.getPeer(), mTimer.frame());
+			getListener()->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
 }
 
 void NGame::Game::tryAddPlayer(NGame::User& user) {
-	if (mProperties.getNbPlayers() >= mProperties.getMaxPlayers())
+	if (getProperties().getNbPlayers() >= getProperties().getMaxPlayers())
 		throw GameException("No place for new players");
 
 	NGame::Component component;
@@ -325,6 +401,8 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 	double playerSpeed = 0.05;
 	short playerAngle = 0;
 
+	setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
+
 	component.setX(1.);
 	component.setY(NGame::Game::YMAX / 2.);
 	component.setWidth(playerWidth);
@@ -333,31 +411,41 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 	component.setSpeed(playerSpeed);
 	component.setLife(10);
 	component.setType(IResource::Type::PLAYER);
-	component.setId(++mCurrentComponentMaxId);
+	component.setId(getCurrentComponentMaxId());
 
-	mComponents.push_back(component);
+	{
+		ScopedLock scopedLock(getMutex());
+		mComponents.push_back(component);
+	}
 
-	user.setId(mCurrentComponentMaxId);
-	mUsers.push_back(user);
+	user.setId(getCurrentComponentMaxId());
 
-	mProperties.setNbPlayers(mProperties.getNbPlayers() + 1);
-	mState = NGame::Game::State::RUNNING;
+	{
+		ScopedLock scopedLock(getMutex());
+		mUsers.push_back(user);
+	}
+
+	getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
+	setState(NGame::Game::State::RUNNING);
 }
 
 void NGame::Game::tryDelPlayer(void) {
-	mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
-	if (mProperties.getNbPlayers() == 0)
+	getProperties().setNbPlayers(getProperties().getNbPlayers() - 1);
+	if (getProperties().getNbPlayers() == 0)
 	{
 		logInfo("Game finished because nbPlayer reached 0");
-		mState = NGame::Game::State::DONE;
+		setState(NGame::Game::State::DONE);
 	}
 }
 
 void NGame::Game::tryAddSpectator(const NGame::User& user) {
-	if (mProperties.getNbSpectators() >= mProperties.getMaxSpectators())
+	if (getProperties().getNbSpectators() >= getProperties().getMaxSpectators())
 		throw GameException("No place for new spectators");
 
-	mUsers.push_back(user);
+	{
+		ScopedLock scopedLock(getMutex());
+		mUsers.push_back(user);
+	}
 
 	mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
 }
@@ -367,8 +455,6 @@ void NGame::Game::tryDelSpectator(void) {
 }
 
 void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::string& pseudo) {
-    ScopedLock scopedLock(mMutex);
-
 	if (type != NGame::USER_TYPE::PLAYER && type != NGame::USER_TYPE::SPECTATOR)
 		throw GameException("Invalid user type");
 
@@ -387,11 +473,10 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-    ScopedLock scopedLock(mMutex);
 
 	auto user = findUserByHost(peer);
 
-	if (user == mUsers.end())
+	if (user == getUsers().end())
 		throw GameException("Try to delete an undefined address ip");
 
 	if ((*user).getType() == NGame::USER_TYPE::PLAYER)
@@ -399,15 +484,18 @@ void NGame::Game::delUser(const Peer &peer) {
 	else if ((*user).getType() == NGame::USER_TYPE::SPECTATOR)
 		tryDelSpectator();
 
-	mUsers.erase(user);
+	{
+		ScopedLock scopedLock(getMutex());
+		mUsers.erase(user);
+	}
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
 	tryDelPlayer();
 	tryAddPlayer(user);
 	user.setType(NGame::USER_TYPE::SPECTATOR);
-	if (mListener)
-		mListener->onRemovePeerFromWhiteList(user.getPeer());
+	if (getListener())
+		getListener()->onRemovePeerFromWhiteList(user.getPeer());
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {
@@ -423,7 +511,6 @@ void NGame::Game::updatePositionComponent(NGame::Component& component) {
 */
 
 NGame::Component NGame::Game::fire(const Peer &peer) {
-	ScopedLock scopedLock(mMutex);
 	NGame::Component component;
 	
 	double bulletWidth = 32.;
@@ -432,10 +519,10 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	short bulletAngle = 0;
 	
 	auto user = findUserByHost(peer);
-	if (user == mUsers.end())
+	if (user == getUsers().end())
 		throw GameException("fire a player that not in this game");
 	auto component_user = findComponentById((*user).getId());
-	if (component_user == mComponents.end())
+	if (component_user == getComponents().end())
 		throw GameException("component_user that not in this game");
 
 	component.setX((*component_user).getX());
@@ -448,19 +535,20 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	component.setType(IResource::Type::BULLET);
 	component.setId(++mCurrentComponentMaxId);
 
-	mComponents.push_back(component);
-		
+	{
+		ScopedLock scopedLock(getMutex());
+		mComponents.push_back(component);
+	}
+
 	return component;
 }
 
 const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction direction) {
-	ScopedLock scopedLock(mMutex);
-
 	auto user = findUserByHost(peer);
-	if (user == mUsers.end())
+	if (user == getUsers().end())
 		throw GameException("fire a player that not in this game");
 	auto component = findComponentById((*user).getId());
-	if (component == mComponents.end())
+	if (component == getComponents().end())
 		throw GameException("component_user that not in this game");
 
 	for (const auto &instr : tokenAngleTab)

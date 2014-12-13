@@ -32,7 +32,7 @@ void GamesManager::run(void) {
 
 		for (auto it = games.begin(); it != games.end();)
 		{
-            if ((*it)->pullEnded() == true)
+            if ((*it)->getPullEnded() == true)
         		switch ((*it)->getState())
         		{
         		case NGame::Game::State::RUNNING:
@@ -98,9 +98,9 @@ void	GamesManager::removeClientsFromWhitelist(const std::shared_ptr<NGame::Game>
 ** PlayerCommunicationManager::OnPlayerCommunicationManagerEvent
 */ 
 void GamesManager::onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) {
-    try {
-        ScopedLock scopedLock(mMutex);
+	ScopedLock scopedLock(mMutex);
 
+    try {
         auto game = findGameByHost(peer);
 
         if (game == mGames.end())
@@ -121,9 +121,8 @@ void GamesManager::onPlayerFire(PlayerCommunicationManager &playerCommunicationM
 }
 
 void GamesManager::onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) {
+	ScopedLock scopedLock(mMutex);
     try {
-        ScopedLock scopedLock(mMutex);
-
         auto game = findGameByHost(peer);
 
         if (game == mGames.end())
@@ -163,21 +162,29 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame
 }
 
 void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
+	ScopedLock scopedLock(mMutex);
+
 	mPlayerCommunicationManager.removePeerFromWhiteList(peer);
 }
 
 void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>& users, uint64_t id) {
+	ScopedLock scopedLock(mMutex);
+
 	std::cout << __FUNCTION__ << std::endl;
 	for (const auto &user : users)
 		mPlayerCommunicationManager.sendDestroyResource(user.getPeer(), id);
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
+	ScopedLock scopedLock(mMutex);
+
 	std::cout << __FUNCTION__ << std::endl;
 	mPlayerCommunicationManager.sendUpdateScore(peer, id, pseudo, score);
 }
 
 void GamesManager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPing) {
+	ScopedLock scopedLock(mMutex);
+
 	std::cout << __FUNCTION__ << std::endl;
 	mPlayerCommunicationManager.sendTimeElapsedPing(peer, elapsedPing);
 }
@@ -196,6 +203,8 @@ void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const s
 }
 
 void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
+	ScopedLock scopedLock(mMutex);
+
     try {
         joinGame(NGame::USER_TYPE::PLAYER, peer, name, pseudo);
         mPlayerCommunicationManager.addPeerToWhiteList(peer);
@@ -206,6 +215,8 @@ void GamesManager::playGame(const Peer &peer, const std::string &name, const std
 }
 
 void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
+	ScopedLock scopedLock(mMutex);
+
     try {
         joinGame(NGame::USER_TYPE::SPECTATOR, peer, name);
         mPlayerCommunicationManager.removePeerFromWhiteList(peer);
@@ -291,6 +302,8 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
 }
 
 std::list<std::pair<std::string, std::string>> GamesManager::getScripts(void) const {
+	ScopedLock scopedLock(mMutex);
+
 	std::list<std::pair<std::string, std::string>> scripts;
 
 	for (const auto &script : mScriptLoader.getScripts())

@@ -1,4 +1,4 @@
-name "stage_2"
+name "stage_1"
 
 require "ship"
 require "boss_dark_vador"
