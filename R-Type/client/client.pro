@@ -126,7 +126,6 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Engine/Button.cpp					\
                         sources/Engine/List.cpp                 			\
                         sources/Engine/Cursor.cpp					\
-                        sources/Engine/Script.cpp					\
 			sources/Engine/Component.cpp					\
 			sources/Engine/Controllable.cpp					\
                         sources/Engine/Font.cpp                         		\
