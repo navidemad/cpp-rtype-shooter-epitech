@@ -487,7 +487,7 @@ void	RTypeClient::startRtype()
 
 void	RTypeClient::startSearchMenu()
 {
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
+	//static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
 }
 
 void			RTypeClient::startCreateMenu()
