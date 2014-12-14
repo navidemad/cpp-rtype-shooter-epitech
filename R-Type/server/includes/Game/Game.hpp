@@ -71,18 +71,30 @@ namespace NGame
 
         // getters
         public:
-			NGame::Game::State getState(void) const;
-			uint64_t getCurrentComponentMaxId(void) const;
-			const Peer& getOwner(void) const;
-            const std::vector<NGame::User>& getUsers() const;
-            const NGame::Properties& getProperties(void) const;
-            bool pullEnded(void) const;
+			Script& getScript(void);
+			NGame::Game::OnGameEvent* getListener(void);
+			Timer& getTimer(void);
+			NGame::Properties& getProperties(void);
+			std::vector<NGame::User>& getUsers(void);
+			std::vector<NGame::Component>& getComponents(void);
+			NGame::Game::State getState(void);
+			std::shared_ptr<IMutex>& getMutex(void);
+			Peer& getOwner(void);
+			bool getPullEnded(void);
+			uint64_t getCurrentComponentMaxId(void);
 
         // setters
         public:
-            void setListener(NGame::Game::OnGameEvent *listener);
-            void setOwner(const Peer& owner);
-            void setPullEnded(bool pullEnded);
+			void setScript(Script&);
+			void setListener(NGame::Game::OnGameEvent*);
+			void setProperties(NGame::Properties&);
+			void setUsers(std::vector<NGame::User>&);
+			void setComponents(std::vector<NGame::Component>&);
+			void setState(NGame::Game::State);
+			void setMutex(std::shared_ptr<IMutex>&);
+			void setOwner(const Peer&);
+			void setPullEnded(bool);
+			void setCurrentComponentMaxId(uint64_t);
 
         // utils
         private:
@@ -100,7 +112,7 @@ namespace NGame
 
         // workflow STL
         private:
-            int countUserByType(NGame::USER_TYPE) const;
+            int countUserByType(NGame::USER_TYPE);
 
         public:
             std::vector<NGame::User>::iterator findUserByHost(const Peer &);
@@ -109,7 +121,7 @@ namespace NGame
 
         // workflow internal game
         private:
-			void cronSendPingToSyncronizeClientTimer(void) const;
+			void cronSendPingToSyncronizeClientTimer(void);
             void tryAddPlayer(NGame::User&);
 			void tryDelPlayer(void);
             void tryAddSpectator(const NGame::User&);
@@ -133,6 +145,7 @@ namespace NGame
             void scriptCommandAction(const std::shared_ptr<IScriptCommand> &command);
             void scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command);
             void scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command);
+
 
         // attributes
         private:

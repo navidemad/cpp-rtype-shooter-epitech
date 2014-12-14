@@ -19,8 +19,8 @@ namespace NGame
 				mAngle = other.getAngle();
 				mSpeed = other.getSpeed();
 				mLife = other.getLife();
-				mType = other.getType();
 				mId = other.getId();
+				mType = other.getType();
 			}
             ~Component(void) { }
 
@@ -33,8 +33,8 @@ namespace NGame
             void setAngle(short angle) { mAngle = angle; }
             void setSpeed(double speed) { mSpeed = speed; }
             void setLife(double life) { mLife = life; }
-            void setType(IResource::Type type) { mType = type; }
             void setId(uint64_t id) { mId = id; }
+            void setType(IResource::Type type) { mType = type; }
 
         // getters
         public:
@@ -45,8 +45,8 @@ namespace NGame
 			short getAngle(void) const { return mAngle; }
 			double getSpeed(void) const { return mSpeed; }
 			double getLife(void) const { return mLife; }
-            IResource::Type getType(void) const { return mType; }
             uint64_t getId(void) const { return mId; }
+            IResource::Type getType(void) const { return mType; }
 
         // attributes
         private:
@@ -57,8 +57,8 @@ namespace NGame
 			short mAngle;
 			double mSpeed;
 			double mLife;
-            IResource::Type mType;
             uint64_t mId;
+            IResource::Type mType;
 
         };
 

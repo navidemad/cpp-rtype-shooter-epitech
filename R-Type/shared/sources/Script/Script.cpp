@@ -39,6 +39,9 @@ size_t Script::getIndex(void) const {
 bool Script::end(void) const {
 	return mCommands.size() == 0 || mIndex == mCommands.size() - 1;
 }
+
+// faut peut etre retourner une copie du vector mais faire une copie de vector de shared_ptr ça fait des références cyclique je crois
+// simon check ça
 const std::vector<std::shared_ptr<IScriptCommand>>& Script::getCommands(void) const {
 	return mCommands;
 }
