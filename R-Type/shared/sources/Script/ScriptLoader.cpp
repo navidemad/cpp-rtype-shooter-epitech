@@ -17,6 +17,7 @@ bool ScriptLoader::isExist(const std::string& stage_name) const {
 }
 
 const Script& ScriptLoader::getScript(const std::string& stage_name) const {
+	// pas sur de ca
 	if (isExist(stage_name) == false)
 	{
 		std::cerr << "mScripts[" << stage_name << "] n'existe pas" << std::endl;

@@ -64,10 +64,26 @@ Script ScriptParser::parseFile(std::ifstream &file){
     script.setTextScript(textScript);
 
 	/*
-	std::sort(script.getCommands().begin(), script.getCommands().end(), [] (const std::shared_ptr<IScriptCommand> &lhs, const std::shared_ptr<IScriptCommand> &rhs) -> bool {
-		return lhs->getFrame() > rhs->getFrame();
-	});
+	std::cout << "AVANT:" << std::endl;
+	for (const auto& command : script.getCommands())
+		std::cout << command->getFrame() << " ";
+	std::cout << std::endl;
+
+	std::sort(
+		script.getCommands().begin(), 
+		script.getCommands().end(), 
+		[] (const std::shared_ptr<IScriptCommand> &lhs, const std::shared_ptr<IScriptCommand> &rhs)
+		{
+			return true;
+		}
+	);
+
+	std::cout << "APRES:" << std::endl;
+	for (const auto& command : script.getCommands())
+		std::cout << command->getFrame() << " ";
+	std::cout << std::endl;
 	*/
+
 	return script;
 }
 
