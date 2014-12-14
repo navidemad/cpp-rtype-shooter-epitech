@@ -62,8 +62,8 @@ void NGame::Game::pull(void) {
 		if (getTimer().ping())
 			cronSendPingToSyncronizeClientTimer();
 	}
-	catch (...) {
-		std::cerr << "Game finished with error not handled" << std::endl;
+	catch (const GameException& e) {
+		std::cerr << "Game finished with error not handled:" << std::endl << ">>\t" << e.what() << std::endl;
 		setState(NGame::Game::State::DONE);
 	}
 
@@ -569,10 +569,9 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 */
 void	NGame::Game::scriptCommandName(const std::shared_ptr<IScriptCommand> &command) {
 	const std::shared_ptr<ScriptName> commandScriptName = std::static_pointer_cast<ScriptName>(command);
-	
-	// PAS SUR DE CA
-	//if (commandScriptName->getName() != mProperties.getLevelName())
-	//	throw GameException("script name request doesn't match with the level name of current game");
+
+	if (commandScriptName->getName() != getProperties().getLevelName())
+		throw GameException("script name request doesn't match with the level name of current game");
 
     std::cout << commandScriptName << std::endl;
 }
