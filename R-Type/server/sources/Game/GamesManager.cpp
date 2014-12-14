@@ -190,7 +190,9 @@ void GamesManager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPing)
 }
 
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
-    ScopedLock scopedLock(mMutex);
+    std::cout << "DEBUG POUR UNIX [" << __FILE__ << "] [" << __LINE__ << "] [" << __FUNCTION__ << "] AVANT DEADLOCK" << std::endl;
+    ScopedLock scopedLock(mMutex); // ce scoped lock deadlock sur unix pk je ne sais pas
+    std::cout << "DEBUG POUR UNIX [" << __FILE__ << "] [" << __LINE__ << "] [" << __FUNCTION__ << "] APRES DEADLOCK" << std::endl;
 
     auto existingGame = findGameByHost(peer);
     if (existingGame != mGames.end())
