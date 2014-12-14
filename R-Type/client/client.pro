@@ -28,6 +28,7 @@ INCLUDEPATH	+=	.					\
 
 HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/PortabilityBuilder.hpp				\
+			includes/Default.hpp					\
 			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
 			includes/Core/CollisionSystem.hpp			\

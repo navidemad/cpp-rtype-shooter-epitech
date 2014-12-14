@@ -45,7 +45,9 @@ public:
 		unsigned int							mCurrentId;
 		std::vector<ECSManager *>				mEngine;
 		std::shared_ptr<IGraphic>				mGui;
-		std::string								mCurrentLevel;;
+		std::string								mCurrentLevel;
+		std::string								mCurrentGame;
+		std::string								mScript;
 		ServerCommunication						mServer;
 
 		std::vector<void (RTypeClient::*)()>	mInit;
@@ -87,6 +89,8 @@ private:
 		void	setPort(std::string const &);
 		void	setIpAdresse(std::string const &);
 		void	setPseudo(std::string const &);
-		void	setLevel(std::string const &level);
+		void	setGame(std::string const &);
+		void	setLevel(std::string const &);
+		void	setScript(std::string const &);
 		bool	createGame();
 };
