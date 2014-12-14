@@ -168,11 +168,18 @@ void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
 }
 
 void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>& users, uint64_t id) {
-	ScopedLock scopedLock(mMutex);
+    ScopedLock scopedLock(mMutex);
 
-	std::cout << __FUNCTION__ << std::endl;
-	for (const auto &user : users)
-		mPlayerCommunicationManager.sendDestroyResource(user.getPeer(), id);
+    std::cout << __FUNCTION__ << std::endl;
+    for (const auto &user : users)
+        mPlayerCommunicationManager.sendDestroyResource(user.getPeer(), id);
+}
+
+void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& users, const NGame::Component& component) {
+    ScopedLock scopedLock(mMutex);
+
+    for (const auto &user : users)
+        mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {

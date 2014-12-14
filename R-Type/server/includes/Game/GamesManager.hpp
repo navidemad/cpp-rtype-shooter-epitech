@@ -41,6 +41,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
 		void onRemovePeerFromWhiteList(const Peer&);
 		void onNotifyUsersComponentRemoved(const std::vector<NGame::User>&, uint64_t);
+        void onNotifyUsersComponentAdded(const std::vector<NGame::User>&, const NGame::Component&);
 		void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t);
 		void onNotifyTimeElapsedPing(const Peer &, double);
 

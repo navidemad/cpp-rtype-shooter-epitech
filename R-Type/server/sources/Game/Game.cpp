@@ -426,6 +426,10 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 	}
 
 	getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
+
+    if (getListener())
+        getListener()->onNotifyUsersComponentAdded(getUsers(), component);
+
 	setState(NGame::Game::State::RUNNING);
 }
 
