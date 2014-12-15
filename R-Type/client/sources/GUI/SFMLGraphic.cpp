@@ -1,9 +1,11 @@
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 #include "GUI/SFMLGraphic.hpp"
 
 std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 
 SFMLGraphic::SFMLGraphic()
-	: mWindow(sf::VideoMode(1920, 1080), "R-type"), mInputManager(this), mMusicCurrentKey("")
+	: mWindow(sf::VideoMode(1280, 720), "R-type"), mInputManager(this), mMusicCurrentKey("")
 {
 	mWindow.setActive(false);
 }
@@ -23,6 +25,8 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 #include <iostream>
 bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, float y, uint32_t id)
 {
+	auto sizeScreen = mWindow.getSize();
+
 	// set time elapse by id
 	if (!mIdTimeElapse.count(id))
 		mIdTimeElapse[id] = 0;
@@ -37,7 +41,11 @@ bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, fl
 	mContentManager.getSprites()->getResource(key).setCurrentIndex(index);
 
 	// set position of sprite
-	mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()).setPosition(x, y);
+	mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex())
+		.setPosition((static_cast<float>(sizeScreen.x) / 1920.f)* x, (static_cast<float>(sizeScreen.y) / 1080.f) * y);
+
+	mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex())
+		.setScale(static_cast<float>(sizeScreen.x) / 1920.f, static_cast<float>(sizeScreen.y) / 1080.f);
 
 	// draw sprite on window
 	mWindow.draw(mContentManager.getSprites()->getResource(key).getSprite(mContentManager.getSprites()->getResource(key).getCurrentIndex()));
@@ -47,11 +55,13 @@ bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, fl
 bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t size = 128)
 {
 	sf::Text text;
+	auto sizeScreen = mWindow.getSize();
 
 	text.setFont(mContentManager.getFonts()->getResource(key));
 	text.setString(str);
 	text.setCharacterSize(size);
-	text.setPosition(x, y);
+	text.setPosition((static_cast<float>(sizeScreen.x) / 1920.f) * x, (static_cast<float>(sizeScreen.y) / 1080.f) * y);
+	text.setScale(static_cast<float>(sizeScreen.x) / 1920.f, static_cast<float>(sizeScreen.y) / 1080.f);
 	mWindow.draw(text);
 	return true;
 }
