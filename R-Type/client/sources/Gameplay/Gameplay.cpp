@@ -1,7 +1,7 @@
 #include "Gameplay/Gameplay.hpp"
 #include "Engine/ComponentType.h"
 
-Gameplay::Gameplay(ComponentType::Type type, uint32_t cycle = 0) : Component(type), mCycle(cycle), mTimeElapsed(0) { }
+Gameplay::Gameplay(ComponentType::Type type, uint32_t cycle = 0) : Component(type), mTimeElapsed(0), mCycle(cycle) { }
 
 bool	Gameplay::hasTimeElapsed() const
 {

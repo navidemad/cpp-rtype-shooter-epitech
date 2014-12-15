@@ -26,7 +26,7 @@ Q_DECLARE_METATYPE(std::string)
 Q_DECLARE_METATYPE(IResource::Direction)
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(Config::Network::port), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT), mCurrentGame(Config::Game::defaultNameGame), mCurrentLevel(Config::Game::defaultLevelGame)
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mCurrentLevel(Config::Game::defaultLevelGame), mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
 {
 	mEngine[PRESS_START] = new ECSManager;
 	mEngine[MENU] = new ECSManager;
