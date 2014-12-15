@@ -2,6 +2,7 @@
 #include "Engine/ComponentType.h"
 #include "RTypeClient.hpp"
 #include "Engine/ECSManagerNetwork.hpp"
+#include "Gameplay/Gameplay.hpp"
 FireSystem::FireSystem()
 {
 	setComponentNeeded(ComponentType::FIRE);
@@ -11,10 +12,15 @@ FireSystem::~FireSystem()
 {
 }
 
-void	FireSystem::process(Entity &entity, uint32_t /* */)
+void	FireSystem::process(Entity &entity, uint32_t delta)
 {
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	Fire *fire = static_cast<Fire *>(entity.getSpecificComponent(ComponentType::FIRE));
+
+	fire->addDelta(delta);
+
+	if (fire->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
+		fire->resetTimer();
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalFire();
 	}
 }

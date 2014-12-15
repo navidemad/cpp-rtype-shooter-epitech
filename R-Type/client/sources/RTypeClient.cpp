@@ -23,6 +23,7 @@
 #include "Engine/Compenent/TextInput.hpp"
 
 Q_DECLARE_METATYPE(std::string)
+Q_DECLARE_METATYPE(IResource::Direction)
 
 RTypeClient::RTypeClient()
 : mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mServer(Config::Network::port), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT), mCurrentGame(Config::Game::defaultNameGame), mCurrentLevel(Config::Game::defaultLevelGame)
@@ -492,7 +493,7 @@ void	RTypeClient::startSearchMenu()
 
 void			RTypeClient::startCreateMenu()
 {
-	mGui->playMusic("Game");
+	mGui->playMusic("Menu");
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListLevel();
 }
 

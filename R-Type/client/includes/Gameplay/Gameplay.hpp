@@ -1,13 +1,25 @@
 #pragma once
 
+#include <cstdint>
 #include "Engine/Component.hpp"
 #include "Engine/ComponentType.h"
 
 class Gameplay : public Component
 {
 public:
-	Gameplay(ComponentType::Type type);
+	Gameplay(ComponentType::Type type, uint32_t);
 	virtual ~Gameplay() { }
+
+public:
+	bool	hasTimeElapsed() const;
+
+public:
+	void	resetTimer();
+	void	addDelta(uint32_t);
+
+private:
+	uint32_t	mTimeElapsed;
+	uint32_t	mCycle;
 };
 
 class Fire : public Gameplay

@@ -47,10 +47,10 @@ Entity						&ECSManager::createEntity()
 
 Entity		&ECSManager::createEntity(const unsigned int id)
 {
-	if (id > mCurrentId)
+	if (id >= mCurrentId)
 	{
 		std::list<Component *> list;
-		for (; mCurrentId != id; ++mCurrentId)
+		for (; mCurrentId <= id; ++mCurrentId)
 		{
 			mEntity.push_back(Entity(mCurrentId, this));
 			mEntityComponent.push_back(list);
@@ -58,14 +58,13 @@ Entity		&ECSManager::createEntity(const unsigned int id)
 			mLivingEntity.push_back(false);
 		}
 	}
-	mLivingEntity[mCurrentId] = true;
-	++mCurrentId;
+	mLivingEntity[id] = true;
 	return mEntity[id];
 }
 
 bool		ECSManager::isEntityCreated(const unsigned int id) const
 {
-	return mEntity.size() <= id && mLivingEntity[id];
+	return mEntity.size() >= id && mLivingEntity[id];
 }
 
 Entity		&ECSManager::getEntity(const int id)
