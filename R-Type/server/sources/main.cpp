@@ -1,3 +1,48 @@
+/*
+#include "RTypeServer.hpp"
+#include "ScriptLoader.hpp"
+#include "ScopedLock.hpp"
+#include "PortabilityBuilder.hpp"
+#include <iostream>
+#include <cstdio>
+
+int main(void) {
+    auto mutex = PortabilityBuilder::getMutex();
+
+
+    // test 1 AVEC DEADLOCK
+    {
+        Scopedlock(mutex);
+        {
+            Scopedlock(mutex);
+            {
+
+            }
+        }
+    }
+
+
+    // test 1 SANS DEADLOCK
+    {
+        Scopedlock(mutex);
+        {
+
+        }
+    }
+
+
+    {
+        Scopedlock(mutex);
+        {
+
+        }
+    }
+
+
+    return 0;
+}
+*/
+
 #include "RTypeServer.hpp"
 #include "ScriptLoader.hpp"
 #include <iostream>
