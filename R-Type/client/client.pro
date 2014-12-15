@@ -28,6 +28,7 @@ INCLUDEPATH	+=	.					\
 
 HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/PortabilityBuilder.hpp				\
+			includes/Default.hpp					\
 			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
 			includes/Core/CollisionSystem.hpp			\
@@ -35,8 +36,9 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/DrawableSystem.hpp			\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
+                        includes/Core/ScriptSystem.hpp			\
 			includes/Core/InputManager.hpp				\
-                        includes/Core/TextInputSystem.hpp				\
+                        includes/Core/TextInputSystem.hpp			\
 			includes/Core/MovementSystem.hpp			\
                         includes/Core/ListSystem.hpp                    	\
 			includes/Core/System.hpp				\
@@ -46,6 +48,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Engine/Compenent/Controllable.hpp		\
                         includes/Engine/Compenent/List.hpp              	\
                         includes/Engine/Compenent/Cursor.hpp            	\
+                        includes/Engine/Compenent/Script.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
                         includes/Engine/Compenent/TextInput.hpp			\
@@ -54,7 +57,7 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Engine/Entity.hpp				\
                         includes/Engine/Compenent/Position.hpp			\
                         includes/Engine/Compenent/Font.hpp			\
-			includes/Engine/Script.hpp				\
+			includes/Engine/Compenent/Script.hpp				\
 			includes/GUI/ContentManager.hpp				\
 			includes/GUI/FontManager.hpp				\
 			includes/GUI/IGraphic.hpp				\
@@ -68,6 +71,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Network/ServerCommunication.hpp		\
 			includes/Network/TcpClient.hpp				\
 			includes/Network/UdpClient.hpp				\
+			includes/Gameplay/Gameplay.hpp				\
+			includes/Gameplay/GameplaySystem.hpp				\
 			../shared/includes/Config.hpp				\
 			../shared/includes/IResource.hpp			\
 			../shared/includes/Network/IClientSocket.hpp		\
@@ -77,7 +82,6 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/CommandCreateGame.hpp	\
 			../shared/includes/Commands/CommandDeleteGame.hpp	\
 			../shared/includes/Commands/CommandDestroyResource.hpp	\
-			../shared/includes/Commands/CommandDisconnect.hpp	\
 			../shared/includes/Commands/CommandEndGame.hpp		\
 			../shared/includes/Commands/CommandError.hpp		\
 			../shared/includes/Commands/CommandFire.hpp		\
@@ -97,8 +101,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			../shared/includes/Commands/ClientPacketBuilder.hpp     \
 			../shared/includes/Commands/PlayerPacketBuilder.hpp     \
 			../shared/includes/Network/Peer.hpp                     \
-			../shared/includes/Network/SocketException.hpp 					\
-			../shared/includes/Commands/CommandFactory.hpp			\
+			../shared/includes/Network/SocketException.hpp 		\
+			../shared/includes/Commands/CommandFactory.hpp		\
 			../shared/includes/Error/ErrorStatus.hpp
 
 unix:HEADERS += includes/UnixPortabilityBuilder.hpp
@@ -112,8 +116,9 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Core/DamageSystem.cpp					\
 			sources/Core/DrawableSystem.cpp					\
                         sources/Core/DrawableFontSystem.cpp				\
+                        sources/Core/ScriptSystem.cpp				\
                         sources/Core/TextInputSystem.cpp				\
-                        sources/Core/ListSystem.cpp				\
+                        sources/Core/ListSystem.cpp					\
                         sources/Core/ButtonSystem.cpp					\
 			sources/Core/InputManager.cpp					\
 			sources/Core/MovementSystem.cpp					\
@@ -141,6 +146,8 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Network/ServerCommunication.cpp				\
 			sources/Network/TcpClient.cpp					\
 			sources/Network/UdpClient.cpp 					\
+			sources/Gameplay/Gameplay.cpp 					\
+			sources/Gameplay/GameplaySystem.cpp 					\
                         sources/Command/PlayerPacketBuilder.cpp                         \
 			../shared/sources/Commands/CommandFactory.cpp                   \
 			../shared/sources/Commands/SharedPlayerPacketBuilder.cpp        \
@@ -151,8 +158,6 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Command/CommandDeleteGame.cpp				\
 			../shared/sources/Commands/SharedCommandDestroyResource.cpp	\
 			sources/Command/CommandDestroyResource.cpp			\
-			../shared/sources/Commands/SharedCommandDisconnect.cpp		\
-			sources/Command/CommandDisconnect.cpp				\
 			../shared/sources/Commands/SharedCommandEndGame.cpp		\
 			sources/Command/CommandEndGame.cpp				\
 			../shared/sources/Commands/SharedCommandError.cpp		\

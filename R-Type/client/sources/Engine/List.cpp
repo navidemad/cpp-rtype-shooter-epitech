@@ -78,11 +78,23 @@ void		List::displayRoom(Entity &entity)
 	}
 }*/
 
-List::List(unsigned int const nbRoomButton) : Component(ComponentType::LIST), mListRoomButton(nbRoomButton), mNbRoomButton(nbRoomButton)
+List::List(void (RTypeClient::*fct)(std::string const &), unsigned int const nbRoomButton) : Component(ComponentType::LIST), mListRoomButton(nbRoomButton), mNbRoomButton(nbRoomButton)
 {
+	mFct = fct;
 	mCycle = 100;
 	mTimeElapsed = 0;
 	mCurrentRoom = mListRoomButton.begin();
+}
+
+void	List::applyFunction(std::string const &str, RTypeClient *client)
+{
+	(client->*mFct)(str);
+}
+
+void	List::clear()
+{
+	mListRoom.clear();
+	mListRoomButton.clear();
 }
 
 
@@ -91,14 +103,12 @@ void	List::addRoom(const information_room &room)
 	mListRoom.push_back(room);
 	if (mListRoom.size() <= mNbRoomButton)
 	{
-		unsigned int i = 0;
+		mListRoomButton.clear();
 
-		for (std::list<information_room>::iterator it = mListRoom.begin();
-			it != mListRoom.end();
-			++it, ++i)
+		for (std::list<information_room>::iterator it = mListRoom.begin(); it != mListRoom.end(); ++it)
 		{
-			mListRoomButton[i] = it;
+			mListRoomButton.push_back(it);
 		}
-
+		mCurrentRoom = mListRoomButton.begin();
 	}
 }

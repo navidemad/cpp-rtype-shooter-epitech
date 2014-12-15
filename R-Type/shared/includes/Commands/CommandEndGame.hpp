@@ -17,7 +17,7 @@ class CommandEndGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandEndGame(void);
+		CommandEndGame(void);
 		~CommandEndGame(void);
 
 	// getter - setters

@@ -1,6 +1,5 @@
 #pragma once
 #include <QObject>
-#include <list>
 #include "IClientSocket.hpp"
 #include "ICommand.hpp"
 #include "ClientPacketBuilder.hpp"
@@ -14,7 +13,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
 
     // ctor - dtor
     public:
-        explicit ServerCommunication();
+        explicit ServerCommunication(int ClientUdpPort);
         ~ServerCommunication();
 
     // copy operators
@@ -34,12 +33,13 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void SignalShowLevel(const std::string &name, const std::string &script);
         void SignalTimeElapse(int64_t time);
         void SignalUpdateScore(const std::string &name, int id, int score);
+        void SignalCloseSocket(void);
+        void SignalFailConnect(void);
 
     //slots
     public slots:
         void OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
         void OnDeleteGame(const std::string &name);
-        void OnDiconect(void);
         void OnFire(void);
         void OnJoinGame(const std::string &name);
         void OnLeaveGame(void);
@@ -49,6 +49,9 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void OnObserveGame(const std::string &name);
         void OnShowGame(const std::string &name);
         void OnUpdatePseudo(const std::string &pseudo);
+        void OnSetServerIp(const std::string &ip);
+        void OnSetServerPortTcp(int port);
+        void OnConnectToServer(void);
 
     //handle command from server
     public:
@@ -78,23 +81,14 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
     public:
         void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer);
 
-    //handle socket
-    public:
-        void connectSocketTcp(void);
-
-    //getter
-    public:
-        std::list<ICommand *> &getCommand(void);
-
-    //setter
-    public:
-        void setServerTcp(int port, std::string ip);
+    //dry
+    private:
+        void sendCommand(ICommand *command, bool isTcpCommand);
 
     //attribut
     private:
-        std::list<ICommand *> mListCommand;
-        int mPortTcp;
-        std::string mIpTcp;
+        int mClientPortUdp;
+        Peer mServerPeer;
         std::shared_ptr<IClientSocket> mSocketTcp;
         ClientPacketBuilder mCmdTcp;
         PlayerPacketBuilder mCmdUdp;

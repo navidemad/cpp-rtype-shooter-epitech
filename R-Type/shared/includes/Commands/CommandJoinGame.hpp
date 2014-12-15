@@ -17,7 +17,7 @@ class CommandJoinGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandJoinGame(void);
+		CommandJoinGame(void);
 		~CommandJoinGame(void);
 
 	// getter - setters

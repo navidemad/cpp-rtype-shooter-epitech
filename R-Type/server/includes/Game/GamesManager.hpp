@@ -17,7 +17,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // ctor / dtor
     public:
-        explicit GamesManager(void);
+        GamesManager(void);
         ~GamesManager(void);
 
     // entry point
@@ -26,12 +26,27 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
 	// player communication manager events
 	public:
-		void onPlayerFire(const PlayerCommunicationManager &playerCommunicationManager, const Peer &peer);
-		void onPlayerMove(const PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer);
+		void onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer);
+		void onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer);
 
     // game events
     public:
-        void onTerminatedGame(const std::string &name);
+    // events
+    public:
+        class OnGamesManagerEvent {
+            public:
+                virtual ~OnGamesManagerEvent(void) {}
+                virtual void onEndGame(const std::string &gameName, const std::list<Peer> &gameUsers) = 0;
+        };
+
+		void onRemovePeerFromWhiteList(const Peer&);
+		void onNotifyUsersComponentRemoved(const std::vector<NGame::User>&, uint64_t);
+        void onNotifyUsersComponentAdded(const std::vector<NGame::User>&, const NGame::Component&);
+		void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t);
+		void onNotifyTimeElapsedPing(const Peer &, double);
+
+        void    setListener(GamesManager::OnGamesManagerEvent *listener);
+		std::vector<std::shared_ptr<NGame::Game>>::iterator terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it);
 
 	// network workflow utils functions
 	public:
@@ -40,7 +55,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         void    joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo = "Anonymous");
         void    playGame(const Peer &peer, const std::string &name, const std::string &pseudo);
         void    spectateGame(const Peer &peer, const std::string &name);
-        void	leaveGame(const Peer &peer, bool throwExcept = true);
+        void	leaveGame(const Peer &peer);
 		void	updatePseudo(const Peer &peer, const std::string &pseudo);
         const NGame::Properties &getGameProperties(const std::string &name);
         std::list<NGame::Properties> getGamesProperties(void) const;
@@ -59,5 +74,6 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         std::vector<std::shared_ptr<NGame::Game>> mGames;
         std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager mPlayerCommunicationManager;
+        GamesManager::OnGamesManagerEvent *mListener;
 
 };

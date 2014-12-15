@@ -6,11 +6,11 @@ CommandTimeElapsedPing::CommandTimeElapsedPing(void) : mTimeElapsed(0) {
 CommandTimeElapsedPing::~CommandTimeElapsedPing(void) {
 }
 
-int64_t CommandTimeElapsedPing::getTimeElapsed(void) const {
+double CommandTimeElapsedPing::getTimeElapsed(void) const {
 	return mTimeElapsed;
 }
 
-void CommandTimeElapsedPing::setTimeElapsed(int64_t timeElapsed) {
+void CommandTimeElapsedPing::setTimeElapsed(double timeElapsed) {
 	mTimeElapsed = timeElapsed;
 }
 

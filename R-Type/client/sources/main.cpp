@@ -1,24 +1,19 @@
+#include <QtCore>
+#include "IResource.hpp"
 #include "RTypeClient.hpp"
 
-/*#include <QApplication>
-#include "Network/ServerCommunication.hpp"
+Q_DECLARE_METATYPE(std::string)
+Q_DECLARE_METATYPE(IResource::Direction)
 
-int trySocket(int ac, char **av){
-	QApplication	app(ac, av);
-	
-	ServerCommunication server;
-
-	server.setServerTcp(4242, "127.0.0.1");
-	server.connectSocketTcp();
-
-	return app.exec();
-}*/
-
-int		main(int/* ac*/, char ** /*av*/)
+int main(int ac, char **av)
 {
-	//return trySocket(ac, av);
-	RTypeClient	app;
+    QCoreApplication app(ac, av);
 
-	app.run();
-	return (0);
+    qRegisterMetaType<std::string>();
+	qRegisterMetaType<IResource::Direction>();
+    RTypeClient		rtype;
+    QObject::connect(&rtype, SIGNAL(finished()), &app, SLOT(quit()));
+
+    rtype.start();
+    return app.exec();
 }

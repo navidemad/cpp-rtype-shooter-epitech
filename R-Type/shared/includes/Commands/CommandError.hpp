@@ -17,7 +17,7 @@ class CommandError : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandError(void);
+		CommandError(void);
 		~CommandError(void);
 
 	// getter - setters

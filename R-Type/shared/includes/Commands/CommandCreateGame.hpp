@@ -20,7 +20,7 @@ class CommandCreateGame : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandCreateGame(void);
+		CommandCreateGame(void);
 		~CommandCreateGame(void);
 
 	// getter - setters

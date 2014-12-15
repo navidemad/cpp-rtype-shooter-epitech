@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <stdint.h>
+#include "RTypeClient.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/Component.hpp"
 
@@ -26,12 +27,13 @@ struct information_room
 struct List : public Component
 {
 	public:
-		List(unsigned int const);
+		List(void (RTypeClient::*fct)(std::string const &), unsigned int const = 3);
 		~List();
 
 	public:
 		void	addRoom(const information_room &);
-
+		void	clear();
+		void	applyFunction(std::string const &, RTypeClient *);
 
 	public:
 		bool	hasTimeElapsed() const;
@@ -47,5 +49,5 @@ struct List : public Component
 		const unsigned int												mNbRoomButton;
 		uint32_t														mTimeElapsed;
 		uint32_t														mCycle;
-
+		void (RTypeClient::*mFct)(std::string const &);
 };

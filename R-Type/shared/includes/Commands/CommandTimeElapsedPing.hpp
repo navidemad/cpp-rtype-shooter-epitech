@@ -9,19 +9,19 @@ class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 	public:
 		#pragma pack(push, 1)
 		struct PacketFromServer {
-			int64_t	timeElapsed;
+			double timeElapsed;
 		};
 		#pragma pack(pop)
 
 	// ctor / dtor
 	public:
-		explicit CommandTimeElapsedPing(void);
+		CommandTimeElapsedPing(void);
 		~CommandTimeElapsedPing(void);
 
 	// getter - setters
 	public:
-		int64_t getTimeElapsed(void) const;
-		void		setTimeElapsed(int64_t timeElapsed);
+		double		getTimeElapsed(void) const;
+		void		setTimeElapsed(double timeElapsed);
 
 	// public pure methods
 	public:
@@ -32,6 +32,6 @@ class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 
 	// attributes
 	private:
-		int64_t mTimeElapsed;
+		double mTimeElapsed;
 
 };

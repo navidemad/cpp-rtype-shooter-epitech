@@ -10,44 +10,55 @@ namespace NGame
 
         // ctor / dtor
         public:
-            explicit Component(int userId = -1) : mUserId(userId) { }
+            explicit Component(uint64_t id = 0) : mId(id), mType(IResource::Type::UNKNOWN) { }
+			Component(const Component &other) {
+				mX = other.getX();
+				mY = other.getY();
+				mWidth = other.getWidth();
+				mHeight = other.getHeight();
+				mAngle = other.getAngle();
+				mSpeed = other.getSpeed();
+				mLife = other.getLife();
+				mId = other.getId();
+				mType = other.getType();
+			}
             ~Component(void) { }
 
         // setters
         public:
-            void setX(float x) { mX = x; }
-            void setY(float y) { mY = y; }
-            void setWidth(int width) { mWidth = width; }
-            void setHeight(int height) { mHeight = height; }
-            void setAngle(float angle) { mAngle = angle; }
-            void setSpeed(float speed) { mSpeed = speed; }
-            void setLife(int life) { mLife = life; }
+            void setX(double x) { mX = x; }
+            void setY(double y) { mY = y; }
+            void setWidth(double width) { mWidth = width; }
+            void setHeight(double height) { mHeight = height; }
+            void setAngle(short angle) { mAngle = angle; }
+            void setSpeed(double speed) { mSpeed = speed; }
+            void setLife(double life) { mLife = life; }
+            void setId(uint64_t id) { mId = id; }
             void setType(IResource::Type type) { mType = type; }
-            void setId(uint64_t id) { mUserId = id; }
 
         // getters
         public:
-            float getX(void) const { return mX; }
-            float getY(void) const { return mY; }
-            int getWidth(void) const { return mWidth; }
-            int getHeight(void) const { return mHeight; }
-            float getAngle(void) const { return mAngle; }
-            float getSpeed(void) const { return mSpeed; }
-            int getLife(void) const { return mLife; }
-            IResource::Type getType(void) { return mType; }
-            uint64_t getId(void) const { return mUserId; }
+			double getX(void) const { return mX; }
+			double getY(void) const { return mY; }
+			double getWidth(void) const { return mWidth; }
+			double getHeight(void) const { return mHeight; }
+			short getAngle(void) const { return mAngle; }
+			double getSpeed(void) const { return mSpeed; }
+			double getLife(void) const { return mLife; }
+            uint64_t getId(void) const { return mId; }
+            IResource::Type getType(void) const { return mType; }
 
         // attributes
         private:
-            float mX;
-            float mY;
-            int mWidth;
-            int mHeight;
-            float mAngle;
-            float mSpeed;
-            int mLife;
+			double mX;
+			double mY;
+			double mWidth;
+			double mHeight;
+			short mAngle;
+			double mSpeed;
+			double mLife;
+            uint64_t mId;
             IResource::Type mType;
-            uint64_t mUserId;
 
         };
 

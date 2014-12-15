@@ -6,7 +6,6 @@
 #include "CommandDeleteGame.hpp"
 #include "CommandListGames.hpp"
 #include "CommandUpdatePseudo.hpp"
-#include "CommandDisconnect.hpp"
 #include "CommandMove.hpp"
 #include "CommandFire.hpp"
 #include "CommandHandshake.hpp"
@@ -29,15 +28,13 @@ std::shared_ptr<ICommand> CommandFactory::getCommand(ICommand::Instruction instr
 	case ICommand::Instruction::JOIN_GAME:
 		return getCommand<CommandJoinGame>();
 	case ICommand::Instruction::SHOW_GAME:
-		return getCommand<CommandJoinGame>();
+		return getCommand<CommandShowGame>();
 	case ICommand::Instruction::DELETE_GAME:
 		return getCommand<CommandDeleteGame>();
 	case ICommand::Instruction::LIST_GAMES:
 		return getCommand<CommandListGames>();
 	case ICommand::Instruction::UPDATE_PSEUDO:
 		return getCommand<CommandUpdatePseudo>();
-	case ICommand::Instruction::DISCONNECT:
-		return getCommand<CommandDisconnect>();
 	case ICommand::Instruction::MOVE:
 		return getCommand<CommandMove>();
 	case ICommand::Instruction::FIRE:

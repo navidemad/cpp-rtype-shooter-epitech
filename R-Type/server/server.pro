@@ -11,7 +11,9 @@ RCC_DIR			=	build/rcc
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
-unix:QMAKE = clang++
+#QMAKE_CXX = clang++
+#CXX = clang++
+
 INCLUDEPATH		+=	.					\
 				includes				\
 				includes/Network 			\
@@ -56,7 +58,6 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
                                 ../shared/includes/Commands/CommandCreateGame.hpp	\
                                 ../shared/includes/Commands/CommandDeleteGame.hpp	\
                                 ../shared/includes/Commands/CommandDestroyResource.hpp	\
-                                ../shared/includes/Commands/CommandDisconnect.hpp	\
                                 ../shared/includes/Commands/CommandEndGame.hpp		\
                                 ../shared/includes/Commands/CommandError.hpp		\
                                 ../shared/includes/Commands/CommandFire.hpp		\
@@ -105,7 +106,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Game/GameComponent.hpp		\
 				includes/Game/GamesManager.hpp 				\
 				includes/Game/Timer.hpp								\
-				includes/Network/Peer.hpp
+				../shared/includes/Network/Peer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\
@@ -145,7 +146,6 @@ SOURCES			+=	sources/main.cpp						\
                                 ../shared/sources/Commands/SharedCommandCreateGame.cpp		\
                                 ../shared/sources/Commands/SharedCommandDeleteGame.cpp		\
                                 ../shared/sources/Commands/SharedCommandDestroyResource.cpp	\
-                                ../shared/sources/Commands/SharedCommandDisconnect.cpp		\
                                 ../shared/sources/Commands/SharedCommandEndGame.cpp		\
                                 ../shared/sources/Commands/SharedCommandError.cpp		\
                                 ../shared/sources/Commands/SharedCommandFire.cpp		\
@@ -165,7 +165,6 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Commands/CommandCreateGame.cpp				\
                                 sources/Commands/CommandDeleteGame.cpp				\
                                 sources/Commands/CommandDestroyResource.cpp			\
-                                sources/Commands/CommandDisconnect.cpp				\
                                 sources/Commands/CommandEndGame.cpp				\
                                 sources/Commands/CommandError.cpp				\
                                 sources/Commands/CommandFire.cpp				\
@@ -211,8 +210,8 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 				sources/WindowsPortabilityBuilder.cpp
 
 win32:LIBS	+= -lWs2_32
-unix:LIBS	+= -lpthread -ldl
+unix:LIBS	+= -lpthread -ldl -lm
 
-win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
+win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
 DEFINES        += _DEBUG

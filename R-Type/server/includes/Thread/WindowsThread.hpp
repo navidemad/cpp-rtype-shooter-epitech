@@ -3,16 +3,22 @@
 #include "IThread.hpp"
 #include "ThreadException.hpp"
 #include "NoCopyable.hpp"
-
 #include <WinSock2.h>
+#include <iostream>
 
 template <typename U, typename T>
 class WindowsThread : public NoCopyable, public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		explicit WindowsThread(void) : mIsRunning(false) {}
-        ~WindowsThread(void) { cancel(); }
+		WindowsThread(void) : mIsRunning(false) {}
+        ~WindowsThread(void) { 
+			try {
+				cancel();
+			} catch (const ThreadException& e) {
+				std::cerr << "WindowsThread :: " << e.what() << std::endl;
+			}
+        }
 
 	// enum ret value
 	public:

@@ -14,7 +14,7 @@ class CommandListGames : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandListGames(void);
+		CommandListGames(void);
 		~CommandListGames(void);
 
 	// public pure methods

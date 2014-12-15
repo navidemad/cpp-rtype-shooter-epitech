@@ -13,7 +13,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 
 	// ctor / dtor
 	public:
-        explicit ClientManager(void);
+        ClientManager(void);
 		~ClientManager(void);
 
 	// handle client manager
@@ -45,8 +45,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		void	onClientDeleteGame(const Client &client, const std::string &name);
 		void	onClientListGames(const Client &client);
 		void	onClientListLevels(const Client &client);
-		void	onClientDisconnect(const Client &client);
-		void	onClientHandshake(Client &client);
+		void	onClientHandshake(Client &client, int udpPort);
 		void	onClientObserveGame(const Client &client, const std::string &name);
 		void	onClientLeaveGame(const Client &client);
 		void	onClientUpdatePseudo(Client &client, const std::string &pseudo);
@@ -56,6 +55,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 	// intern methods
 	private:
 		std::list<std::shared_ptr<Client>>::iterator findClient(const Peer &peer);
+		void logInfo(const Peer &peer, const std::string &log) const;
 
 	// send commands
 	public:
@@ -70,7 +70,8 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		std::list<std::shared_ptr<Client>> mClients;
 		std::shared_ptr<IServerSocket> mServer;
 
-		static const int SERVER_TCP_PORT = 4242;
+	public:
+		static const int SERVER_TCP_PORT = 4245;
 		static const int SERVER_TCP_QUEUE = 1024;
 
 };

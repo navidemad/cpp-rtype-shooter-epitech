@@ -9,19 +9,18 @@ class SpriteModel
 {
     // ctor - dtor
     public:
-        explicit SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns);
-        ~SpriteModel();
+		SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines, sf::IntRect const &rect = sf::IntRect());
+		~SpriteModel();
 
     // copy operators
     public:
         SpriteModel(const SpriteModel &);
-        SpriteModel(SpriteModel &&);
         const SpriteModel &operator=(const SpriteModel &);
-        const SpriteModel &operator=(SpriteModel &&);
 
 	// methods
 	public:
 		sf::Texture const	&getTexture() const;
+		sf::IntRect const	&getRect() const;
 		sf::Sprite			&getSprite(uint32_t index = 0);
 		bool				isLoop() const;
 		std::string const	&getFileName() const;
@@ -43,6 +42,7 @@ class SpriteModel
 	// attributes
 	private:
 		sf::Texture					mTexture;
+		sf::IntRect					mRect;
 		sf::Sprite					mSprite;
 		std::vector<sf::Sprite>		mSprites;
 		bool						mLoop;
@@ -50,8 +50,8 @@ class SpriteModel
 		uint32_t					mCurrentIndex;
 		uint32_t					mBegin;
 		uint32_t					mEnd;
-		uint32_t					mLines;
 		uint32_t					mColumns;
+		uint32_t					mLines;
 		uint32_t					mX;
 		uint32_t					mY;
 };

@@ -181,7 +181,21 @@ void WindowsUdpClient::recvSocket(void) {
 
 	IClientSocket::Message message;
 	message.msgSize = nbBytesRead;
-	message.msg.insert(mInDatagrams.back().msg.end(), buffer, buffer + nbBytesRead);
+	/*
+		dequeue exception dere car tu déréférence mInDatagrams.back()
+		je te laisse valide simon en supprimant ce commentaire
+		AVANT:
+			message.msg.insert(mInDatagrams.back().msg.end(), buffer, buffer + nbBytesRead);
+		APRES:
+			if (mInDatagrams.size())
+				message.msg.insert(mInDatagrams.back().msg.end(), buffer, buffer + nbBytesRead);
+			else
+				message.msg.assign(buffer, buffer + nbBytesRead);
+	*/
+	if (mInDatagrams.size())
+		message.msg.insert(mInDatagrams.back().msg.end(), buffer, buffer + nbBytesRead);
+	else
+		message.msg.assign(buffer, buffer + nbBytesRead);
 	message.host = ipstr;
 	message.port = ntohs(addr.sin_port);
 	mInDatagrams.push_back(message);

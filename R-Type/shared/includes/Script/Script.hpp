@@ -7,27 +7,39 @@
 #include <memory>
 #include <cstdint>
 
-class Script : public NoCopyable {
+class Script {
 
     // ctor / dtor
     public:
-        explicit Script(void);
+        Script(void);
         ~Script(void);
+		Script(const Script &);
+		const Script &operator=(const Script &);
 
-	// internal functions
+	// getters
 	public:
-		void addAction(std::shared_ptr<IScriptCommand> command);
+		size_t getIndex(void) const;
+		bool end(void) const;
+		const std::vector<std::shared_ptr<IScriptCommand>>& getCommands(void) const;
+		const std::string& getTextScript(void) const;
+
+	// setters
+	public:
+		void setTextScript(const std::string&);
+
+	// adding
+	public:
+		const Script &operator<<(std::shared_ptr<IScriptCommand> command); 
+
+	// workflow script
+	public:
 		std::shared_ptr<IScriptCommand> currentAction(void) const;
-		std::vector<std::shared_ptr<IScriptCommand>> getCommands(void) const;
-		void restart(void);
 		bool goToNextAction(void);
 		bool goToPrevAction(void);
-        const std::string& getTextScript(void) const;
-        void setTextScript(const std::string&);
 
 	// attributes
 	private:
+		size_t mIndex;
 		std::vector<std::shared_ptr<IScriptCommand>> mCommands;
-		uint32_t mIndex;
         std::string mTextScript;
 };

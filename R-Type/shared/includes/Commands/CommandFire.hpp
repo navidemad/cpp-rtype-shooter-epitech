@@ -14,7 +14,7 @@ class CommandFire : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandFire(void);
+		CommandFire(void);
 		~CommandFire(void);
 
 	// public pure methods

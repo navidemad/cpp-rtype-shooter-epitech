@@ -8,7 +8,7 @@ class WindowsTcpServer : public NoCopyable, public IServerSocket, public Network
 
 	// ctor - dtor
 	public:
-		explicit WindowsTcpServer(void);
+		WindowsTcpServer(void);
 		~WindowsTcpServer(void);
 
 	// init

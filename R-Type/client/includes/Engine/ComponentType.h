@@ -13,6 +13,12 @@ namespace ComponentType
 		NETWORK,
 		TEXTINPUT,
 		LIST,
+		FIRE,
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		SCRIPT,
 		LIMIT
 	};
 }

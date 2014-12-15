@@ -12,11 +12,11 @@ class IScriptCommand {
 		REQUIRE,
 		ACTION,
 		ADD_CRON,
-		REMOVE_CRON,
-		UNKNOWN
+		REMOVE_CRON
 	};
 
 	// public pure methods
 	public:
 	virtual IScriptCommand::Instruction	getInstruction(void) const = 0;
+	virtual double						getFrame(void) const = 0;
 };

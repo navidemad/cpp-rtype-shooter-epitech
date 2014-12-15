@@ -16,7 +16,7 @@ class CommandMove : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandMove(void);
+		CommandMove(void);
 		~CommandMove(void);
 
 	// getter - setters

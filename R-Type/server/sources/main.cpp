@@ -1,7 +1,6 @@
 #include "RTypeServer.hpp"
 #include "ScriptLoader.hpp"
 #include <iostream>
-
 int	main(void) {
     int ret;
 

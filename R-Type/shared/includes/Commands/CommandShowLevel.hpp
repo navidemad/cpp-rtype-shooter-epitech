@@ -12,14 +12,14 @@ class CommandShowLevel : public NoCopyable, public ICommand {
 		#pragma pack(push, 1)
 		struct PacketFromServer {
 			char		name[64];
-			int32_t		scriptSize;
+			uint64_t	scriptSize;
 			char		script[4096];
 		};
 		#pragma pack(pop)
 
 	// ctor / dtor
 	public:
-		explicit CommandShowLevel(void);
+		CommandShowLevel(void);
 		~CommandShowLevel(void);
 
 	// getter - setters

@@ -3,17 +3,18 @@
 
 UdpClient::UdpClient(void)
 : mQUdpSocket(new QUdpSocket(this)), mIsReadable(false), mListener(NULL) {
-
 }
 
 UdpClient::~UdpClient(void){
 
 }
-
+#include <iostream>
 void	UdpClient::connect(const std::string &/*addr*/, int port) {
 	close();
 	if (mQUdpSocket->bind(QHostAddress::Any, port) == false)
 		throw SocketException("fail QUdpSocket::bind");
+
+	std::cout << port << std::endl;
 
 	QObject::connect(mQUdpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQUdpSocket.get(), SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
@@ -43,7 +44,7 @@ void	UdpClient::send(const IClientSocket::Message &message) {
 
 	mQUdpSocket->writeDatagram(msg_str.c_str(), message.msgSize, QHostAddress(QString(message.host.c_str())), message.port);
 }
-
+#include <iostream>
 IClientSocket::Message	UdpClient::receive(unsigned int sizeToRead) {
 	IClientSocket::Message message;
 	QHostAddress host;
@@ -60,7 +61,7 @@ IClientSocket::Message	UdpClient::receive(unsigned int sizeToRead) {
 	ret = mQUdpSocket->readDatagram(buffer.get(), sizeToRead, &host, &port);
 	if (ret == -1)
 		throw SocketException("fail QUdpSocket::read");
-
+	std::cout << host.toString().toStdString() << "@" << port << std::endl;
 	message.msgSize = ret;
 	message.msg.insert(message.msg.end(), buffer.get(), buffer.get() + message.msgSize);
 	message.host = host.toString().toStdString();

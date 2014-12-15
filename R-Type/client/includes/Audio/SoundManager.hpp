@@ -10,7 +10,6 @@ namespace sf
 {
 	struct sSound
 	{
-		std::string		test;
 		sf::SoundBuffer	soundBuffer;
 		sf::Sound		sound;
 	};

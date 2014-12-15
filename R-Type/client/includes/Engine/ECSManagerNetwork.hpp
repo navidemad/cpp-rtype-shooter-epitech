@@ -28,6 +28,9 @@ class ECSManagerNetwork : public QObject, public ECSManager
         void SignalObserveGame(const std::string &name);
         void SignalShowGame(const std::string &name);
         void SignalUpdatePseudo(const std::string &pseudo);
+        void SignalSetServerIp(const std::string &ip);
+        void SignalSetServerPortTcp(int port);
+        void SignalConnectToServer(void);
 
 	public slots:
 		void OnDestroyResource(int id);
@@ -38,4 +41,15 @@ class ECSManagerNetwork : public QObject, public ECSManager
 		void OnShowLevel(const std::string &name, const std::string &script);
 		void OnTimeElapse(int64_t time);
 		void OnUpdateScore(const std::string &name, int id, int score);
+        void OnCloseSocket(void);
+        void OnFailConnect(void);
+
+	public:
+		ECSManagerNetwork();
+
+	private:
+		void	createPlayer();
+		void	createBullet();
+		void	createEnnemy();
+		void	createBonus();
 };

@@ -6,11 +6,11 @@ CommandDestroyResource::CommandDestroyResource(void) : mId(0) {
 CommandDestroyResource::~CommandDestroyResource(void) {
 }
 
-int  CommandDestroyResource::getId(void) const {
+uint64_t  CommandDestroyResource::getId(void) const {
 	return mId;
 }
 
-void CommandDestroyResource::setId(int id) {
+void CommandDestroyResource::setId(uint64_t id) {
 	mId = id;
 }
 

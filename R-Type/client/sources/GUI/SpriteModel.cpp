@@ -2,14 +2,15 @@
 #include <memory>
 #include "GUI/SpriteModel.hpp"
 
-SpriteModel::SpriteModel(std::string const &filename, uint32_t lines, uint32_t columns) :
+SpriteModel::SpriteModel(std::string const &filename, uint32_t columns, uint32_t lines, sf::IntRect const &rect) :
+	mRect(rect),
 	mLoop(true), 
 	mFileName(filename), 
 	mCurrentIndex(0), 
 	mBegin(0), 
 	mEnd(0), 
-	mLines(lines), 
-	mColumns(columns), 
+	mColumns(columns),
+	mLines(lines),
 	mX(0),
 	mY(0)
 {
@@ -22,28 +23,14 @@ SpriteModel::SpriteModel(std::string const &filename, uint32_t lines, uint32_t c
 
 SpriteModel::SpriteModel(const SpriteModel &sm) :
 	mTexture(sm.getTexture()), 
+	mRect(sm.getRect()), 
 	mLoop(sm.isLoop()), 
 	mFileName(sm.getFileName()), 
 	mCurrentIndex(sm.getCurrentIndex()), 
 	mBegin(sm.getBegin()), 
 	mEnd(sm.getEnd()), 
-	mLines(sm.getLines()), 
 	mColumns(sm.getColumns()), 
-	mX(sm.getX()), 
-	mY(sm.getY())
-{
-	init();
-}
-
-SpriteModel::SpriteModel(SpriteModel &&sm) :
-	mTexture(sm.getTexture()), 
-	mLoop(sm.isLoop()), 
-	mFileName(sm.getFileName()), 
-	mCurrentIndex(sm.getCurrentIndex()), 
-	mBegin(sm.getBegin()), 
-	mEnd(sm.getEnd()), 
 	mLines(sm.getLines()), 
-	mColumns(sm.getColumns()), 
 	mX(sm.getX()), 
 	mY(sm.getY())
 {
@@ -53,22 +40,7 @@ SpriteModel::SpriteModel(SpriteModel &&sm) :
 const SpriteModel &SpriteModel::operator=(const SpriteModel &sm)
 {
 	mTexture = sm.getTexture();
-	mLoop = sm.isLoop();
-	mFileName = sm.getFileName();
-	mCurrentIndex = sm.getCurrentIndex();
-	mBegin = sm.getBegin();
-	mEnd = sm.getEnd();
-	mLines = sm.getLines();
-	mColumns = sm.getColumns();
-	mX = sm.getX();
-	mY = sm.getY();
-	init();
-	return *this;
-}
-
-const SpriteModel &SpriteModel::operator=(SpriteModel &&sm)
-{
-	mTexture = sm.getTexture();
+	mRect = sm.getRect();
 	mLoop = sm.isLoop();
 	mFileName = sm.getFileName();
 	mCurrentIndex = sm.getCurrentIndex();
@@ -90,7 +62,7 @@ SpriteModel::~SpriteModel()
 void		SpriteModel::init()
 {
 	// load file image
-	if (!mTexture.loadFromFile(mFileName))
+	if (!mTexture.loadFromFile(mFileName, mRect))
 		throw std::runtime_error("failed to load texture"); // faire une class SpriteModelException
 
 	// set params and sprite
@@ -118,6 +90,11 @@ void		SpriteModel::init()
 sf::Texture const	&SpriteModel::getTexture() const
 {
 	return mTexture;
+}
+
+sf::IntRect const	&SpriteModel::getRect() const
+{
+	return mRect;
 }
 
 sf::Sprite			&SpriteModel::getSprite(uint32_t index)

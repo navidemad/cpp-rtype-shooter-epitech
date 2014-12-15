@@ -40,8 +40,8 @@ class SFMLGraphic : public IGraphic
 		void				setVolume(std::string const &key, float volume = 100.0);
 		std::string	const	&getInputText() const;
 
-		void				loadSprite(std::string const &key, std::string const &path);
-		void				loadSound(std::string const &key, std::string const &path);
+//		void				loadSprite(std::string const &key, std::string const &path);
+//		void				loadSound(std::string const &key, std::string const &path);
 
 		bool				isOpen() const;
 		void				handleEvent();
@@ -68,4 +68,6 @@ private:
 		sf::Music							mMusic;
 		std::string							mMusicCurrentKey;
 		std::map<uint32_t, uint64_t>		mIdTimeElapse;
+
+#define TIME 1000000
 };

@@ -10,31 +10,31 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 	public:
 		#pragma pack(push, 1)
 		struct PacketFromServer {
-			int32_t	id;
+			uint64_t	id;
 			char		type;
-			float		x;
-			float		y;
+			double		x;
+			double		y;
 			short		angle;
 		};
 		#pragma pack(pop)
 
 	// ctor / dtor
 	public:
-		explicit CommandMoveResource(void);
+		CommandMoveResource(void);
 		~CommandMoveResource(void);
 
 	// getter - setters
 	public:
-		int 						getId(void) const;
-		IResource::Type getType(void) const;
-		float						getX(void) const;
-		float						getY(void) const;
+		uint64_t 					getId(void) const;
+		IResource::Type				getType(void) const;
+		double						getX(void) const;
+		double						getY(void) const;
 		short						getAngle(void) const;
 
-		void	setId(int id);
+		void	setId(uint64_t id);
 		void	setType(IResource::Type type);
-		void	setX(float x);
-		void	setY(float y);
+		void	setX(double x);
+		void	setY(double y);
 		void	setAngle(short angle);
 
 	// public pure methods
@@ -46,10 +46,10 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 
 	// attributes
 	private:
-		int 			mId;
+		uint64_t		mId;
 		IResource::Type mType;
-		float			mX;
-		float			mY;
+		double			mX;
+		double			mY;
 		short			mAngle;
 
 };

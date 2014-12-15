@@ -1,12 +1,13 @@
 #pragma once
-
+#include <QtCore>
 #include <memory>
 #include "Engine/ECSManager.hpp"
 #include "GUI/IGraphic.hpp"
+#include "Network/ServerCommunication.hpp"
 
 class ECSManager;
 
-class RTypeClient
+class RTypeClient : public QThread
 {
 public:
 	enum Game : unsigned int
@@ -15,6 +16,7 @@ public:
 		MENU,
 		OPTION,
 		SEARCH_MENU,
+		CREATE_MENU,
 		RTYPE,
 		LIMIT
 	};
@@ -29,7 +31,7 @@ public:
 //		RTypeClient(RTypeClient const &);
 		RTypeClient const	&operator=(RTypeClient const &);
 
-	public:
+	private:
 		void run();
 
 	// setter getter
@@ -41,8 +43,12 @@ public:
 	// Attribute
 	private:
 		unsigned int							mCurrentId;
-		std::vector<ECSManager *>					mEngine;
+		std::vector<ECSManager *>				mEngine;
 		std::shared_ptr<IGraphic>				mGui;
+		std::string								mCurrentLevel;
+		std::string								mCurrentGame;
+		std::string								mScript;
+		ServerCommunication						mServer;
 
 		std::vector<void (RTypeClient::*)()>	mInit;
 		std::vector<void (RTypeClient::*)()>	mStart;
@@ -52,18 +58,21 @@ public:
 
 	private: // init function
 		void						init();
+
 		void						initMenu();
 		void						initOption();
 		void						initPressStart();
 		void						initRtype();
 		void						initSearchMenu();
+		void						initCreateMenu();
 
-	private:
+private:
 		void						startMenu();
 		void						startOption();
 		void						startPressStart();
 		void						startRtype();
 		void						startSearchMenu();
+		void						startCreateMenu();
 
 	private:
 		void						stopMenu();
@@ -71,7 +80,17 @@ public:
 		void						stopPressStart();
 		void						stopRtype();
 		void						stopSearchMenu();
+		void						stopCreateMenu();
 
 	private:
 		void						simulateReceiveClient(unsigned int);
+
+	public:
+		void	setPort(std::string const &);
+		void	setIpAdresse(std::string const &);
+		void	setPseudo(std::string const &);
+		void	setGame(std::string const &);
+		void	setLevel(std::string const &);
+		void	setScript(std::string const &);
+		bool	createGame();
 };

@@ -15,7 +15,7 @@ class TextInput : public Font
 
 	// coplien form
 	private:
-//		TextInput(TextInput const &) : Font(ComponentType::TEXTINPUT) {}
+	//		TextInput(TextInput const &) : Font(ComponentType::TEXTINPUT) {}
 	//	TextInput const	&operator=(TextInput const &) { return *this; }
 
 	public:

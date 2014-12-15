@@ -22,8 +22,7 @@ TextInputSystem::~TextInputSystem()
 
 }
 
-
-void		TextInputSystem::process(Entity &entity, uint32_t delta)
+void		TextInputSystem::process(Entity &/* entity */, uint32_t /* delta */)
 {
 /*	Font *sprite = static_cast<TextInput *>(entity.getSpecificComponent(ComponentType::TEXTINPUT));
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));

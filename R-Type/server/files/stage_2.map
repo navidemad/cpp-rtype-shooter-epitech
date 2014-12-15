@@ -1,0 +1,15 @@
+name "stage_2"
+
+require "ship"
+require "boss_dark_vador"
+
+action 2.2 spawnMobAt 1 monster_basic 380 40 230 
+action 3.6 spawnMobAt 2 monster_basic 380 250 270
+action 4.5 spawnMobAt 3 monster_basic 380 480 310
+add_cron 4.5 10 1 fireMob 1 270
+add_cron 4.9 10 2 fireMob 2 270
+add_cron 5.8 10 3 fireMob 3 270
+remove_cron 7.2 1
+remove_cron 7.9 2
+remove_cron 9.3 3
+action 10.5 moveMobTo 1 310

@@ -16,27 +16,42 @@ ContentManager::~ContentManager()
 
 void	ContentManager::loadTextures()
 {
-	mTextures->loadResources("", "");
+	//mTextures->loadResources("", "");
 }
 
 void	ContentManager::loadSprites()
 {
-	mSprites->loadResources("", "");
+	auto sprites = std::static_pointer_cast<SpriteManager>(mSprites);
+
+	sprites->loadResources("menu", "assets/sprites/menu.png");
+	sprites->loadResources("logo", "assets/sprites/logo.png");
+	sprites->loadResources("logoCharacter", "assets/sprites/logoCharacter.png");
+	sprites->loadResources("logoSearch", "assets/sprites/logoSearch.png");
+	sprites->loadResources("logoOption", "assets/sprites/logoOption.png");
+	sprites->loadResources("searchBar", "assets/sprites/search_bar.png");
+	sprites->loadResources("ball", "assets/sprites/r-typesheet3.gif", 12, 1, true);
+	sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(157, 34, 288, 24), true);
+	sprites->loadResources("cursor", "assets/sprites/cursor.png");
 }
 
 void	ContentManager::loadFonts()
 {
-	mFonts->loadResources("", "");
+	mFonts->loadResources("0", "./assets/fonts/RemachineScript_Personal_Use.ttf");
 }
 
 void	ContentManager::loadMusics()
 {
-	mMusics->loadResources("", "");
+	mMusics->loadResources("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg");
+	mMusics->loadResources("Game", "./assets/musics/Touhou_8/[02] Illusionary Night ~ Ghostly Eyes.ogg");
+	mMusics->loadResources("Boss", "./assets/musics/Touhou_8/[08] Retribution for the Eternal Night ~ Imperishable Night.ogg");
 }
 
 void	ContentManager::loadSounds()
 {
-	mSounds->loadResources("", "");
+	mSounds->loadResources("change_option", "./assets/sounds/efx/se_ok00.wav");
+	mSounds->loadResources("option", "./assets/sounds/efx/se_option.wav");
+	mSounds->loadResources("pause", "./assets/sounds/efx/se_pause.wav");
+	mSounds->loadResources("pldead", "./assets/sounds/efx/se_pldead00.wav");
 }
 
 std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTextures() const

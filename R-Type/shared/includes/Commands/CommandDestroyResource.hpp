@@ -9,19 +9,19 @@ class CommandDestroyResource : public NoCopyable, public ICommand {
 	public:
 		#pragma pack(push, 1)
 		struct PacketFromServer {
-			int32_t	id;
+			uint64_t id;
 		};
 		#pragma pack(pop)
 
 	// ctor / dtor
 	public:
-		explicit CommandDestroyResource(void);
+		CommandDestroyResource(void);
 		~CommandDestroyResource(void);
 
 	// getter - setters
 	public:
-		int 	getId(void) const;
-		void	setId(int id);
+		uint64_t 	getId(void) const;
+		void		setId(uint64_t id);
 
 	// public pure methods
 	public:
@@ -32,6 +32,6 @@ class CommandDestroyResource : public NoCopyable, public ICommand {
 
 	// attributes
 	private:
-		int mId;
+		uint64_t mId;
 
 };

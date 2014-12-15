@@ -17,7 +17,7 @@ class CommandUpdatePseudo : public NoCopyable, public ICommand {
 
 	// ctor / dtor
 	public:
-		explicit CommandUpdatePseudo(void);
+		CommandUpdatePseudo(void);
 		~CommandUpdatePseudo(void);
 
 	// getter - setters
