@@ -94,3 +94,7 @@ void ECSManagerNetwork::OnUpdateScore(const std::string &/*name*/, int /*id*/, i
 void ECSManagerNetwork::OnCloseSocket(void){
 	
 }
+
+void ECSManagerNetwork::OnFailConnect(void){
+
+}

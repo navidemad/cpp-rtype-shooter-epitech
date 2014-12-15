@@ -42,6 +42,7 @@ class ECSManagerNetwork : public QObject, public ECSManager
 		void OnTimeElapse(int64_t time);
 		void OnUpdateScore(const std::string &name, int id, int score);
         void OnCloseSocket(void);
+        void OnFailConnect(void);
 
 	public:
 		ECSManagerNetwork();

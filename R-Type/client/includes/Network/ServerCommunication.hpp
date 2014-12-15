@@ -34,6 +34,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void SignalTimeElapse(int64_t time);
         void SignalUpdateScore(const std::string &name, int id, int score);
         void SignalCloseSocket(void);
+        void SignalFailConnect(void);
 
     //slots
     public slots:

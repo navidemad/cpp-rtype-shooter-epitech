@@ -148,6 +148,7 @@ void ServerCommunication::OnConnectToServer(void){
 	}
 	catch (SocketException e){
 		std::cout << e.what() << std::endl;
+		emit SignalFailConnect();
 	}
 }
 
