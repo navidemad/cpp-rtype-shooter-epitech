@@ -22,6 +22,5 @@ class WindowsMutex : public NoCopyable, public IMutex {
 
     // attributes
     private:
-        CRITICAL_SECTION mMutex;
-        bool    mAlreadyLocked;
+		HANDLE	mMutex;
 };

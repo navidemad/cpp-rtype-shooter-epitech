@@ -1,26 +1,29 @@
 #include "WindowsMutex.hpp"
+#include "MutexException.hpp"
 
-WindowsMutex::WindowsMutex(void) : mAlreadyLocked(false) {
-    InitializeCriticalSection(&mMutex);
+WindowsMutex::WindowsMutex(void) {
+	mMutex = CreateMutex(NULL, FALSE, NULL);
+
+	if (mMutex == NULL)
+		MutexException("Cannot create mutex (fail CreateMutex())");
 }
 
 WindowsMutex::~WindowsMutex(void) {
-    DeleteCriticalSection(&mMutex);
+	CloseHandle(mMutex);
 }
 
 void	WindowsMutex::lock(void) {
-    EnterCriticalSection(&mMutex);
-    mAlreadyLocked = true;
+	if (WaitForSingleObject(mMutex, INFINITE) != WAIT_OBJECT_0)
+		MutexException("Fail WaitForSingleObject() (Mutex::lock())");
 }
 
 void	WindowsMutex::unlock(void) {
-    LeaveCriticalSection(&mMutex);
-    mAlreadyLocked = false;
+	ReleaseMutex(mMutex);
 }
 
 void	WindowsMutex::trylock(void) {
-    if (TryEnterCriticalSection(&mMutex) && mAlreadyLocked)
-        LeaveCriticalSection(&mMutex);
+	if (WaitForSingleObject(mMutex, 0) != WAIT_OBJECT_0)
+		MutexException("Fail WaitForSingleObject() (Mutex::lock())");
 }
 
 void *WindowsMutex::getMutex(void) {
