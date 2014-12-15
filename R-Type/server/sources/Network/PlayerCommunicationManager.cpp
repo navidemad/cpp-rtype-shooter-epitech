@@ -34,7 +34,7 @@ void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &lo
 
 void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const Peer &peer) {
 	{
-		ScopedLock scopedLock(mMutex);
+		Scopedlock(mMutex);
 
 		if (findPeer(peer) == mAllowedPeers.end()) {
 		  logInfo(peer, "Not whitelisted - Not treated");
@@ -69,14 +69,14 @@ void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, con
 }
 
 void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	if (findPeer(peer) == mAllowedPeers.end())
 		mAllowedPeers.push_back(peer);
 }
 
 void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	const auto &peerIt = findPeer(peer);
 	if (peerIt != mAllowedPeers.end())

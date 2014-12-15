@@ -16,7 +16,7 @@ std::list<NetworkManager::Socket>::iterator NetworkManager::findSocket(int socke
 }
 
 void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *listener) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	if (socketFd == -1)
 		throw SocketException("Invalid socket cannot be under the NetworkManager control");
@@ -34,7 +34,7 @@ void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *list
 }
 
 void	NetworkManager::removeSocket(int socketFd) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	auto socket = findSocket(socketFd);
 
@@ -74,7 +74,7 @@ void	NetworkManager::doSelect(void) {
 }
 
 void	NetworkManager::initFds(void) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	FD_ZERO(&mReadFds);
 	FD_ZERO(&mWriteFds);
@@ -86,7 +86,7 @@ void	NetworkManager::initFds(void) {
 }
 
 void	NetworkManager::checkFds(void) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	for (auto &socket : mSockets) {
 		bool readable = FD_ISSET(socket.fd, &mReadFds) != 0;
@@ -102,7 +102,7 @@ void	NetworkManager::checkFds(void) {
 void	NetworkManager::socketCallback(int socketFd, bool readable, bool writable) {
 	std::list<NetworkManager::Socket>::iterator socket;
 	{
-		ScopedLock scopedLock(mMutex);
+		Scopedlock(mMutex);
 
 		socket = findSocket(socketFd);
 	}
@@ -118,7 +118,7 @@ void	NetworkManager::socketCallback(int socketFd, bool readable, bool writable) 
 }
 
 bool NetworkManager::stillUnderControl(int socketFd) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	return findSocket(socketFd) != mSockets.end();
 }

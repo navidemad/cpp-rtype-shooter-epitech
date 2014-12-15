@@ -25,7 +25,7 @@ void GamesManager::run(void) {
     while (true)
     {
         {
-            ScopedLock scopedLock(mMutex);
+            Scopedlock(mMutex);
 
             games = mGames;
         }
@@ -52,7 +52,7 @@ void GamesManager::run(void) {
 }
 
 void GamesManager::createGame(const NGame::Properties& properties, const Peer &peer) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
 	if (findGameByName(properties.getName()) != mGames.end())
 		throw GamesManagerException("Game name already taken", ErrorStatus(ErrorStatus::Error::KO));
@@ -71,7 +71,7 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 }
 
 void GamesManager::removeGame(const Peer &peer, const std::string& name) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
     auto game = findGameByName(name);
 
@@ -98,8 +98,7 @@ void	GamesManager::removeClientsFromWhitelist(const std::shared_ptr<NGame::Game>
 ** PlayerCommunicationManager::OnPlayerCommunicationManagerEvent
 */ 
 void GamesManager::onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) {
-	ScopedLock scopedLock(mMutex);
-
+	Scopedlock(mMutex);
     try {
         auto game = findGameByHost(peer);
 
@@ -121,7 +120,7 @@ void GamesManager::onPlayerFire(PlayerCommunicationManager &playerCommunicationM
 }
 
 void GamesManager::onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
     try {
         auto game = findGameByHost(peer);
 
@@ -162,13 +161,13 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame
 }
 
 void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	mPlayerCommunicationManager.removePeerFromWhiteList(peer);
 }
 
 void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>& users, uint64_t id) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
     std::cout << __FUNCTION__ << std::endl;
     for (const auto &user : users)
@@ -176,30 +175,28 @@ void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>&
 }
 
 void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& users, const NGame::Component& component) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
     for (const auto &user : users)
         mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	std::cout << __FUNCTION__ << std::endl;
 	mPlayerCommunicationManager.sendUpdateScore(peer, id, pseudo, score);
 }
 
 void GamesManager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPing) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	std::cout << __FUNCTION__ << std::endl;
 	mPlayerCommunicationManager.sendTimeElapsedPing(peer, elapsedPing);
 }
 
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
-    std::cout << "DEBUG POUR UNIX [" << __FILE__ << "] [" << __LINE__ << "] [" << __FUNCTION__ << "] AVANT DEADLOCK" << std::endl;
-    ScopedLock scopedLock(mMutex); // ce scoped lock deadlock sur unix pk je ne sais pas
-    std::cout << "DEBUG POUR UNIX [" << __FILE__ << "] [" << __LINE__ << "] [" << __FUNCTION__ << "] APRES DEADLOCK" << std::endl;
+    Scopedlock(mMutex);
 
     auto existingGame = findGameByHost(peer);
     if (existingGame != mGames.end())
@@ -212,7 +209,7 @@ void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const s
 }
 
 void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
     try {
         joinGame(NGame::USER_TYPE::PLAYER, peer, name, pseudo);
@@ -224,7 +221,7 @@ void GamesManager::playGame(const Peer &peer, const std::string &name, const std
 }
 
 void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
     try {
         joinGame(NGame::USER_TYPE::SPECTATOR, peer, name);
@@ -236,7 +233,7 @@ void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
 }
 
 void GamesManager::leaveGame(const Peer &peer) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
     try {
         auto game = findGameByHost(peer);
@@ -253,7 +250,7 @@ void GamesManager::leaveGame(const Peer &peer) {
 }
 
 void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
     auto game = findGameByHost(peer);
 
@@ -272,7 +269,7 @@ void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
 }
 
 const NGame::Properties &GamesManager::getGameProperties(const std::string &name) {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
     auto game = findGameByName(name);
 
@@ -283,7 +280,7 @@ const NGame::Properties &GamesManager::getGameProperties(const std::string &name
 }
 
 std::list<NGame::Properties> GamesManager::getGamesProperties(void) const {
-    ScopedLock scopedLock(mMutex);
+    Scopedlock(mMutex);
 
 	std::list<NGame::Properties> gamesProperties;
 
@@ -311,7 +308,7 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
 }
 
 std::list<std::pair<std::string, std::string>> GamesManager::getScripts(void) const {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	std::list<std::pair<std::string, std::string>> scripts;
 

@@ -61,7 +61,7 @@ void	UnixTcpClient::initFromSocket(void *socketFd, const std::string &addr, int 
 }
 
 void	UnixTcpClient::closeClient(void) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -76,13 +76,13 @@ void	UnixTcpClient::closeClient(void) {
 }
 
 void	UnixTcpClient::send(const IClientSocket::Message &message) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	mOutBuffer.insert(mOutBuffer.end(), message.msg.begin(), message.msg.end());
 }
 
 IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 	
 	IClientSocket::Message message;
 
@@ -97,7 +97,7 @@ IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	UnixTcpClient::nbBytesToRead(void) const {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 	
 	return mInBuffer.size();
 }
@@ -130,7 +130,7 @@ void	UnixTcpClient::onSocketWritable(int) {
 }
 
 int UnixTcpClient::sendSocket(void) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
     if (mOutBuffer.size() == 0)
         return 0;
@@ -147,7 +147,7 @@ int UnixTcpClient::sendSocket(void) {
 }
 
 void UnixTcpClient::recvSocket(void) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	char buffer[1024];
 	int nbBytesRead = ::recv(mSocketFd, buffer, 1024, 0);

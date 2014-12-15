@@ -28,7 +28,7 @@ ThreadPool::~ThreadPool(void) {
 
 void ThreadPool::stop(void) {
 	{
-        ScopedLock scopedLock(mMutex);
+        Scopedlock(mMutex);
 
     if (mIsRunning == false)
     	return ;
@@ -49,7 +49,7 @@ void ThreadPool::operator()(void *) {
 
 	while (true) {
 		{
-			ScopedLock scopedLock(mMutex);
+			Scopedlock(mMutex);
 
 			while (mIsRunning && mTasks.empty()) {
 				try {
@@ -71,7 +71,7 @@ void ThreadPool::operator()(void *) {
 }
 
 const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
-	ScopedLock scopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	mTasks.push_back(task);
 	try {

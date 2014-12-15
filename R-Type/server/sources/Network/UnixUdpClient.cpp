@@ -59,7 +59,7 @@ void	UnixUdpClient::initFromSocket(void *socketFd, const std::string &addr, int 
 }
 
 void	UnixUdpClient::closeClient(void) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -74,13 +74,13 @@ void	UnixUdpClient::closeClient(void) {
 }
 
 void	UnixUdpClient::send(const IClientSocket::Message &message) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	mOutDatagrams.push_back(message);
 }
 
 IClientSocket::Message	UnixUdpClient::receive(unsigned int sizeToRead) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 	
 	if (mInDatagrams.size() == 0)
 		throw SocketException("No datagrams available");
@@ -107,7 +107,7 @@ IClientSocket::Message	UnixUdpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	UnixUdpClient::nbBytesToRead(void) const {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 	
 	if (mInDatagrams.size() == 0)
 		return 0;
@@ -139,7 +139,7 @@ void	UnixUdpClient::onSocketWritable(int) {
 }
 
 int UnixUdpClient::sendSocket(void) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
     if (mOutDatagrams.size() == 0)
         return 0;
@@ -163,7 +163,7 @@ int UnixUdpClient::sendSocket(void) {
 }
 
 void UnixUdpClient::recvSocket(void) {
-	ScopedLock ScopedLock(mMutex);
+	Scopedlock(mMutex);
 
 	char buffer[1024];
 	struct sockaddr_in addr;

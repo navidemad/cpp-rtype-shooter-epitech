@@ -2,10 +2,10 @@
 #include "ScriptLoader.hpp"
 #include <iostream>
 
-int	main(void) {
+int main(void) {
     int ret;
 
-	try {
+    try {
         RTypeServer server;
         server.run();
         ret = EXIT_SUCCESS;

@@ -120,43 +120,43 @@ void NGame::Game::update(void) {
 ** getters
 */
 Script& NGame::Game::getScript(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mScript;
 }
 
 NGame::Game::OnGameEvent* NGame::Game::getListener(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mListener;
 }
 
 Timer& NGame::Game::getTimer(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mTimer;
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mProperties;
 }
 
 std::vector<NGame::User>& NGame::Game::getUsers(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mUsers;
 }
 
 std::vector<NGame::Component>& NGame::Game::getComponents(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mComponents;
 }
 
 NGame::Game::State NGame::Game::getState(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mState;
 }
@@ -166,19 +166,19 @@ std::shared_ptr<IMutex>& NGame::Game::getMutex(void) {
 }
 
 Peer& NGame::Game::getOwner(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mOwner;
 }
 
 bool NGame::Game::getPullEnded(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mPullEnded;
 }
 
 uint64_t NGame::Game::getCurrentComponentMaxId(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	return mCurrentComponentMaxId;
 }
@@ -187,37 +187,37 @@ uint64_t NGame::Game::getCurrentComponentMaxId(void) {
 ** setters
 */
 void NGame::Game::setScript(Script& script) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mScript = script;
 }
 
 void NGame::Game::setListener(NGame::Game::OnGameEvent* listener) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mListener = listener;
 }
 
 void NGame::Game::setProperties(NGame::Properties& properties) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mProperties = properties;
 }
 
 void NGame::Game::setUsers(std::vector<NGame::User>& users) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mUsers = users;
 }
 
 void NGame::Game::setComponents(std::vector<NGame::Component>& components) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mComponents = components;
 }
 
 void NGame::Game::setState(NGame::Game::State state) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mState = state;
 }
@@ -227,19 +227,19 @@ void NGame::Game::setMutex(std::shared_ptr<IMutex>& mutex) {
 }
 
 void NGame::Game::setOwner(const Peer& owner) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mOwner = owner;
 }
 
 void NGame::Game::setPullEnded(bool pullEnded) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mPullEnded = pullEnded;
 }
 
 void NGame::Game::setCurrentComponentMaxId(uint64_t currentComponentMaxId) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	mCurrentComponentMaxId = currentComponentMaxId;
 }
@@ -383,7 +383,7 @@ std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t 
 ** workflow internal game
 */
 void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
-	ScopedLock scopedLock(getMutex());
+	Scopedlock(getMutex());
 
 	if (getListener())
 		for (const auto &user : getUsers())
@@ -414,14 +414,14 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 	component.setId(getCurrentComponentMaxId());
 
 	{
-		ScopedLock scopedLock(getMutex());
+		Scopedlock(getMutex());
 		mComponents.push_back(component);
 	}
 
 	user.setId(getCurrentComponentMaxId());
 
 	{
-		ScopedLock scopedLock(getMutex());
+		Scopedlock(getMutex());
 		mUsers.push_back(user);
 	}
 
@@ -447,7 +447,7 @@ void NGame::Game::tryAddSpectator(const NGame::User& user) {
 		throw GameException("No place for new spectators");
 
 	{
-		ScopedLock scopedLock(getMutex());
+		Scopedlock(getMutex());
 		mUsers.push_back(user);
 	}
 
@@ -489,7 +489,7 @@ void NGame::Game::delUser(const Peer &peer) {
 		tryDelSpectator();
 
 	{
-		ScopedLock scopedLock(getMutex());
+		Scopedlock(getMutex());
 		mUsers.erase(user);
 	}
 }
@@ -540,7 +540,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	component.setId(++mCurrentComponentMaxId);
 
 	{
-		ScopedLock scopedLock(getMutex());
+		Scopedlock(getMutex());
 		mComponents.push_back(component);
 	}
 
