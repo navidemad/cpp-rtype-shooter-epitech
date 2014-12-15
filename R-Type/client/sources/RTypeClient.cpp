@@ -90,6 +90,7 @@ RTypeClient::RTypeClient()
 	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), rtype, SLOT(OnTimeElapse(int64_t)));
 	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), rtype, SLOT(OnUpdateScore(const std::string & , int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalCloseSocket()), searchMenu, SLOT(OnCloseSocket()));
+	QObject::connect(&mServer, SIGNAL(SignalConnectFail()), searchMenu, SLOT(OnConnectFail()));
 }
 
 RTypeClient::~RTypeClient()
