@@ -20,7 +20,7 @@ namespace Config
 
 	namespace Network
 	{
-		const unsigned int	port = 4245;
+		const unsigned int	port = 4246;
 		const std::string	adress = "localhost";
 		const std::string	defaultPseudo = "anon en mousse";
 	}

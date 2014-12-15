@@ -9,8 +9,9 @@
 int main(void) {
     auto mutex = PortabilityBuilder::getMutex();
 
+    bool oneTest = true;
 
-    // test 1 AVEC DEADLOCK
+    if (oneTest)
     {
         Scopedlock(mutex);
         {
@@ -20,24 +21,21 @@ int main(void) {
             }
         }
     }
-
-
-    // test 1 SANS DEADLOCK
+    else
     {
-        Scopedlock(mutex);
         {
+            Scopedlock(mutex);
+            {
 
+            }
+        }
+        {
+            Scopedlock(mutex);
+            {
+
+            }
         }
     }
-
-
-    {
-        Scopedlock(mutex);
-        {
-
-        }
-    }
-
 
     return 0;
 }
