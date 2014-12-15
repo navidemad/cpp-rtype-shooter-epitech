@@ -37,20 +37,20 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
 
     //slots
     public slots:
-        bool OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
-        bool OnDeleteGame(const std::string &name);
-        bool OnFire(void);
-        bool OnJoinGame(const std::string &name);
-        bool OnLeaveGame(void);
-        bool OnListGame(void);
-        bool OnListLevel(void);
-        bool OnMove(IResource::Direction direction);
-        bool OnObserveGame(const std::string &name);
-        bool OnShowGame(const std::string &name);
-        bool OnUpdatePseudo(const std::string &pseudo);
+        void OnCreateGame(const std::string &name, const std::string &levelName, int nbPlayer, int nbObserver);
+        void OnDeleteGame(const std::string &name);
+        void OnFire(void);
+        void OnJoinGame(const std::string &name);
+        void OnLeaveGame(void);
+        void OnListGame(void);
+        void OnListLevel(void);
+        void OnMove(IResource::Direction direction);
+        void OnObserveGame(const std::string &name);
+        void OnShowGame(const std::string &name);
+        void OnUpdatePseudo(const std::string &pseudo);
         void OnSetServerIp(const std::string &ip);
         void OnSetServerPortTcp(int port);
-        bool OnConnectToServer(void);
+        void OnConnectToServer(void);
 
     //handle command from server
     public:
@@ -82,7 +82,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
 
     //dry
     private:
-        bool sendCommand(ICommand *command, bool isTcpCommand);
+        void sendCommand(ICommand *command, bool isTcpCommand);
 
     //attribut
     private:
