@@ -34,16 +34,16 @@ ScriptParser::~ScriptParser(void) {
 
 }
 
-Script ScriptParser::parseFile(std::ifstream &file){
+Script ScriptParser::parseFile(std::ifstream &file) {
 	std::string lineContent;
 	std::string wordContent;
 	Script script;
-    std::string textScript;
+	std::string textScript;
 
-	while (file && std::getline(file, lineContent)){
-		if (lineContent.length() == 0) 
+	while (file && std::getline(file, lineContent)) {
+		if (lineContent.length() == 0)
 			continue;
-        textScript += lineContent + "\n";
+		textScript += lineContent + "\n";
 		parser.setStringToParse(lineContent);
 		bool rightCmd = false;
 		wordContent = parser.extractWord();
@@ -61,29 +61,56 @@ Script ScriptParser::parseFile(std::ifstream &file){
 		if (rightCmd == false)
 			throw ScriptException("Wrong Command Action");
 	}
-    script.setTextScript(textScript);
+	script.setTextScript(textScript);
 
 	/*
 	std::cout << "AVANT:" << std::endl;
 	for (const auto& command : script.getCommands())
-		std::cout << command->getFrame() << " ";
+	std::cout << command->getFrame() << " ";
 	std::cout << std::endl;
 
 	std::sort(
-		script.getCommands().begin(), 
-		script.getCommands().end(), 
-		[] (const std::shared_ptr<IScriptCommand> &lhs, const std::shared_ptr<IScriptCommand> &rhs)
-		{
-			return true;
-		}
+	script.getCommands().begin(),
+	script.getCommands().end(),
+	[] (const std::shared_ptr<IScriptCommand> &lhs, const std::shared_ptr<IScriptCommand> &rhs)
+	{
+	return true;
+	}
 	);
 
 	std::cout << "APRES:" << std::endl;
 	for (const auto& command : script.getCommands())
-		std::cout << command->getFrame() << " ";
+	std::cout << command->getFrame() << " ";
 	std::cout << std::endl;
 	*/
 
+	return script;
+}
+
+Script ScriptParser::parseMapByString(const std::string& stage_content) {
+	std::string wordContent;
+	Script script;
+	auto lines = Utils::split(stage_content);
+	for (auto line : lines) {
+		if (line.length() == 0)
+			continue;
+		parser.setStringToParse(line);
+		bool rightCmd = false;
+		wordContent = parser.extractWord();
+		for (const auto &instr : tokenExecTab) {
+			if (instr.cmd == wordContent) {
+				try {
+					script << (this->*instr.Ptr)();
+				}
+				catch (const std::exception& e) {
+					throw ScriptException(e.what());
+				}
+				rightCmd = true;
+			}
+		}
+		if (rightCmd == false)
+			throw ScriptException("Wrong Command Action");
+	}
 	return script;
 }
 

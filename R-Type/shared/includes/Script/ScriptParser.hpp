@@ -25,6 +25,8 @@ class ScriptParser : public NoCopyable {
 	// internal functions
 	public:
 		Script										parseFile(std::ifstream &);
+		Script										parseMapByString(const std::string& stage_content);
+
 		std::shared_ptr<ScriptAction::IActionType> fctSpawnMob(void);
 		std::shared_ptr<ScriptAction::IActionType> fctMoveMob(void);
 		std::shared_ptr<IScriptCommand>				cmdName(void);

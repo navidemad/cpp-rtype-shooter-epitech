@@ -4,6 +4,7 @@
 #include <sstream>
 #include <memory>
 #include <iostream>
+#include <vector>
 
 namespace Utils
 {
@@ -30,6 +31,7 @@ namespace Utils
     void logError(const std::string &log);
 	std::string basename(const std::string &);
 	std::string removeExtension(const std::string &pathname);
+	std::vector<std::string> split(const std::string& str, int delimiter(int) = ::isspace);
 
 	#if defined(__OS_LINUX__)
 		const std::string YELLOW = "\033[1;33m";
