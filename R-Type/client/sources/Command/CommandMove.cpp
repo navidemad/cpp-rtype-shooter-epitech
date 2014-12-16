@@ -3,7 +3,6 @@
 #include <cstring>
 #include <iostream>
 IClientSocket::Message CommandMove::getMessage(void) const {
-	std::cout << "CommandMove::" << __FUNCTION__ << std::endl;
 	CommandMove::PacketFromClient packet;
 	std::memset(&packet, 0, sizeof(CommandMove::PacketFromClient));
 

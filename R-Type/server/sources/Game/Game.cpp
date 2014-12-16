@@ -25,9 +25,9 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 
 const NGame::Game::tokenAngle NGame::Game::tokenAngleTab[] = {
 	{ IResource::Direction::RIGHT, 0 },
-	{ IResource::Direction::TOP, 90 },
+	{ IResource::Direction::BOTTOM, 90 },
 	{ IResource::Direction::LEFT, 180 },
-	{ IResource::Direction::BOTTOM, 270 }
+	{ IResource::Direction::TOP, 270 }
 };
 
 const double NGame::Game::XMAX = 100.;
@@ -73,6 +73,9 @@ void NGame::Game::pull(void) {
 void NGame::Game::actions(void) {
 	std::shared_ptr<IScriptCommand> currentCommand;
 
+	if (mTimer.frame() < 40)
+		return;
+	/*
 	if (getScript().getCommands().size()) 
 	{
 		do
@@ -93,6 +96,7 @@ void NGame::Game::actions(void) {
 
 		} while (getScript().goToNextAction());
 	}
+	*/
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
@@ -421,7 +425,7 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 
 	double playerWidth = 32.;
 	double playerHeight = 32.;
-	double playerSpeed = 0.05;
+	double playerSpeed = 0.35;
 	short playerAngle = 0;
 
 	setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
@@ -512,8 +516,10 @@ void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {
-	double newX = component.getX() + cos(component.getAngle()) * component.getSpeed(); // gestion du * deltaTime
-	double newY = component.getY() + sin(component.getAngle()) * component.getSpeed(); // gestion du * deltaTime
+	double newX = component.getX() + component.getSpeed() * (cos(component.getAngle() * M_PI / 180));
+	double newY = component.getY() + component.getSpeed() * (sin(component.getAngle() * M_PI / 180));
+
+	std::cout << "x: [" << component.getX() << "] => [" << newX << "]" << std::endl;
 
 	component.setX(newX);
 	component.setY(newY);
@@ -528,7 +534,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	
 	double bulletWidth = 32.;
 	double bulletHeight = 32.;
-	double bulletSpeed = 0.05;
+	double bulletSpeed = 0.5;
 	short bulletAngle = 0;
 	
 	auto user = findUserByHost(peer);

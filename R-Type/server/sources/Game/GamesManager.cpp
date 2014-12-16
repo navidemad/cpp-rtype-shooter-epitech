@@ -273,6 +273,7 @@ void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& u
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
+    std::cout << "pseudo: '" << pseudo << std::endl;
     getPlayerCommunicationManager().sendUpdateScore(peer, id, pseudo, score);
 }
 
