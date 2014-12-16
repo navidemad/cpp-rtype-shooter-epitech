@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <iostream>
+#include "Default.hpp"
 #include "Engine/Compenent/List.hpp"
 #include "Engine/Compenent/Position.hpp"
 #include "Engine/Compenent/Drawable.hpp"
@@ -21,7 +22,7 @@ void ECSManagerNetwork::OnDestroyResource(int id)
 
 void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
-
+	getClient()->setIdGame(RTypeClient::Game::MENU);
 }
 
 void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)
@@ -42,24 +43,23 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
 {
 	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
-
 	if (!isEntityCreated(id))
 	{
-		std::cout << "ECSManagerNetwork::OnMoveResource Entity non existant => CREATION en (" << x << ";" << y << ")" << std::endl;
+		std::cout << "isEntityCreated(id) = false ; create entity in (x:'" << x << "'; y:'" << y << "'')" << std::endl;
 		createEntity(id);
 
 		Entity &entity = getEntity(id);
-		entity.addComponent(new Position(x, y));
+		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 		entity.addComponent(new Drawable("ball"));
 	}
 	else
 	{
-		std::cout << "ECSManagerNetwork::OnMoveResource Entity déjà existante => UPDATE en (" << x << ";" << y << ")" << std::endl;
+		std::cout << "isEntityCreated(id) = true ; update entity to (x:'" << x << "'; y:'" << y << "'')" << std::endl;
 		Entity &entity = getEntity(id);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
-		pos->setX(x);
-		pos->setY(y);
+		pos->setX((Config::Window::x / 100.f) * x);
+		pos->setY((Config::Window::y / 100.f) * y);
 	}
 }
 

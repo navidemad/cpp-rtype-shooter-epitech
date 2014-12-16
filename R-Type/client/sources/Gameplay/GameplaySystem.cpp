@@ -33,10 +33,14 @@ DownSystem::DownSystem()
 
 DownSystem::~DownSystem() { }
 
-void	DownSystem::process(Entity &entity, uint32_t /* */)
+void	DownSystem::process(Entity &entity, uint32_t delta)
 {
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("s"))
+	Down *down = static_cast<Down *>(entity.getSpecificComponent(ComponentType::DOWN));
+
+	down->addDelta(delta);
+	if (down->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("s"))
 	{
+		down->resetTimer();
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::BOTTOM);
 	}
 }
@@ -50,10 +54,14 @@ UpSystem::~UpSystem()
 {
 }
 
-void	UpSystem::process(Entity &entity, uint32_t /* */)
+void	UpSystem::process(Entity &entity, uint32_t delta)
 {
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("z"))
+	Up *up = static_cast<Up *>(entity.getSpecificComponent(ComponentType::UP));
+
+	up->addDelta(delta);
+	if (up->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("z"))
 	{
+		up->resetTimer();
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::TOP);
 	}
 }
@@ -67,10 +75,14 @@ RightSystem::~RightSystem()
 {
 }
 
-void	RightSystem::process(Entity &entity, uint32_t /* */)
+void	RightSystem::process(Entity &entity, uint32_t delta)
 {
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("q"))
+	Right *right = static_cast<Right *>(entity.getSpecificComponent(ComponentType::RIGHT));
+
+	right->addDelta(delta);
+	if (right->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("q"))
 	{
+		right->resetTimer();
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::LEFT);
 	}
 }
@@ -84,10 +96,15 @@ LeftSystem::~LeftSystem()
 {
 }
 
-void	LeftSystem::process(Entity &entity, uint32_t /* */)
+void	LeftSystem::process(Entity &entity, uint32_t delta)
 {
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("d"))
+	Left *right = static_cast<Left *>(entity.getSpecificComponent(ComponentType::LEFT));
+
+	right->addDelta(delta);
+
+	if (right->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("d"))
 	{
+		right->resetTimer();
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::RIGHT);
 	}
 }

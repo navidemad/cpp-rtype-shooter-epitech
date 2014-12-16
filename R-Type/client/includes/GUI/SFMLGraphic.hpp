@@ -32,16 +32,13 @@ class SFMLGraphic : public IGraphic
 	// public methods
 	public:
 		bool				drawSprite(std::string const &key, uint64_t delta, float x, float y, uint32_t id);
-		bool				drawFont(std::string const &key, std::string const &str, float x, float y, uint32_t size);
+		bool				drawFont(std::string const &key, std::string const &strn, float x, float y, uint32_t size);
 		bool				playMusic(std::string const &key, bool onLoop = true);
 		bool				playSound(std::string const &key, bool onLoop = false);
 		void				stopMusic();
 		void				stopSound(std::string const &key);
 		void				setVolume(std::string const &key, float volume = 100.0);
 		std::string	const	&getInputText() const;
-
-//		void				loadSprite(std::string const &key, std::string const &path);
-//		void				loadSound(std::string const &key, std::string const &path);
 
 		bool				isOpen() const;
 		void				handleEvent();
@@ -60,9 +57,7 @@ class SFMLGraphic : public IGraphic
 	private:
 		sf::RenderWindow					mWindow;
 		std::map<sf::Event, std::string>	mKeyEvents;
-public:
 		ContentManager						mContentManager;
-private:
 		InputManager						mInputManager;
 		sf::Clock							mDeltaClock;
 		sf::Music							mMusic;

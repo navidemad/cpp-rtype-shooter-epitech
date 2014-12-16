@@ -107,7 +107,6 @@ namespace NGame
             bool collision(NGame::Component& component);
             bool collisionTouch(const NGame::Component&, const NGame::Component&) const;
 			bool collisionWithNoLife(NGame::Component& component);
-			bool collisionWithBorders(NGame::Component& component);
             bool collisionWithBonus(NGame::Component&, NGame::Component&);
             bool collisionWithBullet(NGame::Component&, NGame::Component&);
             bool collisionWithEnnemy(NGame::Component&, NGame::Component&);

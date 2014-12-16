@@ -27,6 +27,13 @@ namespace Utils
 		return val;
 	}
 
+	template <class T>
+	std::string toString(const T & t) {
+		std::ostringstream oss;
+		oss << t;
+		return oss.str();
+	}
+
     void logInfo(const std::string &log);
     void logError(const std::string &log);
 	std::string basename(const std::string &);
