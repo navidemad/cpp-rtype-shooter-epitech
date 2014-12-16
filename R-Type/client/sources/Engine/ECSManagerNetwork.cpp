@@ -42,6 +42,7 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
 {
 	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
+
 	if (!isEntityCreated(id))
 	{
 		std::cout << "ECSManagerNetwork::OnMoveResource Entity non existant => CREATION en (" << x << ";" << y << ")" << std::endl;

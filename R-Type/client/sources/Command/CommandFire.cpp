@@ -1,8 +1,7 @@
 #include "CommandFire.hpp"
 #include "CommandException.hpp"
-#include <iostream> // a supprimer
+
 IClientSocket::Message CommandFire::getMessage(void) const {
-	std::cout << "CommandFire::" << __FUNCTION__ << std::endl;
 	IClientSocket::Message message;
 	message.msg.clear();
 	message.msgSize = 0;

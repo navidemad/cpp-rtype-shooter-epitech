@@ -52,7 +52,6 @@ void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, 
 }
 
 void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &command, const Peer &peer) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
   logInfo(peer, "RECV move");
 
 	if (mListener) {
@@ -63,7 +62,6 @@ void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &comma
 }
 
 void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, const Peer &peer) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
   logInfo(peer, "RECV fire");
 
 	if (mListener)
@@ -71,13 +69,6 @@ void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, con
 }
 
 void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
-	std::cout << "###############" << std::endl;
-	std::cout << "#" << std::endl;
-	std::cout << "#" << std::endl;
-	std::cout << "# addPeerToWhiteList" << std::endl;
-	std::cout << "#" << std::endl;
-	std::cout << "#" << std::endl;
-	std::cout << "###############" << std::endl;
 	Scopedlock(mMutex);
 
 	if (findPeer(peer) == mAllowedPeers.end())
@@ -85,7 +76,6 @@ void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
 }
 
 void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	Scopedlock(mMutex);
 
 	const auto &peerIt = findPeer(peer);
