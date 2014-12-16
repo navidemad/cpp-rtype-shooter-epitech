@@ -387,7 +387,7 @@ void			RTypeClient::initCreateMenu()
 	cursor->addEntity(createGame.getId());
 
 	createGame.addComponent(new Position(420, 500));
-	createGame.addComponent(new Font("0", "Créer la partie "));
+	createGame.addComponent(new Font("0", "Creer la partie "));
 	createGame.addComponent(new ButtonCreateGame());
 
 	Entity		backGame = engine.createEntity();

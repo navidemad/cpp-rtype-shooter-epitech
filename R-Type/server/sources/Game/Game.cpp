@@ -73,7 +73,7 @@ void NGame::Game::pull(void) {
 void NGame::Game::actions(void) {
 	std::shared_ptr<IScriptCommand> currentCommand;
 
-	if (mTimer.frame() < 40)
+	if (mTimer.frame() < 40.)
 		return;
 	/*
 	if (getScript().getCommands().size()) 
@@ -102,16 +102,18 @@ void NGame::Game::actions(void) {
 }
 
 void NGame::Game::check(void) {
-	auto components = getComponents();
+	auto& components = getComponents();
 	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
-			auto users = getUsers();
+			auto& users = getUsers();
 			if ((*it).getType() == IResource::Type::PLAYER)
 			{
 				auto user = findUserById((*it).getId());
 				if (user != users.end())
+				{
 					transferPlayerToSpectators(*user);
+				}
 			}
 			auto listener = getListener();
 		    if (listener)
@@ -124,7 +126,7 @@ void NGame::Game::check(void) {
 }
 
 void NGame::Game::update(void) {
-	auto components = getComponents();
+	auto& components = getComponents();
 	for (auto& component : components)
 		if (component.getType() != IResource::Type::PLAYER)
 			updatePositionComponent(component);
@@ -280,13 +282,19 @@ bool NGame::Game::collision(NGame::Component& component) {
 		std::bind(&NGame::Game::collisionWithEnnemy, this, std::placeholders::_1, std::placeholders::_2)
 	};
 
-	auto components = getComponents();
+	auto& components = getComponents();
 	for (NGame::Component& obstacle : components) {
 		if (collisionTouch(component, obstacle)) {
+			std::cout << "collisionTouch = true" << std::endl;
+			int i;
+			i = 1;
 			for (const auto& fct : functionsHandleCollision) {
+				std::cout << "functionsHandleCollision #" << i++ << std::endl;
 				if (fct(component, obstacle)) {
+					std::cout << "functionsHandleCollision return true" << std::endl;
 					return true;
 				}
+				std::cout << "functionsHandleCollision return false" << std::endl;
 			}
 		}
 	}
@@ -294,19 +302,26 @@ bool NGame::Game::collision(NGame::Component& component) {
 }
 
 bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame::Component& obstacle) const {
+	return false; // a debuger
 	if (&obstacle == &component)
 		return false;
 
 	if (component.getX() < 0.0f || component.getX() > NGame::Game::XMAX || component.getY() < 0.0f || component.getX() > NGame::Game::YMAX)
+	{
+		std::cout << "####### OUT OF SCREEN ########" << std::endl;
 		return true;
+	}
 
-	double x = component.getX() - component.getWidth() / 2.;
+	double x = component.getX() - component.getWidth() / 2.; // probleme car getWidth est en px et getX en ratio %
 	double y = component.getY() - component.getHeight() / 2.;
 	double obsX = obstacle.getX() - obstacle.getWidth() / 2.;
 	double obsY = obstacle.getY() - obstacle.getHeight() / 2.;
 
-	return ((y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) &&
-		(x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
+	return (
+		(y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) 
+			&&
+		(x + component.getWidth() > obsX && x < obsX + obstacle.getWidth())
+		);
 }
 
 bool NGame::Game::collisionWithNoLife(NGame::Component& component) {
@@ -393,7 +408,7 @@ std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t 
 void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
 	auto listener = getListener();
 	if (listener) {
-		auto users = getUsers();
+		auto& users = getUsers();
 		for (const auto &user : users)
 			listener->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
 	}
@@ -516,13 +531,15 @@ void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {
-	double newX = component.getX() + component.getSpeed() * (cos(component.getAngle() * M_PI / 180));
-	double newY = component.getY() + component.getSpeed() * (sin(component.getAngle() * M_PI / 180));
+	double angleInRad = component.getAngle() * M_PI / 180;
+	double speed = component.getSpeed();
+	double dx = speed * cos(angleInRad);
+	double dy = speed * sin(angleInRad);
 
-	std::cout << "x: [" << component.getX() << "] => [" << newX << "]" << std::endl;
+	std::cout << component.getX() << " => " << component.getX() + dx << std::endl;
 
-	component.setX(newX);
-	component.setY(newY);
+	component.setX(component.getX() + dx);
+	component.setY(component.getY() + dy);
 }
 
 /*
@@ -534,7 +551,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	
 	double bulletWidth = 32.;
 	double bulletHeight = 32.;
-	double bulletSpeed = 0.5;
+	double bulletSpeed = 0.35;
 	short bulletAngle = 0;
 	
 	auto user = findUserByHost(peer);
