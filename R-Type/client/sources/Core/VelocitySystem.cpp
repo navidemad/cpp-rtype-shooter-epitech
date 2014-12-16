@@ -21,7 +21,7 @@ void		VelocitySystem::process(Entity &entity, uint32_t delta)
 
 	if (velocity->getTime() != 0)
 	{
-		pos->setX(pos->getX() - (velocity->getX() * (delta / static_cast<float>(velocity->getTime()))));
-		pos->setY(pos->getY() - (velocity->getY() * (delta / static_cast<float>(velocity->getTime()))));
+		pos->setX(pos->getX() + (velocity->getX() * (delta / static_cast<float>(velocity->getTime()))));
+		pos->setY(pos->getY() + (velocity->getY() * (delta / static_cast<float>(velocity->getTime()))));
 	}
 }

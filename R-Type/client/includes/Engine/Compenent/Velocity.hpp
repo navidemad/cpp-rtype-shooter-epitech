@@ -7,7 +7,7 @@ class Velocity : public Component
 {
 	// ctor - dtor
 	public:
-		Velocity(unsigned int, unsigned int, unsigned int);
+		Velocity(int, int, unsigned int);
 		~Velocity();
 
 	// coplien form
@@ -16,12 +16,12 @@ class Velocity : public Component
 		Velocity const	&operator=(Velocity const &) { return *this; }
 
 	public:
-		unsigned int	getX() const;
-		unsigned int	getY() const;
+		int	getX() const;
+		int	getY() const;
 		unsigned int	getTime() const;
 
 	public:
-		unsigned int	mX;
-		unsigned int	mY;
+		int	mX;
+		int	mY;
 		unsigned int	mTime;
 };

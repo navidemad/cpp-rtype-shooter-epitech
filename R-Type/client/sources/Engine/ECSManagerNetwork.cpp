@@ -9,6 +9,7 @@
 #include "Engine/ComponentType.h"
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
+#include "Engine/Compenent/Velocity.hpp"
 
 ECSManagerNetwork::ECSManagerNetwork()
 {
@@ -40,7 +41,7 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 	}
 }
 
-void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
+void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short /*angle*/, int id)
 {
 	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
 	if (!isEntityCreated(id + mFirstId))
@@ -51,6 +52,10 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float 
 		Entity &entity = getEntity(id + mFirstId);
 		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 		entity.addComponent(new Drawable("ball"));
+		if (type == IResource::Type::BULLET)
+		{
+			entity.addComponent(new Velocity(1, 0, 200));
+		}
 	}
 	else
 	{
