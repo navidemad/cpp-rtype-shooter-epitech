@@ -19,17 +19,17 @@ void	Gameplay::addDelta(uint32_t delta)
 	mTimeElapsed += delta;
 }
 
-Fire::Fire() : Gameplay(ComponentType::FIRE, 200 * 1000) { }
+Fire::Fire() : Gameplay(ComponentType::FIRE, 100 * 1000) { }
 Fire::~Fire() { }
 
-Up::Up() : Gameplay(ComponentType::UP, 200 * 1000) { }
+Up::Up() : Gameplay(ComponentType::UP, 8000) { }
 Up::~Up() { }
 
-Down::Down() : Gameplay(ComponentType::DOWN, 200 * 1000) { }
+Down::Down() : Gameplay(ComponentType::DOWN, 8000) { }
 Down::~Down() { }
 
-Left::Left() : Gameplay(ComponentType::LEFT, 200 * 1000) { }
+Left::Left() : Gameplay(ComponentType::LEFT, 8000) { }
 Left::~Left() { }
 
-Right::Right() : Gameplay(ComponentType::RIGHT, 200 * 1000) { }
+Right::Right() : Gameplay(ComponentType::RIGHT, 8000) { }
 Right::~Right() { }
