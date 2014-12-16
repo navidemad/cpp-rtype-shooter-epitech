@@ -321,12 +321,11 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
     while (it != getGames().end())
     {
         auto users = (*it)->getUsers();
-        if (users.size() == 0)
-        {
+        if (users.size() != 0)
             for (const auto& user: users)
                 if (user.getPeer() == peer)
                     return it;
-        }
+
         ++it;
     }
     return it;

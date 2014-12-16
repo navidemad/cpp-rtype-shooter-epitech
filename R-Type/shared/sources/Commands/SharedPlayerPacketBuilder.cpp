@@ -80,7 +80,7 @@ void	PlayerPacketBuilder::fetchBody(void) {
 	}
 
 	if (error == false && mListener)
-		mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, mCurrentPort, 0});
+		mListener->onPacketAvailable(*this, mCurrentCommand, Peer{mCurrentHost, -1, mCurrentPort});
 
 	mCurrentState = PlayerPacketBuilder::State::HEADER;
 	fetchHeader();
