@@ -112,6 +112,7 @@ unsigned int	UnixUdpClient::nbBytesToRead(void) const {
 	if (mInDatagrams.size() == 0)
 		return 0;
 
+	std::cout << "mInDatagrams.front().msgSize: " << mInDatagrams.front().msgSize << std::endl;
 	return mInDatagrams.front().msgSize;
 }
 

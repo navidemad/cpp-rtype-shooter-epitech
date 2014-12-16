@@ -12,6 +12,7 @@
 #include "Script.hpp"
 #include "PlayerCommunicationManager.hpp"
 
+#include <iostream>
 #include <string>
 #include <memory>
 #include <list>
@@ -161,6 +162,33 @@ namespace NGame
             Peer mOwner;
 			bool mPullEnded;
 			uint64_t mCurrentComponentMaxId;
+
+
+        // overload << display
+        public:
+            friend std::ostream& operator << (std::ostream& os, std::shared_ptr<Game> rhs) {
+                os <<
+                    "[Game]" << std::endl <<
+                    "  [mProperties]" << std::endl << 
+                    "     - getName:          '" << rhs->getProperties().getName() << "'" << std::endl << 
+                    "     - getLevelName:     '" << rhs->getProperties().getLevelName() << "'" << std::endl <<
+                    "     - getNbPlayers:     '" << rhs->getProperties().getNbPlayers() << "'" << std::endl << 
+                    "     - getMaxPlayers:    '" << rhs->getProperties().getMaxPlayers() << "'" << std::endl << 
+                    "     - getNbSpectators:  '" << rhs->getProperties().getNbSpectators() << "'" << std::endl << 
+                    "     - getMaxSpectators: '" << rhs->getProperties().getMaxSpectators() << "'" << std::endl <<
+                    "  [mUsers => " << rhs->getUsers().size() << " rows]" << std::endl;
+                    for (const auto& user: rhs->getUsers())
+                        os << 
+                    "    [User]" << std::endl <<
+                    "      - getPeer.host:   '" << user.getPeer().host << "'" << std::endl <<
+                    "      - getPeer.udpPort:   '" << user.getPeer().udpPort << "'" << std::endl <<
+                    "      - getPeer.tcpPort:   '" << user.getPeer().tcpPort << "'" << std::endl <<
+                    "      - getPseudo: '" << user.getPseudo() << "'" << std::endl <<
+                    "      - getType:   '" << (user.getType() == NGame::USER_TYPE::PLAYER ? "PLAYER" : "SPECTATOR") << "'" << std::endl <<
+                    "      - getId:     '" << user.getId() << "'" << std::endl <<
+                    "      - getScore:  '" << user.getScore() << "'" << std::endl;
+                return os;
+            }
     };
 
 }

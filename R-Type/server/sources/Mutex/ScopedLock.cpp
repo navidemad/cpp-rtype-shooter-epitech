@@ -25,19 +25,15 @@ ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex, const char* callerFunction
 	}
 	mutex_address.insert({std::this_thread::get_id(), &*mMutex});
 	*/
-	/*
-	if (std::string(callerFile) == "sources/Game/GamesManager.cpp")
-		std::cout << "avant GamesManager " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
-	else if (std::string(callerFile) == "sources/Game/Game.cpp")
-		std::cout << "avant Game " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
-		*/
+	//if (std::string(callerFile) == "sources/Game/GamesManager.cpp" && std::string(callerFunctionName) != "getGames")
+	//	std::cout << "avant GamesManager " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
+	//else if (std::string(callerFile) == "sources/Game/Game.cpp")
+	//	std::cout << "avant Game " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
 	mMutex->lock();
-	/*
-	if (std::string(callerFile) == "sources/Game/GamesManager.cpp")
-		std::cout << "apres GamesManager " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl << std::endl;
-	else if (std::string(callerFile) == "sources/Game/Game.cpp")
-		std::cout << "apres Game " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
-		*/
+	//if (std::string(callerFile) == "sources/Game/GamesManager.cpp" && std::string(callerFunctionName) != "getGames")
+	//	std::cout << "apres GamesManager " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl << std::endl;
+	//else if (std::string(callerFile) == "sources/Game/Game.cpp")
+	//	std::cout << "apres Game " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
 }
 
 ScopedLock::~ScopedLock(void) {

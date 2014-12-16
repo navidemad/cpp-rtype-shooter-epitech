@@ -57,7 +57,7 @@ void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &comma
 	if (mListener) {
 		std::shared_ptr<CommandMove> commandMove = std::static_pointer_cast<CommandMove>(command);
 
-		mListener->onPlayerMove(*this, commandMove->getDirection(), peer);
+		mListener->onPlayerMove(commandMove->getDirection(), peer);
 	}
 }
 
@@ -65,7 +65,7 @@ void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, con
   logInfo(peer, "RECV fire");
 
 	if (mListener)
-		mListener->onPlayerFire(*this, peer);
+		mListener->onPlayerFire(peer);
 }
 
 void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {

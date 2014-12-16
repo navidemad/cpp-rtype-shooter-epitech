@@ -26,8 +26,8 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
 	// player communication manager events
 	public:
-		void onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer);
-		void onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer);
+		void onPlayerFire(const Peer &peer);
+		void onPlayerMove(IResource::Direction direction, const Peer &peer);
 
     // game events
     public:
@@ -57,15 +57,25 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         void    spectateGame(const Peer &peer, const std::string &name);
         void	leaveGame(const Peer &peer);
 		void	updatePseudo(const Peer &peer, const std::string &pseudo);
+
         const NGame::Properties &getGameProperties(const std::string &name);
-        std::list<NGame::Properties> getGamesProperties(void) const;
+        std::list<NGame::Properties> getGamesProperties(void);
 		std::list<std::pair<std::string, std::string>> getScripts(void) const;
 		
 	// internal methods
 	private:
-		void	removeClientsFromWhitelist(const std::shared_ptr<NGame::Game> &game);
+        void removeClientsFromWhitelist(const std::shared_ptr<NGame::Game>&);
 		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByName(const std::string& name);
 		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByHost(const Peer &peer);
+
+    // scoped functions
+    public:
+        std::vector<std::shared_ptr<NGame::Game>>& getGames(void);
+        const ScriptLoader& getScriptLoader(void) const;
+        PlayerCommunicationManager& getPlayerCommunicationManager(void);
+        GamesManager::OnGamesManagerEvent* getListener(void) const;
+        void addGameToList(const std::shared_ptr<NGame::Game>&);
+        std::vector<std::shared_ptr<NGame::Game>>::iterator removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator);
 
     // attributes
     private:

@@ -1,8 +1,9 @@
 #include "CommandMove.hpp"
 #include "CommandException.hpp"
 #include <cstring>
-
+#include <iostream>
 IClientSocket::Message CommandMove::getMessage(void) const {
+	std::cout << "CommandMove::getMessage" << std::endl;
 	CommandMove::PacketFromClient packet;
 	std::memset(&packet, 0, sizeof(CommandMove::PacketFromClient));
 

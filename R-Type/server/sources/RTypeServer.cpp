@@ -35,7 +35,9 @@ void RTypeServer::onClientDisconnected(const Peer &peer) {
 	try {
 		mGamesManager.leaveGame(peer);
 	}
-	catch (const GamesManagerException& ) {
+	catch (const GamesManagerException& e) {
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -53,6 +55,8 @@ void RTypeServer::onClientCreateGame(const Peer &peer, const std::string &name, 
 	}
 	catch (const GamesManagerException& e) {
 		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -63,6 +67,8 @@ void RTypeServer::onClientJoinGame(const Peer &peer, const std::string &name, co
 	}
 	catch (const GamesManagerException& e) {
 		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -74,6 +80,8 @@ void RTypeServer::onClientShowGame(const Peer &peer, const std::string &name) {
 	}
 	catch (const GamesManagerException& e) {
 		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -84,6 +92,8 @@ void RTypeServer::onClientDeleteGame(const Peer &peer, const std::string &name) 
 	}
     catch (const GamesManagerException& e) {
 		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -108,6 +118,8 @@ void RTypeServer::onClientObserveGame(const Peer &peer, const std::string &name)
 	}
 	catch (const GamesManagerException& e) {
 		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -118,6 +130,8 @@ void RTypeServer::onClientLeaveGame(const Peer &peer) {
 	}
 	catch (const GamesManagerException& e) {
 		mClientManager.sendError(std::list<Peer>{peer}, e.getErrorStatus());
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 }
 
@@ -125,7 +139,9 @@ void RTypeServer::onClientUpdatePseudo(const Peer &peer, const std::string &pseu
 	try {
 		mGamesManager.updatePseudo(peer, pseudo);
 	}
-	catch (const GamesManagerException&) {
+	catch (const GamesManagerException&e) {
+		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+		std::terminate();
 	}
 
 	mClientManager.sendError(std::list<Peer>{peer}, ErrorStatus(ErrorStatus::Error::OK));

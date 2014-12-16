@@ -36,8 +36,8 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		class OnPlayerCommunicationManagerEvent {
 		public:
 			virtual ~OnPlayerCommunicationManagerEvent(void) {}
-			virtual void onPlayerFire(PlayerCommunicationManager &playerCommunicationManager, const Peer &peer) = 0;
-			virtual void onPlayerMove(PlayerCommunicationManager &playerCommunicationManager, IResource::Direction direction, const Peer &peer) = 0;
+			virtual void onPlayerFire(const Peer &peer) = 0;
+			virtual void onPlayerMove(IResource::Direction direction, const Peer &peer) = 0;
 		};
 
 		void	setListener(PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *listener);
