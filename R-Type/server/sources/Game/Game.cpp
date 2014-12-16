@@ -537,7 +537,8 @@ void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {
-	double angleInRad = component.getAngle() * M_PI / 180;
+	double pi = 3.14159265358979323846;
+	double angleInRad = component.getAngle() * pi / 180;
 	double speed = component.getSpeed();
 	double dx = speed * cos(angleInRad);
 	double dy = speed * sin(angleInRad);
