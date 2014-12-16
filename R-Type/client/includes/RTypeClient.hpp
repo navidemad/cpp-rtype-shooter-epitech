@@ -18,6 +18,7 @@ public:
 		SEARCH_MENU,
 		CREATE_MENU,
 		RTYPE,
+		ARTWORK,
 		LIMIT
 	};
 	
@@ -65,14 +66,16 @@ public:
 		void						initRtype();
 		void						initSearchMenu();
 		void						initCreateMenu();
+		void						initArtwork();
 
-private:
+	private:
 		void						startMenu();
 		void						startOption();
 		void						startPressStart();
 		void						startRtype();
 		void						startSearchMenu();
 		void						startCreateMenu();
+		void						startArtwork();
 
 	private:
 		void						stopMenu();
@@ -81,6 +84,7 @@ private:
 		void						stopRtype();
 		void						stopSearchMenu();
 		void						stopCreateMenu();
+		void						stopArtwork();
 
 	private:
 		void						simulateReceiveClient(unsigned int);

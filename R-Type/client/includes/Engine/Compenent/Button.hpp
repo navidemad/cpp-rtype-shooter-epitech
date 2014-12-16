@@ -104,3 +104,13 @@ public:
 public:
 	void	process(Entity &, uint32_t delta);
 };
+
+class ButtonArtwork : public Button
+{
+public:
+	ButtonArtwork() : Button(100) {}
+	~ButtonArtwork() {}
+
+public:
+	void	process(Entity &, uint32_t delta);
+};

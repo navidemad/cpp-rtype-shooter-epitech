@@ -38,6 +38,7 @@ RTypeClient::RTypeClient()
 	mEngine[CREATE_MENU] = new ECSManager;
 	mEngine[SEARCH_MENU] = new ECSManagerNetwork;
 	mEngine[RTYPE] = new ECSManagerNetwork;
+	mEngine[ARTWORK] = new ECSManagerNetwork;
 
 	mInit[PRESS_START] = &RTypeClient::initPressStart;
 	mInit[MENU] = &RTypeClient::initMenu;
@@ -45,6 +46,7 @@ RTypeClient::RTypeClient()
 	mInit[CREATE_MENU] = &RTypeClient::initCreateMenu;
 	mInit[SEARCH_MENU] = &RTypeClient::initSearchMenu;
 	mInit[RTYPE] = &RTypeClient::initRtype;
+	mInit[ARTWORK] = &RTypeClient::initArtwork;
 
 	mStart[PRESS_START] = &RTypeClient::startPressStart;
 	mStart[MENU] = &RTypeClient::startMenu;
@@ -52,6 +54,7 @@ RTypeClient::RTypeClient()
 	mStart[CREATE_MENU] = &RTypeClient::startCreateMenu;
 	mStart[SEARCH_MENU] = &RTypeClient::startSearchMenu;
 	mStart[RTYPE] = &RTypeClient::startRtype;
+	mStart[ARTWORK] = &RTypeClient::startArtwork;
 
 	mStop[PRESS_START] = &RTypeClient::stopPressStart;
 	mStop[MENU] = &RTypeClient::stopMenu;
@@ -59,6 +62,7 @@ RTypeClient::RTypeClient()
 	mStop[CREATE_MENU] = &RTypeClient::stopCreateMenu;
 	mStop[SEARCH_MENU] = &RTypeClient::stopSearchMenu;
 	mStop[RTYPE] = &RTypeClient::stopRtype;
+	mStop[ARTWORK] = &RTypeClient::stopArtwork;
 
 	for (ECSManager *engine : mEngine)
 	{
@@ -473,14 +477,21 @@ void			RTypeClient::initMenu()
 	Entity		&optionGame = engine.createEntity();
 	cursor->addEntity(optionGame.getId());
 
-	optionGame.addComponent(new Position(1150, 675));
+	optionGame.addComponent(new Position(1150, 670));
 	optionGame.addComponent(new Font("0", "Option"));
 	optionGame.addComponent(new ButtonOption());
+
+	Entity		&artworkGame = engine.createEntity();
+	cursor->addEntity(artworkGame.getId());
+
+	artworkGame.addComponent(new Position(1150, 755));
+	artworkGame.addComponent(new Font("0", "Artwork"));
+	artworkGame.addComponent(new ButtonArtwork());
 
 	Entity		&quitGame = engine.createEntity();
 	cursor->addEntity(quitGame.getId());
 
-	quitGame.addComponent(new Position(1150, 770));
+	quitGame.addComponent(new Position(1150, 840));
 	quitGame.addComponent(new Font("0", "Quit"));
 	quitGame.addComponent(new ButtonQuitGame());
 
@@ -488,6 +499,43 @@ void			RTypeClient::initMenu()
 
 	logoCharacter.addComponent(new Position(0, 100));
 	logoCharacter.addComponent(new Drawable("logoCharacter"));
+
+	engine.addSystem(new DrawableSystem);
+	engine.addSystem(new ButtonSystem);
+	engine.addSystem(new DrawableFontSystem);
+}
+
+void	RTypeClient::initArtwork()
+{
+	ECSManager &engine = *mEngine[RTypeClient::ARTWORK];
+
+	Entity		&sketch01 = engine.createEntity();
+	sketch01.addComponent(new Position(0, 0));
+	sketch01.addComponent(new Drawable("sketch01"));
+	/*
+	Entity		&sketch02 = engine.createEntity();
+	sketch02.addComponent(new Position(0, 0));
+	sketch02.addComponent(new Drawable("sketch02"));
+
+	Entity		&sketch03 = engine.createEntity();
+	sketch03.addComponent(new Position(0, 0));
+	sketch03.addComponent(new Drawable("sketch03"));
+
+	Entity		&sketch04 = engine.createEntity();
+	sketch04.addComponent(new Position(0, 0));
+	sketch04.addComponent(new Drawable("sketch04"));*/
+
+	Entity		&cursorGame = engine.createEntity();
+	Cursor		*cursor = new Cursor();
+	cursorGame.addComponent(cursor);
+	cursorGame.addComponent(new Position(0, 900));
+	cursorGame.addComponent(new Drawable("searchBar"));
+
+	Entity		backGame = engine.createEntity();
+	cursor->addEntity(backGame.getId());
+	backGame.addComponent(new Position(1150, 900));
+	backGame.addComponent(new Font("0", "Back"));
+	backGame.addComponent(new ButtonMenuGame());
 
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
@@ -519,10 +567,15 @@ void	RTypeClient::startSearchMenu()
 	//static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
 }
 
-void			RTypeClient::startCreateMenu()
+void	RTypeClient::startCreateMenu()
 {
 	mGui->playMusic("Menu");
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListLevel();
+}
+
+void	RTypeClient::startArtwork()
+{
+	mGui->playMusic("Menu");
 }
 
 void	RTypeClient::stopMenu()
@@ -550,7 +603,12 @@ void	RTypeClient::stopSearchMenu()
 	component->clear();
 }
 
-void			RTypeClient::stopCreateMenu()
+void	RTypeClient::stopCreateMenu()
+{
+
+}
+
+void	RTypeClient::stopArtwork()
 {
 
 }
