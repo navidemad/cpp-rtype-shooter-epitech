@@ -79,7 +79,7 @@ void NGame::Game::actions(void) {
 		{
 			currentCommand = getScript().currentAction();
 
-			if (getTimer().frame() < currentCommand->getFrame())
+			if (getTimer().frame() < currentCommand->getFrame()) // who is'nt in a game - exception en fin de partie
 				return;
 
 			for (const auto &instr : tokenExecTab)

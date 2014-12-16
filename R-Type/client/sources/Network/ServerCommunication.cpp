@@ -137,7 +137,7 @@ void ServerCommunication::OnSetServerIp(const std::string &ip){
 }
 
 void ServerCommunication::OnSetServerPortTcp(int port){
-	std::cout << "mServerPeer.tcpPort: '" << mServerPeer.tcpPort << "'" << std::endl;
+	mServerPeer.tcpPort = port;
 }
 
 void ServerCommunication::OnConnectToServer(void){

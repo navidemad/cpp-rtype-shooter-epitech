@@ -5,11 +5,11 @@
 #include <algorithm>
 #include <unordered_map>
 #include <thread>
-#include <unistd.h>
+#include "Config.hpp"
 
 static std::unordered_map<std::thread::id, void*> mutex_address;
 
-ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex, const char* callerFunctionName, const char* callerFile, const unsigned long callerLine) : mMutex(mutex) {
+ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex, const char* /*callerFunctionName*/, const char* /*callerFile*/, const unsigned long /*callerLine*/) : mMutex(mutex) {
 	/*
 	if (this->find(&*mMutex) 
 		&& std::string(callerFile) != "sources/Thread/ThreadPool.cpp"
