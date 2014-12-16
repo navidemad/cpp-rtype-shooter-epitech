@@ -128,9 +128,11 @@ void NGame::Game::update(void) {
 	for (auto& component : components) {
 		if (component.getType() != IResource::Type::PLAYER) {
 			updatePositionComponent(component);
+			/*
 			auto listener = getListener();
 			if (listener)
 		    	listener->onNotifyUsersComponentAdded(getUsers(), component);
+		    */
 		}
 	}
 }
@@ -620,7 +622,7 @@ void	NGame::Game::scriptCommandRequire(const std::shared_ptr<IScriptCommand> &co
 	// if (mRessources.count(commandScriptRequire->getRessourceName()) == 0)
 	//    throw GameException("script require ressource request doesn't match with game's ressources");
 	
-    //std::cout << commandScriptRequire << std::endl;
+    std::cout << commandScriptRequire << std::endl;
 }
 
 void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &command) {
@@ -631,7 +633,7 @@ void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &com
 	// moveMob
 	// spawnMob
 
-    //std::cout << commandScriptAction << std::endl;
+    std::cout << commandScriptAction << std::endl;
 }
 
 void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command) {
@@ -641,7 +643,7 @@ void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &co
 	// TODO
 	// add cron task for a component
 
-    //std::cout << commandScriptAddCron << std::endl;
+    std::cout << commandScriptAddCron << std::endl;
 }
 
 void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command) {
@@ -651,5 +653,5 @@ void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> 
 	// TODO
 	// remove cron task for a component
 
-    //std::cout << commandScriptRemoveCron << std::endl;
+    std::cout << commandScriptRemoveCron << std::endl;
 }
