@@ -125,7 +125,7 @@ void	SFMLGraphic::handleEvent()
 {
 }
 
-bool	SFMLGraphic::isPressed(std::string key)
+bool	SFMLGraphic::isPressed(std::string const &key)
 {
 	return mInputManager.isPressed(key);
 }

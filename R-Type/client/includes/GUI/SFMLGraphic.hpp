@@ -49,7 +49,7 @@ class SFMLGraphic : public IGraphic
 		void				update();
 		void				clear();
 		void				show();
-		bool				isPressed(std::string);
+		bool				isPressed(std::string const &);
 		uint64_t			getDelta();
 		void				close();
 
