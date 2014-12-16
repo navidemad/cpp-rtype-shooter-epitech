@@ -25,9 +25,9 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 
 const NGame::Game::tokenAngle NGame::Game::tokenAngleTab[] = {
 	{ IResource::Direction::RIGHT, 0 },
-	{ IResource::Direction::TOP, 90 },
+	{ IResource::Direction::BOTTOM, 90 },
 	{ IResource::Direction::LEFT, 180 },
-	{ IResource::Direction::BOTTOM, 270 }
+	{ IResource::Direction::TOP, 270 }
 };
 
 const double NGame::Game::XMAX = 100.;
@@ -73,6 +73,8 @@ void NGame::Game::pull(void) {
 void NGame::Game::actions(void) {
 	std::shared_ptr<IScriptCommand> currentCommand;
 
+	///if (mTimer.frame() < 40.)
+	//	return;
 	if (getScript().getCommands().size()) 
 	{
 		do
@@ -98,13 +100,22 @@ void NGame::Game::actions(void) {
 }
 
 void NGame::Game::check(void) {
-	auto components = getComponents();
+	auto& components = getComponents();
 	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
+			auto& users = getUsers();
+			if ((*it).getType() == IResource::Type::PLAYER)
+			{
+				auto user = findUserById((*it).getId());
+				if (user != users.end())
+				{
+					transferPlayerToSpectators(*user);
+				}
+			}
 			auto listener = getListener();
 		    if (listener)
-		    	listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
+		    	listener->onNotifyUsersComponentRemoved(users, (*it).getId());
 			it = components.erase(it);
 		}
 		else
@@ -113,10 +124,17 @@ void NGame::Game::check(void) {
 }
 
 void NGame::Game::update(void) {
-	auto components = getComponents();
-	for (auto& component : components)
-		if (component.getType() != IResource::Type::PLAYER)
+	auto& components = getComponents();
+	for (auto& component : components) {
+		if (component.getType() != IResource::Type::PLAYER) {
 			updatePositionComponent(component);
+			/*
+			auto listener = getListener();
+			if (listener)
+		    	listener->onNotifyUsersComponentAdded(getUsers(), component);
+		    */
+		}
+	}
 }
 
 /*
@@ -264,19 +282,25 @@ bool NGame::Game::collision(NGame::Component& component) {
 	static auto functionsHandleCollision = std::vector<std::function<bool(NGame::Component&, NGame::Component&)>>
 	{
 		std::bind(&NGame::Game::collisionWithNoLife, this, std::placeholders::_1),
-		std::bind(&NGame::Game::collisionWithBorders, this, std::placeholders::_1),
 		std::bind(&NGame::Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
 		std::bind(&NGame::Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
 		std::bind(&NGame::Game::collisionWithEnnemy, this, std::placeholders::_1, std::placeholders::_2)
 	};
 
-	auto components = getComponents();
+	auto& components = getComponents();
 	for (NGame::Component& obstacle : components) {
 		if (collisionTouch(component, obstacle)) {
+			return true; // a debugger below
+			std::cout << "collisionTouch = true" << std::endl;
+			int i;
+			i = 1;
 			for (const auto& fct : functionsHandleCollision) {
+				std::cout << "functionsHandleCollision #" << i++ << std::endl;
 				if (fct(component, obstacle)) {
+					std::cout << "functionsHandleCollision return true" << std::endl;
 					return true;
 				}
+				std::cout << "functionsHandleCollision return false" << std::endl;
 			}
 		}
 	}
@@ -288,26 +312,26 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 		return false;
 
 	if (component.getX() < 0.0f || component.getX() > NGame::Game::XMAX || component.getY() < 0.0f || component.getX() > NGame::Game::YMAX)
+	{
+		std::cout << "####### OUT OF SCREEN ########" << std::endl;
 		return true;
+	}
 
-	double x = component.getX() - component.getWidth() / 2.;
+	return false; // a debugger below
+	double x = component.getX() - component.getWidth() / 2.; // probleme car getWidth est en px et getX en ratio %
 	double y = component.getY() - component.getHeight() / 2.;
 	double obsX = obstacle.getX() - obstacle.getWidth() / 2.;
 	double obsY = obstacle.getY() - obstacle.getHeight() / 2.;
 
-	return ((y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) &&
-		(x + component.getWidth() > obsX && x < obsX + obstacle.getWidth()));
+	return (
+		(y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) 
+			&&
+		(x + component.getWidth() > obsX && x < obsX + obstacle.getWidth())
+		);
 }
 
 bool NGame::Game::collisionWithNoLife(NGame::Component& component) {
 	return findUserById(component.getId()) != getUsers().end() && component.getLife() == 0;
-}
-
-bool NGame::Game::collisionWithBorders(NGame::Component& component) {
-	auto user = findUserById(component.getId());
-	if (user != getUsers().end())
-		transferPlayerToSpectators(*user);
-	return true;
 }
 
 bool NGame::Game::collisionWithBonus(NGame::Component& component, NGame::Component& obstacle) {
@@ -390,7 +414,7 @@ std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t 
 void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
 	auto listener = getListener();
 	if (listener) {
-		auto users = getUsers();
+		auto& users = getUsers();
 		for (const auto &user : users)
 			listener->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
 	}
@@ -422,7 +446,7 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 
 	double playerWidth = 32.;
 	double playerHeight = 32.;
-	double playerSpeed = 0.05;
+	double playerSpeed = 0.45;
 	short playerAngle = 0;
 
 	setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
@@ -504,20 +528,23 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
-	tryDelPlayer();
-	tryAddPlayer(user);
-	user.setType(NGame::USER_TYPE::SPECTATOR);
 	auto listener = getListener();
     if (listener)
     	listener->onRemovePeerFromWhiteList(user.getPeer());
+	tryDelPlayer();
+	user.setType(NGame::USER_TYPE::SPECTATOR);
+	tryAddSpectator(user);
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {
-	double newX = component.getX() + cos(component.getAngle()) * component.getSpeed(); // gestion du * deltaTime
-	double newY = component.getY() + sin(component.getAngle()) * component.getSpeed(); // gestion du * deltaTime
+	double pi = 3.14159265358979323846;
+	double angleInRad = component.getAngle() * pi / 180;
+	double speed = component.getSpeed();
+	double dx = speed * cos(angleInRad);
+	double dy = speed * sin(angleInRad);
 
-	component.setX(newX);
-	component.setY(newY);
+	component.setX(component.getX() + dx);
+	component.setY(component.getY() + dy);
 }
 
 /*
@@ -529,7 +556,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	
 	double bulletWidth = 32.;
 	double bulletHeight = 32.;
-	double bulletSpeed = 0.05;
+	double bulletSpeed = 0.0016;
 	short bulletAngle = 0;
 	
 	auto user = findUserByHost(peer);
@@ -596,7 +623,7 @@ void	NGame::Game::scriptCommandRequire(const std::shared_ptr<IScriptCommand> &co
 	// if (mRessources.count(commandScriptRequire->getRessourceName()) == 0)
 	//    throw GameException("script require ressource request doesn't match with game's ressources");
 	
-    //std::cout << commandScriptRequire << std::endl;
+    std::cout << commandScriptRequire << std::endl;
 }
 
 void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &command) {
@@ -607,7 +634,7 @@ void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &com
 	// moveMob
 	// spawnMob
 
-    //std::cout << commandScriptAction << std::endl;
+    std::cout << commandScriptAction << std::endl;
 }
 
 void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command) {
@@ -617,7 +644,7 @@ void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &co
 	// TODO
 	// add cron task for a component
 
-    //std::cout << commandScriptAddCron << std::endl;
+    std::cout << commandScriptAddCron << std::endl;
 }
 
 void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command) {
@@ -627,5 +654,5 @@ void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> 
 	// TODO
 	// remove cron task for a component
 
-    //std::cout << commandScriptRemoveCron << std::endl;
+    std::cout << commandScriptRemoveCron << std::endl;
 }

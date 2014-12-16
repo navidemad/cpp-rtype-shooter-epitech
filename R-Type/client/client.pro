@@ -35,6 +35,8 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
                         includes/Core/ButtonSystem.hpp                          \
+                        includes/Core/VelocitySystem.hpp			\
+                        includes/Core/BackgroundSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
                         includes/Core/ScriptSystem.hpp			\
 			includes/Core/InputManager.hpp				\
@@ -51,6 +53,9 @@ HEADERS		+=	includes/RTypeClient.hpp				\
                         includes/Engine/Compenent/Script.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
+                        includes/Engine/Compenent/Background.hpp		\
+                        includes/Engine/Compenent/Velocity.hpp			\
+                        includes/Engine/Compenent/TextInput.hpp			\
                         includes/Engine/Compenent/TextInput.hpp			\
 			includes/Engine/ECSManager.hpp				\
                         includes/Engine/ECSManagerNetwork.hpp			\
@@ -115,6 +120,8 @@ SOURCES		+=	sources/main.cpp						\
 			sources/Core/CollisionSystem.cpp				\
 			sources/Core/DamageSystem.cpp					\
 			sources/Core/DrawableSystem.cpp					\
+			sources/Core/BackgroundSystem.cpp				\
+                        sources/Core/VelocitySystem.cpp				\
                         sources/Core/DrawableFontSystem.cpp				\
                         sources/Core/ScriptSystem.cpp				\
                         sources/Core/TextInputSystem.cpp				\
@@ -132,6 +139,8 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Engine/Font.cpp                         		\
                         sources/Engine/TextInput.cpp                         		\
 			sources/Engine/Drawable.cpp					\
+			sources/Engine/Background.cpp					\
+			sources/Engine/Velocity.cpp					\
 			sources/Engine/ECSManager.cpp					\
                         sources/Engine/ECSManagerNetwork.cpp				\
 			sources/Engine/Entity.cpp					\

@@ -12,6 +12,11 @@ namespace Config
 		const unsigned int	y = 1080;
 	}
 
+	namespace Title
+	{
+		const int	sizeTitleBackground = 430;
+	}
+
 	namespace Game
 	{
 		const std::string	defaultNameGame = "Simon suce des ours";
@@ -20,7 +25,7 @@ namespace Config
 
 	namespace Network
 	{
-		const unsigned int	port = 4249;
+		const unsigned int	port = 4245;
 		const std::string	adress = "127.0.0.1";
 		const std::string	defaultPseudo = "anon en mousse";
 	}

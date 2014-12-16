@@ -282,17 +282,6 @@
 					<t>This command has no equivalent server-side.</t>
 				</section>
 			</section>
-			<section title="disconnect">
-				<t>Instruction code: 0x07</t>
-				<section title="From Client">
-					<t>This command is used to close the connection with the server.</t>
-					<t>This command is composed of an empty body.</t>
-					<t>The server must handle the disconnection and close the connection.</t>
-				</section>
-				<section title="From Server">
-					<t>This command has no equivalent server-side.</t>
-				</section>
-			</section>
 			<section title="error">
 				<t>Instruction code: 0x00</t>
 				<section title="From Client">

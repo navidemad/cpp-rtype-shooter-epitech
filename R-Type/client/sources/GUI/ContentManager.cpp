@@ -25,6 +25,7 @@ void	ContentManager::loadSprites()
 
 	sprites->loadResources("menu", "assets/sprites/menu.png");
 	sprites->loadResources("logo", "assets/sprites/logo.png");
+	sprites->loadResources("background", "assets/sprites/background1.png");
 	sprites->loadResources("logoCharacter", "assets/sprites/logoCharacter.png");
 	sprites->loadResources("logoSearch", "assets/sprites/logoSearch.png");
 	sprites->loadResources("logoOption", "assets/sprites/logoOption.png");

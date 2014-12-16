@@ -29,6 +29,7 @@ class ECSManager
 		RTypeClient								*getClient() const { return mClient;  }
 		void									setClient(RTypeClient *client) { mClient = client; }
 		unsigned int							getCurrentId() const;
+		void									setFirstId(unsigned int);
 
 	// Entity Manager
 	public:
@@ -56,7 +57,7 @@ class ECSManager
 		RTypeClient									*mClient;
 
 	// attribute ECS System
-	private:
+	protected:
 		std::vector<Entity>								mEntity;
 		std::vector<std::list<Component *> >			mEntityComponent;
 		std::vector<std::bitset<ComponentType::LIMIT> >	mEntityBitset;
@@ -64,7 +65,7 @@ class ECSManager
 		std::vector<bool>								mLivingEntity;
 
 		unsigned int									mCurrentId;
-
+		unsigned int									mFirstId;
 	protected:
 		std::list<unsigned int>							mRemoveId;
 };

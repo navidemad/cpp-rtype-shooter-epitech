@@ -9,12 +9,16 @@
 #include "GUI/SFMLGraphic.hpp"
 #include "Engine/Component.hpp"
 #include "Engine/Compenent/Position.hpp"
+#include "Engine/Compenent/Velocity.hpp"
+#include "Engine/Compenent/Background.hpp"
 #include "Engine/Compenent/Cursor.hpp"
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/Button.hpp"
 #include "Engine/Compenent/List.hpp"
 #include "Core/ScriptSystem.hpp"
 #include "Core/DrawableSystem.hpp"
+#include "Core/BackgroundSystem.hpp"
+#include "Core/VelocitySystem.hpp"
 #include "Core/TextInputSystem.hpp"
 #include "Core/DrawableFontSystem.hpp"
 #include "Core/ButtonSystem.hpp"
@@ -172,6 +176,23 @@ void			RTypeClient::initRtype()
 	Entity		&down = engine.createEntity();
 	down.addComponent(new Down);
 
+	Entity		&background = engine.createEntity();
+
+	Background *backgroundPtr = new Background;
+	background.addComponent(backgroundPtr);
+
+	for (unsigned int i = 0; i != (Config::Window::x / Config::Title::sizeTitleBackground) + 2; ++i)
+	{
+		Entity &backgroundSprite = engine.createEntity();
+
+		Position *pos = new Position(Config::Title::sizeTitleBackground * i, 0);
+
+		backgroundPtr->addBackground(pos);
+
+		backgroundSprite.addComponent(new Drawable("background"));
+		backgroundSprite.addComponent(pos);
+		backgroundSprite.addComponent(new Velocity(-1, 0, 8000));
+	}
 	//gameplay system
 	engine.addSystem(new UpSystem);
 	engine.addSystem(new DownSystem);
@@ -184,6 +205,12 @@ void			RTypeClient::initRtype()
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
 	engine.addSystem(new DrawableFontSystem);
+	engine.addSystem(new VelocitySystem);
+
+	//background system
+	engine.addSystem(new BackgroundSystem);
+
+	engine.setFirstId(engine.getCurrentId());
 }
 
 void			RTypeClient::initSearchMenu()
@@ -360,7 +387,7 @@ void			RTypeClient::initCreateMenu()
 	cursor->addEntity(createGame.getId());
 
 	createGame.addComponent(new Position(420, 500));
-	createGame.addComponent(new Font("0", "Créer la partie "));
+	createGame.addComponent(new Font("0", "Creer la partie "));
 	createGame.addComponent(new ButtonCreateGame());
 
 	Entity		backGame = engine.createEntity();

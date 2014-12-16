@@ -27,7 +27,7 @@ ECSManager::~ECSManager()
 	}*/
 }
 
-inline unsigned int	ECSManager::getCurrentId() const
+unsigned int	ECSManager::getCurrentId() const
 {
 	return	mCurrentId;
 }
@@ -156,4 +156,9 @@ Entity		&ECSManager::getEntityWithSpecificCompenent(ComponentType::Type typeToSe
 			return mEntity[i];
 	}
 	throw std::runtime_error("Entity not found");
+}
+
+void		ECSManager::setFirstId(unsigned int id)
+{
+	mFirstId = id;
 }

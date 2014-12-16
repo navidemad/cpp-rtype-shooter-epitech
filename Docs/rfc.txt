@@ -4,8 +4,8 @@
 
 Tasser Team                                                     S. Ninon
 Internet-Draft                                                   Epitech
-Intended status: Informational                         November 16, 2014
-Expires: May 20, 2015
+Intended status: Informational                             November 2014
+Expires: May 5, 2015
 
 
                       R-Type Network Game Protocol
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 20, 2015.
+   This Internet-Draft will expire on May 5, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Ninon                     Expires May 20, 2015                  [Page 1]
+Ninon                      Expires May 5, 2015                  [Page 1]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
@@ -64,7 +64,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   2.  Transfert Description . . . . . . . . . . . . . . . . . . . .   4
+   2.  Transfert Description . . . . . . . . . . . . . . . . . . . .   3
      2.1.  TCP . . . . . . . . . . . . . . . . . . . . . . . . . . .   4
      2.2.  UDP . . . . . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  Data Unit Dormat  . . . . . . . . . . . . . . . . . . . . . .   4
@@ -74,7 +74,7 @@ Table of Contents
      4.1.  handshake . . . . . . . . . . . . . . . . . . . . . . . .   5
        4.1.1.  From Client . . . . . . . . . . . . . . . . . . . . .   5
        4.1.2.  From Server . . . . . . . . . . . . . . . . . . . . .   5
-     4.2.  createGame  . . . . . . . . . . . . . . . . . . . . . . .   6
+     4.2.  createGame  . . . . . . . . . . . . . . . . . . . . . . .   5
        4.2.1.  From Client . . . . . . . . . . . . . . . . . . . . .   6
        4.2.2.  From Server . . . . . . . . . . . . . . . . . . . . .   6
      4.3.  joinGame  . . . . . . . . . . . . . . . . . . . . . . . .   6
@@ -82,7 +82,7 @@ Table of Contents
        4.3.2.  From Server . . . . . . . . . . . . . . . . . . . . .   7
      4.4.  observeGame . . . . . . . . . . . . . . . . . . . . . . .   7
        4.4.1.  From Client . . . . . . . . . . . . . . . . . . . . .   7
-       4.4.2.  From Server . . . . . . . . . . . . . . . . . . . . .   8
+       4.4.2.  From Server . . . . . . . . . . . . . . . . . . . . .   7
      4.5.  showGame  . . . . . . . . . . . . . . . . . . . . . . . .   8
        4.5.1.  From Client . . . . . . . . . . . . . . . . . . . . .   8
        4.5.2.  From Server . . . . . . . . . . . . . . . . . . . . .   8
@@ -97,56 +97,53 @@ Table of Contents
        4.8.2.  From Server . . . . . . . . . . . . . . . . . . . . .  10
      4.9.  listLevels  . . . . . . . . . . . . . . . . . . . . . . .  10
        4.9.1.  From Client . . . . . . . . . . . . . . . . . . . . .  10
-       4.9.2.  From Server . . . . . . . . . . . . . . . . . . . . .  11
+       4.9.2.  From Server . . . . . . . . . . . . . . . . . . . . .  10
      4.10. updatePseudo  . . . . . . . . . . . . . . . . . . . . . .  11
        4.10.1.  From Client  . . . . . . . . . . . . . . . . . . . .  11
        4.10.2.  From Server  . . . . . . . . . . . . . . . . . . . .  11
-     4.11. disconnect  . . . . . . . . . . . . . . . . . . . . . . .  11
+     4.11. error . . . . . . . . . . . . . . . . . . . . . . . . . .  11
        4.11.1.  From Client  . . . . . . . . . . . . . . . . . . . .  11
-       4.11.2.  From Server  . . . . . . . . . . . . . . . . . . . .  12
-     4.12. error . . . . . . . . . . . . . . . . . . . . . . . . . .  12
+       4.11.2.  From Server  . . . . . . . . . . . . . . . . . . . .  11
+     4.12. endGame . . . . . . . . . . . . . . . . . . . . . . . . .  12
        4.12.1.  From Client  . . . . . . . . . . . . . . . . . . . .  12
 
 
 
-Ninon                     Expires May 20, 2015                  [Page 2]
+Ninon                      Expires May 5, 2015                  [Page 2]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
        4.12.2.  From Server  . . . . . . . . . . . . . . . . . . . .  12
-     4.13. endGame . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.13. showLevel . . . . . . . . . . . . . . . . . . . . . . . .  12
        4.13.1.  From Client  . . . . . . . . . . . . . . . . . . . .  12
-       4.13.2.  From Server  . . . . . . . . . . . . . . . . . . . .  12
-     4.14. showLevel . . . . . . . . . . . . . . . . . . . . . . . .  13
-       4.14.1.  From Client  . . . . . . . . . . . . . . . . . . . .  13
-       4.14.2.  From Server  . . . . . . . . . . . . . . . . . . . .  13
-   5.  UDP Commands  . . . . . . . . . . . . . . . . . . . . . . . .  14
-     5.1.  move  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
-       5.1.1.  From Client . . . . . . . . . . . . . . . . . . . . .  14
+       4.13.2.  From Server  . . . . . . . . . . . . . . . . . . . .  13
+   5.  UDP Commands  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     5.1.  move  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+       5.1.1.  From Client . . . . . . . . . . . . . . . . . . . . .  13
        5.1.2.  From Server . . . . . . . . . . . . . . . . . . . . .  14
      5.2.  fire  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
        5.2.1.  From Client . . . . . . . . . . . . . . . . . . . . .  14
        5.2.2.  From Server . . . . . . . . . . . . . . . . . . . . .  14
-     5.3.  moveResource  . . . . . . . . . . . . . . . . . . . . . .  15
-       5.3.1.  From Client . . . . . . . . . . . . . . . . . . . . .  15
-       5.3.2.  From Server . . . . . . . . . . . . . . . . . . . . .  15
+     5.3.  moveResource  . . . . . . . . . . . . . . . . . . . . . .  14
+       5.3.1.  From Client . . . . . . . . . . . . . . . . . . . . .  14
+       5.3.2.  From Server . . . . . . . . . . . . . . . . . . . . .  14
      5.4.  destroyResource . . . . . . . . . . . . . . . . . . . . .  15
        5.4.1.  From Client . . . . . . . . . . . . . . . . . . . . .  15
        5.4.2.  From Server . . . . . . . . . . . . . . . . . . . . .  15
      5.5.  updateScore . . . . . . . . . . . . . . . . . . . . . . .  16
        5.5.1.  From Client . . . . . . . . . . . . . . . . . . . . .  16
        5.5.2.  From Server . . . . . . . . . . . . . . . . . . . . .  16
-     5.6.  timeElapsedPing . . . . . . . . . . . . . . . . . . . . .  17
-       5.6.1.  From Client . . . . . . . . . . . . . . . . . . . . .  17
-       5.6.2.  From Server . . . . . . . . . . . . . . . . . . . . .  17
+     5.6.  timeElapsedPing . . . . . . . . . . . . . . . . . . . . .  16
+       5.6.1.  From Client . . . . . . . . . . . . . . . . . . . . .  16
+       5.6.2.  From Server . . . . . . . . . . . . . . . . . . . . .  16
    6.  Annex . . . . . . . . . . . . . . . . . . . . . . . . . . . .  17
      6.1.  Instruction Code  . . . . . . . . . . . . . . . . . . . .  17
      6.2.  Error Code  . . . . . . . . . . . . . . . . . . . . . . .  18
      6.3.  enum Direction  . . . . . . . . . . . . . . . . . . . . .  18
      6.4.  enum ResourceType . . . . . . . . . . . . . . . . . . . .  18
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  19
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
 
@@ -161,19 +158,17 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    when you are communicating with a R-Type client or with a R-Type
    server.
 
-
-
-
-
-Ninon                     Expires May 20, 2015                  [Page 3]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
 2.  Transfert Description
 
    The R-Type Network Communication Protocol is based on the TCP and UDP
    network protocols.
+
+
+
+Ninon                      Expires May 5, 2015                  [Page 3]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
    The R-Type Network Communication is a binary protocol.
 
@@ -218,16 +213,18 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    |-------------------------------|
    | magic_code | instruction_code |
+   |   int32_t  |      int32_t     |
+   |-------------------------------|
 
 
 
-Ninon                     Expires May 20, 2015                  [Page 4]
+
+
+
+Ninon                      Expires May 5, 2015                  [Page 4]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
-
-   |   int32_t  |      int32_t     |
-   |-------------------------------|
 
    The magic_code must have a value of 0x150407CA.  If it doesn't, the
    packet must be considered as invalid and the connection must be
@@ -274,17 +271,16 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command does not have a body.
 
-
-
-
-Ninon                     Expires May 20, 2015                  [Page 5]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
 4.2.  createGame
 
    Instruction code: 0x01
+
+
+
+Ninon                      Expires May 5, 2015                  [Page 5]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
 4.2.1.  From Client
 
@@ -329,19 +325,18 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command is composed of the following body:
 
-
-
-
-
-Ninon                     Expires May 20, 2015                  [Page 6]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
    |----------|
    |   name   |
    | char[64] |
    |----------|
+
+
+
+
+Ninon                      Expires May 5, 2015                  [Page 6]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
    The name attribute is the name of the game you want to join.
 
@@ -387,16 +382,17 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    In case of success, the client can not send UDP packets which stand
    for client actions (eg: move, fire).
 
-
-
-Ninon                     Expires May 20, 2015                  [Page 7]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
 4.4.2.  From Server
 
    This command has no equivalent server-side.
+
+
+
+
+Ninon                      Expires May 5, 2015                  [Page 7]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
 4.5.  showGame
 
@@ -443,15 +439,16 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    The maxPlayers attribute is the maximum number of clients that can
    play on this game.
 
+   The nbObservers attribute is the number of clients that are currently
+   observing the game.
 
 
-Ninon                     Expires May 20, 2015                  [Page 8]
+
+
+Ninon                      Expires May 5, 2015                  [Page 8]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
-
-   The nbObservers attribute is the number of clients that are currently
-   observing the game.
 
    The maxObservers attribute is the maximum number of clients that can
    observe the game.
@@ -498,17 +495,16 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command is used to delete a game.
 
-
-
-
-Ninon                     Expires May 20, 2015                  [Page 9]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
    This command can only succeed if you are the owner of the game.
 
    This command is composed of the following body:
+
+
+
+Ninon                      Expires May 5, 2015                  [Page 9]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
    |----------|
    |   name   |
@@ -554,17 +550,17 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command is composed of an empty body.
 
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 10]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
    The server may answer with a loop of showLevel commands.
 
 4.9.2.  From Server
+
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 10]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
    This command has no equivalent server-side.
 
@@ -593,44 +589,15 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command has no equivalent server-side.
 
-4.11.  disconnect
-
-   Instruction code: 0x07
-
-4.11.1.  From Client
-
-   This command is used to close the connection with the server.
-
-   This command is composed of an empty body.
-
-   The server must handle the disconnection and close the connection.
-
-
-
-
-
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 11]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
-
-4.11.2.  From Server
-
-   This command has no equivalent server-side.
-
-4.12.  error
+4.11.  error
 
    Instruction code: 0x00
 
-4.12.1.  From Client
+4.11.1.  From Client
 
    This command has no equivalent client-side.
 
-4.12.2.  From Server
+4.11.2.  From Server
 
    This command is used to notify a client if an error occured during
    the last received command treatment.
@@ -641,6 +608,15 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    | instructionCode | errorCode |
    |     int32_t     |  int32_t  |
    |-----------------------------|
+
+
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 11]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
    The instructionCode attribute is the code of the instruction
    concerned by the error packet.
@@ -654,25 +630,17 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    o  KO: 0x01
 
-4.13.  endGame
+4.12.  endGame
 
    Instruction code: 0x0B
 
-4.13.1.  From Client
+4.12.1.  From Client
 
    This command has no equivalent client-side.
 
-4.13.2.  From Server
+4.12.2.  From Server
 
    This command is used to notify a client that the game has ended.
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 12]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
    This command may be sent in different context: the game has been
    deleted, the player has been killed or the game has ended.
@@ -692,15 +660,23 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    After receiving this command, the client can not send UDP packets
    which stand for game actions anymore.
 
-4.14.  showLevel
+4.13.  showLevel
 
    Instruction code: 0x11
 
-4.14.1.  From Client
+4.13.1.  From Client
+
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 12]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
 
    This command has no equivalent client-side.
 
-4.14.2.  From Server
+4.13.2.  From Server
 
    This command is used to send level script information to a client.
 
@@ -720,15 +696,6 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    The server must send a showLevel command for all the available levels
    to a new client.
-
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 13]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
 5.  UDP Commands
 
@@ -755,6 +722,14 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    o  RIGHT: 0x01
 
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 13]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
    o  TOP: 0x02
 
    o  BOTTOM: 0x03
@@ -777,14 +752,6 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 5.2.2.  From Server
 
    This command has no equivalent server-side.
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 14]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
 5.3.  moveResource
 
@@ -811,6 +778,14 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    The type attribute is the type of the resource.  The type must have
    one of the following value:
 
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 14]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
    o  PLAYER: 0x00
 
    o  BULLER: 0x01
@@ -833,14 +808,6 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    This command has no equivalent client-side.
 
 5.4.2.  From Server
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 15]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
    This command is used to notify a client that a resource has been
    destroyed.
@@ -868,6 +835,13 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    Once the resource has been destroyed, its unique id may be reused for
    a newly created resource.
 
+
+
+Ninon                      Expires May 5, 2015                 [Page 15]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
 5.5.  updateScore
 
    Instruction code: 0x12
@@ -890,13 +864,6 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    The id attribute is the id of the concerned player.
 
    The pseudo attribute is the pseudo of the concerned player.
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 16]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
    The score attribute is the score of the concerned player.
 
@@ -923,6 +890,14 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    The timeElapsed attribute is the time elapsed since the beginning of
    the game.
 
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 16]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
    Even if the client must implement its own game loop, this command
    must be used by the client to adjust its intern game timer.
 
@@ -945,14 +920,6 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    o  updatePseudo: 0x06
 
    o  disconnect: 0x07
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 17]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
    o  move: 0x08
 
@@ -978,6 +945,15 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    o  pingTimeElapsed: 0x13
 
+
+
+
+
+Ninon                      Expires May 5, 2015                 [Page 17]
+
+Internet-Draft        R-Type Network Game Protocol         November 2014
+
+
 6.2.  Error Code
 
    o  OK: 0x00
@@ -1001,14 +977,6 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
    o  BULLER: 0x01
 
    o  ENNEMY: 0x02
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 18]
-
-Internet-Draft        R-Type Network Game Protocol         November 2014
-
 
    o  BONUS: 0x03
 
@@ -1037,28 +1005,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ninon                     Expires May 20, 2015                 [Page 19]
+Ninon                      Expires May 5, 2015                 [Page 18]

@@ -2,12 +2,14 @@
 #include <iostream>
 #include <stdexcept>
 #include <iostream>
+#include "Default.hpp"
 #include "Engine/Compenent/List.hpp"
 #include "Engine/Compenent/Position.hpp"
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/ComponentType.h"
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
+#include "Engine/Compenent/Velocity.hpp"
 
 ECSManagerNetwork::ECSManagerNetwork()
 {
@@ -21,7 +23,7 @@ void ECSManagerNetwork::OnDestroyResource(int id)
 
 void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
-
+	getClient()->setIdGame(RTypeClient::Game::MENU);
 }
 
 void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)
@@ -39,27 +41,30 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 	}
 }
 
-void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
+void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short /*angle*/, int id)
 {
 	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
-
-	if (!isEntityCreated(id))
+	if (!isEntityCreated(id + mFirstId))
 	{
-		std::cout << "ECSManagerNetwork::OnMoveResource Entity non existant => CREATION en (" << x << ";" << y << ")" << std::endl;
-		createEntity(id);
+		std::cout << "isEntityCreated(id) = false ; create entity in (x:'" << x << "'; y:'" << y << "'')" << std::endl;
+		createEntity(id + mFirstId);
 
-		Entity &entity = getEntity(id);
-		entity.addComponent(new Position(x, y));
+		Entity &entity = getEntity(id + mFirstId);
+		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 		entity.addComponent(new Drawable("ball"));
+		if (type == IResource::Type::BULLET)
+		{
+			entity.addComponent(new Velocity(1, 0, 200));
+		}
 	}
 	else
 	{
-		std::cout << "ECSManagerNetwork::OnMoveResource Entity déjà existante => UPDATE en (" << x << ";" << y << ")" << std::endl;
-		Entity &entity = getEntity(id);
+		std::cout << "isEntityCreated(id) = true ; update entity to (x:'" << x << "'; y:'" << y << "'')" << std::endl;
+		Entity &entity = getEntity(id + mFirstId);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
-		pos->setX(x);
-		pos->setY(y);
+		pos->setX((Config::Window::x / 100.f) * x);
+		pos->setY((Config::Window::y / 100.f) * y);
 	}
 }
 

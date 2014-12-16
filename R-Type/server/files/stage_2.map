@@ -13,3 +13,5 @@ remove_cron 7.2 1
 remove_cron 7.9 2
 remove_cron 9.3 3
 action 10.5 moveMobTo 1 310
+action 25.6 spawnMobAt 4 monster_basic 380 250 270
+action 26.5 spawnMobAt 5 monster_basic 380 480 310

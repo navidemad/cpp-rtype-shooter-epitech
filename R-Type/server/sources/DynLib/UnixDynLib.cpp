@@ -1,7 +1,7 @@
 #include "UnixDynLib.hpp"
 #include "DynLibException.hpp"
 
-void    UnixDynLib::libraryLoad(std::string& libraryName) {
+void    UnixDynLib::libraryLoad(const std::string& libraryName) {
 
     if (!(mHandle = dlopen(std::string(libraryName + EXT).c_str(), RTLD_LAZY)))
       throw DynLibException(dlerror());
