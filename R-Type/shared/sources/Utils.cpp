@@ -38,3 +38,7 @@ std::vector<std::string> Utils::split(const std::string& str, int delimiter(int)
 	}
 	return result;
 }
+
+int Utils::iseol(int ch) {
+	return ch == '\n';
+}

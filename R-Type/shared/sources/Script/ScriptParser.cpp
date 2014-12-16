@@ -90,7 +90,8 @@ Script ScriptParser::parseFile(std::ifstream &file) {
 Script ScriptParser::parseMapByString(const std::string& stage_content) {
 	std::string wordContent;
 	Script script;
-	auto lines = Utils::split(stage_content);
+
+	auto lines = Utils::split(stage_content, Utils::iseol);
 	for (auto line : lines) {
 		if (line.length() == 0)
 			continue;

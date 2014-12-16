@@ -101,8 +101,9 @@ void NGame::Game::check(void) {
 	for (auto it = getComponents().begin(); it != getComponents().end();) {
 		if (collision(*it))
 		{
-			if (getListener())
-				getListener()->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
+			auto listener = getListener();
+		    if (listener)
+		    	listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
 			it = getComponents().erase(it);
 		}
 		else
@@ -348,8 +349,9 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Compon
 			if (friendBullet)
 			{
 				user->setScore(user->getScore() + 1);
-				if (getListener())
-					getListener()->onNotifyUserGainScore(user->getPeer(), user->getId(), user->getPseudo(), user->getScore());
+				auto listener = getListener();
+		    	if (listener)
+		    		listener->onNotifyUserGainScore(user->getPeer(), user->getId(), user->getPseudo(), user->getScore());
 				component.setLife(component.getLife() - 1);
 				return component.getLife() == 0;
 			}
@@ -383,11 +385,28 @@ std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t 
 ** workflow internal game
 */
 void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
+	auto listener = getListener();
+	if (listener)
+		for (const auto &user : getUsers())
+			listener->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
+}
+
+void NGame::Game::addComponentInList(const NGame::Component& component) {
 	Scopedlock(getMutex());
 
-	if (getListener())
-		for (const auto &user : getUsers())
-			getListener()->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
+	mComponents.push_back(component);
+}
+
+void NGame::Game::addUserInList(const NGame::User& user) {
+	Scopedlock(getMutex());
+
+	mUsers.push_back(user);
+}
+
+void NGame::Game::eraseUserOfList(std::vector<NGame::User>::iterator& it) {
+	Scopedlock(getMutex());
+
+	mUsers.erase(it);
 }
 
 void NGame::Game::tryAddPlayer(NGame::User& user) {
@@ -413,22 +432,15 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 	component.setType(IResource::Type::PLAYER);
 	component.setId(getCurrentComponentMaxId());
 
-	{
-		Scopedlock(getMutex());
-		mComponents.push_back(component);
-	}
-
+	addComponentInList(component);
 	user.setId(getCurrentComponentMaxId());
-
-	{
-		Scopedlock(getMutex());
-		mUsers.push_back(user);
-	}
+	addUserInList(user);
 
 	getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
 
-    if (getListener())
-        getListener()->onNotifyUsersComponentAdded(getUsers(), component);
+    auto listener = getListener();
+    if (listener)
+    	listener->onNotifyUsersComponentAdded(getUsers(), component);
 
 	setState(NGame::Game::State::RUNNING);
 }
@@ -446,11 +458,7 @@ void NGame::Game::tryAddSpectator(const NGame::User& user) {
 	if (getProperties().getNbSpectators() >= getProperties().getMaxSpectators())
 		throw GameException("No place for new spectators");
 
-	{
-		Scopedlock(getMutex());
-		mUsers.push_back(user);
-	}
-
+	addUserInList(user);
 	mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
 }
 
@@ -477,7 +485,6 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-
 	auto user = findUserByHost(peer);
 
 	if (user == getUsers().end())
@@ -488,18 +495,16 @@ void NGame::Game::delUser(const Peer &peer) {
 	else if ((*user).getType() == NGame::USER_TYPE::SPECTATOR)
 		tryDelSpectator();
 
-	{
-		Scopedlock(getMutex());
-		mUsers.erase(user);
-	}
+	eraseUserOfList(user);
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
 	tryDelPlayer();
 	tryAddPlayer(user);
 	user.setType(NGame::USER_TYPE::SPECTATOR);
-	if (getListener())
-		getListener()->onRemovePeerFromWhiteList(user.getPeer());
+	auto listener = getListener();
+    if (listener)
+    	listener->onRemovePeerFromWhiteList(user.getPeer());
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {
@@ -539,10 +544,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	component.setType(IResource::Type::BULLET);
 	component.setId(++mCurrentComponentMaxId);
 
-	{
-		Scopedlock(getMutex());
-		mComponents.push_back(component);
-	}
+	addComponentInList(component);
 
 	return component;
 }
@@ -572,15 +574,17 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 ** workflow scripts actions
 */
 void	NGame::Game::scriptCommandName(const std::shared_ptr<IScriptCommand> &command) {
+	logInfo(__FUNCTION__);
 	const std::shared_ptr<ScriptName> commandScriptName = std::static_pointer_cast<ScriptName>(command);
 
 	if (commandScriptName->getName() != getProperties().getLevelName())
 		throw GameException("script name request doesn't match with the level name of current game");
 
-    //std::cout << commandScriptName << std::endl;
+    std::cout << commandScriptName << std::endl;
 }
 
 void	NGame::Game::scriptCommandRequire(const std::shared_ptr<IScriptCommand> &command) {
+	logInfo(__FUNCTION__);
     const std::shared_ptr<ScriptRequire> commandScriptRequire = std::static_pointer_cast<ScriptRequire>(command);
 
 	// CHECK SI LA LIBRARIE .so / .dll EST PRESENTE DANS NOTRE STD::VECTOR<DynRessource> mRessources
@@ -591,6 +595,7 @@ void	NGame::Game::scriptCommandRequire(const std::shared_ptr<IScriptCommand> &co
 }
 
 void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &command) {
+	logInfo(__FUNCTION__);
     const std::shared_ptr<ScriptAction> commandScriptAction = std::static_pointer_cast<ScriptAction>(command);
 
 	// TODO
@@ -601,6 +606,7 @@ void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &com
 }
 
 void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command) {
+	logInfo(__FUNCTION__);
     const std::shared_ptr<ScriptAddCron> commandScriptAddCron = std::static_pointer_cast<ScriptAddCron>(command);
 
 	// TODO
@@ -610,6 +616,7 @@ void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &co
 }
 
 void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command) {
+	logInfo(__FUNCTION__);
     const std::shared_ptr<ScriptRemoveCron> commandScriptRemoveCron = std::static_pointer_cast<ScriptRemoveCron>(command);
 
 	// TODO

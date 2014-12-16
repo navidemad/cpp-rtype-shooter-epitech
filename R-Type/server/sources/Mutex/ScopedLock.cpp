@@ -25,6 +25,7 @@ ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex, const char* callerFunction
 	}
 	mutex_address.insert({std::this_thread::get_id(), &*mMutex});
 	*/
+	
 	//if (std::string(callerFile) == "sources/Game/GamesManager.cpp" && std::string(callerFunctionName) != "getGames")
 	//	std::cout << "avant GamesManager " << callerFunctionName << ": Called from " << callerFile << ":" << callerLine << std::endl;
 	//else if (std::string(callerFile) == "sources/Game/Game.cpp")

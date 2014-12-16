@@ -33,6 +33,7 @@ void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &lo
 }
 
 void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const Peer &peer) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	{
 		Scopedlock(mMutex);
 
@@ -52,6 +53,7 @@ void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, 
 }
 
 void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &command, const Peer &peer) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
   logInfo(peer, "RECV move");
 
 	if (mListener) {
@@ -62,6 +64,7 @@ void	PlayerCommunicationManager::recvMove(const std::shared_ptr<ICommand> &comma
 }
 
 void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, const Peer &peer) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
   logInfo(peer, "RECV fire");
 
 	if (mListener)
@@ -69,6 +72,7 @@ void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, con
 }
 
 void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	Scopedlock(mMutex);
 
 	if (findPeer(peer) == mAllowedPeers.end())
@@ -76,6 +80,7 @@ void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
 }
 
 void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	Scopedlock(mMutex);
 
 	const auto &peerIt = findPeer(peer);
@@ -94,6 +99,7 @@ void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlaye
 }
 
 void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, double x, double y, short angle) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	CommandMoveResource commandMoveResource;
 
 	commandMoveResource.setId(id);
@@ -105,6 +111,7 @@ void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id,
 }
 
 void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, uint64_t id) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	CommandDestroyResource commandDestroyResource;
 
 	commandDestroyResource.setId(id);
@@ -112,6 +119,7 @@ void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, uint64_t 
 }
 
 void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	CommandUpdateScore commandUpdateScore;
 
 	commandUpdateScore.setId(id);
@@ -121,6 +129,7 @@ void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, 
 }
 
 void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, double timeElapsed) {
+	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	CommandTimeElapsedPing commandTimeElapsedPing;
 
 	commandTimeElapsedPing.setTimeElapsed(timeElapsed);

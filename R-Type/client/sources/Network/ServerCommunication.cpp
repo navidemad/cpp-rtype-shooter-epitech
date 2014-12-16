@@ -62,12 +62,14 @@ void ServerCommunication::OnDeleteGame(const std::string &name){
 }
 
 void ServerCommunication::OnFire(void){
+	std::cout << "ServerCommunication::OnFire" << std::endl;
 	std::shared_ptr<ICommand> command(new CommandFire);
 
 	sendCommand(command.get(), false);
 }
 
 void ServerCommunication::OnJoinGame(const std::string &name){
+	std::cout << "ServerCommunication::OnJoinGame" << std::endl;
 	std::shared_ptr<ICommand> command(new CommandJoinGame);
 	CommandJoinGame *fill = reinterpret_cast<CommandJoinGame *>(command.get());
 
@@ -132,18 +134,15 @@ void ServerCommunication::OnUpdatePseudo(const std::string &pseudo){
 
 void ServerCommunication::OnSetServerIp(const std::string &ip){
 	mServerPeer.host = ip;
-	std::cout << "set de lip=>" << mServerPeer.host <<std::endl;
 }
 
 void ServerCommunication::OnSetServerPortTcp(int port){
-	std::cout << "set le port => " << mServerPeer.tcpPort << std::endl;
-	mServerPeer.tcpPort = port;
+	std::cout << "mServerPeer.tcpPort: '" << mServerPeer.tcpPort << "'" << std::endl;
 }
 
 void ServerCommunication::OnConnectToServer(void){
 	try {
-		std::cout << "ip=>" << mServerPeer.host <<std::endl;
-		std::cout << "port => " << mServerPeer.tcpPort << std::endl;
+		std::cout << "Connect to '" << mServerPeer.host << "@" << mServerPeer.tcpPort << "'" << std::endl;
 		mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
 	}
 	catch (SocketException e){

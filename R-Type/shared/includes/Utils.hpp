@@ -32,7 +32,8 @@ namespace Utils
 	std::string basename(const std::string &);
 	std::string removeExtension(const std::string &pathname);
 	std::vector<std::string> split(const std::string& str, int delimiter(int) = ::isspace);
-
+	int iseol(int ch);
+	
 	#if defined(__OS_LINUX__)
 		const std::string YELLOW = "\033[1;33m";
 		const std::string WHITE = "\033[0;37m";

@@ -44,6 +44,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float 
 	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
 	if (!isEntityCreated(id))
 	{
+		std::cout << "ECSManagerNetwork::OnMoveResource Entity non existant => CREATION en (" << x << ";" << y << ")" << std::endl;
 		createEntity(id);
 
 		Entity &entity = getEntity(id);
@@ -52,6 +53,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float 
 	}
 	else
 	{
+		std::cout << "ECSManagerNetwork::OnMoveResource Entity déjà existante => UPDATE en (" << x << ";" << y << ")" << std::endl;
 		Entity &entity = getEntity(id);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
@@ -76,19 +78,19 @@ void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/
 
 void ECSManagerNetwork::OnShowLevel(const std::string &name, const std::string &script)
 {
-	std::cout << name << std::endl;
+	std::cout << "ECSManagerNetwork::OnShowLevel - scriptName: '" << name << "'" << std::endl;
 	getClient()->setLevel(name);
 	getClient()->setScript(script);
 }
 
-void ECSManagerNetwork::OnTimeElapse(int64_t /*time*/)
+void ECSManagerNetwork::OnTimeElapse(int64_t time)
 {
-
+	std::cout << "ECSManagerNetwork::OnTimeElapse - time: '" << time << "'" << std::endl;
 }
 
-void ECSManagerNetwork::OnUpdateScore(const std::string &/*name*/, int /*id*/, int /*score*/)
+void ECSManagerNetwork::OnUpdateScore(const std::string &name, int id, int score)
 {
-
+	std::cout << "ECSManagerNetwork::OnUpdateScore - name: '" << name << "' id: '" << id << "' score: '" << score << "'" << std::endl;
 }
 
 void ECSManagerNetwork::OnCloseSocket(void){

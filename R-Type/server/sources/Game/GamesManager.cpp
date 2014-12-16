@@ -85,20 +85,15 @@ void GamesManager::run(void) {
             		case NGame::Game::State::RUNNING:
                         (*it)->setPullEnded(false);
         				*mThreadPool << std::bind(&NGame::Game::pull, (*it));
-                        ++it;
             			break;
             		case NGame::Game::State::DONE:
-            			it = terminatedGame(findGameByName((*it)->getProperties().getName()));
+            			terminatedGame(findGameByName((*it)->getProperties().getName()));
             			break;
                     default:
-                        ++it;
                         break;
         		}
             }
-            else
-            {
-                ++it;
-            }
+            ++it;
 		}
     }
 }

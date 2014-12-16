@@ -3,6 +3,7 @@
 #include "RTypeClient.hpp"
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Gameplay/Gameplay.hpp"
+
 FireSystem::FireSystem()
 {
 	setComponentNeeded(ComponentType::FIRE);
@@ -21,7 +22,6 @@ void	FireSystem::process(Entity &entity, uint32_t delta)
 	if (fire->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
 	{
 		fire->resetTimer();
-		std::cout << "FireSystem::process ACTIONS" << std::endl;
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalFire();
 	}
 }
@@ -37,7 +37,6 @@ void	DownSystem::process(Entity &entity, uint32_t /* */)
 {
 	if (entity.getEntityManager()->getClient()->getGui()->isPressed("s"))
 	{
-		std::cout << "DownSystem::process BOTTOM" << std::endl;
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::BOTTOM);
 	}
 }
@@ -55,7 +54,6 @@ void	UpSystem::process(Entity &entity, uint32_t /* */)
 {
 	if (entity.getEntityManager()->getClient()->getGui()->isPressed("z"))
 	{
-		std::cout << "UpSystem::process IP" << std::endl;
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::TOP);
 	}
 }
@@ -73,7 +71,6 @@ void	RightSystem::process(Entity &entity, uint32_t /* */)
 {
 	if (entity.getEntityManager()->getClient()->getGui()->isPressed("q"))
 	{
-		std::cout << "RightSystem::process LEFT" << std::endl;
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::LEFT);
 	}
 }
@@ -91,7 +88,6 @@ void	LeftSystem::process(Entity &entity, uint32_t /* */)
 {
 	if (entity.getEntityManager()->getClient()->getGui()->isPressed("d"))
 	{
-		std::cout << "LeftSystem::process RIGHT" << std::endl;
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::RIGHT);
 	}
 }
