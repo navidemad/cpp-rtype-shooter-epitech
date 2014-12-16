@@ -43,19 +43,19 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float y, short /*angle*/, int id)
 {
 	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
-	if (!isEntityCreated(id))
+	if (!isEntityCreated(id + mFirstId))
 	{
 		std::cout << "isEntityCreated(id) = false ; create entity in (x:'" << x << "'; y:'" << y << "'')" << std::endl;
-		createEntity(id);
+		createEntity(id + mFirstId);
 
-		Entity &entity = getEntity(id);
+		Entity &entity = getEntity(id + mFirstId);
 		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 		entity.addComponent(new Drawable("ball"));
 	}
 	else
 	{
 		std::cout << "isEntityCreated(id) = true ; update entity to (x:'" << x << "'; y:'" << y << "'')" << std::endl;
-		Entity &entity = getEntity(id);
+		Entity &entity = getEntity(id + mFirstId);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
 		pos->setX((Config::Window::x / 100.f) * x);

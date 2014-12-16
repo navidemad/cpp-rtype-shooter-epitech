@@ -19,6 +19,8 @@ namespace ComponentType
 		LEFT,
 		RIGHT,
 		SCRIPT,
+		BACKGROUND,
+		VELOCITY,
 		LIMIT
 	};
 }

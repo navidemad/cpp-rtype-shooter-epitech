@@ -12,6 +12,11 @@ namespace Config
 		const unsigned int	y = 1080;
 	}
 
+	namespace Title
+	{
+		const int	sizeTitleBackground = 430;
+	}
+
 	namespace Game
 	{
 		const std::string	defaultNameGame = "Simon suce des ours";
