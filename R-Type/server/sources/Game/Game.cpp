@@ -102,9 +102,16 @@ void NGame::Game::check(void) {
 	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
+			auto users = getUsers();
+			if ((*it).getType() == IResource::Type::PLAYER)
+			{
+				auto user = findUserById((*it).getId());
+				if (user != users.end())
+					transferPlayerToSpectators(*user);
+			}
 			auto listener = getListener();
 		    if (listener)
-		    	listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
+		    	listener->onNotifyUsersComponentRemoved(users, (*it).getId());
 			it = components.erase(it);
 		}
 		else
@@ -264,7 +271,6 @@ bool NGame::Game::collision(NGame::Component& component) {
 	static auto functionsHandleCollision = std::vector<std::function<bool(NGame::Component&, NGame::Component&)>>
 	{
 		std::bind(&NGame::Game::collisionWithNoLife, this, std::placeholders::_1),
-		std::bind(&NGame::Game::collisionWithBorders, this, std::placeholders::_1),
 		std::bind(&NGame::Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
 		std::bind(&NGame::Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
 		std::bind(&NGame::Game::collisionWithEnnemy, this, std::placeholders::_1, std::placeholders::_2)
@@ -301,13 +307,6 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 
 bool NGame::Game::collisionWithNoLife(NGame::Component& component) {
 	return findUserById(component.getId()) != getUsers().end() && component.getLife() == 0;
-}
-
-bool NGame::Game::collisionWithBorders(NGame::Component& component) {
-	auto user = findUserById(component.getId());
-	if (user != getUsers().end())
-		transferPlayerToSpectators(*user);
-	return true;
 }
 
 bool NGame::Game::collisionWithBonus(NGame::Component& component, NGame::Component& obstacle) {
@@ -504,12 +503,12 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
-	tryDelPlayer();
-	tryAddPlayer(user);
-	user.setType(NGame::USER_TYPE::SPECTATOR);
 	auto listener = getListener();
     if (listener)
     	listener->onRemovePeerFromWhiteList(user.getPeer());
+	tryDelPlayer();
+	user.setType(NGame::USER_TYPE::SPECTATOR);
+	tryAddSpectator(user);
 }
 
 void NGame::Game::updatePositionComponent(NGame::Component& component) {

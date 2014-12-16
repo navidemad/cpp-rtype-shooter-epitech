@@ -94,7 +94,7 @@ void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlaye
 }
 
 void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, double x, double y, short angle) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
+	logInfo(peer, "SEND sendMoveResource " + Utils::toString<uint64_t>(id));
 	CommandMoveResource commandMoveResource;
 
 	commandMoveResource.setId(id);
@@ -106,7 +106,7 @@ void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id,
 }
 
 void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, uint64_t id) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
+	logInfo(peer, "SEND sendDestroyResource " + Utils::toString<uint64_t>(id));
 	CommandDestroyResource commandDestroyResource;
 
 	commandDestroyResource.setId(id);
@@ -114,7 +114,7 @@ void PlayerCommunicationManager::sendDestroyResource(const Peer &peer, uint64_t 
 }
 
 void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
+	logInfo(peer, "SEND sendUpdateScore " + Utils::toString<uint64_t>(score));
 	CommandUpdateScore commandUpdateScore;
 
 	commandUpdateScore.setId(id);
@@ -124,7 +124,7 @@ void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, 
 }
 
 void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, double timeElapsed) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
+	logInfo(peer, "SEND sendUpdateScore " + Utils::toString<double>(timeElapsed));
 	CommandTimeElapsedPing commandTimeElapsedPing;
 
 	commandTimeElapsedPing.setTimeElapsed(timeElapsed);
