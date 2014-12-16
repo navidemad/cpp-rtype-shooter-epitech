@@ -35,8 +35,7 @@ void RTypeServer::onClientDisconnected(const Peer &peer) {
 	try {
 		mGamesManager.leaveGame(peer);
 	}
-	catch (const GamesManagerException& e) {
-		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+	catch (const GamesManagerException&) {
 	}
 }
 
