@@ -207,7 +207,8 @@ void GamesManager::onPlayerFire(const Peer &peer) {
         
         try {
             auto component = (*game)->fire(peer);
-            for (const auto &user : (*game)->getUsers())
+            auto& users = (*game)->getUsers();
+            for (const auto &user : users)
                 getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
         }
         catch (const GameException& e) {

@@ -73,9 +73,8 @@ void NGame::Game::pull(void) {
 void NGame::Game::actions(void) {
 	std::shared_ptr<IScriptCommand> currentCommand;
 
-	if (mTimer.frame() < 40.)
-		return;
-	/*
+	///if (mTimer.frame() < 40.)
+	//	return;
 	if (getScript().getCommands().size()) 
 	{
 		do
@@ -96,7 +95,6 @@ void NGame::Game::actions(void) {
 
 		} while (getScript().goToNextAction());
 	}
-	*/
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
@@ -127,9 +125,14 @@ void NGame::Game::check(void) {
 
 void NGame::Game::update(void) {
 	auto& components = getComponents();
-	for (auto& component : components)
-		if (component.getType() != IResource::Type::PLAYER)
+	for (auto& component : components) {
+		if (component.getType() != IResource::Type::PLAYER) {
 			updatePositionComponent(component);
+			auto listener = getListener();
+			if (listener)
+		    	listener->onNotifyUsersComponentAdded(getUsers(), component);
+		}
+	}
 }
 
 /*
@@ -285,6 +288,7 @@ bool NGame::Game::collision(NGame::Component& component) {
 	auto& components = getComponents();
 	for (NGame::Component& obstacle : components) {
 		if (collisionTouch(component, obstacle)) {
+			return true; // a debugger below
 			std::cout << "collisionTouch = true" << std::endl;
 			int i;
 			i = 1;
@@ -302,7 +306,6 @@ bool NGame::Game::collision(NGame::Component& component) {
 }
 
 bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame::Component& obstacle) const {
-	return false; // a debuger
 	if (&obstacle == &component)
 		return false;
 
@@ -312,6 +315,7 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 		return true;
 	}
 
+	return false; // a debugger below
 	double x = component.getX() - component.getWidth() / 2.; // probleme car getWidth est en px et getX en ratio %
 	double y = component.getY() - component.getHeight() / 2.;
 	double obsX = obstacle.getX() - obstacle.getWidth() / 2.;
@@ -440,7 +444,7 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 
 	double playerWidth = 32.;
 	double playerHeight = 32.;
-	double playerSpeed = 0.35;
+	double playerSpeed = 0.45;
 	short playerAngle = 0;
 
 	setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
@@ -536,8 +540,6 @@ void NGame::Game::updatePositionComponent(NGame::Component& component) {
 	double dx = speed * cos(angleInRad);
 	double dy = speed * sin(angleInRad);
 
-	std::cout << component.getX() << " => " << component.getX() + dx << std::endl;
-
 	component.setX(component.getX() + dx);
 	component.setY(component.getY() + dy);
 }
@@ -551,7 +553,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	
 	double bulletWidth = 32.;
 	double bulletHeight = 32.;
-	double bulletSpeed = 0.35;
+	double bulletSpeed = 0.0016;
 	short bulletAngle = 0;
 	
 	auto user = findUserByHost(peer);
