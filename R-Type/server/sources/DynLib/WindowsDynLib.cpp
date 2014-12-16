@@ -7,9 +7,10 @@
 
 const std::string WindowsDynLib::extension = ".dll";
 
-void    WindowsDynLib::libraryLoad(std::string& libraryName) {
-    libraryName += WindowsDynLib::extension;
-    if (!(mDLLHandle = LoadLibrary(s2ws(libraryName).c_str())))
+void    WindowsDynLib::libraryLoad(const std::string& libraryName) {
+    std::string path = libraryName + WindowsDynLib::extension;
+
+	if (!(mDLLHandle = LoadLibrary(s2ws(path).c_str())))
         throw DynLibException("fail LoadLibrary()");
 }
 
