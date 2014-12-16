@@ -63,7 +63,7 @@ void NGame::Game::pull(void) {
 			cronSendPingToSyncronizeClientTimer();
 	}
 	catch (const GameException& e) {
-		Utils::logError(e.what()); // va savoir pk sur windows ya des caracteres random avant le message, alors que cout ya pas
+		Utils::logError(e.what());
 		setState(NGame::Game::State::DONE);
 	}
 
@@ -446,6 +446,9 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 }
 
 void NGame::Game::tryDelPlayer(void) {
+	std::cout << "##############" << std::endl;
+	std::cout << "#NGame::Game::tryDelPlayer" << std::endl;
+	std::cout << "##############" << std::endl;
 	getProperties().setNbPlayers(getProperties().getNbPlayers() - 1);
 	if (getProperties().getNbPlayers() == 0)
 	{
@@ -485,6 +488,9 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
+	std::cout << "##############" << std::endl;
+	std::cout << "#NGame::Game::delUser" << std::endl;
+	std::cout << "##############" << std::endl;
 	auto user = findUserByHost(peer);
 
 	if (user == getUsers().end())
@@ -499,6 +505,9 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
+	std::cout << "##############" << std::endl;
+	std::cout << "#NGame::Game::transferPlayerToSpectators" << std::endl;
+	std::cout << "##############" << std::endl;
 	tryDelPlayer();
 	tryAddPlayer(user);
 	user.setType(NGame::USER_TYPE::SPECTATOR);

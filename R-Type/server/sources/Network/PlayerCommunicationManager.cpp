@@ -33,7 +33,6 @@ void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &lo
 }
 
 void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, const std::shared_ptr<ICommand> &command, const Peer &peer) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
 	{
 		Scopedlock(mMutex);
 
@@ -72,7 +71,13 @@ void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, con
 }
 
 void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
-	std::cout << "PlayerCommunicationManager::" << __FUNCTION__ << std::endl;
+	std::cout << "###############" << std::endl;
+	std::cout << "#" << std::endl;
+	std::cout << "#" << std::endl;
+	std::cout << "# addPeerToWhiteList" << std::endl;
+	std::cout << "#" << std::endl;
+	std::cout << "#" << std::endl;
+	std::cout << "###############" << std::endl;
 	Scopedlock(mMutex);
 
 	if (findPeer(peer) == mAllowedPeers.end())
