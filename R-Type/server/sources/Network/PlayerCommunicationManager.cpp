@@ -124,7 +124,7 @@ void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, 
 }
 
 void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, double timeElapsed) {
-	logInfo(peer, "SEND sendUpdateScore " + Utils::toString<double>(timeElapsed));
+	logInfo(peer, "SEND sendTimeElapsedPing " + Utils::toString<double>(timeElapsed));
 	CommandTimeElapsedPing commandTimeElapsedPing;
 
 	commandTimeElapsedPing.setTimeElapsed(timeElapsed);
