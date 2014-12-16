@@ -32,7 +32,7 @@ class IDynLib {
 
 	// interface implementation
 	public:
-        virtual void    libraryLoad(std::string&) = 0;
+        virtual void    libraryLoad(const std::string&) = 0;
 		virtual void*   functionLoad(const std::string&) = 0;
         virtual void    libraryFree(void) = 0;
 

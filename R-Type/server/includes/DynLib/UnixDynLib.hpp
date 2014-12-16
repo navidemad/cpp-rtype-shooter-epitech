@@ -22,7 +22,7 @@ class UnixDynLib : public IDynLib {
 
 	// interface implementation
 	public:
-        void    libraryLoad(std::string&);
+        void    libraryLoad(const std::string&);
 		void*   functionLoad(const std::string&);
         void    libraryFree(void);
 
