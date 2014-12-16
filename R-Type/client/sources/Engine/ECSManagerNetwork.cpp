@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <iostream>
+#include "Default.hpp"
 #include "Engine/Compenent/List.hpp"
 #include "Engine/Compenent/Position.hpp"
 #include "Engine/Compenent/Drawable.hpp"
@@ -21,7 +22,7 @@ void ECSManagerNetwork::OnDestroyResource(int id)
 
 void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
-
+	getClient()->setIdGame(RTypeClient::Game::MENU);
 }
 
 void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)
@@ -48,7 +49,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float 
 		createEntity(id);
 
 		Entity &entity = getEntity(id);
-		entity.addComponent(new Position(x, y));
+		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 		entity.addComponent(new Drawable("ball"));
 	}
 	else
@@ -57,8 +58,8 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type /*type*/, float x, float 
 		Entity &entity = getEntity(id);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
-		pos->setX(x);
-		pos->setY(y);
+		pos->setX((Config::Window::x / 100.f) * x);
+		pos->setY((Config::Window::y / 100.f) * y);
 	}
 }
 
