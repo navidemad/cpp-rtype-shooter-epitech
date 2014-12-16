@@ -98,13 +98,14 @@ void NGame::Game::actions(void) {
 }
 
 void NGame::Game::check(void) {
-	for (auto it = getComponents().begin(); it != getComponents().end();) {
+	auto components = getComponents();
+	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
 			auto listener = getListener();
 		    if (listener)
 		    	listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
-			it = getComponents().erase(it);
+			it = components.erase(it);
 		}
 		else
 			++it;
@@ -112,7 +113,8 @@ void NGame::Game::check(void) {
 }
 
 void NGame::Game::update(void) {
-	for (auto& component : getComponents())
+	auto components = getComponents();
+	for (auto& component : components)
 		if (component.getType() != IResource::Type::PLAYER)
 			updatePositionComponent(component);
 }
@@ -268,7 +270,8 @@ bool NGame::Game::collision(NGame::Component& component) {
 		std::bind(&NGame::Game::collisionWithEnnemy, this, std::placeholders::_1, std::placeholders::_2)
 	};
 
-	for (NGame::Component& obstacle : getComponents()) {
+	auto components = getComponents();
+	for (NGame::Component& obstacle : components) {
 		if (collisionTouch(component, obstacle)) {
 			for (const auto& fct : functionsHandleCollision) {
 				if (fct(component, obstacle)) {
@@ -386,9 +389,11 @@ std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t 
 */
 void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
 	auto listener = getListener();
-	if (listener)
-		for (const auto &user : getUsers())
+	if (listener) {
+		auto users = getUsers();
+		for (const auto &user : users)
 			listener->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
+	}
 }
 
 void NGame::Game::addComponentInList(const NGame::Component& component) {
@@ -446,9 +451,6 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 }
 
 void NGame::Game::tryDelPlayer(void) {
-	std::cout << "##############" << std::endl;
-	std::cout << "#NGame::Game::tryDelPlayer" << std::endl;
-	std::cout << "##############" << std::endl;
 	getProperties().setNbPlayers(getProperties().getNbPlayers() - 1);
 	if (getProperties().getNbPlayers() == 0)
 	{
@@ -488,9 +490,6 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-	std::cout << "##############" << std::endl;
-	std::cout << "#NGame::Game::delUser" << std::endl;
-	std::cout << "##############" << std::endl;
 	auto user = findUserByHost(peer);
 
 	if (user == getUsers().end())
@@ -505,9 +504,6 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
-	std::cout << "##############" << std::endl;
-	std::cout << "#NGame::Game::transferPlayerToSpectators" << std::endl;
-	std::cout << "##############" << std::endl;
 	tryDelPlayer();
 	tryAddPlayer(user);
 	user.setType(NGame::USER_TYPE::SPECTATOR);
@@ -541,7 +537,7 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 		throw GameException("fire a player that not in this game");
 	auto component_user = findComponentById((*user).getId());
 	if (component_user == getComponents().end())
-		throw GameException("component_user that not in this game");
+		throw GameException("NGame::Game::fire component_user that not in this game");
 
 	component.setX((*component_user).getX());
 	component.setY((*component_user).getY());
@@ -564,7 +560,7 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 		throw GameException("fire a player that not in this game");
 	auto component = findComponentById((*user).getId());
 	if (component == getComponents().end())
-		throw GameException("component_user that not in this game");
+		throw GameException("NGame::Game::move component_user that not in this game");
 
 	for (const auto &instr : tokenAngleTab)
 	{

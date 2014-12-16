@@ -64,7 +64,14 @@ Entity		&ECSManager::createEntity(const unsigned int id)
 
 bool		ECSManager::isEntityCreated(const unsigned int id) const
 {
-	return mEntity.size() >= id && mLivingEntity[id];
+	try {
+		if (mEntity.size() >= id && mLivingEntity.at(id))
+			return true;
+		return false;
+	}
+	catch (...) {
+		return false;
+	}
 }
 
 Entity		&ECSManager::getEntity(const int id)
