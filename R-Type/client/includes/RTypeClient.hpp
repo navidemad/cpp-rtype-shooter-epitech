@@ -55,7 +55,9 @@ public:
 		std::vector<void (RTypeClient::*)()>	mStart;
 		std::vector<void (RTypeClient::*)()>	mStop;
 
-
+		int										mPort;
+		std::string								mAdresse;
+		std::string								mPseudo;
 
 	private: // init function
 		void						init();
@@ -97,4 +99,5 @@ public:
 		void	setLevel(std::string const &);
 		void	setScript(std::string const &);
 		bool	createGame();
+		void	connectToServer();
 };

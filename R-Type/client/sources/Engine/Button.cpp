@@ -113,9 +113,12 @@ void	ButtonInput::process(Entity &entity, uint32_t delta)
 		text = mFont->getText();
 		text = text.substr(0, text.size() - 1);
 		mFont->setText(text);
+		resetTimer();
+	}
+	if (entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	{
 		RTypeClient *client = entity.getEntityManager()->getClient();
 		(client->*mFct)(text);
-		resetTimer();
 	}
 }
 
@@ -133,7 +136,19 @@ void	ButtonCreateGame::process(Entity &entity, uint32_t delta)
 			entity.getEntityManager()->getClient()->setIdGame(RTypeClient::RTYPE);
 		}
 	}
+}
 
+void	ButtonBackGameAndSave::process(Entity &entity, uint32_t delta)
+{
+	updateTimer(delta);
+
+	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	{
+		resetTimer();
+		entity.getEntityManager()->getClient()->getGui()->playSound("option");
+		entity.getEntityManager()->stop();
+		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::MENU);
+	}
 }
 
 void	ButtonArtwork::process(Entity &entity, uint32_t delta)

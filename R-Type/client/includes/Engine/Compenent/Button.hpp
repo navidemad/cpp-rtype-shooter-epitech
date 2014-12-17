@@ -41,6 +41,16 @@ class ButtonGame : public Button
 		void	process(Entity &, uint32_t delta);
 };
 
+class ButtonBackGameAndSave : public Button
+{
+public:
+	ButtonBackGameAndSave() : Button(100) { }
+	~ButtonBackGameAndSave() { }
+
+public:
+	void	process(Entity &, uint32_t delta);
+};
+
 class ButtonQuitGame : public Button
 {
 public:

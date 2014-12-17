@@ -30,7 +30,12 @@ Q_DECLARE_METATYPE(std::string)
 Q_DECLARE_METATYPE(IResource::Direction)
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), mGui(SFMLGraphic::getInstance()), mCurrentLevel(Config::Game::defaultLevelGame), mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT)
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), 
+  mGui(SFMLGraphic::getInstance()), mCurrentLevel(Config::Game::defaultLevelGame),
+  mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), 
+  mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
+  mPort(Config::Network::port), mAdresse(Config::Network::adress),
+  mPseudo(Config::Network::defaultPseudo)
 {
 	mEngine[PRESS_START] = new ECSManager;
 	mEngine[MENU] = new ECSManager;
@@ -38,7 +43,7 @@ RTypeClient::RTypeClient()
 	mEngine[CREATE_MENU] = new ECSManager;
 	mEngine[SEARCH_MENU] = new ECSManagerNetwork;
 	mEngine[RTYPE] = new ECSManagerNetwork;
-	mEngine[ARTWORK] = new ECSManagerNetwork;
+	mEngine[ARTWORK] = new ECSManager;
 
 	mInit[PRESS_START] = &RTypeClient::initPressStart;
 	mInit[MENU] = &RTypeClient::initMenu;
@@ -155,10 +160,6 @@ void			RTypeClient::init()
 	};
 	(this->*(this->mStart[this->mCurrentId]))();
 	std::for_each(mInit.begin(), mInit.end(), init);
-
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(Config::Network::adress);
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(Config::Network::port);
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
 }
 
 void			RTypeClient::initRtype()
@@ -335,13 +336,19 @@ void			RTypeClient::initOption()
 	pseudoGameButton.addComponent(new Font("0", "Pseudo"));
 	pseudoGameButton.addComponent(new ButtonInput(fontPseudoGame, &RTypeClient::setPseudo));
 
+	Entity		backGameAndSave = engine.createEntity();
+	cursor->addEntity(backGameAndSave.getId());
+
+	backGameAndSave.addComponent(new Position(1150, 800));
+	backGameAndSave.addComponent(new Font("0", "Save and back !"));
+	backGameAndSave.addComponent(new ButtonBackGameAndSave);
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
 
 	backGame.addComponent(new Position(1150, 900));
 	backGame.addComponent(new Font("0", "Go back without saving !"));
-	backGame.addComponent(new ButtonMenuGame());
+	backGame.addComponent(new ButtonMenuGame);
 
 	engine.addSystem(new DrawableSystem);
 	engine.addSystem(new ButtonSystem);
@@ -564,12 +571,13 @@ void	RTypeClient::startRtype()
 
 void	RTypeClient::startSearchMenu()
 {
-	//static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListGame();
+	mGui->playMusic("Game");
 }
 
 void	RTypeClient::startCreateMenu()
 {
 	mGui->playMusic("Menu");
+	connectToServer();
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListLevel();
 }
 
@@ -619,30 +627,26 @@ void	RTypeClient::setPort(std::string const &port)
 	int value;
 	buffer >> value;
 
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(value);
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
+	mPort = value;
 }
 
 void	RTypeClient::setIpAdresse(std::string const &addr)
 {
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(addr);
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
+	mAdresse = addr;
 }
 
 void	RTypeClient::setPseudo(std::string const &pseudo)
 {
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(pseudo);
+	mPseudo = pseudo;
 }
 
 void	RTypeClient::setGame(std::string const &game)
 {
-	std::cout << game << std::endl;
 	mCurrentGame = game;
 }
 
 void	RTypeClient::setLevel(std::string const &level)
 {
-	std::cout << level << std::endl;
 	mCurrentLevel = level;
 }
 
@@ -653,7 +657,15 @@ void	RTypeClient::setScript(std::string const &script)
 
 bool	RTypeClient::createGame()
 {
-	std::cout << mCurrentGame << " " << mCurrentLevel << std::endl;
+	connectToServer();
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentGame, mCurrentLevel,  4, 4);
 	return true;
+}
+
+void	RTypeClient::connectToServer()
+{
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(mAdresse);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(mPort);
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(mPseudo);
 }
