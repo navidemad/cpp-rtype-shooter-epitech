@@ -70,7 +70,4 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		std::shared_ptr<IMutex> mMutex;
 		PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *mListener;
 
-	public:
-		static const int UDP_PORT = 4243;
-
 };

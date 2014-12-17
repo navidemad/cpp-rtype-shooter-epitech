@@ -4,6 +4,7 @@
 #include "ThreadPoolException.hpp"
 #include "ThreadException.hpp"
 #include "CondVarException.hpp"
+#include "Default.hpp"
 #include <iostream>
 
 ThreadPool::ThreadPool(unsigned int nbThreads)
@@ -84,7 +85,7 @@ const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 }
 
 std::shared_ptr<ThreadPool> ThreadPool::getInstance(void) {
-	static std::shared_ptr<ThreadPool> instance(new ThreadPool(ThreadPool::NB_THREADS));
+    static std::shared_ptr<ThreadPool> instance(new ThreadPool(Config::ThreadPool::nbThreads));
 
 	return instance;
 }

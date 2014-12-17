@@ -3,6 +3,7 @@
 #include "ICommand.hpp"
 #include "CommandFactory.hpp"
 #include "CommandException.hpp"
+#include "Default.hpp"
 
 PlayerPacketBuilder::PlayerPacketBuilder(int port) : 
 mCurrentHost(""),
@@ -12,6 +13,6 @@ mCurrentCommand(nullptr),
 mClient(PortabilityBuilder::getUdpClient()),
 mListener(nullptr)
 {
-	mClient->connect("127.0.0.1", port);
+    mClient->connect(Config::Network::localAdress, port);
 	mClient->setOnSocketEventListener(this);
 }

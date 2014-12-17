@@ -8,6 +8,7 @@
 #include "CommandTimeElapsedPing.hpp"
 #include <algorithm>
 #include "Utils.hpp"
+#include "Default.hpp"
 
 const PlayerCommunicationManager::CommandExec PlayerCommunicationManager::commandExecTab[] = {
 	{ ICommand::Instruction::MOVE, &PlayerCommunicationManager::recvMove },
@@ -15,7 +16,7 @@ const PlayerCommunicationManager::CommandExec PlayerCommunicationManager::comman
 };
 
 PlayerCommunicationManager::PlayerCommunicationManager(void) : 
-mPlayerPacketBuilder(PlayerCommunicationManager::UDP_PORT),
+mPlayerPacketBuilder(Config::Network::udpPort),
 mMutex(PortabilityBuilder::getMutex()),
 mListener(nullptr) {
 	mPlayerPacketBuilder.setListener(this);

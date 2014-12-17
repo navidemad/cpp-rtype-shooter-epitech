@@ -1,7 +1,8 @@
 TEMPLATE		=	app
 TARGET			=	server
-QT			+=	core network
-CONFIG		+=	console
+QT     			-= 	gui core network
+LIBS   			-= 	-lQtGui -lQtCore
+CONFIG			+=	console
 
 DESTDIR			=	build
 OBJECTS_DIR		=	build/obj
@@ -36,6 +37,7 @@ INCLUDEPATH		+=	.					\
 				build/moc
 
 HEADERS			+=	../shared/includes/NoCopyable.hpp			\
+				includes//Default.hpp							\
 				includes/Exceptions/MutexException.hpp			\
 				includes/Exceptions/SocketException.hpp			\
 				includes/Exceptions/ThreadException.hpp			\

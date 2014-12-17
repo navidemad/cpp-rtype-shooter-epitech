@@ -22,10 +22,6 @@ class ThreadPool : public NoCopyable {
 	public:
 		static std::shared_ptr<ThreadPool> getInstance(void);
 
-	// nb threads
-	public:
-		static const unsigned int NB_THREADS = 6;
-
 	// handle tasks
 	public:
 		const ThreadPool	&operator<<(std::function<void()> task);
