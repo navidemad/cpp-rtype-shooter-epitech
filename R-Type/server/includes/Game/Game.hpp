@@ -65,11 +65,6 @@ namespace NGame
 				short						angle;
 			};
 			static const NGame::Game::tokenExec tokenExecTab[];
-			static const NGame::Game::tokenAngle tokenAngleTab[];
-			static const double XMAX;
-			static const double YMAX;
-			static const double FRAMES_PER_SEC;
-			static const uint64_t START_ID_COMPONENT;
 
         // getters
         public:

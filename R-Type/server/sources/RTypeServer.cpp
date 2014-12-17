@@ -2,6 +2,7 @@
 #include "PortabilityBuilder.hpp"
 #include "GamesManagerException.hpp"
 #include "PlayerCommunicationManager.hpp"
+#include "Default.hpp"
 #include <iostream>
 
 RTypeServer::RTypeServer(void) {
@@ -21,9 +22,7 @@ void RTypeServer::startInfo(void) const {
 		      << "#       Welcome       #" << std::endl
 			  << "#######################" << std::endl
 			  << std::endl
-			  << "Port configuration:" << std::endl
-			  << "$> TCP Port: " << ClientManager::SERVER_TCP_PORT << std::endl
-			  << "$> UDP Port: " << PlayerCommunicationManager::UDP_PORT << std::endl
+              << "Port configuration: [TCP on" << Config::Network::tcpPort << "] [UDP on " << Config::Network::udpPort << "]" << std::endl
 			  << std::endl; 
 }
 

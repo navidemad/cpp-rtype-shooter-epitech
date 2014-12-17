@@ -1,1 +1,0 @@
-utiliser des structs (exemple => client manager => show game => game properties)

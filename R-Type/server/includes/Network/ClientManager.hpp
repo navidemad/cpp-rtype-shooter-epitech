@@ -70,8 +70,4 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		std::list<std::shared_ptr<Client>> mClients;
 		std::shared_ptr<IServerSocket> mServer;
 
-	public:
-		static const int SERVER_TCP_PORT = 4245;
-		static const int SERVER_TCP_QUEUE = 1024;
-
 };

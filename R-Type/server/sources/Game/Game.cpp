@@ -9,6 +9,7 @@
 #include "ScriptAction.hpp"
 #include "ScriptAddCron.hpp"
 #include "ScriptRemoveCron.hpp"
+#include "Default.hpp"
 #include <cmath>
 #include <memory>
 #include <algorithm>
@@ -23,18 +24,6 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 	{ IScriptCommand::Instruction::REMOVE_CRON, &NGame::Game::scriptCommandRemoveCron }
 };
 
-const NGame::Game::tokenAngle NGame::Game::tokenAngleTab[] = {
-	{ IResource::Direction::RIGHT, 0 },
-	{ IResource::Direction::BOTTOM, 90 },
-	{ IResource::Direction::LEFT, 180 },
-	{ IResource::Direction::TOP, 270 }
-};
-
-const double NGame::Game::XMAX = 100.;
-const double NGame::Game::YMAX = 100.;
-const double NGame::Game::FRAMES_PER_SEC = 60.;
-const uint64_t NGame::Game::START_ID_COMPONENT = 6;
-
 NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
 mScript(script),
 mListener(nullptr),
@@ -42,7 +31,7 @@ mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),
 mMutex(PortabilityBuilder::getMutex()),
 mPullEnded(true),
-mCurrentComponentMaxId(NGame::Game::START_ID_COMPONENT)
+mCurrentComponentMaxId(Config::Game::minIdComponent)
 {
 }
 
@@ -311,7 +300,7 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 	if (&obstacle == &component)
 		return false;
 
-	if (component.getX() < 0.0f || component.getX() > NGame::Game::XMAX || component.getY() < 0.0f || component.getX() > NGame::Game::YMAX)
+    if (component.getX() < Config::Window::xMin || component.getX() > Config::Window::xMax || component.getY() < Config::Window::yMin || component.getX() > Config::Window::yMax)
 	{
 		std::cout << "####### OUT OF SCREEN ########" << std::endl;
 		return true;
@@ -452,7 +441,7 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 	setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
 
 	component.setX(1.);
-	component.setY(NGame::Game::YMAX / 2.);
+    component.setY(Config::Window::yMax / 2.);
 	component.setWidth(playerWidth);
 	component.setHeight(playerHeight);
 	component.setAngle(playerAngle);
@@ -589,14 +578,7 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 	if (component == getComponents().end())
 		throw GameException("NGame::Game::move component_user that not in this game");
 
-	for (const auto &instr : tokenAngleTab)
-	{
-		if (instr.directionCode == direction)
-		{
-			(*component).setAngle(instr.angle);
-			break;
-		}
-	}
+    (*component).setAngle(Config::Game::angleTab[direction]);
 	updatePositionComponent(*component);
 
 	return *component;

@@ -1,10 +1,11 @@
 #include "ClientManager.hpp"
 #include "PortabilityBuilder.hpp"
 #include "Utils.hpp"
+#include "PlayerCommunicationManager.hpp"
+#include "Default.hpp"
 #include <algorithm>
 #include <iostream>
 #include <sstream>
-#include "PlayerCommunicationManager.hpp"
 
 ClientManager::ClientManager(void) : mListener(nullptr), mServer(PortabilityBuilder::getTcpServer()) {
 }
@@ -23,14 +24,14 @@ void ClientManager::logInfo(const Peer &peer, const std::string &log) const {
 void ClientManager::onNewConnection(IServerSocket *socket) {
 	std::shared_ptr<Client> client(new Client(socket->getNewClient()));
 	client->setListener(this);
-	client->handshake(PlayerCommunicationManager::UDP_PORT);
+	client->handshake(Config::Network::udpPort);
 	mClients.push_back(client);
 
 	logInfo(client->getPeer(), "Connected");
 }
 
 void ClientManager::run(void) {
-	mServer->createServer(ClientManager::SERVER_TCP_PORT, ClientManager::SERVER_TCP_QUEUE);
+    mServer->createServer(Config::Network::tcpPort, Config::Network::tcpQueue);
 	mServer->setOnSocketEventListener(this);
 }
 
