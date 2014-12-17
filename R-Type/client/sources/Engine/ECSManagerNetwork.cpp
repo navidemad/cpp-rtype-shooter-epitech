@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <iostream>
+#include <cmath>
 #include "Default.hpp"
 #include "Engine/Compenent/List.hpp"
 #include "Engine/Compenent/Position.hpp"
@@ -41,12 +42,11 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 	}
 }
 
-void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short /*angle*/, int id)
+void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
-	std::cout << "ECSManagerNetwork::OnMoveResource" << std::endl;
+
 	if (!isEntityCreated(id + mFirstId))
 	{
-		std::cout << "isEntityCreated(id) = false ; create entity in (x:'" << x << "'; y:'" << y << "'')" << std::endl;
 		createEntity(id + mFirstId);
 
 		Entity &entity = getEntity(id + mFirstId);
@@ -54,12 +54,11 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 		entity.addComponent(new Drawable("ball"));
 		if (type == IResource::Type::BULLET)
 		{
-			entity.addComponent(new Velocity(1, 0, 200));
+			entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
 		}
 	}
 	else
 	{
-		std::cout << "isEntityCreated(id) = true ; update entity to (x:'" << x << "'; y:'" << y << "'')" << std::endl;
 		Entity &entity = getEntity(id + mFirstId);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 

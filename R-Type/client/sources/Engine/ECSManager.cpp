@@ -115,9 +115,15 @@ void			ECSManager::updateSystem(uint32_t delta)
 	std::for_each(mSystem.begin(), mSystem.end(), [&](System * currentSystem) {
 		for (size_t i = 0; i != limit; ++i)
 		{
-			if (currentSystem->haveComponentNeeded(mEntityBitset[i]))
+			try
 			{
-				currentSystem->process(mEntity[i], delta);
+				if (currentSystem->haveComponentNeeded(mEntityBitset[i]))
+				{
+					currentSystem->process(mEntity[i], delta);
+				}
+			}
+			catch (...)
+			{
 			}
 		}
 	});

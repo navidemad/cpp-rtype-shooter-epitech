@@ -22,7 +22,6 @@ std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
 	return mInstance;
 }
 
-#include <iostream>
 bool	SFMLGraphic::drawSprite(std::string const &key, uint64_t delta, float x, float y, uint32_t id)
 {
 	auto sizeScreen = mWindow.getSize();
@@ -66,21 +65,24 @@ bool	SFMLGraphic::drawFont(std::string const &key, std::string const &str, float
 	return true;
 }
 
-bool	SFMLGraphic::playMusic(std::string const &key, bool onLoop)
+bool	SFMLGraphic::playMusic(std::string const &/*key*/, bool /*onLoop*/)
 {
-	if (key == mMusicCurrentKey || !mMusic.openFromFile(mContentManager.getMusics()->getResource(key)))
+/*	if (key == mMusicCurrentKey || !mMusic.openFromFile(mContentManager.getMusics()->getResource(key)))
 		return false;
 	mMusic.setLoop(onLoop);
 	mMusic.play();
 	mMusicCurrentKey = key;
+	*/
 	return true;
 }
 
-bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
+bool	SFMLGraphic::playSound(std::string const &/*key*/, bool /*onLoop*/)
 {
+	/*
 	mContentManager.getSounds()->getResource(key).sound.setBuffer(mContentManager.getSounds()->getResource(key).soundBuffer);
 	mContentManager.getSounds()->getResource(key).sound.setLoop(onLoop);
 	mContentManager.getSounds()->getResource(key).sound.play();
+	*/
 	return true;
 }
 
