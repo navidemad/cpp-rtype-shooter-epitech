@@ -22,7 +22,7 @@ void ClientManager::logInfo(const Peer &peer, const std::string &log) const {
 }
 
 void ClientManager::onNewConnection(IServerSocket *socket) {
-	std::shared_ptr<Client> client(new Client(socket->getNewClient()));
+	auto client = std::make_shared<Client>(socket->getNewClient());
 	client->setListener(this);
 	client->handshake(Config::Network::udpPort);
 	mClients.push_back(client);

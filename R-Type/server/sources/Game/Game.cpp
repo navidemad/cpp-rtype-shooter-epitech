@@ -93,18 +93,15 @@ void NGame::Game::check(void) {
 	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
-			auto& users = getUsers();
 			if ((*it).getType() == IResource::Type::PLAYER)
 			{
 				auto user = findUserById((*it).getId());
-				if (user != users.end())
-				{
+				if (user != getUsers().end())
 					transferPlayerToSpectators(*user);
-				}
 			}
 			auto listener = getListener();
 		    if (listener)
-		    	listener->onNotifyUsersComponentRemoved(users, (*it).getId());
+		    	listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
 			it = components.erase(it);
 		}
 		else
