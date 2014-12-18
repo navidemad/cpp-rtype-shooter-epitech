@@ -1,3 +1,0 @@
-C:/Users/Navid/Documents/GitHub/R-Type/R-Type/shared/entities/Monster/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/Navid/Documents/GitHub/R-Type/R-Type/shared/entities/Monster/build/CMakeFiles/Monster.dir
-C:/Users/Navid/Documents/GitHub/R-Type/R-Type/shared/entities/Monster/build/CMakeFiles/ZERO_CHECK.dir
