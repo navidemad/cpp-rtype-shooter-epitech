@@ -1,4 +1,4 @@
-/*
+
 #include "PortabilityBuilder.hpp"
 #include "IResource.hpp"
 #include "DynLibException.hpp"
@@ -7,25 +7,22 @@
 
 int main(void)
 {
+	auto lib = PortabilityBuilder::getDynLib();
 	try {
-		auto lib = PortabilityBuilder::getDynLib();
-		try {
-			lib->libraryLoad(std::string("../../shared/entities/Monster/Monster"));
-			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
-			std::cout << ressource->getSpeed() << std::endl;
-		}
-		catch (const DynLibException& e) {
-			std::cout << e.what() << std::endl;
-		}
+		lib->libraryLoad(std::string("./../shared/entities/Monster/Monster"));
+		auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+		std::cout << ressource->getSpeed() << std::endl;
 	}
-	catch (const std::exception& e) {
+	catch (const DynLibException& e) {
 		std::cout << e.what() << std::endl;
 	}
-	system("PAUSE");
+    #if defined(__OS_WINDOWS__)
+        system("PAUSE");
+    #endif
 	return 0;
 }
-*/
 
+/*
 #include <QtCore>
 #include "IResource.hpp"
 #include "RTypeClient.hpp"
@@ -45,3 +42,4 @@ int main(int ac, char **av)
     rtype.start();
 	return app.exec();
 }
+*/

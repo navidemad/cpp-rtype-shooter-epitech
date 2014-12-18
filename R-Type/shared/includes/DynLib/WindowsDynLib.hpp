@@ -22,6 +22,7 @@ class WindowsDynLib : public NoCopyable, public IDynLib {
     // internal functions
     private:
         std::wstring s2ws(const std::string& s);
+        std::string normalize(const std::string& libraryName);
 
     // string extension
     public:

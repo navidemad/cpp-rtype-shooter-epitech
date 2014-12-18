@@ -8,7 +8,7 @@
 const std::string WindowsDynLib::extension = ".dll";
 
 void    WindowsDynLib::libraryLoad(const std::string& libraryName) {
-    std::string path = libraryName + WindowsDynLib::extension;
+    std::string path = normalize(libraryName);
 
 	if (!(mDLLHandle = ::LoadLibrary(s2ws(path).c_str())))
         throw DynLibException("Can't load the DLL - fail LoadLibrary()");
@@ -36,4 +36,8 @@ std::wstring WindowsDynLib::s2ws(const std::string& s)
     std::wstring r(buf);
     delete[] buf;
     return r;
+}
+
+std::string WindowsDynLib::normalize(const std::string& libraryName) {
+  return libraryName + WindowsDynLib::extension;
 }

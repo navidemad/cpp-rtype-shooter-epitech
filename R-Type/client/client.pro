@@ -237,6 +237,8 @@ unix:LIBS	+=	-lsfml-audio 		\
 			-lsfml-window 		\
 			-lsfml-system	
 
+unix:LIBS += -ldl
+
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
 DEFINES        += _DEBUG
