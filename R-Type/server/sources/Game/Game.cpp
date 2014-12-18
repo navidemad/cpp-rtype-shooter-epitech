@@ -292,7 +292,7 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 
     if (component.getX() < Config::Window::xMin || component.getX() > Config::Window::xMax || component.getY() < Config::Window::yMin || component.getX() > Config::Window::yMax)
 	{
-		std::cout << "####### OUT OF SCREEN ########" << std::endl;
+		std::cout << "####### ID: '" << component.getId() << "' OUT OF SCREEN ########" << std::endl;
 		return true;
 	}
 

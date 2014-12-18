@@ -25,7 +25,6 @@ void	ClientPacketBuilder::fetchHeader(void) {
 	mCurrentCommand = CommandFactory::getCommand(static_cast<ICommand::Instruction>(header.instructionCode));
 
 	if (header.magicCode != ICommand::MAGIC_CODE || mCurrentCommand.get() == nullptr) {
-		std::cout << "FAILED ClientPacketBuilder :: fetchHeader" << std::endl;
 		mClient->closeClient();
 		if (mListener)
 			mListener->onSocketClosed(*this);
@@ -46,8 +45,6 @@ void	ClientPacketBuilder::fetchBody(void) {
 		mCurrentCommand->initFromMessage(message);
 	}
 	catch (const CommandException &e) {
-		std::cout << "FAILED ClientPacketBuilder :: fetchBody" << std::endl;
-		std::cerr << "CommandException error caught: " << e.what() << std::endl;
 		mClient->closeClient();
 		if (mListener)
 			mListener->onSocketClosed(*this);

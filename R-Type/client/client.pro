@@ -209,8 +209,10 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Command/CommandUpdateScore.cpp                          \
 			../shared/sources/Commands/ClientPacketBuilder.cpp
 
-unix:SOURCES		+= ../shared/sources/DynLib/UnixDynLib.cpp
-win32:SOURCES		+= ../shared/sources/DynLib/WindowsDynLib.cpp
+unix:SOURCES		+= ../shared/sources/DynLib/UnixDynLib.cpp \
+						sources/UnixPortabilityBuilder.cpp
+win32:SOURCES		+= ../shared/sources/DynLib/WindowsDynLib.cpp \
+						sources/WindowsPortabilityBuilder.cpp
 
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system

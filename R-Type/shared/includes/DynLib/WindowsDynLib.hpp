@@ -29,5 +29,5 @@ class WindowsDynLib : public NoCopyable, public IDynLib {
 
     // attributes
     private:
-    	HINSTANCE mDLLHandle;
+		HMODULE mDLLHandle;
 };

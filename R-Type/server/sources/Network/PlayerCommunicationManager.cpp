@@ -70,16 +70,9 @@ void	PlayerCommunicationManager::recvFire(const std::shared_ptr<ICommand> &, con
 }
 
 void PlayerCommunicationManager::addPeerToWhiteList(const Peer &peer) {
-	std::cout << "ScopedLock avant addPeerToWhiteList" << std::endl;
 	Scopedlock(mMutex);
-	std::cout << "ScopedLock apres addPeerToWhiteList" << std::endl;
-	std::cout << "apres findPeer" << std::endl;
 	if (findPeer(peer) == mAllowedPeers.end())
-	{
 		mAllowedPeers.push_back(peer);
-		std::cout << "added to peerlist, new size: " << mAllowedPeers.size() << std::endl;
-	}
-	std::cout << "apres findPeer" << std::endl;
 }
 
 void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {

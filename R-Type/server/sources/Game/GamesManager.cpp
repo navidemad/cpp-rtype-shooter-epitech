@@ -4,6 +4,7 @@
 #include "GameProperties.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
+#include "Default.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -85,15 +86,18 @@ void GamesManager::run(void) {
             		case NGame::Game::State::RUNNING:
                         (*it)->setPullEnded(false);
         				*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+                        ++it;
             			break;
             		case NGame::Game::State::DONE:
-            			terminatedGame(findGameByName((*it)->getProperties().getName()));
+            			it = terminatedGame(findGameByName((*it)->getProperties().getName()));
             			break;
                     default:
+                        ++it;
                         break;
         		}
             }
-            ++it;
+            else
+                ++it;
 		}
     }
 }
@@ -101,9 +105,9 @@ void GamesManager::run(void) {
 void GamesManager::createGame(const NGame::Properties& properties, const Peer &peer) {
 	if (findGameByName(properties.getName()) != getGames().end())
 		throw GamesManagerException("Game name already taken", ErrorStatus(ErrorStatus::Error::KO));
-	if (properties.getMaxPlayers() < 1 || properties.getMaxPlayers() > 4)
+    if (properties.getMaxPlayers() < 1 || properties.getMaxPlayers() > Config::Game::maxPlayersInAGame)
 		throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
-	if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > 4)
+    if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > Config::Game::maxSpectatorsInAGame)
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
 	if (getScriptLoader().isExist(properties.getLevelName()) == false)
 		throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));

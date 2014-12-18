@@ -19,6 +19,8 @@ namespace Config
 	{
         static const double	                            fpsLimit = 60.0;
         static const uint64_t	                        minIdComponent = 6;
+        static const int                                maxPlayersInAGame = 4;
+        static const int                                maxSpectatorsInAGame = 4;
         static std::map<IResource::Direction, short>    angleTab 
         = 
         { 

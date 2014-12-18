@@ -1,11 +1,11 @@
 #pragma once
 
-#include "IReaddir.hpp"
+#include "IDynLib.hpp"
 
 #include <memory>
 
 namespace PortabilityBuilder {
 
-    std::shared_ptr<IReaddir>		getReaddir(void);
+    std::shared_ptr<IDynLib> getDynLib(void);
 
 }
