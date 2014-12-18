@@ -10,7 +10,7 @@ int main(void)
 	try {
 		auto lib = PortabilityBuilder::getDynLib();
 		try {
-			lib->libraryLoad(std::string("../../shared/entities/Monster/build/Debug/Monster"));
+			lib->libraryLoad(std::string("../../shared/entities/Monster/Monster"));
 			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 			std::cout << ressource->getSpeed() << std::endl;
 		}
