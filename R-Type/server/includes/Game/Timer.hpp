@@ -15,11 +15,9 @@ class Timer : public NoCopyable {
     // internal functions
     public:
         void reset(void);
-		bool ping(void);
 		double frame() const;
 
     // attributes
     private:
         std::clock_t mStartTime;
-		std::clock_t mPingTime;
 };

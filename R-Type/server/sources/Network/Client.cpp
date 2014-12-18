@@ -181,11 +181,10 @@ void	Client::sendEndGame(void) {
 	mClientPacketBuilder.sendCommand(&commandEndGame);
 }
 
-void	Client::sendShowLevel(const std::string &name, const std::string &script) {
+void	Client::sendShowLevel(const std::string &name) {
 	CommandShowLevel commandShowLevel;
 
 	commandShowLevel.setName(name);
-	commandShowLevel.setScript(script);
 	mClientPacketBuilder.sendCommand(&commandShowLevel);
 }
 

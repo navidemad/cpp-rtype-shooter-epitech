@@ -338,11 +338,11 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
     return it;
 }
 
-std::list<std::pair<std::string, std::string>> GamesManager::getScripts(void) const {
-	std::list<std::pair<std::string, std::string>> scripts;
+std::list<std::string> GamesManager::getScriptsName(void) const {
+	std::list<std::string> scriptsName;
 
 	for (const auto &script : getScriptLoader().getScripts())
-		scripts.push_back(std::pair<std::string, std::string> { script.first, script.second.getTextScript() });
+		scriptsName.push_back(script.first);
 
-	return scripts;
+	return scriptsName;
 }

@@ -157,13 +157,13 @@ void	ClientManager::sendEndGame(const std::list<Peer> &peers) {
 	}
 }
 
-void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::string &name, const std::string &script) {
+void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::string &name) {
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
 
 		if (client != mClients.end()) {
 			logInfo((*client)->getPeer(), "SEND ShowLevel");
-			(*client)->sendShowLevel(name, script);
+			(*client)->sendShowLevel(name);
 		}
 	}
 }

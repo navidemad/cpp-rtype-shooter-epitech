@@ -98,10 +98,10 @@ void RTypeServer::onClientListGames(const Peer &peer) {
 }
 
 void RTypeServer::onClientListLevels(const Peer &peer) {
-    auto levels = mGamesManager.getScripts();
+    auto scriptsName = mGamesManager.getScriptsName();
 
-    for (const auto &level : levels)
-        mClientManager.sendShowLevel(std::list<Peer>{peer}, level.first, level.second);
+    for (const auto &scriptName : scriptsName)
+        mClientManager.sendShowLevel(std::list<Peer>{peer}, scriptName);
 }
 
 void RTypeServer::onClientObserveGame(const Peer &peer, const std::string &name) {

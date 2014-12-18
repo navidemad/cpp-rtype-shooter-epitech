@@ -99,7 +99,7 @@ RTypeClient::RTypeClient()
 	QObject::connect(&mServer, SIGNAL(SignalError(ICommand::Instruction, ErrorStatus::Error)), searchMenu, SLOT(OnError(ICommand::Instruction, ErrorStatus::Error)));
 	QObject::connect(&mServer, SIGNAL(SignalMoveResource(IResource::Type, float, float, short, int)), rtype, SLOT(OnMoveResource(IResource::Type, float, float, short, int)));
 	QObject::connect(&mServer, SIGNAL(SignalShowGame(const std::string &, const std::string &, int, int, int, int)), searchMenu, SLOT(OnShowGame(const std::string &, const std::string &, int, int, int, int)));
-	QObject::connect(&mServer, SIGNAL(SignalShowLevel(const std::string &, const std::string &)), searchMenu, SLOT(OnShowLevel(const std::string &, const std::string &)));
+	QObject::connect(&mServer, SIGNAL(SignalShowLevel(const std::string &)), searchMenu, SLOT(OnShowLevel(const std::string &)));
 	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), rtype, SLOT(OnTimeElapse(int64_t)));
 	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), rtype, SLOT(OnUpdateScore(const std::string & , int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalCloseSocket()), searchMenu, SLOT(OnCloseSocket()));

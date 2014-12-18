@@ -117,7 +117,6 @@ namespace NGame
 
         // workflow internal game
         private:
-			void cronSendPingToSyncronizeClientTimer(void);
             void addComponentInList(const NGame::Component&);
             void addUserInList(const NGame::User&);
             void eraseUserOfList(std::vector<NGame::User>::iterator& it);

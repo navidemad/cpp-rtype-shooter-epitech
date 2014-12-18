@@ -18,8 +18,6 @@ void CommandShowLevel::initFromMessage(const IClientSocket::Message & message) {
 	auto packet = *reinterpret_cast<const CommandShowLevel::PacketFromServer *>(message.msg.data());
 
 	packet.name[sizeof(packet.name) - 1] = 0;
-	packet.script[sizeof(packet.script) - 1] = 0;
 
 	mName = packet.name;
-	mScript = packet.script;
 }
