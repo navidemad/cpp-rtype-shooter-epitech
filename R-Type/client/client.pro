@@ -21,14 +21,16 @@ INCLUDEPATH	+=	.					\
 			../shared/includes/Network		\
 			../shared/includes/Commands		\
 			../shared/includes/Error		\
+			../shared/includes/DynLib		\
+			../shared/includes/Exceptions		\
 			dependencies/includes			\
 			build					\
 			build/ui				\
 			build/moc
 
 HEADERS		+=	includes/RTypeClient.hpp				\
-			includes/Exceptions/DynLibException.hpp			\
-			includes/DynLib/IDynLib.hpp				\
+			../shared/includes/Exceptions/DynLibException.hpp			\
+			../shared/includes/DynLib/IDynLib.hpp				\
 			includes/PortabilityBuilder.hpp				\
 			includes/Default.hpp					\
 			includes/Audio/MusicManager.hpp				\
@@ -114,10 +116,10 @@ HEADERS		+=	includes/RTypeClient.hpp				\
 			entity/includes/IEntity.hpp
 
 unix:HEADERS += 	includes/UnixPortabilityBuilder.hpp 			\
-			includes/DynLib/UnixDynLib.hpp
+			../shared/includes/DynLib/UnixDynLib.hpp
 
 win32:HEADERS += 	includes/WindowsPortabilityBuilder.hpp			\
-			includes/DynLib/WindowsDynLib.hpp
+			../shared/includes/DynLib/WindowsDynLib.hpp
 	
 SOURCES		+=	sources/main.cpp						\
 			sources/RTypeClient.cpp						\
@@ -207,8 +209,8 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Command/CommandUpdateScore.cpp                          \
 			../shared/sources/Commands/ClientPacketBuilder.cpp
 
-unix:SOURCES		+= sources/DynLib/UnixDynLib.cpp
-win32:SOURCES		+= sources/DynLib/WindowsDynLib.cpp
+unix:SOURCES		+= ../shared/sources/DynLib/UnixDynLib.cpp
+win32:SOURCES		+= ../shared/sources/DynLib/WindowsDynLib.cpp
 
 #CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
 #CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system

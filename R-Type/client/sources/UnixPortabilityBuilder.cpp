@@ -1,7 +1,7 @@
 #include "PortabilityBuilder.hpp"
 
-# include "UnixReaddir.hpp"
+# include "UnixDynLib.hpp"
 
-std::shared_ptr<IReaddir> PortabilityBuilder::getReaddir(void) {
-	return std::make_shared<UnixReaddir>();
+std::shared_ptr<IDynLib> PortabilityBuilder::getDynLib(void) {
+    return std::make_shared<UnixDynLib>();
 }

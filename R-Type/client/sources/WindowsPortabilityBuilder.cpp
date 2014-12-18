@@ -1,7 +1,7 @@
 #include "PortabilityBuilder.hpp"
 
-# include "WindowsReaddir.hpp"
+# include "WindowsDynLib.hpp"
 
-std::shared_ptr<IReaddir> PortabilityBuilder::getReaddir(void) {
-	return std::make_shared<WindowsReaddir>();
+std::shared_ptr<IDynLib> PortabilityBuilder::getDynLib(void) {
+    return std::make_shared<WindowsDynLib>();
 }
