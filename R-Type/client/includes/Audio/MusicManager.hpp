@@ -10,7 +10,7 @@ class MusicManager : public IResourceManager<std::string>
 {
 	// ctor - dtor
 	private:
-		explicit MusicManager();
+		MusicManager();
 	public:
 		~MusicManager();
 

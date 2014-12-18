@@ -4,7 +4,7 @@ class CollisionSystem
 {
     // ctor - dtor
     public:
-        explicit CollisionSystem();
+        CollisionSystem();
         ~CollisionSystem();
 
     // copy operators

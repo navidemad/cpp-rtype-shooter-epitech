@@ -12,8 +12,6 @@ class CommandShowLevel : public NoCopyable, public ICommand {
 		#pragma pack(push, 1)
 		struct PacketFromServer {
 			char		name[64];
-			uint64_t	scriptSize;
-			char		script[4096];
 		};
 		#pragma pack(pop)
 
@@ -25,10 +23,7 @@ class CommandShowLevel : public NoCopyable, public ICommand {
 	// getter - setters
 	public:
 		const std::string &getName(void) const;
-		const std::string &getScript(void) const;
-
 		void setName(const std::string &name);
-		void setScript(const std::string &script);
 
 	// public pure methods
 	public:
@@ -40,6 +35,5 @@ class CommandShowLevel : public NoCopyable, public ICommand {
 	// attributes
 	private:
 		std::string mName;
-		std::string mScript;
 
 };

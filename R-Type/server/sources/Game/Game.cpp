@@ -48,8 +48,6 @@ void NGame::Game::pull(void) {
 			check();
 		if (getState() == NGame::Game::State::RUNNING)
 			update();
-		if (getTimer().ping())
-			cronSendPingToSyncronizeClientTimer();
 	}
 	catch (const GameException& e) {
 		Utils::logError(e.what());
@@ -62,8 +60,9 @@ void NGame::Game::pull(void) {
 void NGame::Game::actions(void) {
 	std::shared_ptr<IScriptCommand> currentCommand;
 
-	///if (mTimer.frame() < 40.)
-	//	return;
+	if (mTimer.frame() < 200.)
+		return;
+	/*
 	if (getScript().getCommands().size()) 
 	{
 		do
@@ -84,6 +83,7 @@ void NGame::Game::actions(void) {
 
 		} while (getScript().goToNextAction());
 	}
+	*/
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
@@ -93,18 +93,15 @@ void NGame::Game::check(void) {
 	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
-			auto& users = getUsers();
 			if ((*it).getType() == IResource::Type::PLAYER)
 			{
 				auto user = findUserById((*it).getId());
-				if (user != users.end())
-				{
+				if (user != getUsers().end())
 					transferPlayerToSpectators(*user);
-				}
 			}
 			auto listener = getListener();
 		    if (listener)
-		    	listener->onNotifyUsersComponentRemoved(users, (*it).getId());
+		    	listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
 			it = components.erase(it);
 		}
 		else
@@ -114,16 +111,9 @@ void NGame::Game::check(void) {
 
 void NGame::Game::update(void) {
 	auto& components = getComponents();
-	for (auto& component : components) {
-		if (component.getType() != IResource::Type::PLAYER) {
+	for (auto& component : components)
+		if (component.getType() != IResource::Type::PLAYER)
 			updatePositionComponent(component);
-			/*
-			auto listener = getListener();
-			if (listener)
-		    	listener->onNotifyUsersComponentAdded(getUsers(), component);
-		    */
-		}
-	}
 }
 
 /*
@@ -400,15 +390,6 @@ std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t 
 /*
 ** workflow internal game
 */
-void NGame::Game::cronSendPingToSyncronizeClientTimer(void) {
-	auto listener = getListener();
-	if (listener) {
-		auto& users = getUsers();
-		for (const auto &user : users)
-			listener->onNotifyTimeElapsedPing(user.getPeer(), getTimer().frame());
-	}
-}
-
 void NGame::Game::addComponentInList(const NGame::Component& component) {
 	Scopedlock(getMutex());
 
@@ -500,6 +481,10 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 		tryAddPlayer(user);
 	else if (type == NGame::USER_TYPE::SPECTATOR)
 		tryAddSpectator(user);
+
+	auto listener = getListener();
+	if (listener)
+		listener->onNotifyTimeElapsedPing(peer, getTimer().frame());
 }
 
 void NGame::Game::delUser(const Peer &peer) {

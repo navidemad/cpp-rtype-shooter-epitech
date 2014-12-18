@@ -11,7 +11,7 @@ class TcpClient : public QObject, public IClientSocket{
 
     // ctor - dtor
     public:
-        explicit TcpClient();
+        TcpClient();
         ~TcpClient();
 
     // copy operators

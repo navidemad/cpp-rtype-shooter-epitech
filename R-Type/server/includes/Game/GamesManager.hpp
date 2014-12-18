@@ -60,7 +60,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
         const NGame::Properties &getGameProperties(const std::string &name);
         std::list<NGame::Properties> getGamesProperties(void);
-		std::list<std::pair<std::string, std::string>> getScripts(void) const;
+		std::list<std::string> getScriptsName(void) const;
 		
 	// internal methods
 	private:

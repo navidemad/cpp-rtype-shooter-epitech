@@ -7,7 +7,7 @@ class DrawableSystem : public System
 {
     // ctor - dtor
     public:
-		explicit DrawableSystem();
+		DrawableSystem();
 		~DrawableSystem() { }
 
 		void	process(Entity &, uint32_t);

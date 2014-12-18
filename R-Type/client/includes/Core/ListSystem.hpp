@@ -11,7 +11,7 @@ class ListSystem : public System
 {
     // ctor - dtor
     public:
-		explicit ListSystem();
+		ListSystem();
 		~ListSystem() { }
 
 		void	process(Entity &, uint32_t);

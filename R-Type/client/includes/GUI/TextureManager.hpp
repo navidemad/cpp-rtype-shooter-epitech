@@ -10,7 +10,7 @@ class TextureManager : public IResourceManager<sf::Texture>
 {
     // ctor - dtor
     private:
-        explicit TextureManager();
+        TextureManager();
     public:
         virtual ~TextureManager();
 

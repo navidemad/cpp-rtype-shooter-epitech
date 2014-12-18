@@ -25,12 +25,13 @@ INCLUDEPATH		+=	.					\
 				includes/Game			\
 				includes/Script			\
 				includes/Readdir			\
-				includes/DynLib			\
+				../shared/includes/Exceptions \
+				../shared/includes/DynLib			\
 				../shared/includes			\
 				../shared/includes/Network		\
 				../shared/includes/Commands		\
 				../shared/includes/Script		\
-                                ../shared/includes/Error                \
+                ../shared/includes/Error                \
 				dependencies/includes			\
 				build					\
 				build/ui				\
@@ -43,12 +44,12 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Exceptions/ThreadException.hpp			\
 				includes/Exceptions/CondVarException.hpp		\
 				includes/Exceptions/GameException.hpp			\
-				includes/Exceptions/DynLibException.hpp			\
+				../shared/includes/Exceptions/DynLibException.hpp			\
 				includes/Exceptions/GamesManagerException.hpp		\
 				includes/Mutex/ScopedLock.hpp				\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
-				includes/DynLib/IDynLib.hpp				\
+				../shared/includes/DynLib/IDynLib.hpp				\
 				includes/Readdir/IReaddir.hpp \
 				includes/Network/NetworkManager.hpp     		\
 				includes/Network/PlayerCommunicationManager.hpp		\
@@ -116,7 +117,7 @@ unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixUdpClient.hpp			\
 				includes/CondVar/UnixCondVar.hpp 			\
 				includes/Thread/UnixThread.hpp 				\
-				includes/DynLib/UnixDynLib.hpp				\
+				../shared/includes/DynLib/UnixDynLib.hpp				\
 				includes/Readdir/UnixReaddir.hpp				\
 				includes/UnixPortabilityBuilder.hpp
 
@@ -127,7 +128,7 @@ win32:HEADERS		+=	includes/Mutex/WindowsMutex.hpp				\
 				includes/Network/WindowsWSAHandler.hpp 			\
 				includes/CondVar/WindowsCondVar.hpp 			\
 				includes/Thread/WindowsThread.hpp 			\
-				includes/DynLib/WindowsDynLib.hpp				\
+				../shared/includes/DynLib/WindowsDynLib.hpp				\
 				includes/Readdir/WindowsReaddir.hpp				\
 				includes/WindowsPortabilityBuilder.hpp
 
@@ -197,7 +198,7 @@ unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixUdpClient.cpp			\
 				sources/CondVar/UnixCondVar.cpp 			\
 				sources/Mutex/UnixMutex.cpp 				\
-				sources/DynLib/UnixDynLib.cpp				\
+				../shared/sources/DynLib/UnixDynLib.cpp				\
 				sources/Readdir/UnixReaddir.cpp				\
 				sources/UnixPortabilityBuilder.cpp
 
@@ -207,7 +208,7 @@ win32:SOURCES		+=	sources/Network/WindowsTcpServer.cpp			\
 				sources/Network/WindowsWSAHandler.cpp 			\
 				sources/CondVar/WindowsCondVar.cpp 			\
 				sources/Mutex/WindowsMutex.cpp	 			\
-				sources/DynLib/WindowsDynLib.cpp			\
+				../shared/sources/DynLib/WindowsDynLib.cpp			\
 				sources/Readdir/WindowsReaddir.cpp				\
 				sources/WindowsPortabilityBuilder.cpp
 

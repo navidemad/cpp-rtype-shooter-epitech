@@ -22,7 +22,7 @@ void ClientManager::logInfo(const Peer &peer, const std::string &log) const {
 }
 
 void ClientManager::onNewConnection(IServerSocket *socket) {
-	std::shared_ptr<Client> client(new Client(socket->getNewClient()));
+	auto client = std::make_shared<Client>(socket->getNewClient());
 	client->setListener(this);
 	client->handshake(Config::Network::udpPort);
 	mClients.push_back(client);
@@ -157,13 +157,13 @@ void	ClientManager::sendEndGame(const std::list<Peer> &peers) {
 	}
 }
 
-void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::string &name, const std::string &script) {
+void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::string &name) {
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
 
 		if (client != mClients.end()) {
 			logInfo((*client)->getPeer(), "SEND ShowLevel");
-			(*client)->sendShowLevel(name, script);
+			(*client)->sendShowLevel(name);
 		}
 	}
 }

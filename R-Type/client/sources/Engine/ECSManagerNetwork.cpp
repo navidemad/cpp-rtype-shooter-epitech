@@ -81,11 +81,10 @@ void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/
 	}
 }
 
-void ECSManagerNetwork::OnShowLevel(const std::string &name, const std::string &script)
+void ECSManagerNetwork::OnShowLevel(const std::string &scriptName)
 {
-	std::cout << "ECSManagerNetwork::OnShowLevel - scriptName: '" << name << "'" << std::endl;
-	getClient()->setLevel(name);
-	getClient()->setScript(script);
+	std::cout << "ECSManagerNetwork::OnShowLevel - scriptName: '" << scriptName << "'" << std::endl;
+	getClient()->setLevel(scriptName);
 }
 
 void ECSManagerNetwork::OnTimeElapse(int64_t time)

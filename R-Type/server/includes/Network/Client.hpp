@@ -63,7 +63,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 		void	sendError(const ErrorStatus &errorStatus);
 		void	sendShowGame(const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
 		void	sendEndGame(void);
-		void	sendShowLevel(const std::string &name, const std::string &script);
+		void	sendShowLevel(const std::string &name);
 
 	// getters setters
 	public:

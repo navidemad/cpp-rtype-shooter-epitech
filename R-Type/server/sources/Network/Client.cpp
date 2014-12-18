@@ -46,8 +46,10 @@ void	Client::onPacketAvailable(const ClientPacketBuilder &, const std::shared_pt
 }
 
 void	Client::onSocketClosed(const ClientPacketBuilder &) {
-	if (mListener)
+	if (mListener){
+		std::cout << __FUNCTION__ << std::endl;
 		mListener->onClientDisconnected(*this);
+	}
 }
 
 void	Client::setListener(Client::OnClientEvent *listener) {
@@ -181,11 +183,10 @@ void	Client::sendEndGame(void) {
 	mClientPacketBuilder.sendCommand(&commandEndGame);
 }
 
-void	Client::sendShowLevel(const std::string &name, const std::string &script) {
+void	Client::sendShowLevel(const std::string &name) {
 	CommandShowLevel commandShowLevel;
 
 	commandShowLevel.setName(name);
-	commandShowLevel.setScript(script);
 	mClientPacketBuilder.sendCommand(&commandShowLevel);
 }
 

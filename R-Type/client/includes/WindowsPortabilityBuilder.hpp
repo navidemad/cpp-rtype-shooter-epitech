@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IReaddir.hpp"
-
 #include <memory>
 
 namespace PortabilityBuilder {

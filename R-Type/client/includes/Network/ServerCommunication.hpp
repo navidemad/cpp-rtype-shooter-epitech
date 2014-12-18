@@ -30,7 +30,7 @@ class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketB
         void SignalError(ICommand::Instruction instruction, ErrorStatus::Error);
         void SignalMoveResource(IResource::Type type, float x, float y, short angle, int id);
         void SignalShowGame(const std::string &name, const std::string &levelName, int nbPlayer, int maxPlayer, int nbObserver, int maxObserver);
-        void SignalShowLevel(const std::string &name, const std::string &script);
+        void SignalShowLevel(const std::string &name);
         void SignalTimeElapse(int64_t time);
         void SignalUpdateScore(const std::string &name, int id, int score);
         void SignalCloseSocket(void);

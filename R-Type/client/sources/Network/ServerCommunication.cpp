@@ -210,7 +210,7 @@ void ServerCommunication::ExecShowGame(ICommand *command){
 void ServerCommunication::ExecShowLevel(ICommand *command){
 	CommandShowLevel *cmd = reinterpret_cast<CommandShowLevel *>(command);
 
-	emit SignalShowLevel(cmd->getName(), cmd->getScript());
+	emit SignalShowLevel(cmd->getName());
 }
 
 void ServerCommunication::ExecTimeElapse(ICommand *command){

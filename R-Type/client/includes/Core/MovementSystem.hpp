@@ -4,7 +4,7 @@ class MovementSystem
 {
     // ctor - dtor
     public:
-        explicit MovementSystem();
+        MovementSystem();
         ~MovementSystem();
 
     // copy operators

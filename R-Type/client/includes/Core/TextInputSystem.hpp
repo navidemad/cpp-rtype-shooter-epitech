@@ -7,7 +7,7 @@ class TextInputSystem : public System
 {
     // ctor - dtor
     public:
-		explicit TextInputSystem();
+		TextInputSystem();
 		~TextInputSystem();
 
     // copy operators

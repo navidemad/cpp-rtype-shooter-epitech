@@ -62,7 +62,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 		void	sendError(const std::list<Peer> &peers, const ErrorStatus &errorStatus);
 		void	sendShowGame(const std::list<Peer> &peers, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers);
 		void	sendEndGame(const std::list<Peer> &peers);
-		void	sendShowLevel(const std::list<Peer> &peers, const std::string &name, const std::string &script);
+		void	sendShowLevel(const std::list<Peer> &peers, const std::string &name);
 
 	// attributes
 	private:
