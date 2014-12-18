@@ -7,6 +7,8 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 {
 	mKeyboard[sf::Keyboard::Down] = "down";
 	mKeyboard[sf::Keyboard::Up] =	"up";
+	mKeyboard[sf::Keyboard::Left] = "left";
+	mKeyboard[sf::Keyboard::Right] = "right";
 	mKeyboard[sf::Keyboard::Return] = "action";
 	mKeyboard[sf::Keyboard::Space] = "action";
 	mKeyboard[sf::Keyboard::Escape] = "back";
@@ -18,6 +20,8 @@ InputManager::InputManager(SFMLGraphic *graphic) : mGraphic(graphic)
 
 	mPoolEvent["down"] = false;
 	mPoolEvent["up"] = false;
+	mPoolEvent["left"] = false;
+	mPoolEvent["right"] = false;
 	mPoolEvent["action"] = false;
 	mPoolEvent["back"] = false;
 	mPoolEvent["delete"] = false;
@@ -60,7 +64,6 @@ void	InputManager::clear()
 	mEnteredKey = "";
 }
 
-#include <iostream>
 void	InputManager::enteredKey(char c)
 {
 	if (c > 31)

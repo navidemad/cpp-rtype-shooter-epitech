@@ -50,6 +50,9 @@ void	ContentManager::loadMusics()
 	mMusics->loadResources("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg");
 	mMusics->loadResources("Game", "./assets/musics/Touhou_8/[02] Illusionary Night ~ Ghostly Eyes.ogg");
 	mMusics->loadResources("Boss", "./assets/musics/Touhou_8/[08] Retribution for the Eternal Night ~ Imperishable Night.ogg");
+
+	//mMusics->loadResources("Menu", "./assets/musics/FFXIII/01_-_Prelude_to_FINAL_FANTASY_XIII.ogg");
+	//mMusics->loadResources("Game", "./assets/musics/FFXIII/01_-_Blinded_By_Light.ogg");
 }
 
 void	ContentManager::loadSounds()

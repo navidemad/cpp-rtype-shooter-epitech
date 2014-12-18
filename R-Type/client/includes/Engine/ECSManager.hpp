@@ -13,8 +13,8 @@ class ECSManager
 {
     // ctor - dtor
     public:
-	ECSManager() : mClient(nullptr), mCurrentId(0) { }
-        ECSManager(RTypeClient *);
+		ECSManager() : mClient(nullptr), mCurrentId(0) { }
+		ECSManager(RTypeClient *);
 	virtual ~ECSManager();
 
     // copy operators
@@ -50,11 +50,11 @@ class ECSManager
 		virtual void							stop() { }
 
 	private:
-		void	removeEntity(unsigned int);
-		void	removeAllEntity();
+		void									removeEntity(unsigned int);
+		void									removeAllEntity();
 
 	private:
-		RTypeClient									*mClient;
+		RTypeClient								*mClient;
 
 	// attribute ECS System
 	protected:
