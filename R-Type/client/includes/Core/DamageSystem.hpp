@@ -4,7 +4,7 @@ class DamageSystem
 {
     // ctor - dtor
     public:
-        explicit DamageSystem();
+        DamageSystem();
         ~DamageSystem();
 
     // copy operators

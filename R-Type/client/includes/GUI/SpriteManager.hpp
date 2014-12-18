@@ -10,7 +10,7 @@ class SpriteManager : public IResourceManager<SpriteModel>
 {
     // ctor - dtor
     private:
-        explicit SpriteManager();
+        SpriteManager();
     public:
         virtual ~SpriteManager();
 

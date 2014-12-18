@@ -8,7 +8,7 @@ class BackgroundSystem : public System
 {
     // ctor - dtor
     public:
-		explicit BackgroundSystem();
+		BackgroundSystem();
 		~BackgroundSystem();
 
 public:

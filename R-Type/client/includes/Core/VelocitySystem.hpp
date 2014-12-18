@@ -8,7 +8,7 @@ class VelocitySystem : public System
 {
     // ctor - dtor
     public:
-		explicit VelocitySystem();
+		VelocitySystem();
 		~VelocitySystem();
 
 	public:

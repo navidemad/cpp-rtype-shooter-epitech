@@ -6,7 +6,7 @@ class Script : public Component
 {
     // ctor - dtor
     public:
-		explicit Script();
+		Script();
 		~Script();
 
     // copy operators

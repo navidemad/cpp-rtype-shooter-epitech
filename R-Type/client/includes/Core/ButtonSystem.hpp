@@ -7,7 +7,7 @@ class ButtonSystem : public System
 {
     // ctor - dtor
     public:
-        explicit ButtonSystem();
+        ButtonSystem();
         ~ButtonSystem();
 
 	public:

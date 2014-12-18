@@ -19,7 +19,7 @@ class SoundManager : public IResourceManager<sf::sSound>
 {
 	// ctor - dtor
 	private:
-		explicit SoundManager();
+		SoundManager();
 	public:
 		virtual ~SoundManager();
 

@@ -18,7 +18,7 @@ class ContentManager
 {
     // ctor - dtor
     public:
-        explicit ContentManager();
+        ContentManager();
         ~ContentManager();
 
     // copy operators

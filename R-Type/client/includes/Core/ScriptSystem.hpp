@@ -7,7 +7,7 @@ class ScriptSystem : public System
 {
     // ctor - dtor
     public:
-		explicit ScriptSystem();
+		ScriptSystem();
 		~ScriptSystem();
 
 	public:

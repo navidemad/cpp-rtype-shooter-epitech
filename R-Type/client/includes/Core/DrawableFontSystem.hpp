@@ -7,7 +7,7 @@ class DrawableFontSystem : public System
 {
     // ctor - dtor
     public:
-		explicit DrawableFontSystem();
+		DrawableFontSystem();
 		~DrawableFontSystem() { }
 
 		void	process(Entity &, uint32_t);
