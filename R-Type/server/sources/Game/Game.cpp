@@ -21,7 +21,6 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
 mScript(script),
 mListener(nullptr),
-mTimer(std::clock()),
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),
 mMutex(PortabilityBuilder::getMutex()),
@@ -423,16 +422,13 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
     if (listener)
     	listener->onNotifyUsersComponentAdded(getUsers(), component);
 
+    if (getState() == NGame::Game::State::NOT_STARTED)
+        mTimer = std::clock();
 	setState(NGame::Game::State::RUNNING);
 }
 
 void NGame::Game::tryDelPlayer(void) {
 	getProperties().setNbPlayers(getProperties().getNbPlayers() - 1);
-	if (getProperties().getNbPlayers() == 0)
-	{
-		logInfo("Game finished because nbPlayer reached 0");
-		setState(NGame::Game::State::DONE);
-	}
 }
 
 void NGame::Game::tryAddSpectator(const NGame::User& user) {
