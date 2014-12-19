@@ -49,7 +49,7 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
-
+	std::cout << "ON MOVE RESSOURCE " << std::endl;
 	if (!isEntityCreated(id + mFirstId))
 	{
 		createEntity(id + mFirstId);
@@ -59,6 +59,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 		try {
 			lib->libraryLoad(mDLLoader[type]);
 			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+			std::cout << ressource->getName() << std::endl;
 			entity.addComponent(new Drawable(ressource->getName()));
 			entity.addComponent(new Position(x, y));
 		}
