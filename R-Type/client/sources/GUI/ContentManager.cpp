@@ -53,6 +53,7 @@ void	ContentManager::loadMusics()
 
 	//mMusics->loadResources("Menu", "./assets/musics/FFXIII/01_-_Prelude_to_FINAL_FANTASY_XIII.ogg");
 	//mMusics->loadResources("Game", "./assets/musics/FFXIII/01_-_Blinded_By_Light.ogg");
+	//mMusics->loadResources("Boss", "./assets/musics/FFXIII/05_-_Saber_39_s_Edge.ogg");
 }
 
 void	ContentManager::loadSounds()
