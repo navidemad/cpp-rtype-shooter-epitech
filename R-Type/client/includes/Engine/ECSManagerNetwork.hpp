@@ -7,6 +7,7 @@ class RTypeClient;
 #include <stdint.h>
 #include "Entity.hpp"
 #include "Component.hpp"
+#include "IResource.hpp"
 #include "../Core/System.hpp"
 #include "ECSManager.hpp"
 #include "Network/ServerCommunication.hpp"
@@ -52,4 +53,7 @@ class ECSManagerNetwork : public QObject, public ECSManager
 		void	createBullet();
 		void	createEnnemy();
 		void	createBonus();
+
+	private:
+		std::map<IResource::Type, std::string>		mDLLoader;
 };
