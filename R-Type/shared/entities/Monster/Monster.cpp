@@ -2,8 +2,7 @@
 #include <iostream>
 #include "Monster.hpp"
 
-Monster::Monster(void) : mSpeed(0.42) {
-    std::cout << "a" << std::endl;
+Monster::Monster(void) : IResource("monster"), mSpeed(0.42) {
 }
 
 Monster::~Monster(void) {
