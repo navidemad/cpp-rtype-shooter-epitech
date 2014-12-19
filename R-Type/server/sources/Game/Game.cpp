@@ -4,12 +4,8 @@
 #include "ScopedLock.hpp"
 #include "Utils.hpp"
 #include "Script.hpp"
-#include "ScriptName.hpp"
-#include "ScriptRequire.hpp"
-#include "ScriptAction.hpp"
-#include "ScriptAddCron.hpp"
-#include "ScriptRemoveCron.hpp"
 #include "Default.hpp"
+#include "AScriptCommand.hpp"
 #include <cmath>
 #include <memory>
 #include <algorithm>
@@ -17,16 +13,15 @@
 #include <map>
 
 const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
-	{ IScriptCommand::Instruction::NAME, &NGame::Game::scriptCommandName },
-	{ IScriptCommand::Instruction::REQUIRE, &NGame::Game::scriptCommandRequire },
-	{ IScriptCommand::Instruction::ACTION, &NGame::Game::scriptCommandAction },
-	{ IScriptCommand::Instruction::ADD_CRON, &NGame::Game::scriptCommandAddCron },
-	{ IScriptCommand::Instruction::REMOVE_CRON, &NGame::Game::scriptCommandRemoveCron }
+	{ AScriptCommand::Instruction::NAME, &NGame::Game::scriptCommandName },
+	{ AScriptCommand::Instruction::REQUIRE, &NGame::Game::scriptCommandRequire },
+	{ AScriptCommand::Instruction::SPAWN, &NGame::Game::scriptCommandSpawn }
 };
 
 NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
 mScript(script),
 mListener(nullptr),
+mTimer(std::clock()),
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),
 mMutex(PortabilityBuilder::getMutex()),
@@ -58,32 +53,23 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::actions(void) {
-	std::shared_ptr<IScriptCommand> currentCommand;
-
-	if (mTimer.frame() < 200.)
-		return;
-	/*
 	if (getScript().getCommands().size()) 
 	{
 		do
 		{
-			currentCommand = getScript().currentAction();
-
-			if (getTimer().frame() < currentCommand->getFrame()) // who is'nt in a game - exception en fin de partie
+			auto currentCommand = getScript().currentAction();
+			if (getCurrentFrame() < currentCommand.getFrame())
 				return;
-
 			for (const auto &instr : tokenExecTab)
 			{
-				if (instr.commandCode == currentCommand->getInstruction())
+				if (instr.commandCode == currentCommand.getInstruction())
 				{
 					(this->*instr.fctPtr)(currentCommand);
 					break;
 				}
 			}
-
-		} while (getScript().goToNextAction());
+		} while (getScript().goToNextAction() != false);
 	}
-	*/
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
@@ -131,10 +117,10 @@ NGame::Game::OnGameEvent* NGame::Game::getListener(void) {
 	return mListener;
 }
 
-Timer& NGame::Game::getTimer(void) {
+double NGame::Game::getCurrentFrame(void) {
 	Scopedlock(getMutex());
 
-	return mTimer;
+	return (static_cast<double>(std::clock() - mTimer) / static_cast<double>(CLOCKS_PER_SEC));
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {
@@ -484,7 +470,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 
 	auto listener = getListener();
 	if (listener)
-		listener->onNotifyTimeElapsedPing(peer, getTimer().frame());
+		listener->onNotifyTimeElapsedPing(peer, getCurrentFrame());
 }
 
 void NGame::Game::delUser(const Peer &peer) {
@@ -572,54 +558,23 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 /*
 ** workflow scripts actions
 */
-void	NGame::Game::scriptCommandName(const std::shared_ptr<IScriptCommand> &command) {
-	logInfo(__FUNCTION__);
-	const std::shared_ptr<ScriptName> commandScriptName = std::static_pointer_cast<ScriptName>(command);
+void	NGame::Game::scriptCommandName(const AScriptCommand &) {
+	/*
+	const ScriptName commandScriptName = reinterpret_cast<ScriptName>(command);
 
-	if (commandScriptName->getName() != getProperties().getLevelName())
+	if (commandScriptName.getStageName() != getProperties().getLevelName())
 		throw GameException("script name request doesn't match with the level name of current game");
-
-    std::cout << commandScriptName << std::endl;
+	*/
 }
 
-void	NGame::Game::scriptCommandRequire(const std::shared_ptr<IScriptCommand> &command) {
-	logInfo(__FUNCTION__);
+void	NGame::Game::scriptCommandRequire(const AScriptCommand &) {
+	/*
     const std::shared_ptr<ScriptRequire> commandScriptRequire = std::static_pointer_cast<ScriptRequire>(command);
-
-	// CHECK SI LA LIBRARIE .so / .dll EST PRESENTE DANS NOTRE STD::VECTOR<DynRessource> mRessources
-	// if (mRessources.count(commandScriptRequire->getRessourceName()) == 0)
-	//    throw GameException("script require ressource request doesn't match with game's ressources");
-	
-    std::cout << commandScriptRequire << std::endl;
+	*/
 }
 
-void	NGame::Game::scriptCommandAction(const std::shared_ptr<IScriptCommand> &command) {
-	logInfo(__FUNCTION__);
-    const std::shared_ptr<ScriptAction> commandScriptAction = std::static_pointer_cast<ScriptAction>(command);
-
-	// TODO
-	// moveMob
-	// spawnMob
-
-    std::cout << commandScriptAction << std::endl;
-}
-
-void	NGame::Game::scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command) {
-	logInfo(__FUNCTION__);
-    const std::shared_ptr<ScriptAddCron> commandScriptAddCron = std::static_pointer_cast<ScriptAddCron>(command);
-
-	// TODO
-	// add cron task for a component
-
-    std::cout << commandScriptAddCron << std::endl;
-}
-
-void	NGame::Game::scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command) {
-	logInfo(__FUNCTION__);
-    const std::shared_ptr<ScriptRemoveCron> commandScriptRemoveCron = std::static_pointer_cast<ScriptRemoveCron>(command);
-
-	// TODO
-	// remove cron task for a component
-
-    std::cout << commandScriptRemoveCron << std::endl;
+void	NGame::Game::scriptCommandSpawn(const AScriptCommand &) {
+	/*
+    const std::shared_ptr<ScriptSpawn> commandScriptSpawn = std::static_pointer_cast<ScriptSpawn>(command);
+	*/
 }

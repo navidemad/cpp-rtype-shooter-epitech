@@ -109,9 +109,9 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 		throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
     if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > Config::Game::maxSpectatorsInAGame)
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
-	if (getScriptLoader().isExist(properties.getLevelName()) == false)
+	if (getScriptLoader().has(properties.getLevelName()) == false)
 		throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));
-	auto game = std::make_shared<NGame::Game>(properties, getScriptLoader().getScript(properties.getLevelName()));
+	auto game = std::make_shared<NGame::Game>(properties, getScriptLoader().get(properties.getLevelName()));
 
     game->setListener(this);
     game->setOwner(peer);

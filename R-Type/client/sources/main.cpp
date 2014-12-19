@@ -1,4 +1,4 @@
-
+/*
 #include "PortabilityBuilder.hpp"
 #include "IResource.hpp"
 #include "DynLibException.hpp"
@@ -21,8 +21,8 @@ int main(void)
     #endif
 	return 0;
 }
+*/
 
-/*
 #include <QtCore>
 #include "IResource.hpp"
 #include "RTypeClient.hpp"
@@ -42,4 +42,3 @@ int main(int ac, char **av)
     rtype.start();
 	return app.exec();
 }
-*/

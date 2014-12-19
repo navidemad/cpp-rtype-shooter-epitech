@@ -44,7 +44,7 @@ void	ClientPacketBuilder::fetchBody(void) {
 	try {
 		mCurrentCommand->initFromMessage(message);
 	}
-	catch (const CommandException &e) {
+	catch (const CommandException &) {
 		mClient->closeClient();
 		if (mListener)
 			mListener->onSocketClosed(*this);

@@ -1,43 +1,14 @@
 /*
 #include "RTypeServer.hpp"
 #include "ScriptLoader.hpp"
-#include "ScopedLock.hpp"
-#include "PortabilityBuilder.hpp"
 #include <iostream>
-#include <cstdio>
 
 int main(void) {
-    auto mutex = PortabilityBuilder::getMutex();
-
-    bool oneTest = true;
-
-    if (oneTest)
-    {
-        Scopedlock(mutex);
-        {
-            Scopedlock(mutex);
-            {
-
-            }
-        }
-    }
-    else
-    {
-        {
-            Scopedlock(mutex);
-            {
-
-            }
-        }
-        {
-            Scopedlock(mutex);
-            {
-
-            }
-        }
-    }
-
-    return 0;
+    ScriptLoader mScriptLoader;
+    mScriptLoader.loadAll();
+    #if defined(__OS_WINDOWS__)
+        system("PAUSE");
+    #endif
 }
 */
 
