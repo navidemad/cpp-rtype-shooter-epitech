@@ -574,6 +574,7 @@ void	RTypeClient::startPressStart()
 void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(mPseudo);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentGame);
 }
 
@@ -673,5 +674,4 @@ void	RTypeClient::connectToServer()
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(mAdresse);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(mPort);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(mPseudo);
 }

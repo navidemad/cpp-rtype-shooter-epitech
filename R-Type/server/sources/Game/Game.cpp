@@ -53,23 +53,19 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::actions(void) {
-	if (getScript().getCommands().size()) 
-	{
-		do
-		{
-			auto currentCommand = getScript().currentAction();
-			if (getCurrentFrame() < currentCommand.getFrame())
-				return;
-			for (const auto &instr : tokenExecTab)
-			{
-				if (instr.commandCode == currentCommand.getInstruction())
-				{
-					(this->*instr.fctPtr)(currentCommand);
-					break;
-				}
+    while (!(getScript().isFinish()))
+    {
+		auto currentCommand = getScript().currentCommand();
+		if (getCurrentFrame() < currentCommand.getFrame())
+			return;
+		for (const auto &instr : tokenExecTab) {
+			if (instr.commandCode == currentCommand.getInstruction()) {
+				(this->*instr.fctPtr)(currentCommand);
+				break;
 			}
-		} while (getScript().goToNextAction() != false);
-	}
+		}
+        getScript().goToNextCommand();
+    }
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }

@@ -50,10 +50,10 @@ void GamesManager::addGameToList(const std::shared_ptr<NGame::Game>& game) {
     mGames.push_back(game);
 }
 
-std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator it_game) {
+void GamesManager::removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator it_game) {
     Scopedlock(mMutex);
 
-    return mGames.erase(it_game);
+    mGames.erase(it_game);
 }
 
 
@@ -86,18 +86,15 @@ void GamesManager::run(void) {
             		case NGame::Game::State::RUNNING:
                         (*it)->setPullEnded(false);
         				*mThreadPool << std::bind(&NGame::Game::pull, (*it));
-                        ++it;
             			break;
             		case NGame::Game::State::DONE:
-            			it = terminatedGame(findGameByName((*it)->getProperties().getName()));
+            			terminatedGame(findGameByName((*it)->getProperties().getName()));
             			break;
                     default:
-                        ++it;
                         break;
         		}
             }
-            else
-                ++it;
+            ++it;
 		}
     }
 }
@@ -248,7 +245,7 @@ void GamesManager::onPlayerMove(IResource::Direction direction, const Peer &peer
 /*
 ** Game::OnGameEvent
 */
-std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it) {
+void GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it) {
     std::list<Peer> gameUsers;
 
     for (const auto &user : (*it)->getUsers()) {
@@ -261,7 +258,7 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame
         listener->onEndGame((*it)->getProperties().getName(), gameUsers);
 
     removeClientsFromWhitelist(*it);
-    return removeItGameFromList(it);
+    removeItGameFromList(it);
 }
 
 void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
@@ -279,9 +276,6 @@ void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& u
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
-    std::cout << "id: [" << id << "]" << std::endl;
-    std::cout << "pseudo: [" << pseudo << "]" << std::endl;
-    std::cout << "score: [" << score << "]" << std::endl;
     getPlayerCommunicationManager().sendUpdateScore(peer, id, pseudo, score);
 }
 

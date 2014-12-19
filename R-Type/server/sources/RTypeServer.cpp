@@ -130,8 +130,7 @@ void RTypeServer::onClientUpdatePseudo(const Peer &peer, const std::string &pseu
 	try {
 		mGamesManager.updatePseudo(peer, pseudo);
 	}
-	catch (const GamesManagerException&e) {
-		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+	catch (const GamesManagerException&) {
 	}
 
 	mClientManager.sendError(std::list<Peer>{peer}, ErrorStatus(ErrorStatus::Error::OK));

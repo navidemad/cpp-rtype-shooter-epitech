@@ -9,7 +9,7 @@ class Script {
 
     // ctor / dtor
     public:
-		Script(void) = default;
+		Script(void);
         ~Script(void) = default;
 		Script(const Script &);
 		const Script &operator=(const Script &);
@@ -21,11 +21,12 @@ class Script {
 
 	// workflow script
 	public:
-		const AScriptCommand& currentAction(void) const;
-		bool goToNextAction(void);
+		bool isFinish(void) const;
+		const AScriptCommand& currentCommand(void) const;
+		void goToNextCommand(void);
 
 	// attributes
 	private:
-		std::vector<AScriptCommand>::const_iterator mCurrentIterator;
+		uint64_t mIndex;
 		std::vector<AScriptCommand> mCommands;
 };
