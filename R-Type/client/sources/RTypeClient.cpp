@@ -502,6 +502,14 @@ void			RTypeClient::initMenu()
 	quitGame.addComponent(new Font("0", "Quit"));
 	quitGame.addComponent(new ButtonQuitGame());
 
+	Entity		&connectButton = engine.createEntity();
+	cursor->addEntity(connectButton.getId());
+
+	connectButton.addComponent(new Position(1150, 950));
+	connectButton.addComponent(new Font("0", "Connect"));
+	connectButton.addComponent(new ButtonConnect());
+
+
 	Entity		&logoCharacter = engine.createEntity();
 
 	logoCharacter.addComponent(new Position(0, 100));
@@ -566,6 +574,7 @@ void	RTypeClient::startPressStart()
 void	RTypeClient::startRtype()
 {
 	mGui->playMusic("Game");
+	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(mPseudo);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalJoinGame(mCurrentGame);
 }
 
@@ -577,7 +586,6 @@ void	RTypeClient::startSearchMenu()
 void	RTypeClient::startCreateMenu()
 {
 	mGui->playMusic("Menu");
-	connectToServer();
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalListLevel();
 }
 
@@ -657,7 +665,6 @@ void	RTypeClient::setScript(std::string const &script)
 
 bool	RTypeClient::createGame()
 {
-	connectToServer();
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentGame, mCurrentLevel,  4, 4);
 	return true;
 }
@@ -667,5 +674,4 @@ void	RTypeClient::connectToServer()
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerIp(mAdresse);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(mPort);
 	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalConnectToServer();
-	static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU])->SignalUpdatePseudo(mPseudo);
 }

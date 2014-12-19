@@ -4,8 +4,6 @@
 
 #include <dlfcn.h>
 
-#define EXT ".so"
-
 class UnixDynLib : public IDynLib {
 
 	// ctor dtor
@@ -25,6 +23,14 @@ class UnixDynLib : public IDynLib {
         void    libraryLoad(const std::string&);
 		void*   functionLoad(const std::string&);
         void    libraryFree(void);
+
+    // internal functions
+    private:
+        std::string normalize(const std::string& libraryName);
+
+    // string extension
+    public:
+        static const std::string extension;
 
     // attributes
     private:

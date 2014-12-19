@@ -46,7 +46,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 		void onNotifyTimeElapsedPing(const Peer &, double);
 
         void    setListener(GamesManager::OnGamesManagerEvent *listener);
-		std::vector<std::shared_ptr<NGame::Game>>::iterator terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it);
+		void terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it);
 
 	// network workflow utils functions
 	public:
@@ -75,7 +75,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         PlayerCommunicationManager& getPlayerCommunicationManager(void);
         GamesManager::OnGamesManagerEvent* getListener(void) const;
         void addGameToList(const std::shared_ptr<NGame::Game>&);
-        std::vector<std::shared_ptr<NGame::Game>>::iterator removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator);
+        void removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator);
 
     // attributes
     private:

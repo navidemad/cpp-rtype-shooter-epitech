@@ -1,17 +1,18 @@
 #pragma once
 
 #include "IMutex.hpp"
-#include "Timer.hpp"
 #include "Client.hpp"
 #include "NoCopyable.hpp"
 #include "IResource.hpp"
 #include "GameProperties.hpp"
 #include "GameUser.hpp"
 #include "GameComponent.hpp"
-#include "IScriptCommand.hpp"
+#include "AScriptCommand.hpp"
 #include "Script.hpp"
 #include "PlayerCommunicationManager.hpp"
 
+#include <chrono>
+#include <ctime>
 #include <iostream>
 #include <string>
 #include <memory>
@@ -57,8 +58,8 @@ namespace NGame
 			};
 		private:
 			struct tokenExec {
-				IScriptCommand::Instruction	commandCode;
-				void						(NGame::Game::*fctPtr)(const std::shared_ptr<IScriptCommand> &command);
+				AScriptCommand::Instruction	commandCode;
+				void						(NGame::Game::*fctPtr)(const AScriptCommand &command);
 			};
 			struct tokenAngle {
 				IResource::Direction		directionCode;
@@ -70,7 +71,7 @@ namespace NGame
         public:
 			Script& getScript(void);
 			NGame::Game::OnGameEvent* getListener(void);
-			Timer& getTimer(void);
+			double getCurrentFrame();
 			NGame::Properties& getProperties(void);
 			std::vector<NGame::User>& getUsers(void);
 			std::vector<NGame::Component>& getComponents(void);
@@ -138,18 +139,15 @@ namespace NGame
 
         // workflow scripts actions
         private:
-            void scriptCommandName(const std::shared_ptr<IScriptCommand> &command);
-            void scriptCommandRequire(const std::shared_ptr<IScriptCommand> &command);
-            void scriptCommandAction(const std::shared_ptr<IScriptCommand> &command);
-            void scriptCommandAddCron(const std::shared_ptr<IScriptCommand> &command);
-            void scriptCommandRemoveCron(const std::shared_ptr<IScriptCommand> &command);
-
+            void scriptCommandName(const AScriptCommand &command);
+            void scriptCommandRequire(const AScriptCommand &command);
+            void scriptCommandSpawn(const AScriptCommand &command);
 
         // attributes
         private:
 			Script mScript;
             NGame::Game::OnGameEvent *mListener;
-            Timer mTimer;
+			std::clock_t mTimer;
             NGame::Properties mProperties;
             std::vector<NGame::User> mUsers;
             std::vector<NGame::Component> mComponents;

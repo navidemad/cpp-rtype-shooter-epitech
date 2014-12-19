@@ -17,13 +17,13 @@ void RTypeServer::run(void) {
 }
 
 void RTypeServer::startInfo(void) const {
-	std::cout << "#######################" << std::endl
-			  << "#    R-Type Server    #" << std::endl
-		      << "#       Welcome       #" << std::endl
-			  << "#######################" << std::endl
-			  << std::endl
-              << "Port configuration: [TCP on" << Config::Network::tcpPort << "] [UDP on " << Config::Network::udpPort << "]" << std::endl
-			  << std::endl; 
+	std::cout << std::endl
+		<< "     R-Type Server     " << std::endl
+		<< "        Welcome        " << std::endl
+		<< std::endl
+		<< "  Port TCP | Port UCP  " << std::endl
+		<< "    " << Config::Network::tcpPort << "   |   " << Config::Network::udpPort << std::endl
+		<< std::endl;
 }
 
 void RTypeServer::onEndGame(const std::string &, const std::list<Peer> &gameUsers) {
@@ -130,8 +130,7 @@ void RTypeServer::onClientUpdatePseudo(const Peer &peer, const std::string &pseu
 	try {
 		mGamesManager.updatePseudo(peer, pseudo);
 	}
-	catch (const GamesManagerException&e) {
-		std::cout << "[" << __FUNCTION__ << "]: " << e.what() << std::endl; // debug
+	catch (const GamesManagerException&) {
 	}
 
 	mClientManager.sendError(std::list<Peer>{peer}, ErrorStatus(ErrorStatus::Error::OK));

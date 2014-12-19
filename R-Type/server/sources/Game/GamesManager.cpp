@@ -4,6 +4,7 @@
 #include "GameProperties.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
+#include "Default.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -49,10 +50,10 @@ void GamesManager::addGameToList(const std::shared_ptr<NGame::Game>& game) {
     mGames.push_back(game);
 }
 
-std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator it_game) {
+void GamesManager::removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator it_game) {
     Scopedlock(mMutex);
 
-    return mGames.erase(it_game);
+    mGames.erase(it_game);
 }
 
 
@@ -101,13 +102,13 @@ void GamesManager::run(void) {
 void GamesManager::createGame(const NGame::Properties& properties, const Peer &peer) {
 	if (findGameByName(properties.getName()) != getGames().end())
 		throw GamesManagerException("Game name already taken", ErrorStatus(ErrorStatus::Error::KO));
-	if (properties.getMaxPlayers() < 1 || properties.getMaxPlayers() > 4)
+    if (properties.getMaxPlayers() < 1 || properties.getMaxPlayers() > Config::Game::maxPlayersInAGame)
 		throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
-	if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > 4)
+    if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > Config::Game::maxSpectatorsInAGame)
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
-	if (getScriptLoader().isExist(properties.getLevelName()) == false)
+	if (getScriptLoader().has(properties.getLevelName()) == false)
 		throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));
-	auto game = std::make_shared<NGame::Game>(properties, getScriptLoader().getScript(properties.getLevelName()));
+	auto game = std::make_shared<NGame::Game>(properties, getScriptLoader().get(properties.getLevelName()));
 
     game->setListener(this);
     game->setOwner(peer);
@@ -244,7 +245,7 @@ void GamesManager::onPlayerMove(IResource::Direction direction, const Peer &peer
 /*
 ** Game::OnGameEvent
 */
-std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it) {
+void GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it) {
     std::list<Peer> gameUsers;
 
     for (const auto &user : (*it)->getUsers()) {
@@ -257,7 +258,7 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::terminatedGame
         listener->onEndGame((*it)->getProperties().getName(), gameUsers);
 
     removeClientsFromWhitelist(*it);
-    return removeItGameFromList(it);
+    removeItGameFromList(it);
 }
 
 void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
@@ -275,9 +276,6 @@ void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& u
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
-    std::cout << "id: [" << id << "]" << std::endl;
-    std::cout << "pseudo: [" << pseudo << "]" << std::endl;
-    std::cout << "score: [" << score << "]" << std::endl;
     getPlayerCommunicationManager().sendUpdateScore(peer, id, pseudo, score);
 }
 

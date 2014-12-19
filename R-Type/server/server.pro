@@ -30,7 +30,6 @@ INCLUDEPATH		+=	.					\
 				../shared/includes			\
 				../shared/includes/Network		\
 				../shared/includes/Commands		\
-				../shared/includes/Script		\
                 ../shared/includes/Error                \
 				dependencies/includes			\
 				build					\
@@ -90,17 +89,12 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				../shared/includes/Commands/CommandException.hpp	\
 				../shared/includes/IResource.hpp					\
 				includes/RTypeServer.hpp				\
-				../shared/includes/Script/Script.hpp				\
-				../shared/includes/Script/ScriptLoader.hpp			\
-				../shared/includes/Script/ScriptParser.hpp			\
-				../shared/includes/Script/ScriptName.hpp			\
-				../shared/includes/Script/ScriptRequire.hpp			\
-				../shared/includes/Script/ScriptAction.hpp			\
-				../shared/includes/Script/ScriptAddCron.hpp			\
-				../shared/includes/Script/ScriptRemoveCron.hpp			\
-				../shared/includes/Script/ScriptException.hpp			\
-				../shared/includes/Script/Parser.hpp				\
-				../shared/includes/Script/IScriptCommand.hpp			\
+				includes/Script/Script.hpp				\
+				includes/Script/ScriptLoader.hpp			\
+				includes/Script/ScriptParser.hpp			\
+				includes/Script/ScriptException.hpp			\
+				includes/Script/Parser.hpp				\
+				includes/Script/AScriptCommand.hpp			\
 				includes/Game/NGame.hpp 					\
 				includes/Game/Game.hpp 					\
 				includes/Game/GamesManager.hpp 				\
@@ -108,7 +102,6 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Game/GameUser.hpp		\
 				includes/Game/GameComponent.hpp		\
 				includes/Game/GamesManager.hpp 				\
-				includes/Game/Timer.hpp								\
 				../shared/includes/Network/Peer.hpp
 
 unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
@@ -185,13 +178,12 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Commands/CommandUpdatePseudo.cpp			\
                                 sources/Commands/CommandUpdateScore.cpp 			\
                                 sources/RTypeServer.cpp 					\
-                                ../shared/sources/Script/Script.cpp 					\
-                                ../shared/sources/Script/ScriptLoader.cpp 				\
-                                ../shared/sources/Script/ScriptParser.cpp					\
-								../shared/sources/Script/Parser.cpp						\
+                                sources/Script/Script.cpp 					\
+                                sources/Script/ScriptLoader.cpp 				\
+                                sources/Script/ScriptParser.cpp					\
+								sources/Script/Parser.cpp						\
 				sources/Game/Game.cpp 						\
-				sources/Game/GamesManager.cpp 					\
-				sources/Game/Timer.cpp
+				sources/Game/GamesManager.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixTcpServer.cpp			\

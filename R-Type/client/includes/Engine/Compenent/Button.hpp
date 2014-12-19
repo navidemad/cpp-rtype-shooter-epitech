@@ -124,3 +124,13 @@ public:
 public:
 	void	process(Entity &, uint32_t delta);
 };
+
+class ButtonConnect : public Button
+{
+public:
+	ButtonConnect() : Button(100) {}
+	~ButtonConnect() {}
+
+public:
+	void	process(Entity &, uint32_t delta);
+};

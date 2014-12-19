@@ -1,6 +1,6 @@
 #pragma once
 
-namespace IResource {
+struct IResource {
 
 	enum class Direction : char {
 		LEFT	= 0x00,
@@ -18,4 +18,7 @@ namespace IResource {
         UNKNOWN
 	};
 
-}
+	virtual ~IResource() = default;
+
+	virtual double getSpeed(void) const = 0;
+};
