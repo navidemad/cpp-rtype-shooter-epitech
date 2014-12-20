@@ -81,6 +81,9 @@ Entity		&ECSManager::getEntity(const int id)
 
 bool		ECSManager::addComponent(const unsigned int id, Component *component)
 {
+	if (component == nullptr)
+		return false;
+
 	auto searchId = [&](Component *_component)
 	{
 		return component->getComponentId() == _component->getComponentId();

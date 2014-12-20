@@ -32,7 +32,7 @@ Component				*Entity::getSpecificComponent(ComponentType::Type searchType)
 
 	std::list<Component *>::const_iterator it = std::find_if(mEntityManager->getComponent(mId).begin(), mEntityManager->getComponent(mId).end(), search);
 
-	return it != mEntityManager->getComponent(mId).cend() ? *it : nullptr; // patch tricky by navid, guillaume have to patch it
+	return *it;
 }
 
 std::bitset<ComponentType::LIMIT>	Entity::getComponentBit() const

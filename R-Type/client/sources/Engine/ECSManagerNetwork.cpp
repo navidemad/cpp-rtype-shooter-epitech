@@ -73,11 +73,15 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 	}
 	else
 	{
-		Entity &entity = getEntity(id + mFirstId);
-		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
+		try
+		{
+			Entity &entity = getEntity(id + mFirstId);
+			Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
-        pos->setX((Config::Window::x / 100.f) * x);
-        pos->setY((Config::Window::y / 100.f) * y);
+			pos->setX((Config::Window::x / 100.f) * x);
+			pos->setY((Config::Window::y / 100.f) * y);
+		}
+		catch (...) { }
 	}
 }
 
