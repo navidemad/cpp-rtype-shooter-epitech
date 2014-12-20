@@ -13,7 +13,7 @@ NetworkManager::~NetworkManager(void) {
 
 std::list<NetworkManager::Socket>::iterator NetworkManager::findSocket(int socketFd) {
     auto& sockets = getSockets();
-    auto& it = sockets.begin();
+    auto it = sockets.begin();
     while (it != sockets.end())
     {
         if ((*it).fd == socketFd)
@@ -40,7 +40,7 @@ void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *list
 }
 
 void	NetworkManager::removeSocket(int socketFd) {
-    auto& it_socket = findSocket(socketFd);
+    auto it_socket = findSocket(socketFd);
 
     if (it_socket == getSockets().end())
 		return;
@@ -103,7 +103,7 @@ void	NetworkManager::checkFds(void) {
 }
 
 void	NetworkManager::socketCallback(int socketFd, bool readable, bool writable) {
-    auto& it_socket = findSocket(socketFd);
+    auto it_socket = findSocket(socketFd);
 
     if (readable && stillUnderControl(socketFd) && (*it_socket).listener)
         (*it_socket).listener->onSocketReadable((*it_socket).fd);

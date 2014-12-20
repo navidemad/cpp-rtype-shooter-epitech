@@ -11,9 +11,9 @@ const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
 	{ "", nullptr }
 };
 
-std::vector<AScriptCommand> ScriptParser::parseFile(std::ifstream &file) {
+std::vector<const IScriptCommand*> ScriptParser::parseFile(std::ifstream &file) {
 
-	std::vector<AScriptCommand> commands;
+	std::vector<const IScriptCommand*> commands;
 
 	std::string lineContent;
 
@@ -33,30 +33,33 @@ std::vector<AScriptCommand> ScriptParser::parseFile(std::ifstream &file) {
 		}
 	}
 
-	std::sort(commands.begin(), commands.end(), [](const AScriptCommand& left, const AScriptCommand& right) { return left.getFrame() < right.getFrame(); });
+	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 	return commands;
 }
 
-AScriptCommand ScriptParser::commandScriptName(void) {
-	double frame = 0;
-	ScriptName command(frame);
-	command.setStageName(mParser.extractWord());
+const IScriptCommand* ScriptParser::commandScriptName(void) {
+	auto command = new ScriptName;
+	command->setFrame(0);
+	command->setInstruction(IScriptCommand::Instruction::NAME);
+	command->setStageName(mParser.extractWord());
 	return command;
 }
 
-AScriptCommand ScriptParser::commandScriptRequire(void) {
-	double frame = 0;
-	ScriptRequire command(frame);
-    command.setRessourceName(mParser.extractWord());
+const IScriptCommand* ScriptParser::commandScriptRequire(void) {
+	auto command = new ScriptRequire;
+	command->setFrame(0);
+	command->setInstruction(IScriptCommand::Instruction::REQUIRE);
+    command->setRessourceName(mParser.extractWord());
 	return command;
 }
 
-AScriptCommand ScriptParser::commandScriptSpawn(void) {
-	double frame = mParser.extractValue<double>();
-	ScriptSpawn command(frame);
-	command.setSpawnName(mParser.extractWord());
-    command.setX(mParser.extractValue<double>());
-	command.setY(mParser.extractValue<double>());
-    command.setAngle(mParser.extractValue<double>());
+const IScriptCommand* ScriptParser::commandScriptSpawn(void) {
+	auto command = new ScriptSpawn;
+	command->setFrame(mParser.extractValue<double>());
+	command->setInstruction(IScriptCommand::Instruction::SPAWN);
+	command->setSpawnName(mParser.extractWord());
+    command->setX(mParser.extractValue<double>());
+	command->setY(mParser.extractValue<double>());
+    command->setAngle(mParser.extractValue<double>());
 	return command;
 }
