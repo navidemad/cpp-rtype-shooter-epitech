@@ -57,6 +57,8 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 		auto lib = PortabilityBuilder::getDynLib();
 		try {
 			lib->libraryLoad(mDLLoader[type]);
+			if (lib->functionLoad("entry_point") == nullptr)
+				return;
 			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 			std::cout << ressource->getName() << std::endl;
 			entity.addComponent(new Drawable(ressource->getName()));
