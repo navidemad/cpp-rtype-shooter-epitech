@@ -11,10 +11,15 @@
 #include "Engine/ECSManagerNetwork.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/Compenent/Velocity.hpp"
+#include "PortabilityBuilder.hpp"
+#include "IResource.hpp"
+#include "DynLibException.hpp"
 
 ECSManagerNetwork::ECSManagerNetwork()
 {
-
+	mDLLoader[IResource::Type::PLAYER]  = "./../shared/entities/Player/Player";
+	mDLLoader[IResource::Type::ENNEMY]  = "./../shared/entities/Monster/Monster";
+	mDLLoader[IResource::Type::BULLET ] = "./../shared/entities/Ball/Ball";
 }
 
 void ECSManagerNetwork::OnDestroyResource(int id)
@@ -44,18 +49,29 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
-
+	std::cout << "ON MOVE RESSOURCE " << std::endl;
 	if (!isEntityCreated(id + mFirstId))
 	{
 		createEntity(id + mFirstId);
 
 		Entity &entity = getEntity(id + mFirstId);
-		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
-		entity.addComponent(new Drawable("ball"));
-		if (type == IResource::Type::BULLET)
-		{
-			entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+		auto lib = PortabilityBuilder::getDynLib();
+		try {
+			lib->libraryLoad(mDLLoader[type]);
+			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+			std::cout << ressource->getName() << std::endl;
+			entity.addComponent(new Drawable(ressource->getName()));
+			entity.addComponent(new Position(x, y));
 		}
+		catch (const DynLibException& e) {
+			std::cout << e.what() << std::endl;
+		}
+//		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
+//		entity.addComponent(new Drawable("ball"));
+//		if (type == IResource::Type::BULLET)
+//		{
+//			entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+//		}
 	}
 	else
 	{
