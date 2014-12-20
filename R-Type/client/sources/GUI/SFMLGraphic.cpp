@@ -8,8 +8,6 @@ SFMLGraphic::SFMLGraphic()
 	: mWindow(sf::VideoMode(1280, 720), "R-type"), mInputManager(this), mMusicCurrentKey("")
 {
 	mWindow.setActive(false);
-	mWindow.setVerticalSyncEnabled(true);
-
 }
 
 SFMLGraphic::~SFMLGraphic()

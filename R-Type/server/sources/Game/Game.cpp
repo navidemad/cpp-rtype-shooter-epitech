@@ -70,6 +70,7 @@ void NGame::Game::actions(void) {
 }
 
 void NGame::Game::check(void) {
+    return;
 	auto& components = getComponents();
 	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
