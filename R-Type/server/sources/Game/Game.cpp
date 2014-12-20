@@ -54,10 +54,10 @@ void NGame::Game::pull(void) {
 void NGame::Game::actions(void) {
     while (!(getScript().isFinish()))
     {
-		auto currentCommand = getScript().currentCommand();
+		const auto& currentCommand = getScript().currentCommand();
 		if (getCurrentFrame() < currentCommand.getFrame())
 			return;
-		for (const auto &instr : tokenExecTab) {
+		for (const auto& instr : tokenExecTab) {
 			if (instr.commandCode == currentCommand.getInstruction()) {
 				(this->*instr.fctPtr)(currentCommand);
 				break;
@@ -71,12 +71,12 @@ void NGame::Game::actions(void) {
 
 void NGame::Game::check(void) {
 	auto& components = getComponents();
-	for (auto it = components.begin(); it != components.end();) {
+	for (auto& it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
-			if ((*it).getType() == IResource::Type::PLAYER)
+			if ((*it).getType() == IResource::Type::PLAYER) // exception quand on spam SPACE
 			{
-				auto user = findUserById((*it).getId());
+				const auto& user = findUserById((*it).getId());
 				if (user != getUsers().end())
 					transferPlayerToSpectators(*user);
 			}
@@ -136,7 +136,7 @@ std::vector<NGame::Component>& NGame::Game::getComponents(void) {
 	return mComponents;
 }
 
-NGame::Game::State NGame::Game::getState(void) {
+NGame::Game::State& NGame::Game::getState(void) {
 	Scopedlock(getMutex());
 
 	return mState;
@@ -239,7 +239,7 @@ void NGame::Game::logInfo(const std::string &log) const {
 ** check :: collision
 */
 bool NGame::Game::collision(NGame::Component& component) {
-	static auto functionsHandleCollision = std::vector<std::function<bool(NGame::Component&, NGame::Component&)>>
+	static const auto& functionsHandleCollision = std::vector<std::function<bool(NGame::Component&, NGame::Component&)>>
 	{
 		std::bind(&NGame::Game::collisionWithNoLife, this, std::placeholders::_1),
 		std::bind(&NGame::Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
@@ -248,7 +248,7 @@ bool NGame::Game::collision(NGame::Component& component) {
 	};
 
 	auto& components = getComponents();
-	for (NGame::Component& obstacle : components) {
+	for (auto& obstacle : components) {
 		if (collisionTouch(component, obstacle)) {
 			return true; // a debugger below
 			std::cout << "collisionTouch = true" << std::endl;
@@ -305,7 +305,7 @@ bool NGame::Game::collisionWithBonus(NGame::Component& component, NGame::Compone
 bool NGame::Game::collisionWithBullet(NGame::Component& component, NGame::Component& obstacle) {
 	if (obstacle.getType() == IResource::Type::BULLET)
 	{
-		auto user = findUserById(obstacle.getId());
+		const auto& user = findUserById(obstacle.getId());
 		bool friendBullet = user != getUsers().end();
 		switch (component.getType())
 		{
@@ -324,7 +324,7 @@ bool NGame::Game::collisionWithBullet(NGame::Component& component, NGame::Compon
 bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Component& obstacle) {
 	if (obstacle.getType() == IResource::Type::ENNEMY)
 	{
-		auto user = findUserById(component.getId());
+		const auto& user = findUserById(component.getId());
 		bool friendBullet = user != getUsers().end();
 		switch (component.getType())
 		{
@@ -395,8 +395,8 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 
 	NGame::Component component;
 
-	double playerWidth = 32.;
-	double playerHeight = 32.;
+    double playerWidth = 0.04;
+    double playerHeight = 0.04;
 	double playerSpeed = 0.45;
 	short playerAngle = 0;
 
@@ -418,7 +418,7 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 
 	getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
 
-    auto listener = getListener();
+    const auto listener = getListener();
     if (listener)
     	listener->onNotifyUsersComponentAdded(getUsers(), component);
 
@@ -460,13 +460,13 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 	else if (type == NGame::USER_TYPE::SPECTATOR)
 		tryAddSpectator(user);
 
-	auto listener = getListener();
+	const auto listener = getListener();
 	if (listener)
 		listener->onNotifyTimeElapsedPing(peer, getCurrentFrame());
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-	auto user = findUserByHost(peer);
+	auto& user = findUserByHost(peer);
 
 	if (user == getUsers().end())
 		throw GameException("Try to delete an undefined address ip");
@@ -480,7 +480,7 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
-	auto listener = getListener();
+	const auto listener = getListener();
     if (listener)
     	listener->onRemovePeerFromWhiteList(user.getPeer());
 	tryDelPlayer();
@@ -511,10 +511,10 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	double bulletSpeed = 0.0016;
 	short bulletAngle = 0;
 	
-	auto user = findUserByHost(peer);
+	const auto& user = findUserByHost(peer);
 	if (user == getUsers().end())
 		throw GameException("fire a player that not in this game");
-	auto component_user = findComponentById((*user).getId());
+	const auto& component_user = findComponentById((*user).getId());
 	if (component_user == getComponents().end())
 		throw GameException("NGame::Game::fire component_user that not in this game");
 
@@ -534,10 +534,10 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 }
 
 const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction direction) {
-	auto user = findUserByHost(peer);
+	const auto& user = findUserByHost(peer);
 	if (user == getUsers().end())
 		throw GameException("fire a player that not in this game");
-	auto component = findComponentById((*user).getId());
+	const auto& component = findComponentById((*user).getId());
 	if (component == getComponents().end())
 		throw GameException("NGame::Game::move component_user that not in this game");
 
@@ -550,23 +550,22 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 /*
 ** workflow scripts actions
 */
-void	NGame::Game::scriptCommandName(const AScriptCommand &) {
-	/*
-	const ScriptName commandScriptName = reinterpret_cast<ScriptName>(command);
-
-	if (commandScriptName.getStageName() != getProperties().getLevelName())
-		throw GameException("script name request doesn't match with the level name of current game");
-	*/
+void	NGame::Game::scriptCommandName(const AScriptCommand &command) {
+    const auto& commandScriptName = static_cast<const ScriptName&>(command);
+    std::cout << "&commandScriptName = '" << &commandScriptName << std::endl;
+    //std::cout << "ScriptName [" << commandScriptName.getStageName()  << "]" << std::endl;
+	//if (commandScriptName.getStageName() != getProperties().getLevelName())
+	//	throw GameException("script name request doesn't match with the level name of current game");
 }
 
-void	NGame::Game::scriptCommandRequire(const AScriptCommand &) {
-	/*
-    const std::shared_ptr<ScriptRequire> commandScriptRequire = std::static_pointer_cast<ScriptRequire>(command);
-	*/
+void	NGame::Game::scriptCommandRequire(const AScriptCommand &command) {
+    const auto& commandScriptRequire = static_cast<const ScriptRequire&>(command);
+    std::cout << "&commandScriptRequire = '" << &commandScriptRequire << std::endl;
+    //std::cout << "ScriptRequire [" << commandScriptRequire.getRessourceName() << "]" << std::endl;
 }
 
-void	NGame::Game::scriptCommandSpawn(const AScriptCommand &) {
-	/*
-    const std::shared_ptr<ScriptSpawn> commandScriptSpawn = std::static_pointer_cast<ScriptSpawn>(command);
-	*/
+void	NGame::Game::scriptCommandSpawn(const AScriptCommand &command) {
+    const auto& commandScriptSpawn = static_cast<const ScriptSpawn&>(command);
+    std::cout << "&commandScriptSpawn = '" << &commandScriptSpawn << std::endl;
+    //std::cout << "ScriptSpawn [" << commandScriptSpawn.getSpawnName() << " " << commandScriptSpawn.getX() << " " << commandScriptSpawn.getY() << " " << commandScriptSpawn.getAngle() << "]" << std::endl;
 }

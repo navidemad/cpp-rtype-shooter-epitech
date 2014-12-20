@@ -27,6 +27,6 @@ class Script {
 
 	// attributes
 	private:
-		uint64_t mIndex;
+		unsigned int mIndex;
 		std::vector<AScriptCommand> mCommands;
 };

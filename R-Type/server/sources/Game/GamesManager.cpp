@@ -77,7 +77,7 @@ void GamesManager::run(void) {
     while (true)
     {
         games = getGames();
-		for (auto it = games.begin(); it != games.end();)
+		for (auto& it = games.begin(); it != games.end();)
 		{
             if ((*it)->getPullEnded() == true)
             {
@@ -108,7 +108,7 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
 	if (getScriptLoader().has(properties.getLevelName()) == false)
 		throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));
-	auto game = std::make_shared<NGame::Game>(properties, getScriptLoader().get(properties.getLevelName()));
+	auto& game = std::make_shared<NGame::Game>(properties, getScriptLoader().get(properties.getLevelName()));
 
     game->setListener(this);
     game->setOwner(peer);
@@ -117,7 +117,7 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 }
 
 void GamesManager::removeGame(const Peer &peer, const std::string& name) {
-    auto game = findGameByName(name);
+    const auto& game = findGameByName(name);
 
     if (game == getGames().end())
         throw GamesManagerException("Try to delete an undefined game", ErrorStatus(ErrorStatus::Error::KO));
@@ -132,17 +132,18 @@ void GamesManager::removeGame(const Peer &peer, const std::string& name) {
 
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     auto& games = getGames();
-    auto it_game = findGameByHost(peer);
-    auto it_end = games.end();
+    auto& it_game = findGameByHost(peer);
+    auto& it_end = games.end();
 
     if (it_game != it_end)
         throw GamesManagerException("User is already in a game", ErrorStatus(ErrorStatus::Error::KO));
 
-    auto game = findGameByName(name);
+    const auto& game = findGameByName(name);
     if (game == it_end)
         throw GamesManagerException("Try to join an undefined game party name", ErrorStatus(ErrorStatus::Error::KO));
 
     (*game)->addUser(typeUser, peer, pseudo);
+    std::cout << (*game) << std::endl; // DEBUG
 }
 
 void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
@@ -167,7 +168,7 @@ void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
 
 void GamesManager::leaveGame(const Peer &peer) {
     try {
-        auto game = findGameByHost(peer);
+        auto& game = findGameByHost(peer);
 
         if (game == getGames().end())
             throw GamesManagerException("Try to leave a player who isn't in a game", ErrorStatus(ErrorStatus::Error::KO));
@@ -180,13 +181,13 @@ void GamesManager::leaveGame(const Peer &peer) {
 }
 
 void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
-    auto game = findGameByHost(peer);
+    auto& game = findGameByHost(peer);
 
     if (game == getGames().end())
         throw GamesManagerException("Try to update pseudo of a non-existing player", ErrorStatus(ErrorStatus::Error::KO));
 
     try {
-        auto user = (*game)->findUserByHost(peer);
+        auto& user = (*game)->findUserByHost(peer);
         if (user == (*game)->getUsers().end())
             throw GameException("Try to update pseudo of a non-existing player");
         user->setPseudo(pseudo);
@@ -201,15 +202,15 @@ void GamesManager::updatePseudo(const Peer &peer, const std::string &pseudo) {
 */ 
 void GamesManager::onPlayerFire(const Peer &peer) {
     try {
-        auto game = findGameByHost(peer);
+        auto& game = findGameByHost(peer);
 
         if (game == getGames().end())
             throw GamesManagerException("Try to fire a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
         
         try {
-            auto component = (*game)->fire(peer);
+            auto& component = (*game)->fire(peer);
             auto& users = (*game)->getUsers();
-            for (const auto &user : users)
+            for (const auto& user : users)
                 getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
         }
         catch (const GameException& e) {
@@ -223,14 +224,14 @@ void GamesManager::onPlayerFire(const Peer &peer) {
 
 void GamesManager::onPlayerMove(IResource::Direction direction, const Peer &peer) {
     try {
-        auto game = findGameByHost(peer);
+        auto& game = findGameByHost(peer);
 
         if (game == getGames().end())
             throw GamesManagerException("Try to move a player that is not in a game", ErrorStatus(ErrorStatus::Error::KO));
 
         try {
             auto& component = (*game)->move(peer, direction);
-            for (const auto &user : (*game)->getUsers())
+            for (const auto& user : (*game)->getUsers())
                 getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
         }
         catch (const GameException& e) {
@@ -248,12 +249,12 @@ void GamesManager::onPlayerMove(IResource::Direction direction, const Peer &peer
 void GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it) {
     std::list<Peer> gameUsers;
 
-    for (const auto &user : (*it)->getUsers()) {
+    for (const auto& user : (*it)->getUsers()) {
         onNotifyUserGainScore(user.getPeer(), user.getId(), user.getPseudo(), user.getScore());
         gameUsers.push_back(user.getPeer());
     }
 
-    auto listener = getListener();
+    const auto listener = getListener();
     if (listener)
         listener->onEndGame((*it)->getProperties().getName(), gameUsers);
 
@@ -266,12 +267,12 @@ void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
 }
 
 void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>& users, uint64_t id) {
-    for (const auto &user : users)
+    for (const auto& user : users)
         getPlayerCommunicationManager().sendDestroyResource(user.getPeer(), id);
 }
 
 void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& users, const NGame::Component& component) {
-    for (const auto &user : users)
+    for (const auto& user : users)
         getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
 }
 
@@ -291,7 +292,7 @@ void    GamesManager::removeClientsFromWhitelist(const std::shared_ptr<NGame::Ga
 }
 
 const NGame::Properties &GamesManager::getGameProperties(const std::string &name) {
-    auto game = findGameByName(name);
+    const auto& game = findGameByName(name);
 
     if (game == getGames().end())
         throw GamesManagerException("Try to get properties of an undefined game", ErrorStatus(ErrorStatus::Error::KO));
@@ -308,9 +309,9 @@ std::list<NGame::Properties> GamesManager::getGamesProperties(void) {
     return gamesProperties;
 }
 
-std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByName(const std::string& name) {
+const std::vector<std::shared_ptr<NGame::Game>>::iterator& GamesManager::findGameByName(const std::string& name) {
     auto& games = getGames();
-    auto it = games.begin();
+    auto& it = games.begin();
     while (it != games.end())
     {
         if ((*it)->getProperties().getName() == name)
@@ -320,9 +321,9 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByName
     return it;
 }
 
-std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost(const Peer &peer) {
+const std::vector<std::shared_ptr<NGame::Game>>::iterator& GamesManager::findGameByHost(const Peer &peer) {
     auto& games = getGames();
-    auto it = games.begin();
+    auto& it = games.begin();
     while (it != games.end())
     {
         auto& users = (*it)->getUsers();
@@ -330,7 +331,6 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
             for (const auto& user: users)
                 if (user.getPeer() == peer)
                     return it;
-
         ++it;
     }
     return it;
@@ -339,7 +339,7 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
 std::list<std::string> GamesManager::getScriptsName(void) const {
 	std::list<std::string> scriptsName;
 
-	for (const auto &script : getScriptLoader().getScripts())
+	for (const auto& script : getScriptLoader().getScripts())
 		scriptsName.push_back(script.first);
 
 	return scriptsName;

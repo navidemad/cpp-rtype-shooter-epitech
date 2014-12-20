@@ -75,7 +75,7 @@ namespace NGame
 			NGame::Properties& getProperties(void);
 			std::vector<NGame::User>& getUsers(void);
 			std::vector<NGame::Component>& getComponents(void);
-			NGame::Game::State getState(void);
+			NGame::Game::State& getState(void);
 			std::shared_ptr<IMutex>& getMutex(void);
 			Peer& getOwner(void);
 			bool getPullEnded(void);
