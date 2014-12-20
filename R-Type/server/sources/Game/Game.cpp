@@ -552,7 +552,7 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 */
 void	NGame::Game::scriptCommandName(const AScriptCommand &command) {
     const auto& commandScriptName = static_cast<const ScriptName&>(command);
-    std::cout << "&commandScriptName = '" << &commandScriptName << std::endl;
+    //std::cout << "&commandScriptName = '" << &commandScriptName << std::endl;
     //std::cout << "ScriptName [" << commandScriptName.getStageName()  << "]" << std::endl;
 	//if (commandScriptName.getStageName() != getProperties().getLevelName())
 	//	throw GameException("script name request doesn't match with the level name of current game");
@@ -560,12 +560,12 @@ void	NGame::Game::scriptCommandName(const AScriptCommand &command) {
 
 void	NGame::Game::scriptCommandRequire(const AScriptCommand &command) {
     const auto& commandScriptRequire = static_cast<const ScriptRequire&>(command);
-    std::cout << "&commandScriptRequire = '" << &commandScriptRequire << std::endl;
+    //std::cout << "&commandScriptRequire = '" << &commandScriptRequire << std::endl;
     //std::cout << "ScriptRequire [" << commandScriptRequire.getRessourceName() << "]" << std::endl;
 }
 
 void	NGame::Game::scriptCommandSpawn(const AScriptCommand &command) {
     const auto& commandScriptSpawn = static_cast<const ScriptSpawn&>(command);
-    std::cout << "&commandScriptSpawn = '" << &commandScriptSpawn << std::endl;
+    //std::cout << "&commandScriptSpawn = '" << &commandScriptSpawn << std::endl;
     //std::cout << "ScriptSpawn [" << commandScriptSpawn.getSpawnName() << " " << commandScriptSpawn.getX() << " " << commandScriptSpawn.getY() << " " << commandScriptSpawn.getAngle() << "]" << std::endl;
 }

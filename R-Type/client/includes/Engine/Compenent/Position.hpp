@@ -16,12 +16,12 @@ class Position : public Component
 		Position const	&operator=(Position const &) { return *this; }
 
 	public:
-		float		getX() const;
-		float		getY() const;
-		void			setX(float);
-		void			setY(float);
+        double		getX() const;
+        double		getY() const;
+        void			setX(double);
+        void			setY(double);
 
 	private:
-		float			mX;
-		float			mY;
+        double			mX;
+        double			mY;
 };

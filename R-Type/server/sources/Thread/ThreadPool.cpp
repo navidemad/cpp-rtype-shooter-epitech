@@ -86,6 +86,7 @@ const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 
 std::shared_ptr<ThreadPool> ThreadPool::getInstance(void) {
     static std::shared_ptr<ThreadPool> instance(new ThreadPool(Config::ThreadPool::nbThreads));
+    //static std::shared_ptr<ThreadPool> instance = std::make_shared<ThreadPool>(Config::ThreadPool::nbThreads);
 
 	return instance;
 }

@@ -61,7 +61,7 @@ IClientSocket::Message	UdpClient::receive(unsigned int sizeToRead) {
 	ret = mQUdpSocket->readDatagram(buffer.get(), sizeToRead, &host, &port);
 	if (ret == -1)
 		throw SocketException("fail QUdpSocket::read");
-	std::cout << "[UDP] RECV from '" << host.toString().toStdString() << "' on port '" << port << "'" << std::endl;
+
 	message.msgSize = ret;
 	message.msg.insert(message.msg.end(), buffer.get(), buffer.get() + message.msgSize);
 	message.host = host.toString().toStdString();

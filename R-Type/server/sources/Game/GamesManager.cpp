@@ -100,7 +100,7 @@ void GamesManager::run(void) {
 }
 
 void GamesManager::createGame(const NGame::Properties& properties, const Peer &peer) {
-	if (findGameByName(properties.getName()) != getGames().end())
+    if (findGameByName(properties.getName()) != getGames().end())
 		throw GamesManagerException("Game name already taken", ErrorStatus(ErrorStatus::Error::KO));
     if (properties.getMaxPlayers() < 1 || properties.getMaxPlayers() > Config::Game::maxPlayersInAGame)
 		throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
@@ -309,7 +309,7 @@ std::list<NGame::Properties> GamesManager::getGamesProperties(void) {
     return gamesProperties;
 }
 
-const std::vector<std::shared_ptr<NGame::Game>>::iterator& GamesManager::findGameByName(const std::string& name) {
+std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByName(const std::string& name) {
     auto& games = getGames();
     auto& it = games.begin();
     while (it != games.end())
@@ -321,7 +321,7 @@ const std::vector<std::shared_ptr<NGame::Game>>::iterator& GamesManager::findGam
     return it;
 }
 
-const std::vector<std::shared_ptr<NGame::Game>>::iterator& GamesManager::findGameByHost(const Peer &peer) {
+std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost(const Peer &peer) {
     auto& games = getGames();
     auto& it = games.begin();
     while (it != games.end())

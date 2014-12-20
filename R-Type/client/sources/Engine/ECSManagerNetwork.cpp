@@ -49,7 +49,6 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
-	std::cout << "ON MOVE RESSOURCE " << std::endl;
 	if (!isEntityCreated(id + mFirstId))
 	{
 		createEntity(id + mFirstId);
@@ -61,25 +60,24 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 			std::cout << ressource->getName() << std::endl;
 			entity.addComponent(new Drawable(ressource->getName()));
-			entity.addComponent(new Position(x, y));
+            entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
+            if (type == IResource::Type::BULLET) entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
 		}
 		catch (const DynLibException& e) {
-			std::cout << e.what() << std::endl;
+			std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
+            // ATTENTION IL FAUT DELETE LENTITE SI LA DLL N'EXISTE PAS
+            // si l'entité n'a pas bien été loadé
+            // car apres dans le else d'en dessous tu fais getSpecificComponent
+            // que tu reinterpret_cast en Position* du coup sa va te renvoyait nullptr (cf mon patch: Entity.cpp getSpecificComponent)
 		}
-//		entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
-//		entity.addComponent(new Drawable("ball"));
-//		if (type == IResource::Type::BULLET)
-//		{
-//			entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
-//		}
 	}
 	else
 	{
 		Entity &entity = getEntity(id + mFirstId);
 		Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
-		pos->setX((Config::Window::x / 100.f) * x);
-		pos->setY((Config::Window::y / 100.f) * y);
+        pos->setX((Config::Window::x / 100.f) * x);
+        pos->setY((Config::Window::y / 100.f) * y);
 	}
 }
 

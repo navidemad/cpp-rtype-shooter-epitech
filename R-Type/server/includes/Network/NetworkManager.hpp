@@ -33,9 +33,9 @@ class NetworkManager : public NoCopyable {
 	// ctor - dtor
 	private:
 		NetworkManager(void);
+        static std::weak_ptr<NetworkManager> mInstance;
 	public:
 		~NetworkManager(void);
-
 
 	// singleton handle instance
 	public:
@@ -55,6 +55,24 @@ class NetworkManager : public NoCopyable {
 		void	checkFds(void);
 		void	socketCallback(int socketFd, bool readable, bool writable);
 		bool	stillUnderControl(int socketFd);
+
+    // scoped functions
+    private:
+        void addSocketInList(const Socket& socket);
+        void eraseSocketInList(std::list<NetworkManager::Socket>::iterator& it);
+
+        int getMaxFd(void) const;
+        void setMaxFd(int fd);
+
+        fd_set& getReadFds(void);
+        void setReadFds(const fd_set& readFds);
+
+        fd_set& getWriteFds(void);
+        void setWriteFds(const fd_set& writeFds);
+
+        std::shared_ptr<ThreadPool>& getThreadPool(void);
+
+        std::list<NetworkManager::Socket>& getSockets(void);
 
 	// attributes
 	private:
