@@ -11,7 +11,7 @@ const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
 	{ "", nullptr }
 };
 
-std::vector<const IScriptCommand*> ScriptParser::parseFile(std::ifstream &file) {
+std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) {
 
 	std::vector<const IScriptCommand*> commands;
 
@@ -34,7 +34,11 @@ std::vector<const IScriptCommand*> ScriptParser::parseFile(std::ifstream &file) 
 	}
 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
-	return commands;
+
+	auto script = std::make_shared<Script>();
+	script->setCommands(commands);
+
+	return script;
 }
 
 const IScriptCommand* ScriptParser::commandScriptName(void) {

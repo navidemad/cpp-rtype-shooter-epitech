@@ -14,7 +14,7 @@ class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEven
 
     // exec function
     public:
-        void run(void);
+        int run(void);
 
 	// events
 	public:

@@ -1,4 +1,4 @@
-name "stage_1"
+name "stage_2"
 require "ship"
 require "boss_dark_vador"
 spawn 3.2 monster_basic 87.0 25.0 180.0

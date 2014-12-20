@@ -21,8 +21,7 @@ int main(void) {
 
     try {
         RTypeServer server;
-        server.run();
-        ret = EXIT_SUCCESS;
+        ret = server.run();
     }
     catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

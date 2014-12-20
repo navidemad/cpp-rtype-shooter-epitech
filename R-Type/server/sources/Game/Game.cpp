@@ -18,7 +18,7 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 	{ IScriptCommand::Instruction::SPAWN, &NGame::Game::scriptCommandSpawn }
 };
 
-NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
+NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<Script>& script) :
 mScript(script),
 mListener(nullptr),
 mProperties(properties),
@@ -52,9 +52,9 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::actions(void) {
-    while (!(getScript().isFinish()))
+    while (!(getScript()->isFinish()))
     {
-		const auto& currentCommand = getScript().currentCommand();
+		const auto& currentCommand = getScript()->currentCommand();
 		if (getCurrentFrame() < currentCommand->getFrame())
 			return;
 		for (const auto& instr : tokenExecTab) {
@@ -63,7 +63,7 @@ void NGame::Game::actions(void) {
 				break;
 			}
 		}
-        getScript().goToNextCommand();
+        getScript()->goToNextCommand();
     }
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
@@ -100,7 +100,7 @@ void NGame::Game::update(void) {
 /*
 ** getters
 */
-Script& NGame::Game::getScript(void) {
+std::shared_ptr<Script>& NGame::Game::getScript(void) {
 	Scopedlock(getMutex());
 
 	return mScript;
@@ -167,7 +167,7 @@ uint64_t NGame::Game::getCurrentComponentMaxId(void) {
 /*
 ** setters
 */
-void NGame::Game::setScript(Script& script) {
+void NGame::Game::setScript(std::shared_ptr<Script>& script) {
 	Scopedlock(getMutex());
 
 	mScript = script;
