@@ -6,6 +6,7 @@
 #include "ScopedLock.hpp"
 #include "Default.hpp"
 
+#include <csignal>
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -25,6 +26,12 @@ const ScriptLoader& GamesManager::getScriptLoader(void) const {
 
     return mScriptLoader;
 } 
+
+const std::shared_ptr<ThreadPool>& GamesManager::getThreadPool(void) const {
+    Scopedlock(mMutex);
+
+    return mThreadPool;
+}
 
 PlayerCommunicationManager& GamesManager::getPlayerCommunicationManager(void) {
     Scopedlock(mMutex);
@@ -67,14 +74,31 @@ GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMute
 
 GamesManager::~GamesManager(void) {
     mGames.clear();
-    mThreadPool->stop();
+    getThreadPool()->stop();
 }
 
-void GamesManager::run(void) {
-	mScriptLoader.loadAll();
+volatile std::sig_atomic_t interruptedSignal;
+ 
+extern "C" void signal_handler(int signal)
+{
+    interruptedSignal = signal;
+}
+
+int GamesManager::run(void) {
+    if (mScriptLoader.loadAll() == false)
+    {
+        std::cerr << "Cannot play if server haven't game's scripts" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    if (std::signal(SIGINT, signal_handler) == SIG_ERR)
+    {
+        std::cerr << "Cannot set signal_handler" << std::endl;
+        return EXIT_FAILURE;
+    }
 
     std::vector<std::shared_ptr<NGame::Game>> games;
-    while (true)
+    while (!interruptedSignal)
     {
         games = getGames();
 		for (auto it = games.begin(); it != games.end();)
@@ -85,7 +109,7 @@ void GamesManager::run(void) {
         		{
             		case NGame::Game::State::RUNNING:
                         (*it)->setPullEnded(false);
-        				*mThreadPool << std::bind(&NGame::Game::pull, (*it));
+        				*getThreadPool() << std::bind(&NGame::Game::pull, (*it));
             			break;
             		case NGame::Game::State::DONE:
             			terminatedGame(findGameByName((*it)->getProperties().getName()));
@@ -97,6 +121,8 @@ void GamesManager::run(void) {
             ++it;
 		}
     }
+
+    return EXIT_SUCCESS;
 }
 
 void GamesManager::createGame(const NGame::Properties& properties, const Peer &peer) {

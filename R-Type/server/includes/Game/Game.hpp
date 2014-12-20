@@ -26,7 +26,7 @@ namespace NGame
 
         // ctor / dtor
         public:
-            explicit Game(const NGame::Properties& properties, const Script&);
+            explicit Game(const NGame::Properties& properties, const std::shared_ptr<Script>&);
             ~Game(void) = default;
 
         // events
@@ -69,7 +69,7 @@ namespace NGame
 
         // getters
         public:
-			Script& getScript(void);
+			std::shared_ptr<Script>& getScript(void);
 			NGame::Game::OnGameEvent* getListener(void);
 			double getCurrentFrame();
 			NGame::Properties& getProperties(void);
@@ -83,7 +83,7 @@ namespace NGame
 
         // setters
         public:
-			void setScript(Script&);
+			void setScript(std::shared_ptr<Script>&);
 			void setListener(NGame::Game::OnGameEvent*);
 			void setProperties(NGame::Properties&);
 			void setUsers(std::vector<NGame::User>&);
@@ -145,7 +145,7 @@ namespace NGame
 
         // attributes
         private:
-			Script mScript;
+			std::shared_ptr<Script> mScript;
             NGame::Game::OnGameEvent *mListener;
 			std::clock_t mTimer;
             NGame::Properties mProperties;

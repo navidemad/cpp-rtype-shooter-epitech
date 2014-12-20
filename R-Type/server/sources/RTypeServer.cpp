@@ -10,10 +10,10 @@ RTypeServer::RTypeServer(void) {
 	mGamesManager.setListener(this);
 }
 
-void RTypeServer::run(void) {
+int RTypeServer::run(void) {
 	startInfo();
 	mClientManager.run();
-	mGamesManager.run();
+	return mGamesManager.run();
 }
 
 void RTypeServer::startInfo(void) const {

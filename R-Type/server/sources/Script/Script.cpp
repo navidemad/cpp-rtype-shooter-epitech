@@ -1,7 +1,6 @@
 #include "Script.hpp"
 
 Script::Script(void) : mIndex(0) {
-
 }
 
 Script::~Script(void) {

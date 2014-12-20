@@ -22,7 +22,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // entry point
     public:
-        void run(void);
+        int run(void);
 
 	// player communication manager events
 	public:
@@ -72,6 +72,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
     public:
         std::vector<std::shared_ptr<NGame::Game>>& getGames(void);
         const ScriptLoader& getScriptLoader(void) const;
+        const std::shared_ptr<ThreadPool>& getThreadPool(void) const;
         PlayerCommunicationManager& getPlayerCommunicationManager(void);
         GamesManager::OnGamesManagerEvent* getListener(void) const;
         void addGameToList(const std::shared_ptr<NGame::Game>&);

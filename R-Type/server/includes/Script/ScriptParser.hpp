@@ -3,7 +3,10 @@
 #include "Parser.hpp"
 #include "NoCopyable.hpp"
 #include "IScriptCommand.hpp"
+#include "Script.hpp"
+
 #include <vector>
+#include <memory>
 
 class ScriptParser : public NoCopyable {
 
@@ -14,7 +17,7 @@ class ScriptParser : public NoCopyable {
 
 	// internal functions
 	public:
-		std::vector<const IScriptCommand*> parseFile(std::ifstream &);
+		std::shared_ptr<Script> createScriptFromFile(std::ifstream &);
 
     // workflow commands
     private:

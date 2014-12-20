@@ -23,12 +23,12 @@ public:
 	// internal functions
 public:
 	bool has(const std::string& stage_name) const;
-	const Script& get(const std::string& stage_name) const;
-	void loadAll(void);
-    const std::map<std::string, Script>& getScripts() const;
+	const std::shared_ptr<Script>& get(const std::string& stage_name) const;
+	bool loadAll(void);
+    const std::map<std::string, std::shared_ptr<Script>>& getScripts() const;
 
 	// attributes
 private:
-    std::map<std::string, Script> mScripts;
+    std::map<std::string, std::shared_ptr<Script>> mScripts;
 	std::shared_ptr<IReaddir> mReaddir;
 };
