@@ -5,21 +5,15 @@
 #include <string>
 #include <SFML/Audio.hpp>
 #include "GUI/IResourceManager.hpp"
+#include "NoCopyable.hpp"
 
-class MusicManager : public IResourceManager<std::string>
+class MusicManager : public NoCopyable, public IResourceManager<std::string>
 {
 	// ctor - dtor
 	private:
 		MusicManager();
 	public:
 		~MusicManager();
-
-	// copy operator
-	public:
-		MusicManager(const MusicManager &) = delete;
-		MusicManager(MusicManager &&) = delete;
-		const MusicManager &operator=(const MusicManager &) = delete;
-		const MusicManager &operator=(MusicManager &&) = delete;
 
 	// instance
 	public:

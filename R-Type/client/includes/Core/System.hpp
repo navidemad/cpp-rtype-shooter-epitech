@@ -4,18 +4,14 @@
 #include <stdint.h>
 #include "Engine/ComponentType.h"
 #include "Engine/Entity.hpp"
+#include "NoCopyable.hpp"
 
-class System
+class System : public NoCopyable
 {
 	// ctor - dtor
 	public:
 		System();
 		virtual ~System();
-
-	// coplien form
-	private:
-		System(System const &) {}
-		System const	&operator=(System const &) { return *this; } 
 
 	public:
 		inline bool	haveComponentNeeded(const std::bitset<ComponentType::LIMIT> &component) const {

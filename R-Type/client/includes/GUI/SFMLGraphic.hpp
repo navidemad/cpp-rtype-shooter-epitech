@@ -7,21 +7,15 @@
 #include "GUI/IGraphic.hpp"
 #include "GUI/ContentManager.hpp"
 #include "Core/InputManager.hpp"
+#include "NoCopyable.hpp"
 
-class SFMLGraphic : public IGraphic
+class SFMLGraphic : public NoCopyable, public IGraphic
 {
     // ctor - dtor
     private:
         SFMLGraphic();
 	public:
         virtual ~SFMLGraphic();
-
-    // copy operators
-    public:
-        SFMLGraphic(const SFMLGraphic &) = delete;
-        SFMLGraphic(SFMLGraphic &&) = delete;
-        const SFMLGraphic &operator=(const SFMLGraphic &) = delete;
-        const SFMLGraphic &operator=(SFMLGraphic &&) = delete;
 
 	// instance
 	public:

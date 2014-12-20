@@ -4,18 +4,14 @@
 #include "../Component.hpp"
 #include "../ComponentType.h"
 #include "Engine/Compenent/Position.hpp"
+#include "NoCopyable.hpp"
 
-class Background : public Component
+class Background : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
 		Background();
 		~Background();
-
-	// coplien form
-	private:
-		Background(Background const &) : Component(ComponentType::MOVABLE) {}
-		Background const	&operator=(Background const &) { return *this; }
 
 	public:
 		void				addBackground(Position *);

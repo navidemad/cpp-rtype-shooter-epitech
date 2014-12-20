@@ -13,20 +13,14 @@
 #include "GUI/FontManager.hpp"
 #include "Audio/MusicManager.hpp"
 #include "Audio/SoundManager.hpp"
+#include "NoCopyable.hpp"
 
-class ContentManager
+class ContentManager : public NoCopyable
 {
     // ctor - dtor
     public:
         ContentManager();
         ~ContentManager();
-
-    // copy operators
-    public:
-        ContentManager(const ContentManager &) = delete;
-        ContentManager(ContentManager &&) = delete;
-        const ContentManager &operator=(const ContentManager &) = delete;
-        const ContentManager &operator=(ContentManager &&) = delete;
 
 	// methods
 	public:

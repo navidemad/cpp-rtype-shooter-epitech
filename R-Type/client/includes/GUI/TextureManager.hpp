@@ -5,21 +5,15 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
+#include "NoCopyable.hpp"
 
-class TextureManager : public IResourceManager<sf::Texture>
+class TextureManager : public NoCopyable, public IResourceManager<sf::Texture>
 {
     // ctor - dtor
     private:
         TextureManager();
     public:
         virtual ~TextureManager();
-
-    // copy operators
-    public:
-        TextureManager(const TextureManager &) = delete;
-        TextureManager(TextureManager &&) = delete;
-        const TextureManager &operator=(const TextureManager &) = delete;
-        const TextureManager &operator=(TextureManager &&) = delete;
 
 	// instance
 	public:

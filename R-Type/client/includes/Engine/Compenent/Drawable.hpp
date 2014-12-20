@@ -3,23 +3,19 @@
 #include <string>
 #include "../Component.hpp"
 #include "../ComponentType.h"
+#include "NoCopyable.hpp"
 
-class Drawable : public Component
+class Drawable : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
 		Drawable(std::string);
 		~Drawable();
 
-	// coplien form
-	private:
-		Drawable(Drawable const &) : Component(ComponentType::DRAWABLE) {}
-		Drawable const	&operator=(Drawable const &) { return *this; }
+    public:
+	    void				setName(std::string &name) { mName = name; }
+	    const std::string	&getName() const { return mName; }
 
-public:
-	void				setName(std::string &name) { mName = name; }
-	const std::string	&getName() const { return mName; }
-
-private:
-	std::string		mName;
+    private:
+	    std::string		mName;
 };

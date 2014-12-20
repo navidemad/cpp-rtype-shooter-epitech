@@ -2,6 +2,7 @@
 
 #include "Core/System.hpp"
 #include "Engine/Entity.hpp"
+#include "NoCopyable.hpp"
 
 class DrawableSystem : public System
 {
@@ -10,13 +11,8 @@ class DrawableSystem : public System
 		DrawableSystem();
 		~DrawableSystem() { }
 
-		void	process(Entity &, uint32_t);
-public:
-	void	process();
-    // copy operators
-/*    public:
-        DrawableSystem(const DrawableSystem &) = delete;
-        DrawableSystem(DrawableSystem &&) = delete;
-        const DrawableSystem &operator=(const DrawableSystem &) = delete;
-        const DrawableSystem &operator=(DrawableSystem &&) = delete;*/
+    public:
+        void	process(Entity &, uint32_t);
+	    void	process();
+
 };

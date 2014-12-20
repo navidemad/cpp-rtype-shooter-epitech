@@ -2,18 +2,14 @@
 
 #include "../Component.hpp"
 #include "../ComponentType.h"
+#include "NoCopyable.hpp"
 
-class Position : public Component
+class Position : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
 		Position(float, float);
 		~Position();
-
-	// coplien form
-	private:
-		Position(Position const &) : Component(ComponentType::MOVABLE), mX(0), mY(0) {}
-		Position const	&operator=(Position const &) { return *this; }
 
 	public:
         double		getX() const;

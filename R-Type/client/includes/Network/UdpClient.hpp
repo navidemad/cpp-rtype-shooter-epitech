@@ -1,10 +1,11 @@
 #pragma once
 
 #include "IClientSocket.hpp"
+#include "NoCopyable.hpp"
 #include <memory>
 #include <QtNetwork/qudpsocket.h>
 
-class UdpClient : public QObject, public IClientSocket{
+class UdpClient : public QObject, public NoCopyable, public IClientSocket{
 
 	Q_OBJECT
 
@@ -12,11 +13,6 @@ class UdpClient : public QObject, public IClientSocket{
 	public:
 		UdpClient(void);
 		~UdpClient(void);
-
-	// coplien form
-	private:
-		UdpClient(UdpClient const &) : QObject() {}
-		UdpClient const	&operator=(UdpClient const &) { return *this; }
 
 		// start-stop
 	public:

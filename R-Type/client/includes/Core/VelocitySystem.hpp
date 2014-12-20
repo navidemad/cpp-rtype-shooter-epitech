@@ -3,6 +3,8 @@
 #include <cstdint>
 #include "Engine/Entity.hpp"
 #include "Core/System.hpp"
+#include "NoCopyable.hpp"
+#include "NoCopyable.hpp"
 
 class VelocitySystem : public System
 {
@@ -14,10 +16,4 @@ class VelocitySystem : public System
 	public:
 		void	process(Entity &, uint32_t);
 
-    // copy operators
-    public:
-		VelocitySystem(const VelocitySystem &) = delete;
-		VelocitySystem(VelocitySystem &&) = delete;
-		const VelocitySystem &operator=(const VelocitySystem &) = delete;
-		const VelocitySystem &operator=(VelocitySystem &&) = delete;
 };

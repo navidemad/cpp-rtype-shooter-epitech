@@ -6,6 +6,7 @@
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/List.hpp"
 #include "Engine/Compenent/Font.hpp"
+#include "NoCopyable.hpp"
 
 class ListSystem : public System
 {
@@ -18,10 +19,4 @@ class ListSystem : public System
 
 	private:
 		void	displayRoom(Entity &, Font *, Position *, List *);
-	// copy operators
-    public:
-		ListSystem(const ListSystem &) = delete;
-		ListSystem(ListSystem &&) = delete;
-		const ListSystem &operator=(const ListSystem &) = delete;
-		const ListSystem &operator=(ListSystem &&) = delete;
 };

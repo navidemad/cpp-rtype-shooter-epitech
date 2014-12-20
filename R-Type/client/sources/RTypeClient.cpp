@@ -114,10 +114,6 @@ RTypeClient::~RTypeClient()
 	}
 }
 
-//RTypeClient::RTypeClient(RTypeClient const &) : mEngine(this) {} // faite un = delete; dans le .hpp ??
-
-RTypeClient const	&RTypeClient::operator=(RTypeClient const &) { return *this; }
-
 void	RTypeClient::run()
 {
 

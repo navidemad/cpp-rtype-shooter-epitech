@@ -5,6 +5,7 @@
 #include "Engine/Component.hpp"
 #include "Engine/ComponentType.h"
 #include "Engine/Compenent/Font.hpp"
+#include "NoCopyable.hpp"
 
 class TextInput : public Font
 {
@@ -12,11 +13,6 @@ class TextInput : public Font
 	public:
 		TextInput(std::string const &, std::string const &);
 		~TextInput();
-
-	// coplien form
-	private:
-	//		TextInput(TextInput const &) : Font(ComponentType::TEXTINPUT) {}
-	//	TextInput const	&operator=(TextInput const &) { return *this; }
 
 	public:
 		void			process(Entity &);

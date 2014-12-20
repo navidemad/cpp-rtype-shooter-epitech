@@ -1,15 +1,12 @@
 #pragma once
 
-class Collision
+#include "NoCopyable.hpp"
+
+class Collision : public NoCopyable
 {
 	// ctor - dtor
 	public:
 		Collision();
 		~Collision();
-
-	// coplien form
-	private:
-		Collision(Collision const &) {}
-		Collision const	&operator=(Collision const &) { return *this; }
 
 };

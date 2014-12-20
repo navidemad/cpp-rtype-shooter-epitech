@@ -8,21 +8,15 @@ class RTypeClient;
 #include "Entity.hpp"
 #include "Component.hpp"
 #include "Core/System.hpp"
+#include "NoCopyable.hpp"
 
-class ECSManager
+class ECSManager : public NoCopyable
 {
     // ctor - dtor
     public:
 		ECSManager() : mClient(nullptr), mCurrentId(0) { }
 		ECSManager(RTypeClient *);
 	virtual ~ECSManager();
-
-    // copy operators
-    public:
-        ECSManager(const ECSManager &) = delete;
-        ECSManager(ECSManager &&) = delete;
-        const ECSManager &operator=(const ECSManager &) = delete;
-        const ECSManager &operator=(ECSManager &&) = delete;
 
 	// getter
 	public:

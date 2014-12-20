@@ -6,22 +6,16 @@
 #include "PlayerPacketBuilder.hpp"
 #include "IResource.hpp"
 #include "ErrorStatus.hpp"
+#include "NoCopyable.hpp"
 #include <memory>
 
-class ServerCommunication : public QObject, ClientPacketBuilder::OnClientPacketBuilderEvent, PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
+class ServerCommunication : public QObject, public NoCopyable, public ClientPacketBuilder::OnClientPacketBuilderEvent, public PlayerPacketBuilder::OnPlayerPacketBuilderEvent{
     Q_OBJECT
 
     // ctor - dtor
     public:
         explicit ServerCommunication(int ClientUdpPort);
         ~ServerCommunication();
-
-    // copy operators
-    public:
-        ServerCommunication(const ServerCommunication &) = delete;
-        ServerCommunication(ServerCommunication &&) = delete;
-        const ServerCommunication &operator=(const ServerCommunication &) = delete;
-        const ServerCommunication &operator=(ServerCommunication &&) = delete;
 
     //signal
     signals:

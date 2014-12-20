@@ -5,21 +5,15 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
+#include "NoCopyable.hpp"
 
-class FontManager : public IResourceManager<sf::Font>
+class FontManager : public NoCopyable, public IResourceManager<sf::Font>
 {
 	// ctor - dtor
 	private:
 		FontManager();
 	public:
 		~FontManager();
-
-    // copy operators
-	public:
-		FontManager(FontManager const &) = delete;
-		FontManager(FontManager const &&) = delete;
-		FontManager const	&operator=(FontManager const &) = delete;
-		FontManager const	&operator=(FontManager const &&) = delete;
 
 	// instance
 	public:

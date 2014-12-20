@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ComponentType.h"
+#include "NoCopyable.hpp"
 
 class Component
 {
@@ -8,13 +9,6 @@ class Component
     public:
         explicit Component(ComponentType::Type);
         ~Component();
-
-    // copy operators
-    public:
-        Component(const Component &) = delete;
-        Component(Component &&) = delete;
-        const Component &operator=(const Component &) = delete;
-        const Component &operator=(Component &&) = delete;
 
 	public:
 		ComponentType::Type	getComponentId() const;

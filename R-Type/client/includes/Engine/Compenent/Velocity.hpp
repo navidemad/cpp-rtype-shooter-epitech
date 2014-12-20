@@ -2,18 +2,14 @@
 
 #include "../Component.hpp"
 #include "../ComponentType.h"
+#include "NoCopyable.hpp"
 
-class Velocity : public Component
+class Velocity : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
 		Velocity(int, int, unsigned int);
 		~Velocity();
-
-	// coplien form
-	private:
-		Velocity(Velocity const &) : Component(ComponentType::MOVABLE) {}
-		Velocity const	&operator=(Velocity const &) { return *this; }
 
 	public:
 		int	getX() const;

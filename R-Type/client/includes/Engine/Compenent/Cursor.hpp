@@ -4,18 +4,14 @@
 #include "../Entity.hpp"
 #include "../Component.hpp"
 #include "../ComponentType.h"
+#include "NoCopyable.hpp"
 
-class Cursor : public Component
+class Cursor : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
 		Cursor();
 		~Cursor();
-
-	// coplien form
-	private:
-		Cursor(Cursor const &) : Component(ComponentType::CURSOR) {}
-		Cursor const	&operator=(Cursor const &) { return *this; }
 		
 	public:
 		bool			next();

@@ -1,11 +1,12 @@
 #pragma once
 
 #include "IClientSocket.hpp"
+#include "NoCopyable.hpp"
 #include <QtNetwork/qtcpsocket.h>
 #include <memory>
 
 
-class TcpClient : public QObject, public IClientSocket{
+class TcpClient : public QObject, public NoCopyable, public IClientSocket{
 
 	Q_OBJECT
 
@@ -13,13 +14,6 @@ class TcpClient : public QObject, public IClientSocket{
     public:
         TcpClient();
         ~TcpClient();
-
-    // copy operators
-    public:
-        TcpClient(const TcpClient &) = delete;
-        TcpClient(TcpClient &&) = delete;
-        const TcpClient &operator=(const TcpClient &) = delete;
-        const TcpClient &operator=(TcpClient &&) = delete;
 
 	// start
 	public:

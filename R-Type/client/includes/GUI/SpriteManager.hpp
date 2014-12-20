@@ -5,21 +5,15 @@
 #include <SFML/Graphics.hpp>
 #include "GUI/IResourceManager.hpp"
 #include "GUI/SpriteModel.hpp"
+#include "NoCopyable.hpp"
 
-class SpriteManager : public IResourceManager<SpriteModel>
+class SpriteManager : public NoCopyable, public IResourceManager<SpriteModel>
 {
     // ctor - dtor
     private:
         SpriteManager();
     public:
         virtual ~SpriteManager();
-
-    // copy operators
-    public:
-        SpriteManager(const SpriteManager &) = delete;
-        SpriteManager(SpriteManager &&) = delete;
-		const SpriteManager &operator=(const SpriteManager &) = delete;
-		const SpriteManager &operator=(SpriteManager &&) = delete;
 
 	// instance
 	public:
@@ -35,13 +29,6 @@ class SpriteManager : public IResourceManager<SpriteModel>
 			public:
 				SpriteOffset(uint32_t rectLeft, uint32_t rectTop, uint32_t rectWidth, uint32_t rectHeight);
 				~SpriteOffset();
-
-			// coplien form
-			private:
-				SpriteOffset(SpriteOffset const &) = delete;
-				SpriteOffset(SpriteOffset const &&) = delete;
-				SpriteOffset const	&operator=(SpriteOffset const &) = delete;
-				SpriteOffset const	&operator=(SpriteOffset const &&) = delete;
 
 			// attributes
 			private:

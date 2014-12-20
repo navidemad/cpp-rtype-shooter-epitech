@@ -28,7 +28,8 @@ INCLUDEPATH	+=	.					\
 			build/ui				\
 			build/moc
 
-HEADERS		+=	includes/RTypeClient.hpp				\
+HEADERS		+=	../shared/includes/NoCopyable.hpp			\
+			includes/RTypeClient.hpp				\
 			../shared/includes/Exceptions/DynLibException.hpp			\
 			../shared/includes/DynLib/IDynLib.hpp				\
 			includes/PortabilityBuilder.hpp				\

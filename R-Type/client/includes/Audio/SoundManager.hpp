@@ -5,6 +5,7 @@
 #include <map>
 #include <SFML/Audio.hpp>
 #include "GUI/IResourceManager.hpp"
+#include "NoCopyable.hpp"
 
 namespace sf
 {
@@ -15,20 +16,13 @@ namespace sf
 	};
 }
 
-class SoundManager : public IResourceManager<sf::sSound>
+class SoundManager : public NoCopyable, public IResourceManager<sf::sSound>
 {
 	// ctor - dtor
 	private:
 		SoundManager();
 	public:
 		virtual ~SoundManager();
-
-    // copy operators
-	public:
-        SoundManager(const SoundManager &) = delete;
-        SoundManager(SoundManager &&) = delete;
-        const SoundManager &operator=(const SoundManager &) = delete;
-        const SoundManager &operator=(SoundManager &&) = delete;
 
 	// instance
 	public:

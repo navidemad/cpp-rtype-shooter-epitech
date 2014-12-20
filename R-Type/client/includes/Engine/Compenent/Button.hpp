@@ -5,18 +5,14 @@
 #include "Engine/Component.hpp"
 #include "Engine/ComponentType.h"
 #include "Engine/Compenent/Font.hpp"
+#include "NoCopyable.hpp"
 
-class Button : public Component
+class Button : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
 		Button(uint32_t);
 		~Button();
-
-	// coplien form
-	private:
-		Button(Button const &) : Component(ComponentType::BUTTON) {}
-		Button const	&operator=(Button const &) { return *this; }
 
 	protected:
 		bool	hasTimeElapsed() const;

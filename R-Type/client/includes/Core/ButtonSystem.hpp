@@ -2,6 +2,7 @@
 
 #include "System.hpp"
 #include "Engine/Entity.hpp"
+#include "NoCopyable.hpp"
 
 class ButtonSystem : public System
 {
@@ -15,13 +16,6 @@ class ButtonSystem : public System
 
 	private:
 		bool	hasTimeElapsed() const;
-
-    // copy operators
-    public:
-        ButtonSystem(const ButtonSystem &) = delete;
-        ButtonSystem(ButtonSystem &&) = delete;
-        const ButtonSystem &operator=(const ButtonSystem &) = delete;
-        const ButtonSystem &operator=(ButtonSystem &&) = delete;
 
 	private:
 		uint32_t	mTimeElapsed;

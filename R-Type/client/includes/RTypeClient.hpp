@@ -4,10 +4,11 @@
 #include "Engine/ECSManager.hpp"
 #include "GUI/IGraphic.hpp"
 #include "Network/ServerCommunication.hpp"
+#include "NoCopyable.hpp"
 
 class ECSManager;
 
-class RTypeClient : public QThread
+class RTypeClient : public QThread, public NoCopyable
 {
 public:
 	enum Game : unsigned int
@@ -26,11 +27,6 @@ public:
 	public:
 		RTypeClient();
 		~RTypeClient();
-
-	// coplien form
-	private:
-//		RTypeClient(RTypeClient const &);
-		RTypeClient const	&operator=(RTypeClient const &);
 
 	private:
 		void run();
