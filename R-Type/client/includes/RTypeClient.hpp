@@ -39,13 +39,13 @@ public:
 
 	// Attribute
 	private:
-		unsigned int							mCurrentId;
-		std::vector<ECSManager *>				mEngine;
-		std::shared_ptr<IGraphic>				mGui;
-		std::string								mCurrentLevel;
-		std::string								mCurrentGame;
-		std::string								mScript;
-		ServerCommunication						mServer;
+		unsigned int								mCurrentId;
+		std::vector<std::shared_ptr<ECSManager> >	mEngine;
+		std::shared_ptr<IGraphic>					mGui;
+		std::string									mCurrentLevel;
+		std::string									mCurrentGame;
+		std::string									mScript;
+		ServerCommunication							mServer;
 
 		std::vector<void (RTypeClient::*)()>	mInit;
 		std::vector<void (RTypeClient::*)()>	mStart;

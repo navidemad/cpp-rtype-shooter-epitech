@@ -8,7 +8,7 @@ class Component
     // ctor - dtor
     public:
         explicit Component(ComponentType::Type);
-        ~Component();
+        virtual ~Component();
 
 	public:
 		ComponentType::Type	getComponentId() const;

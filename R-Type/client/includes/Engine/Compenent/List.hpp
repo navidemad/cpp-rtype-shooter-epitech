@@ -28,7 +28,7 @@ struct List : public Component
 {
 	public:
 		List(void (RTypeClient::*fct)(std::string const &), unsigned int const = 3);
-		~List();
+		~List() { }
 
 	public:
 		void	addRoom(const information_room &);

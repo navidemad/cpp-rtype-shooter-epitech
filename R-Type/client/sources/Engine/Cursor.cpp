@@ -57,7 +57,6 @@ bool	Cursor::prev()
 
 void	Cursor::addEntity(unsigned int id)
 {
-
 	mListEntity.push_back(id);
 	mCurrent = mListEntity.begin();
 }

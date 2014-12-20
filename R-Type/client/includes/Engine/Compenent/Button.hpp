@@ -12,7 +12,7 @@ class Button : public NoCopyable, public Component
 	// ctor - dtor
 	public:
 		Button(uint32_t);
-		~Button();
+		virtual ~Button();
 
 	protected:
 		bool	hasTimeElapsed() const;

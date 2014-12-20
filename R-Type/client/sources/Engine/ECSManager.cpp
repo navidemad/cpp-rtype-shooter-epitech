@@ -12,19 +12,17 @@ ECSManager::ECSManager(RTypeClient *client)
 
 ECSManager::~ECSManager()
 {
-  /*
-	for (auto vec : mEntityComponent)
-	{
-		for (auto compenent : vec)
-		{
-	//		delete compenent;
-		}
-	}
+	auto remove = [](Component *component) { delete component; };
 
+	while (!mEntityComponent.empty())
+	{
+		std::for_each(mEntityComponent.back().begin(), mEntityComponent.back().end(), remove);
+		mEntityComponent.pop_back();
+	}
 	for (auto system : mSystem)
 	{
-		//delete system;
-	}*/
+		delete system;
+	}
 }
 
 unsigned int	ECSManager::getCurrentId() const
