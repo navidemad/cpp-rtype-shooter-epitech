@@ -5,7 +5,7 @@
 #include "Utils.hpp"
 #include "Script.hpp"
 #include "Default.hpp"
-#include "AScriptCommand.hpp"
+#include "IScriptCommand.hpp"
 #include <cmath>
 #include <memory>
 #include <algorithm>
@@ -13,9 +13,9 @@
 #include <map>
 
 const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
-	{ AScriptCommand::Instruction::NAME, &NGame::Game::scriptCommandName },
-	{ AScriptCommand::Instruction::REQUIRE, &NGame::Game::scriptCommandRequire },
-	{ AScriptCommand::Instruction::SPAWN, &NGame::Game::scriptCommandSpawn }
+	{ IScriptCommand::Instruction::NAME, &NGame::Game::scriptCommandName },
+	{ IScriptCommand::Instruction::REQUIRE, &NGame::Game::scriptCommandRequire },
+	{ IScriptCommand::Instruction::SPAWN, &NGame::Game::scriptCommandSpawn }
 };
 
 NGame::Game::Game(const NGame::Properties& properties, const Script& script) :
@@ -55,10 +55,10 @@ void NGame::Game::actions(void) {
     while (!(getScript().isFinish()))
     {
 		const auto& currentCommand = getScript().currentCommand();
-		if (getCurrentFrame() < currentCommand.getFrame())
+		if (getCurrentFrame() < currentCommand->getFrame())
 			return;
 		for (const auto& instr : tokenExecTab) {
-			if (instr.commandCode == currentCommand.getInstruction()) {
+			if (instr.commandCode == currentCommand->getInstruction()) {
 				(this->*instr.fctPtr)(currentCommand);
 				break;
 			}
@@ -71,7 +71,7 @@ void NGame::Game::actions(void) {
 
 void NGame::Game::check(void) {
 	auto& components = getComponents();
-	for (auto& it = components.begin(); it != components.end();) {
+	for (auto it = components.begin(); it != components.end();) {
 		if (collision(*it))
 		{
 			if ((*it).getType() == IResource::Type::PLAYER) // exception quand on spam SPACE
@@ -466,7 +466,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-	auto& user = findUserByHost(peer);
+	auto user = findUserByHost(peer);
 
 	if (user == getUsers().end())
 		throw GameException("Try to delete an undefined address ip");
@@ -550,22 +550,26 @@ const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction
 /*
 ** workflow scripts actions
 */
-void	NGame::Game::scriptCommandName(const AScriptCommand &command) {
-    const auto& commandScriptName = static_cast<const ScriptName&>(command);
-    //std::cout << "&commandScriptName = '" << &commandScriptName << std::endl;
-    //std::cout << "ScriptName [" << commandScriptName.getStageName()  << "]" << std::endl;
-	//if (commandScriptName.getStageName() != getProperties().getLevelName())
-	//	throw GameException("script name request doesn't match with the level name of current game");
+void	NGame::Game::scriptCommandName(const IScriptCommand* command) {
+	auto commandScriptName = dynamic_cast<const ScriptName*>(command);
+
+    if (!commandScriptName)
+    	return;
+
+	if (commandScriptName->getStageName() != getProperties().getLevelName())
+		throw GameException("script name request doesn't match with the level name of current game");
 }
 
-void	NGame::Game::scriptCommandRequire(const AScriptCommand &command) {
-    const auto& commandScriptRequire = static_cast<const ScriptRequire&>(command);
-    //std::cout << "&commandScriptRequire = '" << &commandScriptRequire << std::endl;
-    //std::cout << "ScriptRequire [" << commandScriptRequire.getRessourceName() << "]" << std::endl;
+void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
+	auto commandScriptRequire = dynamic_cast<const ScriptName*>(command);
+
+    if (!commandScriptRequire)
+    	return;
 }
 
-void	NGame::Game::scriptCommandSpawn(const AScriptCommand &command) {
-    const auto& commandScriptSpawn = static_cast<const ScriptSpawn&>(command);
-    //std::cout << "&commandScriptSpawn = '" << &commandScriptSpawn << std::endl;
-    //std::cout << "ScriptSpawn [" << commandScriptSpawn.getSpawnName() << " " << commandScriptSpawn.getX() << " " << commandScriptSpawn.getY() << " " << commandScriptSpawn.getAngle() << "]" << std::endl;
+void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
+	auto commandScriptSpawn = dynamic_cast<const ScriptName*>(command);
+
+    if (!commandScriptSpawn)
+    	return;
 }

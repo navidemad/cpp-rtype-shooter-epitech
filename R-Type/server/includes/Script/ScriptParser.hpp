@@ -2,7 +2,7 @@
 
 #include "Parser.hpp"
 #include "NoCopyable.hpp"
-#include "AScriptCommand.hpp"
+#include "IScriptCommand.hpp"
 #include <vector>
 
 class ScriptParser : public NoCopyable {
@@ -14,13 +14,13 @@ class ScriptParser : public NoCopyable {
 
 	// internal functions
 	public:
-		std::vector<AScriptCommand> parseFile(std::ifstream &);
+		std::vector<const IScriptCommand*> parseFile(std::ifstream &);
 
     // workflow commands
     private:
-        AScriptCommand commandScriptName(void);
-        AScriptCommand commandScriptRequire(void);
-        AScriptCommand commandScriptSpawn(void);
+        const IScriptCommand* commandScriptName(void);
+        const IScriptCommand* commandScriptRequire(void);
+        const IScriptCommand* commandScriptSpawn(void);
 
     // attributes
 	private:
@@ -29,7 +29,7 @@ class ScriptParser : public NoCopyable {
 	private:
 		struct tokenExec {
 			std::string cmd;
-			AScriptCommand (ScriptParser::*Ptr)();
+			const IScriptCommand* (ScriptParser::*Ptr)();
 		};
 		static const ScriptParser::tokenExec tokenExecTab[];
 

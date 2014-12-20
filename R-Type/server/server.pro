@@ -12,8 +12,8 @@ RCC_DIR			=	build/rcc
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
-QMAKE_CXX = clang++
-CXX = clang++
+
+#QMAKE_CXX = clang++
 
 INCLUDEPATH		+=	.					\
 				includes				\
@@ -94,7 +94,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Script/ScriptParser.hpp			\
 				includes/Script/ScriptException.hpp			\
 				includes/Script/Parser.hpp				\
-				includes/Script/AScriptCommand.hpp			\
+				includes/Script/IScriptCommand.hpp			\
 				includes/Game/NGame.hpp 					\
 				includes/Game/Game.hpp 					\
 				includes/Game/GamesManager.hpp 				\

@@ -7,7 +7,7 @@
 #include "GameProperties.hpp"
 #include "GameUser.hpp"
 #include "GameComponent.hpp"
-#include "AScriptCommand.hpp"
+#include "IScriptCommand.hpp"
 #include "Script.hpp"
 #include "PlayerCommunicationManager.hpp"
 
@@ -58,8 +58,8 @@ namespace NGame
 			};
 		private:
 			struct tokenExec {
-				AScriptCommand::Instruction	commandCode;
-				void						(NGame::Game::*fctPtr)(const AScriptCommand &command);
+				IScriptCommand::Instruction	commandCode;
+				void						(NGame::Game::*fctPtr)(const IScriptCommand* command);
 			};
 			struct tokenAngle {
 				IResource::Direction		directionCode;
@@ -139,9 +139,9 @@ namespace NGame
 
         // workflow scripts actions
         private:
-            void scriptCommandName(const AScriptCommand &command);
-            void scriptCommandRequire(const AScriptCommand &command);
-            void scriptCommandSpawn(const AScriptCommand &command);
+            void scriptCommandName(const IScriptCommand* command);
+            void scriptCommandRequire(const IScriptCommand* command);
+            void scriptCommandSpawn(const IScriptCommand* command);
 
         // attributes
         private:

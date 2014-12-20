@@ -27,6 +27,7 @@ PlayerCommunicationManager::~PlayerCommunicationManager(void) {
 }
 
 void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &log) const {
+	return; // debug pour avoir moins de log qui font lag
 	std::stringstream ss;
 
 	ss << Utils::RED << "[UDP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.udpPort << "]> " << Utils::WHITE << log; 
