@@ -10,6 +10,12 @@ class RTypeClient;
 #include "Core/System.hpp"
 #include "NoCopyable.hpp"
 
+class ComponentNotFound : public std::exception
+{
+public:
+	const char *what() const throw() { return "Component not found"; }
+};
+
 class ECSManager : public NoCopyable
 {
     // ctor - dtor

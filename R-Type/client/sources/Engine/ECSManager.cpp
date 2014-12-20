@@ -122,6 +122,7 @@ void			ECSManager::updateSystem(uint32_t delta)
 				{
 					currentSystem->process(mEntity[i], delta);
 				}
+				mEntity[i].getSpecificComponent(ComponentType::FIRE);
 			}
 			catch (...)
 			{

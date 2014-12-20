@@ -32,6 +32,9 @@ Component				*Entity::getSpecificComponent(ComponentType::Type searchType)
 
 	std::list<Component *>::const_iterator it = std::find_if(mEntityManager->getComponent(mId).begin(), mEntityManager->getComponent(mId).end(), search);
 
+	ComponentNotFound exception;
+	if (it == mEntityManager->getComponent(mId).end())
+		throw exception;
 	return *it;
 }
 
