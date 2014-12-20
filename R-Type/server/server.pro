@@ -209,4 +209,4 @@ unix:LIBS	+= -lpthread -ldl -lm
 
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
-DEFINES        += _DEBUG
+#DEFINES        += _DEBUG

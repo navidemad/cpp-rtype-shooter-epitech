@@ -1,7 +1,7 @@
 TEMPLATE	=	app
 TARGET		=	client
 QT		+=	network widgets
-CONFIG		+=	console
+CONFIG		+=	console debug
 
 DESTDIR		=	build
 OBJECTS_DIR	=	build/obj
@@ -242,4 +242,5 @@ unix:LIBS += -ldl
 
 win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
 unix : DEFINES += __OS_LINUX__
-DEFINES        += _DEBUG
+
+#CONFIG(debug, debug|release): DEFINES += _DEBUG

@@ -60,18 +60,9 @@ class NetworkManager : public NoCopyable {
     private:
         void addSocketInList(const Socket& socket);
         void eraseSocketInList(std::list<NetworkManager::Socket>::iterator& it);
-
         int getMaxFd(void) const;
         void setMaxFd(int fd);
-
-        fd_set& getReadFds(void);
-        void setReadFds(const fd_set& readFds);
-
-        fd_set& getWriteFds(void);
-        void setWriteFds(const fd_set& writeFds);
-
         std::shared_ptr<ThreadPool>& getThreadPool(void);
-
         std::list<NetworkManager::Socket>& getSockets(void);
 
 	// attributes
