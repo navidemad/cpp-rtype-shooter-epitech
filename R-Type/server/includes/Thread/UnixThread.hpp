@@ -13,19 +13,13 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 	public:
 		UnixThread(void) : mIsRunning(false) {}
 		~UnixThread(void) {
+			std::cout << __FUNCTION__ << std::endl;
 			try {
 				cancel();
 			} catch (const ThreadException& e) {
 				std::cerr << "UnixThread :: " << e.what() << std::endl;
 			}
 		}
-
-	// copy / move operators
-	public:
-		UnixThread(const UnixThread &) = delete;
-		UnixThread(const UnixThread &&) = delete;
-		const UnixThread &operator=(const UnixThread &) = delete;
-		const UnixThread &operator=(const UnixThread &&) = delete;
 
 	// enum ret value
 	public:

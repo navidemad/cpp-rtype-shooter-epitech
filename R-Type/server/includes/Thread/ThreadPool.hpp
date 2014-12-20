@@ -21,6 +21,7 @@ class ThreadPool : public NoCopyable {
 	// singleton handle instance
 	public:
 		static std::shared_ptr<ThreadPool> getInstance(void);
+		static std::shared_ptr<ThreadPool> mInstance;
 
 	// handle tasks
 	public:

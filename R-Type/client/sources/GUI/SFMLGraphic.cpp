@@ -8,6 +8,8 @@ SFMLGraphic::SFMLGraphic()
 	: mWindow(sf::VideoMode(1280, 720), "R-type"), mInputManager(this), mMusicCurrentKey("")
 {
 	mWindow.setActive(false);
+	mWindow.setVerticalSyncEnabled(true);
+
 }
 
 SFMLGraphic::~SFMLGraphic()
@@ -153,7 +155,7 @@ void	SFMLGraphic::init()
 	mContentManager.loadFonts();
 	mContentManager.loadMusics();
 	mContentManager.loadSounds();
-	mWindow.setMouseCursorVisible(false);
+	mWindow.setMouseCursorVisible(true);
 }
 
 sf::RenderWindow	&SFMLGraphic::getWindow()

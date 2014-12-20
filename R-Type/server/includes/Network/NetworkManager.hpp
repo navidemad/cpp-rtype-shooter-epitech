@@ -33,13 +33,13 @@ class NetworkManager : public NoCopyable {
 	// ctor - dtor
 	private:
 		NetworkManager(void);
-        static std::weak_ptr<NetworkManager> mInstance;
 	public:
 		~NetworkManager(void);
 
 	// singleton handle instance
 	public:
 		static std::shared_ptr<NetworkManager> getInstance(void);
+		static std::shared_ptr<NetworkManager> mInstance;
 
 	// handle sockets
 	public:
