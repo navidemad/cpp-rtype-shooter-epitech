@@ -126,8 +126,12 @@ void	RTypeClient::run()
 
 		if (id != mCurrentId)
 		{
-			(this->*(mStop[id]))();
-			(this->*(mStart[mCurrentId]))();
+			try
+			{
+				(this->*(mStop[id]))();
+				(this->*(mStart[mCurrentId]))();
+			}
+			catch (...) { }
 		}
 	}
 }

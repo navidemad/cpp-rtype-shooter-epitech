@@ -49,33 +49,33 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
-	if (!isEntityCreated(id + mFirstId))
+	try
 	{
-		createEntity(id + mFirstId);
+		if (!isEntityCreated(id + mFirstId))
+		{
+			createEntity(id + mFirstId);
 
-		Entity &entity = getEntity(id + mFirstId);
-		auto lib = PortabilityBuilder::getDynLib();
-		try {
-			lib->libraryLoad(mDLLoader[type]);
-			if (lib->functionLoad("entry_point") == nullptr)
-				return;
-			auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
-			std::cout << ressource->getName() << std::endl;
-			entity.addComponent(new Drawable(ressource->getName()));
-            entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
-            if (type == IResource::Type::BULLET) entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+			Entity &entity = getEntity(id + mFirstId);
+			auto lib = PortabilityBuilder::getDynLib();
+			try {
+				lib->libraryLoad(mDLLoader[type]);
+				if (lib->functionLoad("entry_point") == nullptr)
+					return;
+				auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+
+				entity.addComponent(new Drawable(ressource->getName()));
+				entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
+				if (type == IResource::Type::BULLET) entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+			}
+			catch (const DynLibException& e) {
+				std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
+				// ATTENTION IL FAUT DELETE LENTITE SI LA DLL N'EXISTE PAS
+				// si l'entité n'a pas bien été loadé
+				// car apres dans le else d'en dessous tu fais getSpecificComponent
+				// que tu reinterpret_cast en Position* du coup sa va te renvoyait nullptr (cf mon patch: Entity.cpp getSpecificComponent)
+			}
 		}
-		catch (const DynLibException& e) {
-			std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
-            // ATTENTION IL FAUT DELETE LENTITE SI LA DLL N'EXISTE PAS
-            // si l'entité n'a pas bien été loadé
-            // car apres dans le else d'en dessous tu fais getSpecificComponent
-            // que tu reinterpret_cast en Position* du coup sa va te renvoyait nullptr (cf mon patch: Entity.cpp getSpecificComponent)
-		}
-	}
-	else
-	{
-		try
+		else
 		{
 			Entity &entity = getEntity(id + mFirstId);
 			Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
@@ -83,8 +83,8 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 			pos->setX((Config::Window::x / 100.f) * x);
 			pos->setY((Config::Window::y / 100.f) * y);
 		}
-		catch (...) { }
 	}
+	catch (...) { }
 }
 
 void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/*levelName*/, int nbPlayer, int maxPlayer, int /*nbObserver*/, int /*maxObserver*/)
@@ -99,6 +99,7 @@ void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/
 	catch (std::runtime_error &/*error*/)
 	{
 	}
+	catch (...) { }
 }
 
 void ECSManagerNetwork::OnShowLevel(const std::string &scriptName)
