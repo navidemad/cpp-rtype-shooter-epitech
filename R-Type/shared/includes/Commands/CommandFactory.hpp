@@ -13,4 +13,4 @@ namespace CommandFactory {
 
 	std::shared_ptr<ICommand> getCommand(ICommand::Instruction instructionCode);
 
-};
+}

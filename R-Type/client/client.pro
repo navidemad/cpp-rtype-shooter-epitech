@@ -13,7 +13,7 @@ win32:RC_ICONS 	+=
 ICON 		= 	
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
-unix:QMAKE_CXXFLAGS	+=	-Wall -std=c++11 -g -Wno-write-strings
+unix:QMAKE_CXXFLAGS	+=	-Wall -Wextra -pedantic -std=c++11 -g -Wno-write-strings
 
 INCLUDEPATH	+=	.					\
 			includes				\
