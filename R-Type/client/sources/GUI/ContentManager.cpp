@@ -23,6 +23,7 @@ void	ContentManager::loadSprites()
 {
 	auto sprites = std::static_pointer_cast<SpriteManager>(mSprites);
 
+	// sprites use essentially for GUI's menu
 	sprites->loadResources("menu", "assets/sprites/menu.png");
 	sprites->loadResources("logo", "assets/sprites/logo.png");
 	sprites->loadResources("background", "assets/sprites/background1.png");
@@ -30,12 +31,13 @@ void	ContentManager::loadSprites()
 	sprites->loadResources("logoSearch", "assets/sprites/logoSearch.png");
 	sprites->loadResources("logoOption", "assets/sprites/logoOption.png");
 	sprites->loadResources("searchBar", "assets/sprites/search_bar.png");
+	sprites->loadResources("cursor", "assets/sprites/cursor.png");
+
+	// sprites use essentially for ingame
 	sprites->loadResources("ball", "assets/sprites/r-typesheet3.gif", 12, 1, true);
 	sprites->loadResources("player", "assets/sprites/r-typesheet42.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 166, 21), true);
 	sprites->loadResources("monster", "assets/sprites/r-typesheet14.gif", 12, 1, SpriteManager::SpriteOffset(0, 0, 497, 50), true);
-
 	sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(157, 34, 288, 24), true);
-	sprites->loadResources("cursor", "assets/sprites/cursor.png");
 
 	// load sketches drawing by tran_y on smartphone 5.2" (Xperia Z2 with pen/pencil)
 	sprites->loadResources("sketch01", "assets/sprites/sketchs/sketch-1418753217209.jpg");
