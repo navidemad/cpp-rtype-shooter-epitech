@@ -45,9 +45,9 @@ namespace NGame
         public:
             void pull(void);
         private:
-            void check(void);
-            void actions(void);
-            void update(void);
+            void checkCollisions(void);
+            void broadcastMap(void);
+            void moveEntities(void);
 
 		// static values
 		public:
@@ -76,8 +76,7 @@ namespace NGame
 			std::vector<NGame::User>& getUsers(void);
 			std::vector<NGame::Component>& getComponents(void);
 			NGame::Game::State& getState(void);
-			std::shared_ptr<IMutex>& getMutex(void);
-			Peer& getOwner(void);
+			const Peer& getOwner(void);
 			bool getPullEnded(void);
 			uint64_t getCurrentComponentMaxId(void);
 
@@ -112,7 +111,8 @@ namespace NGame
             int countUserByType(NGame::USER_TYPE);
 
         public:
-            std::vector<NGame::User>::iterator findUserByHost(const Peer &);
+            std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &);
+            NGame::User& findUserByHost(const Peer &);
             std::vector<NGame::User>::iterator findUserById(uint64_t);
 			std::vector<NGame::Component>::iterator findComponentById(uint64_t);
 

@@ -12,14 +12,7 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 	// ctor dtor
 	public:
 		UnixThread(void) : mIsRunning(false) {}
-		~UnixThread(void) {
-			std::cout << __FUNCTION__ << std::endl;
-			try {
-				cancel();
-			} catch (const ThreadException& e) {
-				std::cerr << "UnixThread :: " << e.what() << std::endl;
-			}
-		}
+		~UnixThread(void) = default;
 
 	// enum ret value
 	public:
@@ -54,7 +47,7 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 				throw ThreadException("fail pthread_cancel()");
 
 			mIsRunning = false;
-    }
+    	}
 
 		void exit(void *status) {
 			pthread_exit(status);

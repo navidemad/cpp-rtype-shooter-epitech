@@ -21,4 +21,9 @@ struct Peer {
 
 		return true;
 	}
+
+	bool operator!=(const Peer &peer) const {
+	    return !(*this == peer);
+	}
+
 };

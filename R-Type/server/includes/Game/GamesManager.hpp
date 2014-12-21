@@ -15,7 +15,6 @@
 
 #include <mutex>
 
-
 class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPlayerCommunicationManagerEvent, public NGame::Game::OnGameEvent {
 
     // ctor / dtor
@@ -49,18 +48,18 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 		void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t);
 		void onNotifyTimeElapsedPing(const Peer &, double);
 
-        void    setListener(GamesManager::OnGamesManagerEvent *listener);
-		void terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::iterator it);
+        void setListener(GamesManager::OnGamesManagerEvent *listener);
+		void terminatedGame(const std::shared_ptr<NGame::Game>& game);
 
 	// network workflow utils functions
 	public:
-        void    createGame(const NGame::Properties&properties, const Peer &peer);
-        void    removeGame(const Peer &peer, const std::string&);
-        void    joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo = "Anonymous");
-        void    playGame(const Peer &peer, const std::string &name, const std::string &pseudo);
-        void    spectateGame(const Peer &peer, const std::string &name);
-        void	leaveGame(const Peer &peer);
-		void	updatePseudo(const Peer &peer, const std::string &pseudo);
+        void createGame(const NGame::Properties&properties, const Peer &peer);
+        void removeGame(const Peer &peer, const std::string&);
+        void joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo = "Anonymous");
+        void playGame(const Peer &peer, const std::string &name, const std::string &pseudo);
+        void spectateGame(const Peer &peer, const std::string &name);
+        void leaveGame(const Peer &peer);
+		void updatePseudo(const Peer &peer, const std::string &pseudo);
 
         const NGame::Properties &getGameProperties(const std::string &name);
         std::list<NGame::Properties> getGamesProperties(void);
@@ -69,16 +68,12 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 	// internal methods
 	private:
         void removeClientsFromWhitelist(const std::shared_ptr<NGame::Game>&);
-		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByName(const std::string& name);
-		std::vector<std::shared_ptr<NGame::Game>>::iterator findGameByHost(const Peer &peer);
+        const std::shared_ptr<NGame::Game>& findGameByName(const std::string& name);
+        const std::shared_ptr<NGame::Game>& findGameByHost(const Peer &peer);
 
     // scoped functions
     public:
         std::vector<std::shared_ptr<NGame::Game>>& getGames(void);
-        PlayerCommunicationManager& getPlayerCommunicationManager(void);
-        GamesManager::OnGamesManagerEvent* getListener(void) const;
-        void addGameToList(const std::shared_ptr<NGame::Game>&);
-        void removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator);
 
     // attributes
     private:

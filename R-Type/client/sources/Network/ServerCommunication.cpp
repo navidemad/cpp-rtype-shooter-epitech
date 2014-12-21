@@ -145,8 +145,8 @@ void ServerCommunication::OnConnectToServer(void){
 		std::cout << "Connect to '" << mServerPeer.host << "@" << mServerPeer.tcpPort << "'" << std::endl;
 		mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
 	}
-	catch (SocketException e){
-		std::cout << e.what() << std::endl;
+	catch (const SocketException& e){
+		std::cerr << e.what() << std::endl;
 		emit SignalFailConnect();
 	}
 }
@@ -262,7 +262,7 @@ void ServerCommunication::sendCommand(ICommand *command, bool isTcpCommand){
 		else
 			mCmdUdp.sendCommand(command, mServerPeer);
 	}
-	catch (SocketException e) {
-		std::cout << e.what() << std::endl;
+	catch (const SocketException& e) {
+		std::cerr << e.what() << std::endl;
 	}
 }
