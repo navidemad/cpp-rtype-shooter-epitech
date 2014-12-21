@@ -58,7 +58,7 @@ class ECSManager : public NoCopyable
 
 	// attribute ECS System
 	protected:
-		std::vector<Entity>								mEntity;
+		std::vector<Entity *>							mEntity;
 		std::vector<std::list<Component *> >			mEntityComponent;
 		std::vector<std::bitset<ComponentType::LIMIT> >	mEntityBitset;
 		std::list<System *>								mSystem;

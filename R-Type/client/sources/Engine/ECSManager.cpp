@@ -34,13 +34,13 @@ Entity						&ECSManager::createEntity()
 {
 	std::list<Component *> list;
 
-	mEntity.push_back(Entity(mCurrentId, this));
+	mEntity.push_back(new Entity(mCurrentId, this));
 	mEntityComponent.push_back(list); // must initialize an empty list
 	mEntityBitset.push_back(0); // bitset set to 0
 	mLivingEntity.push_back(true);
 
 	++mCurrentId;
-	return mEntity.back();
+	return *mEntity.back();
 }
 
 Entity		&ECSManager::createEntity(const unsigned int id)
@@ -50,14 +50,14 @@ Entity		&ECSManager::createEntity(const unsigned int id)
 		std::list<Component *> list;
 		for (; mCurrentId <= id; ++mCurrentId)
 		{
-			mEntity.push_back(Entity(mCurrentId, this));
+			mEntity.push_back(new Entity(mCurrentId, this));
 			mEntityComponent.push_back(list);
 			mEntityBitset.push_back(0);
 			mLivingEntity.push_back(false);
 		}
 	}
 	mLivingEntity[id] = true;
-	return mEntity[id];
+	return *mEntity[id];
 }
 
 bool		ECSManager::isEntityCreated(const unsigned int id) const
@@ -74,7 +74,7 @@ bool		ECSManager::isEntityCreated(const unsigned int id) const
 
 Entity		&ECSManager::getEntity(const int id)
 {
-	return mEntity.at(id);
+	return *mEntity.at(id);
 }
 
 bool		ECSManager::addComponent(const unsigned int id, Component *component)
@@ -120,9 +120,8 @@ void			ECSManager::updateSystem(uint32_t delta)
 			{
 				if (currentSystem->haveComponentNeeded(mEntityBitset[i]))
 				{
-					currentSystem->process(mEntity[i], delta);
+					currentSystem->process(*mEntity[i], delta);
 				}
-				mEntity[i].getSpecificComponent(ComponentType::FIRE);
 			}
 			catch (...)
 			{
@@ -161,7 +160,7 @@ Entity		&ECSManager::getEntityWithSpecificCompenent(ComponentType::Type typeToSe
 	for (size_t i = 0; i != limit; ++i)
 	{
 		if (mEntityBitset[i][typeToSearch])
-			return mEntity[i];
+			return *mEntity[i];
 	}
 	throw std::runtime_error("Entity not found");
 }
