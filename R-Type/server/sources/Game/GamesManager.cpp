@@ -11,59 +11,34 @@
 #include <functional>
 #include <iostream>
 
+void    GamesManager::setListener(GamesManager::OnGamesManagerEvent *listener) {
+    mListener = listener;
+}
+
 /*
 -------------------  scoped functions --------------------------
 */
 
 std::vector<std::shared_ptr<NGame::Game>>& GamesManager::getGames(void) {
-    Scopedlock(mMutex);
+    std::lock_guard<std::mutex> guard(this->mMutexTest);
+    //Scopedlock(mMutex);
 
     return mGames;
 }
 
-const ScriptLoader& GamesManager::getScriptLoader(void) const {
-    Scopedlock(mMutex);
-
-    return mScriptLoader;
-} 
-
-const std::shared_ptr<ThreadPool>& GamesManager::getThreadPool(void) const {
-    Scopedlock(mMutex);
-
-    return mThreadPool;
-}
-
-PlayerCommunicationManager& GamesManager::getPlayerCommunicationManager(void) {
-    Scopedlock(mMutex);
-
-    return mPlayerCommunicationManager;
-}
-
-GamesManager::OnGamesManagerEvent* GamesManager::getListener(void) const {
-    Scopedlock(mMutex);
-
-    return mListener;
-}
-
-void    GamesManager::setListener(GamesManager::OnGamesManagerEvent *listener) {
-    Scopedlock(mMutex);
-
-    mListener = listener;
-}
-
 void GamesManager::addGameToList(const std::shared_ptr<NGame::Game>& game) {
-    Scopedlock(mMutex);
+    std::lock_guard<std::mutex> guard(this->mMutexTest);
+    //Scopedlock(mMutex);
 
     mGames.push_back(game);
 }
 
 void GamesManager::removeItGameFromList(std::vector<std::shared_ptr<NGame::Game>>::iterator it_game) {
-    Scopedlock(mMutex);
+    std::lock_guard<std::mutex> guard(this->mMutexTest);
+    //Scopedlock(mMutex);
 
     mGames.erase(it_game);
 }
-
-
 
 /*
 ------------------- OTHERS --------------------------
@@ -74,7 +49,7 @@ GamesManager::GamesManager(void) : mThreadPool(ThreadPool::getInstance()), mMute
 
 GamesManager::~GamesManager(void) {
     mGames.clear();
-    getThreadPool()->stop();
+    mThreadPool->stop();
 }
 
 volatile std::sig_atomic_t interruptedSignal;
@@ -97,32 +72,32 @@ int GamesManager::run(void) {
         return EXIT_FAILURE;
     }
 
-    std::vector<std::shared_ptr<NGame::Game>> games;
     while (!interruptedSignal)
-    {
-        games = getGames();
-		for (auto it = games.begin(); it != games.end();)
-		{
-            if ((*it)->getPullEnded() == true)
-            {
-        		switch ((*it)->getState())
-        		{
-            		case NGame::Game::State::RUNNING:
-                        (*it)->setPullEnded(false);
-        				*getThreadPool() << std::bind(&NGame::Game::pull, (*it));
-            			break;
-            		case NGame::Game::State::DONE:
-            			terminatedGame(findGameByName((*it)->getProperties().getName()));
-            			break;
-                    default:
-                        break;
-        		}
-            }
-            ++it;
-		}
-    }
+        loopGames();
 
     return EXIT_SUCCESS;
+}
+
+void GamesManager::loopGames(void) {
+    auto games = getGames();
+    for (auto it = games.begin(); it != games.end();)
+    {
+        if ((*it)->getPullEnded() == true)
+        {
+            if ((*it)->getState() == NGame::Game::State::RUNNING)
+            {
+                (*it)->setPullEnded(false);
+                *mThreadPool << std::bind(&NGame::Game::pull, (*it));
+            }
+            if ((*it)->getState() == NGame::Game::State::DONE)
+            {
+                terminatedGame(findGameByName((*it)->getProperties().getName()));
+                loopGames();
+                return;
+            }
+        }
+        ++it;
+    }
 }
 
 void GamesManager::createGame(const NGame::Properties& properties, const Peer &peer) {
@@ -132,9 +107,9 @@ void GamesManager::createGame(const NGame::Properties& properties, const Peer &p
 		throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
     if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > Config::Game::maxSpectatorsInAGame)
 		throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
-	if (getScriptLoader().has(properties.getLevelName()) == false)
+    if (mScriptLoader.has(properties.getLevelName()) == false)
 		throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));
-	auto game = std::make_shared<NGame::Game>(properties, getScriptLoader().get(properties.getLevelName()));
+	auto game = std::make_shared<NGame::Game>(properties, mScriptLoader.get(properties.getLevelName()));
 
     game->setListener(this);
     game->setOwner(peer);
@@ -175,7 +150,7 @@ void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const s
 void GamesManager::playGame(const Peer &peer, const std::string &name, const std::string &pseudo) {
     try {
         joinGame(NGame::USER_TYPE::PLAYER, peer, name, pseudo);
-        getPlayerCommunicationManager().addPeerToWhiteList(peer);
+        mPlayerCommunicationManager.addPeerToWhiteList(peer);
     }
     catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
@@ -185,7 +160,7 @@ void GamesManager::playGame(const Peer &peer, const std::string &name, const std
 void GamesManager::spectateGame(const Peer &peer, const std::string &name) {
     try {
         joinGame(NGame::USER_TYPE::SPECTATOR, peer, name);
-        getPlayerCommunicationManager().removePeerFromWhiteList(peer);
+        mPlayerCommunicationManager.removePeerFromWhiteList(peer);
     }
     catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
@@ -196,11 +171,11 @@ void GamesManager::leaveGame(const Peer &peer) {
     try {
         auto game = findGameByHost(peer);
 
-        if (game == getGames().end())
+        if (game == getGames().end()) // exception getGames
             throw GamesManagerException("Try to leave a player who isn't in a game", ErrorStatus(ErrorStatus::Error::KO));
 
         (*game)->delUser(peer);
-        getPlayerCommunicationManager().removePeerFromWhiteList(peer);
+        mPlayerCommunicationManager.removePeerFromWhiteList(peer);
     } catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
@@ -237,7 +212,7 @@ void GamesManager::onPlayerFire(const Peer &peer) {
             auto component = (*game)->fire(peer);
             auto users = (*game)->getUsers();
             for (const auto& user : users)
-                getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
+                mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
         }
         catch (const GameException& e) {
             std::cerr << "GameException caught: " << e.what() << std::endl;
@@ -258,7 +233,7 @@ void GamesManager::onPlayerMove(IResource::Direction direction, const Peer &peer
         try {
             auto& component = (*game)->move(peer, direction);
             for (const auto& user : (*game)->getUsers())
-                getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
+                mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
         }
         catch (const GameException& e) {
             std::cerr << "GameException caught: " << e.what() << std::endl;
@@ -280,40 +255,39 @@ void GamesManager::terminatedGame(std::vector<std::shared_ptr<NGame::Game>>::ite
         gameUsers.push_back(user.getPeer());
     }
 
-    const auto listener = getListener();
-    if (listener)
-        listener->onEndGame((*it)->getProperties().getName(), gameUsers);
+    if (mListener)
+        mListener->onEndGame((*it)->getProperties().getName(), gameUsers);
 
     removeClientsFromWhitelist(*it);
     removeItGameFromList(it);
 }
 
 void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
-    getPlayerCommunicationManager().removePeerFromWhiteList(peer);
+    mPlayerCommunicationManager.removePeerFromWhiteList(peer);
 }
 
 void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>& users, uint64_t id) {
     for (const auto& user : users)
-        getPlayerCommunicationManager().sendDestroyResource(user.getPeer(), id);
+        mPlayerCommunicationManager.sendDestroyResource(user.getPeer(), id);
 }
 
 void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& users, const NGame::Component& component) {
     for (const auto& user : users)
-        getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
+        mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
 }
 
 void GamesManager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
-    getPlayerCommunicationManager().sendUpdateScore(peer, id, pseudo, score);
+    mPlayerCommunicationManager.sendUpdateScore(peer, id, pseudo, score);
 }
 
 void GamesManager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPing) {
-    getPlayerCommunicationManager().sendTimeElapsedPing(peer, elapsedPing);
+    mPlayerCommunicationManager.sendTimeElapsedPing(peer, elapsedPing);
 }
 
 void    GamesManager::removeClientsFromWhitelist(const std::shared_ptr<NGame::Game> &game) {
     const auto& usersInGame = game->getUsers();
     std::for_each(usersInGame.begin(), usersInGame.end(), [&](const NGame::User& user) {
-        getPlayerCommunicationManager().removePeerFromWhiteList(user.getPeer());
+        mPlayerCommunicationManager.removePeerFromWhiteList(user.getPeer());
     });
 }
 
@@ -366,7 +340,7 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost
 std::list<std::string> GamesManager::getScriptsName(void) const {
 	std::list<std::string> scriptsName;
 
-	for (const auto& script : getScriptLoader().getScripts())
+	for (const auto& script : mScriptLoader.getScripts())
 		scriptsName.push_back(script.first);
 
 	return scriptsName;

@@ -13,6 +13,9 @@
 #include <memory>
 #include <vector>
 
+#include <mutex>
+
+
 class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPlayerCommunicationManagerEvent, public NGame::Game::OnGameEvent {
 
     // ctor / dtor
@@ -23,6 +26,7 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
     // entry point
     public:
         int run(void);
+        void loopGames(void);
 
 	// player communication manager events
 	public:
@@ -71,8 +75,6 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
     // scoped functions
     public:
         std::vector<std::shared_ptr<NGame::Game>>& getGames(void);
-        const ScriptLoader& getScriptLoader(void) const;
-        const std::shared_ptr<ThreadPool>& getThreadPool(void) const;
         PlayerCommunicationManager& getPlayerCommunicationManager(void);
         GamesManager::OnGamesManagerEvent* getListener(void) const;
         void addGameToList(const std::shared_ptr<NGame::Game>&);
@@ -80,11 +82,12 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 
     // attributes
     private:
-		ScriptLoader mScriptLoader;
-		std::shared_ptr<ThreadPool> mThreadPool;
-        std::vector<std::shared_ptr<NGame::Game>> mGames;
+        std::shared_ptr<ThreadPool> mThreadPool;
         std::shared_ptr<IMutex> mMutex;
-		PlayerCommunicationManager mPlayerCommunicationManager;
         GamesManager::OnGamesManagerEvent *mListener;
-
+		ScriptLoader mScriptLoader;
+        PlayerCommunicationManager mPlayerCommunicationManager;
+		
+        mutable std::vector<std::shared_ptr<NGame::Game>> mGames;
+        std::mutex mMutexTest;
 };
