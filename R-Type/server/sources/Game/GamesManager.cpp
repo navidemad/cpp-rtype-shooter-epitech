@@ -157,7 +157,7 @@ void GamesManager::removeGame(const Peer &peer, const std::string& name) {
 }
 
 void GamesManager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
-    auto& games = getGames();
+    auto games = getGames();
     auto it_game = findGameByHost(peer);
     auto it_end = games.end();
 
@@ -235,7 +235,7 @@ void GamesManager::onPlayerFire(const Peer &peer) {
         
         try {
             auto component = (*game)->fire(peer);
-            auto& users = (*game)->getUsers();
+            auto users = (*game)->getUsers();
             for (const auto& user : users)
                 getPlayerCommunicationManager().sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
         }
@@ -329,14 +329,15 @@ const NGame::Properties &GamesManager::getGameProperties(const std::string &name
 std::list<NGame::Properties> GamesManager::getGamesProperties(void) {
 	std::list<NGame::Properties> gamesProperties;
 
-    for (const auto& game : getGames())
+    auto games = getGames();
+    for (const auto& game : games)
         gamesProperties.push_back(game->getProperties());
 
     return gamesProperties;
 }
 
 std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByName(const std::string& name) {
-    auto& games = getGames();
+    auto games = getGames();
     auto it = games.begin();
     while (it != games.end())
     {
@@ -348,13 +349,13 @@ std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByName
 }
 
 std::vector<std::shared_ptr<NGame::Game>>::iterator GamesManager::findGameByHost(const Peer &peer) {
-    auto& games = getGames();
+    auto games = getGames();
     auto it = games.begin();
     while (it != games.end())
     {
-        auto& users = (*it)->getUsers();
+        auto users = (*it)->getUsers();
         if (users.size() != 0)
-            for (const auto& user: users)
+            for (auto& user: users)
                 if (user.getPeer() == peer)
                     return it;
         ++it;
