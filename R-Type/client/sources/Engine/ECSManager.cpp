@@ -16,7 +16,7 @@ ECSManager::~ECSManager()
 
 	while (!mEntityComponent.empty())
 	{
-		std::for_each(mEntityComponent.back().begin(), mEntityComponent.back().end(), remove);
+		std::for_each(mEntityComponent.back()->begin(), mEntityComponent.back()->end(), remove);
 		mEntityComponent.pop_back();
 	}
 	for (auto system : mSystem)
@@ -32,10 +32,10 @@ unsigned int	ECSManager::getCurrentId() const
 
 Entity						&ECSManager::createEntity()
 {
-	std::list<Component *> list;
+	//std::list<Component *> list;
 
 	mEntity.push_back(new Entity(mCurrentId, this));
-	mEntityComponent.push_back(list); // must initialize an empty list
+	mEntityComponent.push_back(new std::list<Component *>); // must initialize an empty list
 	mEntityBitset.push_back(0); // bitset set to 0
 	mLivingEntity.push_back(true);
 
@@ -47,11 +47,10 @@ Entity		&ECSManager::createEntity(const unsigned int id)
 {
 	if (id >= mCurrentId)
 	{
-		std::list<Component *> list;
 		for (; mCurrentId <= id; ++mCurrentId)
 		{
 			mEntity.push_back(new Entity(mCurrentId, this));
-			mEntityComponent.push_back(list);
+			mEntityComponent.push_back(new std::list<Component *>);
 			mEntityBitset.push_back(0);
 			mLivingEntity.push_back(false);
 		}
@@ -87,7 +86,7 @@ bool		ECSManager::addComponent(const unsigned int id, Component *component)
 		return component->getComponentId() == _component->getComponentId();
 	};
 	 
-	std::list<Component *>	&listComponent = mEntityComponent.at(id);
+	std::list<Component *>	&listComponent = *mEntityComponent.at(id);
 
 	if (std::find_if(listComponent.begin(), listComponent.end(), searchId) == listComponent.end())
 	{
@@ -101,7 +100,7 @@ bool		ECSManager::addComponent(const unsigned int id, Component *component)
 }
 
 const std::list<Component *>			&ECSManager::getComponent(const unsigned int id) const {
-	return mEntityComponent.at(id);
+	return *mEntityComponent.at(id);
 }
 
 void		ECSManager::addSystem(System *system)
@@ -136,7 +135,7 @@ void	ECSManager::removeEntity(unsigned int id)
 		delete component;
 	};
 
-	std::list<Component *>	&list = mEntityComponent[id];
+	std::list<Component *>	&list = *mEntityComponent[id];
 	std::for_each(list.begin(), list.end(), clean);
 	list.clear();
 	mEntityBitset[id] = 0;
