@@ -5,6 +5,7 @@
 #include "Default.hpp"
 #include "Utils.hpp"
 #include <iostream>
+#include <csignal>
 
 RTypeServer::RTypeServer(void) {
 	mClientManager.setListener(this);
@@ -12,7 +13,7 @@ RTypeServer::RTypeServer(void) {
 }
 
 int RTypeServer::run(void) {
-	Utils::signal_handler(SIGINT);
+	signal(SIGINT, Utils::signal_handler);
 	startInfo();
 	mClientManager.run();
 	return mGamesManager.run();

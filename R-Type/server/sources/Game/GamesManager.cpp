@@ -20,7 +20,6 @@ GamesManager::GamesManager(void) :
 GamesManager::~GamesManager(void) 
 {
     mGames.clear();
-    mThreadPool->stop();
 }
 
 int GamesManager::run(void) {

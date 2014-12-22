@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 
-std::sig_atomic_t Utils::interruptedSignal;
+std::sig_atomic_t Utils::interruptedSignal = 0;
 
 void  Utils::signal_handler(int signal)
 {
