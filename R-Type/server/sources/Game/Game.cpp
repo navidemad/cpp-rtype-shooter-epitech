@@ -19,7 +19,8 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 };
 
 NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<Script>& script) :
-mScript(script->clone()),
+mScript(script),
+mIndex(0),
 mListener(nullptr),
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),
@@ -27,6 +28,10 @@ mMutex(PortabilityBuilder::getMutex()),
 mPullEnded(true),
 mCurrentComponentMaxId(Config::Game::minIdComponent)
 {
+}
+
+NGame::Game::~Game(void) {
+
 }
 
 /*
@@ -52,9 +57,9 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::broadcastMap(void) {
-    while (!(getScript()->isFinish()))
+    while (getScript()->last(mIndex) == false)
     {
-		const auto& currentCommand = getScript()->currentCommand();
+        const IScriptCommand* currentCommand = getScript()->get(mIndex);
 		if (getCurrentFrame() < currentCommand->getFrame())
 			return;
 		for (const auto& instr : tokenExecTab) {
@@ -63,7 +68,7 @@ void NGame::Game::broadcastMap(void) {
 				break;
 			}
 		}
-        getScript()->goToNextCommand();
+        ++mIndex;
     }
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
@@ -194,6 +199,12 @@ void NGame::Game::setState(NGame::Game::State state) {
 	Scopedlock(mMutex);
 
 	mState = state;
+}
+
+void NGame::Game::initTimer(void) {
+    Scopedlock(mMutex);
+
+    mTimer = std::clock();
 }
 
 void NGame::Game::setMutex(std::shared_ptr<IMutex>& mutex) {
@@ -427,8 +438,10 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
     	listener->onNotifyUsersComponentAdded(getUsers(), component);
 
     if (getState() == NGame::Game::State::NOT_STARTED)
-        mTimer = std::clock();
-	setState(NGame::Game::State::RUNNING);
+    {
+        initTimer();
+        setState(NGame::Game::State::RUNNING);
+    }
 }
 
 void NGame::Game::tryDelPlayer(void) {

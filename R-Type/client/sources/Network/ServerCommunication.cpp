@@ -142,11 +142,12 @@ void ServerCommunication::OnSetServerPortTcp(int port){
 
 void ServerCommunication::OnConnectToServer(void){
 	try {
-		std::cout << "Connect to '" << mServerPeer.host << "@" << mServerPeer.tcpPort << "'" << std::endl;
+		std::cout << "Try to connect with " << mServerPeer.host << " on port TCP " << mServerPeer.tcpPort << std::endl;
 		mSocketTcp->connect(mServerPeer.host, mServerPeer.tcpPort);
+        std::cout << "Connexion etablished successfuly" << std::endl;
 	}
 	catch (const SocketException& e){
-		std::cerr << e.what() << std::endl;
+		std::cerr << "SocketException: '" << e.what() << "'" << std::endl;
 		emit SignalFailConnect();
 	}
 }

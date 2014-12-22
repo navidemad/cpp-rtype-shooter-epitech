@@ -123,5 +123,5 @@ void ECSManagerNetwork::OnCloseSocket(void){
 }
 
 void ECSManagerNetwork::OnFailConnect(void){
-
+    std::cout << "ECSManagerNetwork::OnFailConnect" << std::endl;
 }

@@ -1,39 +1,39 @@
-client: spam connect (2 fois) provoque boucle inf + abort (ou segfault) côté [server]
-[server]log_error (exemple d'un segment):
-	[TPC][127.0.0.1:3406]> RECV Hanshake
-	[TPC][127.0.0.1:3406]> Disconnected
-	[TPC][127.0.0.1:3407]> Connected
-	[TPC][127.0.0.1:3407]> RECV Hanshake
-	[TPC][127.0.0.1:3408]> Connected
-	[TPC][127.0.0.1:3408]> RECV Hanshake
-	[TPC][127.0.0.1:3407]> Disconnected
-	[TPC][127.0.0.1:3408]> Disconnected[TCP][127.0.0.1:3409]> Connected
-[client]log_error:
-	Connect to '127.0.0.1@4245'
-	Connect to '127.0.0.1@4245'
-	Connect to '127.0.0.1@4245'
-	...
-	Connect to '127.0.0.1@4245'
-	fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected
-	Connect to '127.0.0.1@4245'
-	fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected
+--------------------------
+[BUG#1] [Etat: non résolu] [SERVER && CLIENT]
+ # Serveur lancé, on lance le client, et on spam [SPACE] sur le boutton 'connecter' provoque:
+ - [CLIENT SIDE] une boucle infinie d'appel à 'ServerCommunication::OnConnectToServer(void)'
+      qui à un comportement étrange car boucle inf alors qu'il m'écrit:
+              Try to connect with 127.0.0.1 on port TCP 4245
+              Connexion etablished successfuly
+      donc il fait bien la connexion, mais il semblerai que ce soit peut être à cause du crash du serveur, qui quand à lui:
+ - [SERVER SIDE] un crash du serveur, car une exception est levée sur 'void NetworkManager::socketCallback(int socketFd, bool readable, bool writable)'
+---------------------------
 
+
+--------------------------
+[BUG#2] [Etat: résolu, en attente de validation] [SERVER]
+ # Le serveur semble ne pas reset le script quand on crée une deuxième partie, car l'index == mCommands.end()
+--------------------------
+
+
+--------------------------
+[BUG#3] [Etat: non résolu] CLIENT]
+ # Pendant la partie, si on reste appuyer sur [SPACE] pour spam (tire), une exception dans la fonction:
+   'Component* Entity::getSpecificComponent(ComponentType::Type searchType)' plus précisément sur la ligne
+   'std::list<Component *>::const_iterator it = std::find_if(mEntityManager->getComponent(mId).begin(), mEntityManager->getComponent(mId).end(), search);'
+   
+   L'exception disait: 'Expression: vector iterators incompatible'
+   Navid: je crois que c'est quand le 1st param de find_if et son 2nd param sont pas du même type.
+   En l'occurence ici, tu affectes le retour de find_if à un ::const_iterator, alors que tu lui envois deux ::iterator toi, du coup j'ai changé les .begin() en .cbegin(), de même pour end()
+   Mais je crois pas que ça patch vraiment le soucis
 ---------------------------------------------------------------------------------------------
 
-[PATCHED NORMALEMENT, A RETESTER] server: script qui ne se reset pas lorsqu'il a fini de lire.
 
----------------------------------------------------------------------------------------------
+--------------------------
+[BUG#4] [Etat: non résolu] [CLIENT]
+ # option qui ne set rien: ip, pseudo, nom de partie... etc
+  
+ Cf. avec Davy
 
-client in game: spam espace (tire) provoque "Debug Assertion Failed!"
-erreur:
-	Program: C:\Windows\system32\MSVP120D.dll
-	File: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector
-	Line: 240
-
-	Expression: vector iterators incompatible
-
-autre erreur (exception ?): break dans Entity.cpp ligne 34 pour la method "getSpecificComponent"
-
----------------------------------------------------------------------------------------------
-
-client: option qui ne set rien: ip, pseudo, nom de partie... etc
+ PS: Davy, tu pourrais être plus explicite là ?
+--------------------------

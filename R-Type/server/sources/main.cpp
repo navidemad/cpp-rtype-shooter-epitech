@@ -15,6 +15,7 @@ int main(void) {
 #include "RTypeServer.hpp"
 #include "ScriptLoader.hpp"
 #include <iostream>
+#include "Config.hpp"
 
 int main(void) {
     int ret;

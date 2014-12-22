@@ -25,17 +25,16 @@ bool					Entity::addComponent(Component *component)
 
 Component				*Entity::getSpecificComponent(ComponentType::Type searchType)
 {
-	auto search = [&](Component *currentCompenent)
+    auto search = [&searchType](const Component *currentCompenent)
 	{
 		return searchType == currentCompenent->getComponentId();
 	};
 
+    auto it = std::find_if(mEntityManager->getComponent(mId).begin(), mEntityManager->getComponent(mId).end(), search);
 
-	std::list<Component *>::const_iterator it = std::find_if(mEntityManager->getComponent(mId).begin(), mEntityManager->getComponent(mId).end(), search);
-
-	ComponentNotFound exception;
 	if (it == mEntityManager->getComponent(mId).end())
-		throw exception;
+        throw ComponentNotFound();
+
 	return *it;
 }
 

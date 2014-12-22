@@ -36,7 +36,7 @@ std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 
 	auto script = std::make_shared<Script>();
-	script->setCommands(commands);
+    *script = commands;
 
 	return script;
 }

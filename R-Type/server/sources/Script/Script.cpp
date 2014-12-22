@@ -1,7 +1,5 @@
 #include "Script.hpp"
 
-Script::Script(void) : mIndex(0) {
-}
 
 Script::~Script(void) {
 	for(auto &command : mCommands)
@@ -9,46 +7,20 @@ Script::~Script(void) {
 	mCommands.clear();
 }
 
-Script::Script(const Script &other) {
-    std::cout << "Script::Script(const Script &other) copying..." << std::endl;
-	if (this != &other) {
-		mIndex = 0;
-		mCommands = other.getCommands();
-        std::cout << "Script::Script(const Script &other) done." << std::endl;
-	}
-}
-
-const Script &Script::operator=(const Script &other) {
-    std::cout << "const Script &Script::operator=(const Script &other) copying..." << std::endl;
-	if (this != &other) {
-		mIndex = 0;
-		mCommands = other.getCommands();
-        std::cout << "const Script &Script::operator=(const Script &other) done." << std::endl;
-	}
-	return *this;
-}
-
-std::shared_ptr<Script> Script::clone(void) const
-{
-    return std::make_shared<Script>(*this);
-}
-
-void Script::setCommands(const std::vector<const IScriptCommand*>& commands) {
+Script& Script::operator=(const std::vector<const IScriptCommand*>& commands) {
 	mCommands = commands;
+    mSize = commands.size();
+    return *this;
 }
 
-const std::vector<const IScriptCommand*>& Script::getCommands(void) const {
-	return mCommands;
+bool Script::last(unsigned int index) const {
+    return index == mSize;
 }
 
-const IScriptCommand* Script::currentCommand(void) const {
-	return mCommands.at(mIndex);
+const IScriptCommand* Script::get(unsigned int index) const {
+	return mCommands.at(index);
 }
 
-bool Script::isFinish(void) const {
-	return mIndex == mCommands.size();
-}
-
-void Script::goToNextCommand(void) {
-	++mIndex;
+unsigned int Script::size(void) const {
+    return mCommands.size();
 }

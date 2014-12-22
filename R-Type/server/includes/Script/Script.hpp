@@ -5,30 +5,29 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
+#include "NoCopyable.hpp"
 
-class Script {
+class Script : public NoCopyable {
 
     // ctor / dtor
     public:
-		Script(void);
-        ~Script(void);
-		Script(const Script &);
-		const Script &operator=(const Script &);
-        std::shared_ptr<Script> clone(void) const;
+        Script(void) = default;
+        virtual ~Script(void);
 
 	// getters
 	public:
-		void setCommands(const std::vector<const IScriptCommand*>&);
+        Script& operator=(const std::vector<const IScriptCommand*>&);
 		const std::vector<const IScriptCommand*>& getCommands(void) const;
+        
 
 	// workflow script
 	public:
-		bool isFinish(void) const;
-		const IScriptCommand* currentCommand(void) const;
-		void goToNextCommand(void);
+        bool last(unsigned int) const;
+		const IScriptCommand* get(unsigned int) const;
+        unsigned int size(void) const;
 
 	// attributes
 	private:
-		unsigned int mIndex;
 		std::vector<const IScriptCommand*> mCommands;
+        unsigned int mSize;
 };
