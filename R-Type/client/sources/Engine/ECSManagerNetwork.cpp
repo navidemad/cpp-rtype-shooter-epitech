@@ -65,7 +65,11 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 
 				entity.addComponent(new Drawable(ressource->getName()));
 				entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
-				if (type == IResource::Type::BULLET) entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+				if (type == IResource::Type::BULLET)
+				{
+					entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+					getClient()->getGui()->playSound("shot");
+				}
 			}
 			catch (const DynLibException& e) {
 				std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;

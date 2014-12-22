@@ -68,6 +68,7 @@ void	ContentManager::loadSounds()
 	mSounds->loadResources("option", "./assets/sounds/efx/se_option.wav");
 	mSounds->loadResources("pause", "./assets/sounds/efx/se_pause.wav");
 	mSounds->loadResources("pldead", "./assets/sounds/efx/se_pldead00.wav");
+	mSounds->loadResources("shot", "./assets/sounds/efx/se_tan00.wav");
 }
 
 std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTextures() const
