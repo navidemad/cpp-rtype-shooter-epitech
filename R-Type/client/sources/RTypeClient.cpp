@@ -37,6 +37,21 @@ RTypeClient::RTypeClient()
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo)
 {
+	initECS();
+	initStart();
+	initStop();
+	initInitECS();
+	initConnect();
+
+	for (auto engine : mEngine)
+	{
+		engine->setClient(this);
+	}
+
+}
+
+void	RTypeClient::initECS()
+{
 	mEngine[PRESS_START] = std::shared_ptr<ECSManager>(new ECSManager);
 	mEngine[MENU] = std::shared_ptr<ECSManager>(new ECSManager);
 	mEngine[OPTION] = std::shared_ptr<ECSManager>(new ECSManager);
@@ -44,7 +59,10 @@ RTypeClient::RTypeClient()
 	mEngine[SEARCH_MENU] = std::shared_ptr<ECSManager>(new ECSManagerNetwork);
 	mEngine[RTYPE] = std::shared_ptr<ECSManager>(new ECSManagerNetwork);
 	mEngine[ARTWORK] = std::shared_ptr<ECSManager>(new ECSManager);
+}
 
+void	RTypeClient::initInitECS()
+{
 	mInit[PRESS_START] = &RTypeClient::initPressStart;
 	mInit[MENU] = &RTypeClient::initMenu;
 	mInit[OPTION] = &RTypeClient::initOption;
@@ -52,15 +70,10 @@ RTypeClient::RTypeClient()
 	mInit[SEARCH_MENU] = &RTypeClient::initSearchMenu;
 	mInit[RTYPE] = &RTypeClient::initRtype;
 	mInit[ARTWORK] = &RTypeClient::initArtwork;
+}
 
-	mStart[PRESS_START] = &RTypeClient::startPressStart;
-	mStart[MENU] = &RTypeClient::startMenu;
-	mStart[OPTION] = &RTypeClient::startOption;
-	mStart[CREATE_MENU] = &RTypeClient::startCreateMenu;
-	mStart[SEARCH_MENU] = &RTypeClient::startSearchMenu;
-	mStart[RTYPE] = &RTypeClient::startRtype;
-	mStart[ARTWORK] = &RTypeClient::startArtwork;
-
+void	RTypeClient::initStop()
+{
 	mStop[PRESS_START] = &RTypeClient::stopPressStart;
 	mStop[MENU] = &RTypeClient::stopMenu;
 	mStop[OPTION] = &RTypeClient::stopOption;
@@ -68,15 +81,24 @@ RTypeClient::RTypeClient()
 	mStop[SEARCH_MENU] = &RTypeClient::stopSearchMenu;
 	mStop[RTYPE] = &RTypeClient::stopRtype;
 	mStop[ARTWORK] = &RTypeClient::stopArtwork;
+}
 
-	for (auto engine : mEngine)
-	{
-		engine->setClient(this);
-	}
+void	RTypeClient::initStart()
+{
+	mStart[PRESS_START] = &RTypeClient::startPressStart;
+	mStart[MENU] = &RTypeClient::startMenu;
+	mStart[OPTION] = &RTypeClient::startOption;
+	mStart[CREATE_MENU] = &RTypeClient::startCreateMenu;
+	mStart[SEARCH_MENU] = &RTypeClient::startSearchMenu;
+	mStart[RTYPE] = &RTypeClient::startRtype;
+	mStart[ARTWORK] = &RTypeClient::startArtwork;
+}
 
+void	RTypeClient::initConnect()
+{
 	//connect ecs and serverCom
-	ECSManagerNetwork *searchMenu	= static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU].get());
-	ECSManagerNetwork *rtype		= static_cast<ECSManagerNetwork *>(mEngine[RTYPE].get());
+	ECSManagerNetwork *searchMenu = static_cast<ECSManagerNetwork *>(mEngine[SEARCH_MENU].get());
+	ECSManagerNetwork *rtype = static_cast<ECSManagerNetwork *>(mEngine[RTYPE].get());
 
 	searchMenu->OnDestroyResource(5);
 	QObject::connect(searchMenu, SIGNAL(SignalCreateGame(const std::string &, const std::string &, int, int)), &mServer, SLOT(OnCreateGame(const std::string &, const std::string &, int, int)));
@@ -101,7 +123,7 @@ RTypeClient::RTypeClient()
 	QObject::connect(&mServer, SIGNAL(SignalShowGame(const std::string &, const std::string &, int, int, int, int)), searchMenu, SLOT(OnShowGame(const std::string &, const std::string &, int, int, int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalShowLevel(const std::string &)), searchMenu, SLOT(OnShowLevel(const std::string &)));
 	QObject::connect(&mServer, SIGNAL(SignalTimeElapse(int64_t)), rtype, SLOT(OnTimeElapse(int64_t)));
-	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string & , int, int)), rtype, SLOT(OnUpdateScore(const std::string & , int, int)));
+	QObject::connect(&mServer, SIGNAL(SignalUpdateScore(const std::string &, int, int)), rtype, SLOT(OnUpdateScore(const std::string &, int, int)));
 	QObject::connect(&mServer, SIGNAL(SignalCloseSocket()), searchMenu, SLOT(OnCloseSocket()));
 	QObject::connect(&mServer, SIGNAL(SignalFailConnect()), searchMenu, SLOT(OnFailConnect()));
 }

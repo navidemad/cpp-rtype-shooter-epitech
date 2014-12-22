@@ -65,6 +65,11 @@ public:
 		void						initSearchMenu();
 		void						initCreateMenu();
 		void						initArtwork();
+		void						initConnect();
+		void						initStart();
+		void						initECS();
+		void						initStop();
+		void						initInitECS();
 
 	private:
 		void						startMenu();
