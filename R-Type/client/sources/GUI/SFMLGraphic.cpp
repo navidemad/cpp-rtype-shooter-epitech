@@ -94,7 +94,22 @@ void	SFMLGraphic::stopSound(std::string const &key)
 	mContentManager.getSounds()->getResource(key).sound.stop();
 }
 
-void	SFMLGraphic::setVolume(std::string const &key, float volume)
+float	SFMLGraphic::getVolumeMusic() const
+{
+	return mMusic.getVolume();
+}
+
+void	SFMLGraphic::setVolumeMusic(float volume)
+{
+	mMusic.setVolume(volume);
+}
+
+float	SFMLGraphic::getVolumeSound(std::string const &key) const
+{
+	return mContentManager.getSounds()->getResource(key).sound.getVolume();
+}
+
+void	SFMLGraphic::setVolumeSound(std::string const &key, float volume)
 {
 	mContentManager.getSounds()->getResource(key).sound.setVolume(volume);
 }

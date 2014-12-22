@@ -130,3 +130,33 @@ public:
 public:
 	void	process(Entity &, uint32_t delta);
 };
+
+class ButtonNetworkOption : public Button
+{
+public:
+	ButtonNetworkOption() : Button(100) {}
+	~ButtonNetworkOption() {}
+
+public:
+	void	process(Entity &, uint32_t delta);
+};
+
+class ButtonGameOption : public Button
+{
+public:
+	ButtonGameOption() : Button(100) {}
+	~ButtonGameOption() {}
+
+public:
+	void	process(Entity &, uint32_t delta);
+};
+
+class ButtonAudioOption : public Button
+{
+public:
+	ButtonAudioOption() : Button(100) {}
+	~ButtonAudioOption() {}
+
+public:
+	void	process(Entity &, uint32_t delta);
+};
