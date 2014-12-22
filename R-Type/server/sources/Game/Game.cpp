@@ -19,7 +19,7 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 };
 
 NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<Script>& script) :
-mScript(script),
+mScript(script->clone()),
 mListener(nullptr),
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),

@@ -20,7 +20,7 @@ client: spam connect (2 fois) provoque boucle inf + abort (ou segfault) côté [se
 
 ---------------------------------------------------------------------------------------------
 
-server: script qui ne se reset pas lorsqu'il a fini de lire.
+[PATCHED NORMALEMENT, A RETESTER] server: script qui ne se reset pas lorsqu'il a fini de lire.
 
 ---------------------------------------------------------------------------------------------
 

@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <memory>
 
 class Script {
 
@@ -13,6 +14,7 @@ class Script {
         ~Script(void);
 		Script(const Script &);
 		const Script &operator=(const Script &);
+        std::shared_ptr<Script> clone(void) const;
 
 	// getters
 	public:

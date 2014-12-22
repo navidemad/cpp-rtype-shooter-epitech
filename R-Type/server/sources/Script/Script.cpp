@@ -10,18 +10,27 @@ Script::~Script(void) {
 }
 
 Script::Script(const Script &other) {
+    std::cout << "Script::Script(const Script &other) copying..." << std::endl;
 	if (this != &other) {
 		mIndex = 0;
 		mCommands = other.getCommands();
+        std::cout << "Script::Script(const Script &other) done." << std::endl;
 	}
 }
 
 const Script &Script::operator=(const Script &other) {
+    std::cout << "const Script &Script::operator=(const Script &other) copying..." << std::endl;
 	if (this != &other) {
 		mIndex = 0;
 		mCommands = other.getCommands();
+        std::cout << "const Script &Script::operator=(const Script &other) done." << std::endl;
 	}
 	return *this;
+}
+
+std::shared_ptr<Script> Script::clone(void) const
+{
+    return std::make_shared<Script>(*this);
 }
 
 void Script::setCommands(const std::vector<const IScriptCommand*>& commands) {
