@@ -39,7 +39,6 @@ void	NetworkManager::removeSocket(int socketFd) {
     Scopedlock(mMutex);
 
     auto socket = findSocket(socketFd);
-
     if (socket == mSockets.end())
         return;
 
@@ -110,18 +109,18 @@ void	NetworkManager::socketCallback(int socketFd, bool readable, bool writable) 
         socket = findSocket(socketFd);
     }
 
-    if (readable && stillUnderControl(socketFd))
+    if (readable && stillUnderControl(socket, socketFd))
         socket->listener->onSocketReadable(socket->fd);
 
-    if (writable && stillUnderControl(socketFd))
+    if (writable && stillUnderControl(socket, socketFd))
         socket->listener->onSocketWritable(socket->fd);
 
-    if (stillUnderControl(socketFd))
+    if (stillUnderControl(socket, socketFd))
         socket->isCallbackRunning = false;
 }
 
-bool NetworkManager::stillUnderControl(int socketFd) {
+bool NetworkManager::stillUnderControl(const std::list<NetworkManager::Socket>::iterator &socket, int socketFd) {
     Scopedlock(mMutex);
 
-    return findSocket(socketFd) != mSockets.end();
+    return findSocket(socketFd) == socket;
 }
