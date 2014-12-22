@@ -1,0 +1,39 @@
+client: spam connect (2 fois) provoque boucle inf + abort (ou segfault) côté [server]
+[server]log_error (exemple d'un segment):
+	[TPC][127.0.0.1:3406]> RECV Hanshake
+	[TPC][127.0.0.1:3406]> Disconnected
+	[TPC][127.0.0.1:3407]> Connected
+	[TPC][127.0.0.1:3407]> RECV Hanshake
+	[TPC][127.0.0.1:3408]> Connected
+	[TPC][127.0.0.1:3408]> RECV Hanshake
+	[TPC][127.0.0.1:3407]> Disconnected
+	[TPC][127.0.0.1:3408]> Disconnected[TCP][127.0.0.1:3409]> Connected
+[client]log_error:
+	Connect to '127.0.0.1@4245'
+	Connect to '127.0.0.1@4245'
+	Connect to '127.0.0.1@4245'
+	...
+	Connect to '127.0.0.1@4245'
+	fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected
+	Connect to '127.0.0.1@4245'
+	fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected
+
+---------------------------------------------------------------------------------------------
+
+server: script qui ne se reset pas lorsqu'il a fini de lire.
+
+---------------------------------------------------------------------------------------------
+
+client in game: spam espace (tire) provoque "Debug Assertion Failed!"
+erreur:
+	Program: C:\Windows\system32\MSVP120D.dll
+	File: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector
+	Line: 240
+
+	Expression: vector iterators incompatible
+
+autre erreur (exception ?): break dans Entity.cpp ligne 34 pour la method "getSpecificComponent"
+
+---------------------------------------------------------------------------------------------
+
+client: option qui ne set rien: ip, pseudo, nom de partie... etc

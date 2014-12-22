@@ -11,7 +11,7 @@ void    WindowsDynLib::libraryLoad(const std::string& libraryName) {
     std::string path = normalize(libraryName);
 
 	if (!(mDLLHandle = ::LoadLibrary(s2ws(path).c_str())))
-        throw DynLibException("Can't load the DLL - fail LoadLibrary()");
+		throw DynLibException("Can't load the DLL - fail LoadLibrary(): " + path);
 }
 
 void    *WindowsDynLib::functionLoad(const std::string& functionName) {
