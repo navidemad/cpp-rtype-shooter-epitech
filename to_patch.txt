@@ -1,5 +1,5 @@
 --------------------------
-[BUG#1] [Etat: non résolu] [SERVER && CLIENT]
+[BUG#1] [Etat: résolu, en attente de validation concernant la boucle inf] [SERVER && CLIENT]
  # Serveur lancé, on lance le client, et on spam [SPACE] sur le boutton 'connecter' provoque:
  - [CLIENT SIDE] une boucle infinie d'appel à 'ServerCommunication::OnConnectToServer(void)'
       qui à un comportement étrange car boucle inf alors qu'il m'écrit:

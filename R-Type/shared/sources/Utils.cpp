@@ -10,15 +10,11 @@ void  Utils::signal_handler(int signal)
 }
 
 void Utils::logInfo(const std::string &log) {
-#ifdef _DEBUG
 	std::cout << log << std::endl;
-#endif
 }
 
 void Utils::logError(const std::string &log) {
-#ifdef _DEBUG
 	std::cerr << log << std::endl;
-#endif
 }
 
 std::string Utils::basename(const std::string &pathname)

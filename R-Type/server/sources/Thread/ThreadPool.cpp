@@ -71,16 +71,12 @@ void ThreadPool::operator()(void *) {
 }
 
 const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
-	Scopedlock(mMutex);
-
-	mTasks.push_back(task);
-	try {
-	  mCondVar->notifyOne();
-	} catch (const CondVarException& e) {
-		std::cerr << e.what() << std::endl;
-	}
-
-	return *this;
+  Scopedlock(mMutex);
+  
+  mTasks.push_back(task);
+  mCondVar->notifyOne();
+  
+  return *this;
 }
 
 std::shared_ptr<ThreadPool> ThreadPool::getInstance(void) {
