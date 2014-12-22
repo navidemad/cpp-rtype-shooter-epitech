@@ -14,6 +14,7 @@ namespace ComponentType
 		TEXTINPUT,
 		LIST,
 		FIRE,
+		BACK,
 		UP,
 		DOWN,
 		LEFT,
