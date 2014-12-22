@@ -18,5 +18,20 @@
    Mais je crois pas que ça patch vraiment le soucis
 ---------------------------------------------------------------------------------------------
 
+-[BUG#4] [Etat: resolu] [CLIENT]
+- # option qui ne set rien: ip, pseudo, nom de partie... etc
+-  
+- Cf. avec Davy
+-
+- PS: Davy, tu pourrais être plus explicite là ?
+---------------------------
+-
+-[BUG#5] [Etat: non résolu] [CLIENT/SERVER]
+- # Les tirs sont décalés au bout de quelques parties.
+- Soit il pop trop loins du perso, soit ils s'arrêtent trop loin de la fin de la fenêtre, soit ils ne pop pas.
+-
+-
+---------------------------
+
 [BUG#6] [Etat: non résolu] [CLIENT]
   # Boucle infinie quand on quitte le client, de temps en temps, sous UNIX.
