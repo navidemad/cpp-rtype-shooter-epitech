@@ -486,11 +486,18 @@ void			RTypeClient::initAudio()
 	cursorGame.addComponent(new Position(0, 500));
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	// volume value
+	Entity		musicGame = engine.createEntity();
+	Font		*musicVolume = new Font("0", std::to_string(static_cast<int>(mGui->getVolumeMusic())));
+	musicGame.addComponent(new Position(1400, 500));
+	musicGame.addComponent(musicVolume);
+
 	// music volume
 	Entity		music = engine.createEntity();
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 500));
-	music.addComponent(new Font("0", "Music volume: " + std::to_string(static_cast<int>(mGui->getVolumeMusic()))));
+	music.addComponent(new Font("0", "Music volume: "));
+	music.addComponent(new ButtonInput(musicVolume, &RTypeClient::setPseudo));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
