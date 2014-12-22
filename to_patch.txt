@@ -1,20 +1,10 @@
---------------------------
-[BUG#1] [Etat: résolu, en attente de validation concernant la boucle inf] [SERVER && CLIENT]
- # Serveur lancé, on lance le client, et on spam [SPACE] sur le boutton 'connecter' provoque:
- - [CLIENT SIDE] une boucle infinie d'appel à 'ServerCommunication::OnConnectToServer(void)'
-      qui à un comportement étrange car boucle inf alors qu'il m'écrit:
-              Try to connect with 127.0.0.1 on port TCP 4245
-              Connexion etablished successfuly
-      donc il fait bien la connexion, mais il semblerai que ce soit peut être à cause du crash du serveur, qui quand à lui:
- - [SERVER SIDE] un crash du serveur, car une exception est levée sur 'void NetworkManager::socketCallback(int socketFd, bool readable, bool writable)'
----------------------------
-
+[BUG#1] [Etat: non resolu] [SERVER]
+ # list iterator incompatible au bout d'un certains temps de jeu en se déplaçant / tirant
 
 --------------------------
-[BUG#2] [Etat: résolu, en attente de validation] [SERVER]
- # Le serveur semble ne pas reset le script quand on crée une deuxième partie, car l'index == mCommands.end()
---------------------------
-
+[BUG#2] [Etat: non resolu] [CLIENT]
+ # Dès qu'on quitte le client, il y a une exception.
+ Visiblement, ça ne le fait que sur mon PC et j'ai l'impression que ça vient d'une DLL de la SFML
 
 --------------------------
 [BUG#3] [Etat: non résolu] CLIENT]
@@ -37,3 +27,13 @@
 
  PS: Davy, tu pourrais être plus explicite là ?
 --------------------------
+
+[BUG#5] [Etat: non résolu] [CLIENT/SERVER]
+ # Les tirs sont décalés au bout de quelques parties.
+ Soit il pop trop loins du perso, soit ils s'arrêtent trop loin de la fin de la fenêtre, soit ils ne pop pas.
+
+
+--------------------------
+
+[BUG#6] [Etat: non résolu] [CLIENT]
+  # Boucle infinie quand on quitte le client, de temps en temps, sous UNIX.
