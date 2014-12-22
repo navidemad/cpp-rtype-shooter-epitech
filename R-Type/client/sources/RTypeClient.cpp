@@ -305,13 +305,13 @@ void			RTypeClient::initOption()
 	inputAdressGame.addComponent(new Position(1400, 500));
 	inputAdressGame.addComponent(fontAdressGame);
 
-	Entity		adressGame = engine.createEntity();
-	cursor->addEntity(adressGame.getId());
-
 	Entity		&logoCharacter = engine.createEntity();
 
 	logoCharacter.addComponent(new Position(0, 400));
 	logoCharacter.addComponent(new Drawable("logoOption"));
+
+	Entity		adressGame = engine.createEntity();
+	cursor->addEntity(adressGame.getId());
 
 	adressGame.addComponent(new Position(960, 500));
 	adressGame.addComponent(new Font("0", "Adress server "));
