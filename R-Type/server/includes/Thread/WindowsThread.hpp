@@ -13,7 +13,6 @@ class WindowsThread : public NoCopyable, public IThread<U, T> {
 	public:
 		WindowsThread(void) = default;
 		~WindowsThread(void) = default;
-        }
 
 	// interface implementation
 	public:
