@@ -30,6 +30,19 @@ void ECSManagerNetwork::OnDestroyResource(int id)
 void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
 	getClient()->setIdGame(RTypeClient::Game::MENU);
+	auto freeMemory = [](Component *component) { delete component; };
+
+	try
+	{
+		for (unsigned int id = mFirstId;; ++id)
+		{
+			mLivingEntity.at(id) = false;
+			std::for_each(mEntityComponent.at(id)->begin(), mEntityComponent.at(id)->end(), freeMemory);
+			mEntityComponent.at(id)->clear();
+			mEntityBitset.at(id) = 0;
+		}
+	}
+	catch (...) { }
 }
 
 void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)

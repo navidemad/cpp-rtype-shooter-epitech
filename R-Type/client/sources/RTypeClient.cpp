@@ -687,6 +687,7 @@ bool	RTypeClient::createGame()
 
 void	RTypeClient::connectToServer()
 {
+	std::cout << mAdresse << "  " << mPort << std::endl;
 	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalSetServerIp(mAdresse);
 	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalSetServerPortTcp(mPort);
 	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalConnectToServer();
