@@ -115,11 +115,8 @@ void	ButtonInput::process(Entity &entity, uint32_t delta)
 		mFont->setText(text);
 		resetTimer();
 	}
-	if (entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
-	{
-		RTypeClient *client = entity.getEntityManager()->getClient();
-		(client->*mFct)(text);
-	}
+	RTypeClient *client = entity.getEntityManager()->getClient();
+	(client->*mFct)(text);
 }
 
 void	ButtonCreateGame::process(Entity &entity, uint32_t delta)
