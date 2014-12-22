@@ -669,7 +669,7 @@ void			RTypeClient::initMenu()
 
 void	RTypeClient::initArtwork()
 {
-	ECSManager &engine = *mEngine[RTypeClient::ARTWORK];
+	ECSManager &engine = *mEngine.at(RTypeClient::ARTWORK);
 
 	Entity		&sketch01 = engine.createEntity();
 	sketch01.addComponent(new Position(0, 0));

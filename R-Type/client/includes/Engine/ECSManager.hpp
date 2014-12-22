@@ -48,7 +48,7 @@ class ECSManager : public NoCopyable
 		void									updateSystem(uint32_t);
 		virtual void							start() { }
 		virtual void							stop() { }
-
+		inline bool								isEntityAlive(unsigned int id) { return mLivingEntity.at(id); }
 	private:
 		void									removeEntity(unsigned int);
 		void									removeAllEntity();

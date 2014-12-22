@@ -25,8 +25,10 @@ bool					Entity::addComponent(Component *component)
 
 Component				*Entity::getSpecificComponent(ComponentType::Type searchType)
 {
-    auto search = [&searchType](const Component *currentCompenent)
+    auto search = [&](const Component *currentCompenent)
 	{
+		if (!this->getEntityManager()->isEntityAlive(this->getId()))
+			return false;
 		return searchType == currentCompenent->getComponentId();
 	};
 

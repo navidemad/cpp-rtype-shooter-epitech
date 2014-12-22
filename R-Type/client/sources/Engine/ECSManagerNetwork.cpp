@@ -24,25 +24,26 @@ ECSManagerNetwork::ECSManagerNetwork()
 
 void ECSManagerNetwork::OnDestroyResource(int id)
 {
-	mRemoveId.push_back(id);
+	try {
+		mLivingEntity.at(id) = false;
+		mRemoveId.push_back(id);
+	}
+	catch (std::out_of_range &/* */) { }
 }
 
 void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 {
 	getClient()->setIdGame(RTypeClient::Game::MENU);
-	auto freeMemory = [](Component *component) { delete component; };
 
 	try
 	{
 		for (unsigned int id = mFirstId;; ++id)
 		{
 			mLivingEntity.at(id) = false;
-			std::for_each(mEntityComponent.at(id)->begin(), mEntityComponent.at(id)->end(), freeMemory);
-			mEntityComponent.at(id)->clear();
-			mEntityBitset.at(id) = 0;
+			mRemoveId.push_back(id);
 		}
 	}
-	catch (...) { }
+	catch (std::out_of_range &/* */) { }
 }
 
 void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)
@@ -71,6 +72,8 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 			Entity &entity = getEntity(id + mFirstId);
 			auto lib = PortabilityBuilder::getDynLib();
 			try {
+				if (!mDLLoader.count(type))
+					return;
 				lib->libraryLoad(mDLLoader[type]);
 				if (lib->functionLoad("entry_point") == nullptr)
 					return;
@@ -83,6 +86,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 					entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
 					getClient()->getGui()->playSound("shot");
 				}
+				lib->libraryFree();
 			}
 			catch (const DynLibException& e) {
 				std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
@@ -121,18 +125,15 @@ void ECSManagerNetwork::OnShowGame(const std::string &name, const std::string &/
 
 void ECSManagerNetwork::OnShowLevel(const std::string &scriptName)
 {
-	std::cout << "ECSManagerNetwork::OnShowLevel - scriptName: '" << scriptName << "'" << std::endl;
 	getClient()->setLevel(scriptName);
 }
 
-void ECSManagerNetwork::OnTimeElapse(int64_t time)
+void ECSManagerNetwork::OnTimeElapse(int64_t /* */)
 {
-	std::cout << "ECSManagerNetwork::OnTimeElapse - time: '" << time << "'" << std::endl;
 }
 
-void ECSManagerNetwork::OnUpdateScore(const std::string &name, int id, int score)
+void ECSManagerNetwork::OnUpdateScore(const std::string &/*name*/, int /*id*/, int /*score*/)
 {
-	std::cout << "ECSManagerNetwork::OnUpdateScore - name: '" << name << "' id: '" << id << "' score: '" << score << "'" << std::endl;
 }
 
 void ECSManagerNetwork::OnCloseSocket(void){
