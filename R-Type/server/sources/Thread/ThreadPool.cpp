@@ -30,21 +30,18 @@ ThreadPool::~ThreadPool(void) {
 }
 
 void ThreadPool::stop(void) {
-	{
-        Scopedlock(mMutex);
+  {
+    Scopedlock(mMutex);
 
     if (mIsRunning == false)
-    	return ;
+      return ;
 
-		mIsRunning = false;
-		try {
-			mCondVar->notifyAll();
-		} catch (const CondVarException& e) {
-			std::cerr << e.what() << std::endl;
-		}
-	}
+    mIsRunning = false;
+  }
 
-	mWorkers.clear();
+  mCondVar->notifyAll();
+  for (const auto &worker : mWorkers)
+    worker->wait();
 }
 
 void ThreadPool::operator()(void *) {
@@ -78,7 +75,7 @@ const ThreadPool &ThreadPool::operator<<(std::function<void()> task) {
 
 	mTasks.push_back(task);
 	try {
-		mCondVar->notifyOne();
+	  mCondVar->notifyOne();
 	} catch (const CondVarException& e) {
 		std::cerr << e.what() << std::endl;
 	}

@@ -3,6 +3,7 @@
 #include "GamesManagerException.hpp"
 #include "PlayerCommunicationManager.hpp"
 #include "Default.hpp"
+#include "Utils.hpp"
 #include <iostream>
 
 RTypeServer::RTypeServer(void) {
@@ -11,6 +12,7 @@ RTypeServer::RTypeServer(void) {
 }
 
 int RTypeServer::run(void) {
+	Utils::signal_handler(SIGINT);
 	startInfo();
 	mClientManager.run();
 	return mGamesManager.run();

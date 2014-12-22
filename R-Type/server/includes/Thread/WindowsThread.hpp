@@ -11,17 +11,9 @@ class WindowsThread : public NoCopyable, public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		WindowsThread(void) : mIsRunning(false) {}
-        ~WindowsThread(void) { 
-			try {
-				cancel();
-			} catch (const ThreadException& e) {
-				std::cerr << "WindowsThread :: " << e.what() << std::endl;
-			}
+		WindowsThread(void) = default;
+		~WindowsThread(void) = default;
         }
-
-	// enum ret value
-	public:
 
 	// interface implementation
 	public:
@@ -38,21 +30,13 @@ class WindowsThread : public NoCopyable, public IThread<U, T> {
 					&mThread_ID);
 			if (mThread == NULL)
 				throw ThreadException("fail CreateThread()");
-
-			mIsRunning = true;
 		}
 
-		void wait(void **retVal = NULL) {
+		void wait(void) {
 			if (WaitForSingleObject(mThread, INFINITE) != WAIT_OBJECT_0)
 				throw ThreadException("fail WaitForSingleObject()");
 			else if (!CloseHandle(mThread))
 				throw ThreadException("fail CloseHandle()");
-			DWORD ret;
-			GetExitCodeThread(mThread, &ret);
-			if (ret && retVal)
-				*retVal = reinterpret_cast<void*>(ret);
-
-			mIsRunning = false;
 		}
 
 		void *start(void) {
@@ -63,15 +47,11 @@ class WindowsThread : public NoCopyable, public IThread<U, T> {
 		void cancel(void) {
 			if (TerminateThread(mThread, 0) == 0)
 		  	throw ThreadException("fail TerminateThread()");
-
-			mIsRunning = false;
 		}
 
 		void exit(void *status)	{
 			if (mThread)
 				ExitThread(reinterpret_cast<DWORD>(status));
-
-			mIsRunning = false;
 		}
 
 	// attributes
@@ -80,6 +60,5 @@ class WindowsThread : public NoCopyable, public IThread<U, T> {
 		DWORD mThread_ID;
 		U mCallObj;
 		T mFctParam;
-		bool mIsRunning;
 
 };

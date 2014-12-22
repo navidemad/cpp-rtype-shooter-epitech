@@ -5,9 +5,14 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <csignal>
 
 namespace Utils
 {
+  extern std::sig_atomic_t interruptedSignal;
+
+  void  signal_handler(int signal);
+
     template<typename T, typename ...Args>
     std::unique_ptr<T> make_unique(Args&& ...args)
     {

@@ -2,6 +2,7 @@
 #include "SocketException.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
+#include "Utils.hpp"
 #include <algorithm>
 
 std::shared_ptr<NetworkManager> NetworkManager::mInstance = nullptr;
@@ -64,7 +65,7 @@ std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
 }
 
 void	NetworkManager::doSelect(void) {
-    while (mSockets.size() > 0) {
+  while (Utils::interruptedSignal && mSockets.size() > 0) {
         initFds();
 
         struct timeval tv;

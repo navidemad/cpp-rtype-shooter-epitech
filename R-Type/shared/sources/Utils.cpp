@@ -2,6 +2,13 @@
 #include <iostream>
 #include <algorithm>
 
+std::sig_atomic_t Utils::interruptedSignal;
+
+void  Utils::signal_handler(int signal)
+{
+  Utils::interruptedSignal = signal;
+}
+
 void Utils::logInfo(const std::string &log) {
 #ifdef _DEBUG
 	std::cout << log << std::endl;
