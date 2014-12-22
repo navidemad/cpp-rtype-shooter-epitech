@@ -65,7 +65,7 @@ std::shared_ptr<NetworkManager> NetworkManager::getInstance(void) {
 }
 
 void	NetworkManager::doSelect(void) {
-  while (Utils::interruptedSignal && mSockets.size() > 0) {
+  while (!Utils::interruptedSignal && mSockets.size() > 0) {
         initFds();
 
         struct timeval tv;
