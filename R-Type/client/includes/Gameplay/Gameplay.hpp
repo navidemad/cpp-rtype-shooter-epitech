@@ -56,3 +56,10 @@ public:
 	Right();
 	~Right();
 };
+
+class Back : public Gameplay
+{
+public:
+	Back();
+	~Back();
+};

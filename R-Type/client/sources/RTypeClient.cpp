@@ -117,7 +117,7 @@ void	RTypeClient::initConnect()
 	QObject::connect(searchMenu, SIGNAL(SignalDeleteGame(const std::string &)), &mServer, SLOT(OnDeleteGame(const std::string &)));
 	QObject::connect(rtype, SIGNAL(SignalFire()), &mServer, SLOT(OnFire()));
 	QObject::connect(searchMenu, SIGNAL(SignalJoinGame(const std::string &)), &mServer, SLOT(OnJoinGame(const std::string &)));
-	QObject::connect(searchMenu, SIGNAL(SignalLeaveGame()), &mServer, SLOT(OnLeaveGame()));
+	QObject::connect(rtype, SIGNAL(SignalLeaveGame()), &mServer, SLOT(OnLeaveGame()));
 	QObject::connect(searchMenu, SIGNAL(SignalListGame()), &mServer, SLOT(OnListGame()));
 	QObject::connect(searchMenu, SIGNAL(SignalListLevel()), &mServer, SLOT(OnListLevel()));
 	QObject::connect(rtype, SIGNAL(SignalMove(IResource::Direction)), &mServer, SLOT(OnMove(IResource::Direction)));
@@ -209,6 +209,9 @@ void			RTypeClient::initRtype()
 	Entity		&down = engine.createEntity();
 	down.addComponent(new Down);
 
+	Entity		&back = engine.createEntity();
+	back.addComponent(new Back);
+
 	Entity		&background = engine.createEntity();
 
 	Background *backgroundPtr = new Background;
@@ -233,6 +236,7 @@ void			RTypeClient::initRtype()
 	engine.addSystem(new RightSystem);
 	engine.addSystem(new FireSystem);
 	engine.addSystem(new ScriptSystem);
+	engine.addSystem(new BackSystem);
 
 	// content system
 	engine.addSystem(new DrawableSystem);
