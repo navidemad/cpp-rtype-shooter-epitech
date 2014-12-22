@@ -55,8 +55,8 @@ Entity		&ECSManager::createEntity(const unsigned int id)
 			mLivingEntity.push_back(false);
 		}
 	}
-	mLivingEntity[id] = true;
-	return *mEntity[id];
+	mLivingEntity.at(id) = true;
+	return *mEntity.at(id);
 }
 
 bool		ECSManager::isEntityCreated(const unsigned int id) const
@@ -91,7 +91,7 @@ bool		ECSManager::addComponent(const unsigned int id, Component *component)
 	if (std::find_if(listComponent.begin(), listComponent.end(), searchId) == listComponent.end())
 	{
 		listComponent.push_back(component);
-		mEntityBitset[id].set(component->getComponentId(), 1);
+		mEntityBitset.at(id).set(component->getComponentId(), 1);
 
 		return true;
 	}
@@ -117,9 +117,9 @@ void			ECSManager::updateSystem(uint32_t delta)
 		{
 			try
 			{
-				if (currentSystem->haveComponentNeeded(mEntityBitset[i]))
+				if (mLivingEntity.at(i) && currentSystem->haveComponentNeeded(mEntityBitset.at(i)))
 				{
-					currentSystem->process(*mEntity[i], delta);
+					currentSystem->process(*mEntity.at(i), delta);
 				}
 			}
 			catch (...)
@@ -135,10 +135,10 @@ void	ECSManager::removeEntity(unsigned int id)
 		delete component;
 	};
 
-	std::list<Component *>	&list = *mEntityComponent[id];
+	std::list<Component *>	&list = *mEntityComponent.at(id);
 	std::for_each(list.begin(), list.end(), clean);
 	list.clear();
-	mEntityBitset[id] = 0;
+	mEntityBitset.at(id) = 0;
 }
 
 void	ECSManager::removeAllEntity()
@@ -158,8 +158,8 @@ Entity		&ECSManager::getEntityWithSpecificCompenent(ComponentType::Type typeToSe
 
 	for (size_t i = 0; i != limit; ++i)
 	{
-		if (mEntityBitset[i][typeToSearch])
-			return *mEntity[i];
+		if (mEntityBitset.at(i)[typeToSearch])
+			return *mEntity.at(i);
 	}
 	throw std::runtime_error("Entity not found");
 }
