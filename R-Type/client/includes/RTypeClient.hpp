@@ -57,6 +57,7 @@ public:
 		int										mPort;
 		std::string								mAdresse;
 		std::string								mPseudo;
+		float									mMusicVolume;
 
 	private: // init function
 		void						init();
@@ -109,6 +110,7 @@ public:
 		void	setIpAdresse(std::string const &);
 		void	setPseudo(std::string const &);
 		void	setGame(std::string const &);
+		void	setMusicVolume(std::string const &);
 		void	setLevel(std::string const &);
 		void	setScript(std::string const &);
 		bool	createGame();

@@ -79,16 +79,30 @@ public:
 #include <iostream>
 class ButtonInput : public Button
 {
-public:
-	ButtonInput(Font *font, void (RTypeClient::*fct)(std::string const &)) : Button(100), mFont(font) { mFct = fct; }
-	~ButtonInput() { }
+	public:
+		ButtonInput(Font *font, void (RTypeClient::*fct)(std::string const &)) : Button(100), mFont(font), mFct(fct) {}
+		~ButtonInput() { }
 
-public:
-	void	process(Entity &, uint32_t delta);
+	public:
+		void	process(Entity &, uint32_t delta);
 
-private:
-	Font	*mFont;
-	void (RTypeClient::*mFct)(std::string const &);
+	private:
+		Font	*mFont;
+		void	(RTypeClient::*mFct)(std::string const &);
+};
+
+class ButtonVolumeMusic : public Button
+{
+	public:
+		ButtonVolumeMusic(Font *font, void (RTypeClient::*fct)(std::string const &)) : Button(100), mFont(font), mFct(fct) {}
+		~ButtonVolumeMusic() {}
+
+	public:
+		void	process(Entity &, uint32_t delta);
+
+	private:
+		Font	*mFont;
+		void	(RTypeClient::*mFct)(std::string const &);
 };
 
 class ButtonSearchMenu : public Button

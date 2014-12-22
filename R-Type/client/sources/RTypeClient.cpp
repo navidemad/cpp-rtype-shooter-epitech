@@ -35,7 +35,7 @@ RTypeClient::RTypeClient()
   mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), 
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
-  mPseudo(Config::Network::defaultPseudo)
+  mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume)
 {
 	initECS();
 	initStart();
@@ -453,7 +453,7 @@ void			RTypeClient::initGame()
 
 	Entity		pseudoGameButton = engine.createEntity();
 	cursor->addEntity(pseudoGameButton.getId());
-	pseudoGameButton.addComponent(new Position(1170, 600));
+	pseudoGameButton.addComponent(new Position(960, 600));
 	pseudoGameButton.addComponent(new Font("0", "Pseudo"));
 	pseudoGameButton.addComponent(new ButtonInput(fontPseudoGame, &RTypeClient::setPseudo));
 
@@ -497,7 +497,7 @@ void			RTypeClient::initAudio()
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 500));
 	music.addComponent(new Font("0", "Music volume: "));
-	music.addComponent(new ButtonInput(musicVolume, &RTypeClient::setPseudo));
+	music.addComponent(new ButtonInput(musicVolume, &RTypeClient::setMusicVolume));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -832,6 +832,16 @@ void	RTypeClient::setPseudo(std::string const &pseudo)
 void	RTypeClient::setGame(std::string const &game)
 {
 	mCurrentGame = game;
+}
+
+void	RTypeClient::setMusicVolume(std::string const &musicVolume)
+{
+	std::istringstream buffer(musicVolume);
+	float value;
+	buffer >> value;
+
+	mMusicVolume = value;
+	mGui->setVolumeMusic(mMusicVolume);
 }
 
 void	RTypeClient::setLevel(std::string const &level)
