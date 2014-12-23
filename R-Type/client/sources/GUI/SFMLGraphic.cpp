@@ -1,11 +1,13 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "GUI/SFMLGraphic.hpp"
+#include "Default.hpp"
 
 std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 
-SFMLGraphic::SFMLGraphic()
-	: mWindow(sf::VideoMode(1280, 720), "R-type"), mInputManager(this), mMusicCurrentKey("")
+SFMLGraphic::SFMLGraphic() :
+	mWindow(sf::VideoMode(1280, 720), "R-type"), 
+	mInputManager(this), mMusicCurrentKey(""), mSoundVolume(Config::Audio::volume)
 {
 	mWindow.setActive(false);
 }
@@ -78,6 +80,8 @@ bool	SFMLGraphic::playMusic(std::string const &key, bool onLoop)
 
 bool	SFMLGraphic::playSound(std::string const &key, bool onLoop)
 {
+	if (mContentManager.getSounds()->getResource(key).sound.getVolume() != mSoundVolume)
+		mContentManager.getSounds()->getResource(key).sound.setVolume(mSoundVolume);
 	mContentManager.getSounds()->getResource(key).sound.setBuffer(mContentManager.getSounds()->getResource(key).soundBuffer);
 	mContentManager.getSounds()->getResource(key).sound.setLoop(onLoop);
 	mContentManager.getSounds()->getResource(key).sound.play();
@@ -109,9 +113,9 @@ float	SFMLGraphic::getVolumeSound(std::string const &key) const
 	return mContentManager.getSounds()->getResource(key).sound.getVolume();
 }
 
-void	SFMLGraphic::setVolumeSound(std::string const &key, float volume)
+void	SFMLGraphic::setVolumeSound(float volume)
 {
-	mContentManager.getSounds()->getResource(key).sound.setVolume(volume);
+	mSoundVolume = volume;
 }
 
 std::string	const		&SFMLGraphic::getInputText() const

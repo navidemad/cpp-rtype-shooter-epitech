@@ -35,7 +35,8 @@ RTypeClient::RTypeClient()
   mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), 
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
-  mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume)
+  mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
+  mSoundVolume(Config::Audio::volume)
 {
 	initECS();
 	initStart();
@@ -486,18 +487,31 @@ void			RTypeClient::initAudio()
 	cursorGame.addComponent(new Position(0, 400));
 	cursorGame.addComponent(new Drawable("searchBar"));
 
-	// volume value
+	// volume music value
 	Entity		musicGame = engine.createEntity();
-	Font		*musicVolume = new Font("0", std::to_string(static_cast<int>(mGui->getVolumeMusic())));
-	musicGame.addComponent(new Position(1400, 400));
+	Font		*musicVolume = new Font("0", std::to_string(static_cast<uint32_t>(mGui->getVolumeMusic())));
+	musicGame.addComponent(new Position(1450, 400));
 	musicGame.addComponent(musicVolume);
+
+	// volume music value
+	Entity		soundGame = engine.createEntity();
+	Font		*soundVolume = new Font("0", std::to_string(static_cast<uint32_t>(mSoundVolume)));
+	soundGame.addComponent(new Position(1450, 500));
+	soundGame.addComponent(soundVolume);
 
 	// music volume
 	Entity		music = engine.createEntity();
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 400));
-	music.addComponent(new Font("0", "Music volume: "));
-	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100}));
+	music.addComponent(new Font("0", "Music volume"));
+	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 }));
+
+	// sound volume
+	Entity		sound = engine.createEntity();
+	cursor->addEntity(sound.getId());
+	sound.addComponent(new Position(960, 500));
+	sound.addComponent(new Font("0", "Sound volume"));
+	sound.addComponent(new ButtonKeyInput<uint32_t>(soundVolume, &RTypeClient::setSoundVolume, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 }));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -867,6 +881,16 @@ void	RTypeClient::setMusicVolume(std::string const &musicVolume)
 
 	mMusicVolume = value;
 	mGui->setVolumeMusic(mMusicVolume);
+}
+
+void	RTypeClient::setSoundVolume(std::string const &soundVolume)
+{
+	std::istringstream buffer(soundVolume);
+	float value;
+	buffer >> value;
+
+	mSoundVolume = value;
+	mGui->setVolumeSound(mSoundVolume);
 }
 
 void	RTypeClient::setLevel(std::string const &level)

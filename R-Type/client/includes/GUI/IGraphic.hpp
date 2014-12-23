@@ -19,7 +19,7 @@ class IGraphic
 		virtual float				getVolumeMusic() const = 0;
 		virtual void				setVolumeMusic(float volume) = 0;
 		virtual float				getVolumeSound(std::string const &key) const = 0;
-		virtual void				setVolumeSound(std::string const &key, float volume = 100.0) = 0;
+		virtual void				setVolumeSound(float volume = 100.0) = 0;
 		virtual std::string	const	&getInputText() const = 0;
 
 		virtual bool				isOpen() const = 0;

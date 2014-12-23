@@ -60,6 +60,7 @@ public:
 		std::string								mAdresse;
 		std::string								mPseudo;
 		float									mMusicVolume;
+		float									mSoundVolume;
 
 	private: // init function
 		void						init();
@@ -113,6 +114,7 @@ public:
 		void	setPseudo(std::string const &);
 		void	setGame(std::string const &);
 		void	setMusicVolume(std::string const &);
+		void	setSoundVolume(std::string const &);
 		void	setLevel(std::string const &);
 		void	setNbPlayerMax(std::string const &);
 		void	setNbPublicMax(std::string const &);

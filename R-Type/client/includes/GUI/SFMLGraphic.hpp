@@ -34,7 +34,7 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 		float				getVolumeMusic() const;
 		void				setVolumeMusic(float volume);
 		float				getVolumeSound(std::string const &key) const;
-		void				setVolumeSound(std::string const &key, float volume = 100.0);
+		void				setVolumeSound(float volume = 100.0);
 		std::string	const	&getInputText() const;
 
 		bool				isOpen() const;
@@ -60,6 +60,7 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 		sf::Music							mMusic;
 		std::string							mMusicCurrentKey;
 		std::map<uint32_t, uint64_t>		mIdTimeElapse;
+		float								mSoundVolume;
 
 #define TIME 1000000
 };
