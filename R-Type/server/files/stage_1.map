@@ -1,12 +1,29 @@
+# Nom du stage
 name "stage_1"
-require "ship"
-require "boss_dark_vador"
-spawn 3.2 monster_basic 87.0 25.0 180.0
-spawn 2.2 monster_basic 87.0 50.0 180.0
-spawn 7.2 monster_basic 87.0 75.0 180.0
-spawn 9.2 monster_basic 87.0 25.0 180.0
-spawn 1.2 monster_basic 87.0 50.0 180.0
-spawn 3.2 monster_basic 87.0 75.0 180.0
-spawn 10.2 monster_basic 87.0 25.0 180.0
-spawn 12.2 monster_basic 87.0 50.0 180.0
-spawn 1.01 monster_basic 87.0 75.0 180.0
+
+# Liste des ressources requises
+require "caster"
+require "melee"
+require "super"
+
+# Apparitions de 3 casters
+spawn 3.2 caster 87.0 25.0 180.0
+spawn 3.2 caster 87.0 50.0 180.0
+spawn 3.2 caster 87.0 75.0 180.0
+
+# Apparitions de 2 melee
+spawn 6.2 melee 87.0 25.0 225.0
+spawn 6.2 melee 87.0 75.0 135.0
+
+# Apparitions de 2 super
+spawn 9.2 super 87.0 40.0 180.0
+spawn 9.2 super 87.0 60.0 180.0
+
+# Apparitions de 2 melee
+spawn 14.6 melee 50.0 25.0 90.0
+spawn 14.6 melee 50.0 75.0 270.0
+
+# Apparitions de 3 casters
+spawn 30.2 caster 87.0 25.0 180.0
+spawn 30.2 caster 87.0 50.0 180.0
+spawn 30.2 caster 87.0 75.0 180.0

@@ -11,18 +11,34 @@ namespace NGame
         // ctor / dtor
         public:
             explicit Component(uint64_t id = 0) : mId(id), mType(IResource::Type::UNKNOWN) { }
-			Component(const Component &other) {
-				mX = other.getX();
-				mY = other.getY();
-				mWidth = other.getWidth();
-				mHeight = other.getHeight();
-				mAngle = other.getAngle();
-				mSpeed = other.getSpeed();
-				mLife = other.getLife();
-				mId = other.getId();
-				mType = other.getType();
-			}
-            ~Component(void) { }
+            Component(const Component& rhs) {
+                if (this != &rhs) {
+					mX = rhs.getX();
+					mY = rhs.getY();
+					mWidth = rhs.getWidth();
+					mHeight = rhs.getHeight();
+					mAngle = rhs.getAngle();
+					mSpeed = rhs.getSpeed();
+					mLife = rhs.getLife();
+					mId = rhs.getId();
+					mType = rhs.getType();
+                }
+            }
+            Component& operator=(const Component& rhs) {
+                if (this != &rhs) {
+					mX = rhs.getX();
+					mY = rhs.getY();
+					mWidth = rhs.getWidth();
+					mHeight = rhs.getHeight();
+					mAngle = rhs.getAngle();
+					mSpeed = rhs.getSpeed();
+					mLife = rhs.getLife();
+					mId = rhs.getId();
+					mType = rhs.getType();
+                }
+                return *this;
+            }
+            ~Component(void) = default;
 
         // setters
         public:

@@ -18,20 +18,27 @@ std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) 
 	std::string lineContent;
 
 	while (file && std::getline(file, lineContent)) {
-		if (lineContent.length()) {
-			mParser.setStringToParse(lineContent);
-			const std::string wordContent = mParser.extractWord();
-			for (const auto &instr : tokenExecTab) {
-				if (instr.cmd == wordContent) {
-					try { commands.push_back((this->*instr.Ptr)()); break; }
-					catch (const std::exception& e) { throw ScriptException(e.what()); }
-				}
-				else if (instr.cmd.empty()) {
-					throw ScriptException("Syntax error\n\t>> " + lineContent);
-				}
+		if (lineContent.length() == 0)
+			continue;
+		else if (lineContent.find("#") != std::string::npos)
+			continue;
+		else if (lineContent.find("//") != std::string::npos)
+			continue;
+		mParser.setStringToParse(lineContent);
+		const std::string wordContent = mParser.extractWord();
+		for (const auto &instr : tokenExecTab) {
+			if (instr.cmd == wordContent) {
+				try { commands.push_back((this->*instr.Ptr)()); break; }
+				catch (const std::exception& e) { throw ScriptException(e.what()); }
+			}
+			else if (instr.cmd.empty()) {
+				throw ScriptException("Syntax error\n\t>> " + lineContent);
 			}
 		}
 	}
+
+	if (commands.size() == 0)
+		throw ScriptException("File haven't commands");
 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 
