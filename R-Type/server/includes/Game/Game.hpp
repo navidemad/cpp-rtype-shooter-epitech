@@ -10,6 +10,7 @@
 #include "IScriptCommand.hpp"
 #include "Script.hpp"
 #include "PlayerCommunicationManager.hpp"
+#include "ResourceManager.hpp"
 
 #include <chrono>
 #include <ctime>
@@ -28,7 +29,7 @@ namespace NGame
         // ctor / dtor
         public:
             explicit Game(const NGame::Properties& properties, const std::shared_ptr<Script>&);
-            ~Game(void);
+            ~Game(void) = default;
 
         // events
         public:
@@ -62,10 +63,6 @@ namespace NGame
 				IScriptCommand::Instruction	commandCode;
 				void						(NGame::Game::*fctPtr)(const IScriptCommand* command);
 			};
-			struct tokenAngle {
-				IResource::Direction		directionCode;
-				short						angle;
-			};
 			static const NGame::Game::tokenExec tokenExecTab[];
 
         // getters
@@ -76,7 +73,7 @@ namespace NGame
 			NGame::Properties& getProperties(void);
 			std::vector<NGame::User>& getUsers(void);
 			std::vector<NGame::Component>& getComponents(void);
-			NGame::Game::State& getState(void);
+            NGame::Game::State getState(void) const;
 			const Peer& getOwner(void);
 			bool getPullEnded(void);
 			uint64_t getCurrentComponentMaxId(void);
@@ -98,6 +95,7 @@ namespace NGame
         // utils
         private:
             void logInfo(const std::string &log) const;
+            inline bool isStillRunning(void) const;
 
         // check :: collision
         private:
@@ -143,6 +141,7 @@ namespace NGame
 
         // attributes
         private:
+            ResourceManager mResourceManager;
 			std::shared_ptr<Script> mScript;
             unsigned int mIndex;
             NGame::Game::OnGameEvent *mListener;

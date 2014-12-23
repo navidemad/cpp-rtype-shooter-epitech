@@ -92,7 +92,6 @@ void GamesManager::removeGame(const Peer &peer, const std::string& name) {
     	if (peer != gamebyname->getOwner())
             throw GamesManagerException("You can remove a game only if you are owner", ErrorStatus(ErrorStatus::Error::KO));
     	removeClientsFromWhitelist(gamebyname);
-        std::cout << "setState(NGame::Game::State::DONE) BY [void GamesManager::removeGame remove game]" << std::endl;
         gamebyname->setState(NGame::Game::State::DONE);      
     } catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
@@ -118,7 +117,7 @@ void GamesManager::playGame(const Peer &peer, const std::string &name, const std
     try {
         joinGame(NGame::USER_TYPE::PLAYER, peer, name, pseudo);
         mPlayerCommunicationManager.addPeerToWhiteList(peer);
-        //onPlayerMove(IResource::Direction::RIGHT, peer);
+        onPlayerMove(IResource::Direction::RIGHT, peer);
     }
     catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));

@@ -103,6 +103,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Game/GameUser.hpp		\
 				includes/Game/GameComponent.hpp		\
 				includes/Game/GamesManager.hpp 				\
+				includes/Game/ResourceManager.hpp \
 				../shared/includes/Network/Peer.hpp
 
 UNIX:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
@@ -184,7 +185,8 @@ SOURCES			+=	sources/main.cpp						\
                                 sources/Script/ScriptParser.cpp					\
 								sources/Script/Parser.cpp						\
 				sources/Game/Game.cpp 						\
-				sources/Game/GamesManager.cpp
+				sources/Game/GamesManager.cpp \
+				sources/Game/ResourceManager.cpp
 
 unix:SOURCES		+=	sources/Network/UnixTcpClient.cpp			\
 				sources/Network/UnixTcpServer.cpp			\
