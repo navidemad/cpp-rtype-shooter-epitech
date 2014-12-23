@@ -27,23 +27,23 @@ class ScriptRequire : public IScriptCommand {
         ScriptRequire(const ScriptRequire& rhs) :
             mFrame(rhs.getFrame()),
             mInstruction(rhs.getInstruction()),
-            mRessourceName(rhs.getRessourceName()) { }
+            mResourceName(rhs.getResourceName()) { }
         ScriptRequire& operator=(const ScriptRequire& rhs) {
             if (this != &rhs) {
                 mFrame = rhs.getFrame();
                 mInstruction = rhs.getInstruction();
-                mRessourceName = rhs.getRessourceName();
+                mResourceName = rhs.getResourceName();
             }
             return *this;
         }
     public:
-        const std::string& getRessourceName(void) const { return mRessourceName; }
-        void setRessourceName(const std::string& ressourceName) { mRessourceName = ressourceName; }
+        const std::string& getResourceName(void) const { return mResourceName; }
+        void setResourceName(const std::string& ressourceName) { mResourceName = ressourceName; }
     private:
         double mFrame;
         IScriptCommand::Instruction mInstruction;
     private:
-        std::string mRessourceName;
+        std::string mResourceName;
 };
 
 class ScriptName : public IScriptCommand {

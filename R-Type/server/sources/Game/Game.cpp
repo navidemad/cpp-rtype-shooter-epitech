@@ -164,6 +164,8 @@ NGame::Game::State& NGame::Game::getState(void) {
 }
 
 const Peer& NGame::Game::getOwner(void) {
+    Scopedlock(mMutex);
+
 	return mOwner;
 }
 
@@ -273,6 +275,7 @@ bool NGame::Game::collision(NGame::Component& component) {
 	for (auto& obstacle : components) {
 		if (collisionTouch(component, obstacle)) {
 			return true; // a debugger below
+            /*
 			std::cout << "collisionTouch = true" << std::endl;
 			int i;
 			i = 1;
@@ -284,9 +287,10 @@ bool NGame::Game::collision(NGame::Component& component) {
 				}
 				std::cout << "functionsHandleCollision return false" << std::endl;
 			}
+            */
 		}
 	}
-	return (false);
+    return false;
 }
 
 bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame::Component& obstacle) const {
@@ -607,7 +611,7 @@ void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
 
     /*
     for (const auto& path : mDLLoader)
-        if (Utils::basename(path.second) == commandScriptRequire->getRessourceName())
+        if (Utils::basename(path.second) == commandScriptRequire->getResourceName())
             return;
             */
     //throw GameException("require an invalide entity name");
@@ -627,7 +631,7 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
             lib->libraryLoad(path.second);
             if (lib->functionLoad("entry_point") == nullptr)
                 return;
-            auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+            auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 
             NGame::Component component;
 
@@ -636,7 +640,7 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
             component.setX(commandScriptSpawn->getX());
             component.setY(commandScriptSpawn->getY());
             component.setAngle(commandScriptSpawn->getAngle());
-            component.setResource(ressource);
+            component.setResource(resource);
 
 
 

@@ -60,7 +60,7 @@ const IScriptCommand* ScriptParser::commandScriptRequire(void) {
 	auto command = new ScriptRequire;
 	command->setFrame(0);
 	command->setInstruction(IScriptCommand::Instruction::REQUIRE);
-    command->setRessourceName(mParser.extractWord());
+    command->setResourceName(mParser.extractWord());
 	return command;
 }
 
