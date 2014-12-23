@@ -62,6 +62,7 @@ void NGame::Game::pull(void) {
 	}
 	catch (const GameException& e) {
 		Utils::logError(e.what());
+		std::cout << "setState(NGame::Game::State::DONE) BY [NGame::Game::pull catch GameException]" << std::endl;
 		setState(NGame::Game::State::DONE);
 	}
 
@@ -82,6 +83,7 @@ void NGame::Game::broadcastMap(void) {
 		}
         ++mIndex;
     }
+    std::cout << "setState(NGame::Game::State::DONE) BY [NGame::Game::broadcastMap fin script]" << std::endl;
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
@@ -143,7 +145,7 @@ NGame::Properties& NGame::Game::getProperties(void) {
 	return mProperties;
 }
 
-std::vector<NGame::User> NGame::Game::getUsers(void) const {
+std::vector<NGame::User>& NGame::Game::getUsers(void) {
 	Scopedlock(mMutex);
 
 	return mUsers;

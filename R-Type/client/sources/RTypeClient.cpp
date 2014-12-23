@@ -534,14 +534,14 @@ void			RTypeClient::initCreateMenu()
 	Entity		inputPortGame = engine.createEntity();
 	Font	*fontPortGame = new Font("0", Config::Game::defaultNameGame);
 
-	inputPortGame.addComponent(new Position(800, 400));
+	inputPortGame.addComponent(new Position(960, 400));
 	inputPortGame.addComponent(fontPortGame);
 
 	Entity		portGame = engine.createEntity();
 	cursor->addEntity(portGame.getId());
 
 	portGame.addComponent(new Position(420, 400));
-	portGame.addComponent(new Font("0", "Nom du game "));
+	portGame.addComponent(new Font("0", "Server name"));
 	portGame.addComponent(new ButtonInput(fontPortGame, &RTypeClient::setGame));
 
 	Entity		&logoCharacter = engine.createEntity();
@@ -553,14 +553,14 @@ void			RTypeClient::initCreateMenu()
 	cursor->addEntity(createGame.getId());
 
 	createGame.addComponent(new Position(420, 500));
-	createGame.addComponent(new Font("0", "Creer la partie "));
+	createGame.addComponent(new Font("0", "Create game"));
 	createGame.addComponent(new ButtonCreateGame());
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
 
 	backGame.addComponent(new Position(1150, 900));
-	backGame.addComponent(new Font("0", "Go back !"));
+	backGame.addComponent(new Font("0", "Back"));
 	backGame.addComponent(new ButtonMenuGame());
 
 	engine.addSystem(new DrawableSystem);
@@ -831,6 +831,7 @@ void	RTypeClient::setPseudo(std::string const &pseudo)
 
 void	RTypeClient::setGame(std::string const &game)
 {
+	std::cout << "test list game in " << __FUNCTION__ << " at line " << __LINE__ << ": " << game << std::endl;
 	mCurrentGame = game;
 }
 

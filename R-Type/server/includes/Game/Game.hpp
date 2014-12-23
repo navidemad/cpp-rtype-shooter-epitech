@@ -74,7 +74,7 @@ namespace NGame
 			NGame::Game::OnGameEvent* getListener(void);
 			double getCurrentFrame();
 			NGame::Properties& getProperties(void);
-			std::vector<NGame::User> getUsers(void) const;
+			std::vector<NGame::User>& getUsers(void);
 			std::vector<NGame::Component>& getComponents(void);
 			NGame::Game::State& getState(void);
 			const Peer& getOwner(void);
@@ -148,7 +148,7 @@ namespace NGame
             NGame::Game::OnGameEvent *mListener;
 			std::clock_t mTimer;
             std::clock_t mLastTime;
-            double mDeltaTime;
+            //double mDeltaTime;
             NGame::Properties mProperties;
             std::vector<NGame::User> mUsers;
             std::vector<NGame::Component> mComponents;

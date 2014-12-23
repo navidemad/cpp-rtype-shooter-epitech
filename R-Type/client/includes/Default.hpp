@@ -19,15 +19,15 @@ namespace Config
 
 	namespace Game
 	{
-		const std::string	defaultNameGame = "Simon suce des ours";
+		const std::string	defaultNameGame = "de_dust2";
 		const std::string	defaultLevelGame = "stage_1";
 	}
 
 	namespace Network
 	{
-		const unsigned int	port = 4245;
+		const unsigned int	port = 4246;
 		const std::string	adress = "127.0.0.1";
-		const std::string	defaultPseudo = "anon en mousse";
+		const std::string	defaultPseudo = "Steve";
 	}
 
 	namespace Audio
