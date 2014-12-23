@@ -6,7 +6,7 @@
 IClientSocket::Message CommandShowLevel::getMessage(void) const {
 	CommandShowLevel::PacketFromServer packet;
 	std::memset(&packet, 0, sizeof(CommandShowLevel::PacketFromServer));
-	std::copy(mName.begin(), mName.begin() + std::min(mName.size(), sizeof(packet.name) - 1), packet.name);
+	std::copy(mName.cbegin(), mName.cbegin() + std::min(mName.size(), sizeof(packet.name) - 1), packet.name);
 
 	IClientSocket::Message message;
 	message.msg.assign(reinterpret_cast<char *>(&packet), reinterpret_cast<char *>(&packet + 1));

@@ -74,7 +74,7 @@ namespace NGame
 			NGame::Game::OnGameEvent* getListener(void);
 			double getCurrentFrame();
 			NGame::Properties& getProperties(void);
-			std::vector<NGame::User>& getUsers(void);
+			std::vector<NGame::User> getUsers(void) const;
 			std::vector<NGame::Component>& getComponents(void);
 			NGame::Game::State& getState(void);
 			const Peer& getOwner(void);
@@ -113,8 +113,7 @@ namespace NGame
             int countUserByType(NGame::USER_TYPE);
 
         public:
-            std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &);
-            NGame::User& findUserByHost(const Peer &);
+            NGame::User& findUserByHost(const Peer &) const;
             NGame::User& findUserById(uint64_t id);
 
             NGame::Component& findComponentById(uint64_t id);
@@ -163,7 +162,7 @@ namespace NGame
 			bool mPullEnded;
 			uint64_t mCurrentComponentMaxId;
         private:
-            static std::map<IResource::Type, std::string> mDLLoader;
+            //static std::map<IResource::Type, std::string> mDLLoader;
 
         // overload << display
         public:
@@ -178,7 +177,8 @@ namespace NGame
                     "     - getNbSpectators:  '" << rhs->getProperties().getNbSpectators() << "'" << std::endl << 
                     "     - getMaxSpectators: '" << rhs->getProperties().getMaxSpectators() << "'" << std::endl <<
                     "  [mUsers => " << rhs->getUsers().size() << " rows]" << std::endl;
-                    for (const auto& user: rhs->getUsers())
+                    auto users = rhs->getUsers();
+                    for (auto user : users)
                         os << 
                     "    [User]" << std::endl <<
                     "      - getPeer.host:   '" << user.getPeer().host << "'" << std::endl <<
