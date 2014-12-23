@@ -267,7 +267,7 @@ void			RTypeClient::initSearchMenu()
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
 
-	cursorGame.addComponent(new Position(0, 500));
+	cursorGame.addComponent(new Position(0, 400));
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
@@ -443,17 +443,17 @@ void			RTypeClient::initGame()
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
 	cursorGame.addComponent(cursor);
-	cursorGame.addComponent(new Position(0, 900));
+	cursorGame.addComponent(new Position(0, 400));
 	cursorGame.addComponent(new Drawable("searchBar"));
 
 	Entity		pseudoGame = engine.createEntity();
 	Font	*fontPseudoGame = new Font("0", Config::Network::defaultPseudo);
-	pseudoGame.addComponent(new Position(1400, 600));
+	pseudoGame.addComponent(new Position(1400, 400));
 	pseudoGame.addComponent(fontPseudoGame);
 
 	Entity		pseudoGameButton = engine.createEntity();
 	cursor->addEntity(pseudoGameButton.getId());
-	pseudoGameButton.addComponent(new Position(960, 600));
+	pseudoGameButton.addComponent(new Position(960, 400));
 	pseudoGameButton.addComponent(new Font("0", "Pseudo"));
 	pseudoGameButton.addComponent(new ButtonInput(fontPseudoGame, &RTypeClient::setPseudo));
 
@@ -483,19 +483,19 @@ void			RTypeClient::initAudio()
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
 	cursorGame.addComponent(cursor);
-	cursorGame.addComponent(new Position(0, 500));
+	cursorGame.addComponent(new Position(0, 400));
 	cursorGame.addComponent(new Drawable("searchBar"));
 
 	// volume value
 	Entity		musicGame = engine.createEntity();
 	Font		*musicVolume = new Font("0", std::to_string(static_cast<int>(mGui->getVolumeMusic())));
-	musicGame.addComponent(new Position(1400, 500));
+	musicGame.addComponent(new Position(1400, 400));
 	musicGame.addComponent(musicVolume);
 
 	// music volume
 	Entity		music = engine.createEntity();
 	cursor->addEntity(music.getId());
-	music.addComponent(new Position(960, 500));
+	music.addComponent(new Position(960, 400));
 	music.addComponent(new Font("0", "Music volume: "));
 	music.addComponent(new ButtonInput(musicVolume, &RTypeClient::setMusicVolume));
 

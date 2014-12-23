@@ -58,7 +58,7 @@ void    GamesManager::setListener(GamesManager::OnGamesManagerEvent *listener) {
 std::vector<std::shared_ptr<NGame::Game>>& GamesManager::getGames(void) {
 	Scopedlock(mMutex);
 
-    return mGames;
+	return mGames;
 }
 
 void GamesManager::addGameInList(const std::shared_ptr<NGame::Game> &game) {
@@ -117,6 +117,7 @@ void GamesManager::playGame(const Peer &peer, const std::string &name, const std
     try {
         joinGame(NGame::USER_TYPE::PLAYER, peer, name, pseudo);
         mPlayerCommunicationManager.addPeerToWhiteList(peer);
+        onPlayerMove(IResource::Direction::RIGHT, peer);
     }
     catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
@@ -208,13 +209,13 @@ void GamesManager::onRemovePeerFromWhiteList(const Peer& peer) {
     mPlayerCommunicationManager.removePeerFromWhiteList(peer);
 }
 
-void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User>& users, uint64_t id) {
-    for (const auto& user : users)
+void GamesManager::onNotifyUsersComponentRemoved(const std::vector<NGame::User> users, uint64_t id) {
+    for (auto user : users)
         mPlayerCommunicationManager.sendDestroyResource(user.getPeer(), id);
 }
 
-void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User>& users, const NGame::Component& component) {
-    for (const auto& user : users)
+void GamesManager::onNotifyUsersComponentAdded(const std::vector<NGame::User> users, const NGame::Component& component) {
+    for (auto user : users)
         mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
 }
 
@@ -228,7 +229,8 @@ void GamesManager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPing)
 
 void    GamesManager::removeClientsFromWhitelist(const std::shared_ptr<NGame::Game> &game) {
     std::vector<NGame::User> gameUsers = game->getUsers();
-    std::for_each(gameUsers.begin(), gameUsers.end(), [&](const NGame::User& user) {
+
+	std::for_each(gameUsers.begin(), gameUsers.end(), [&](const NGame::User& user) {
         mPlayerCommunicationManager.removePeerFromWhiteList(user.getPeer());
     });
 }
@@ -242,7 +244,7 @@ std::list<NGame::Properties> GamesManager::getGamesProperties(void) {
 	std::list<NGame::Properties> gamesProperties;
 
     std::vector<std::shared_ptr<NGame::Game>> games = getGames();
-    for (const auto& game : games)
+    for (auto game : games)
         gamesProperties.push_back(game->getProperties());
 
     return gamesProperties;
@@ -261,7 +263,7 @@ std::shared_ptr<NGame::Game> GamesManager::findGameByHost(const Peer &peer) {
     for (const std::shared_ptr<NGame::Game>& game : games) {
         std::vector<NGame::User> users = game->getUsers();
         if (users.size() != 0)
-            for (auto& user: users)
+            for (auto user: users)
                 if (user.getPeer() == peer)
                     return game;
     }

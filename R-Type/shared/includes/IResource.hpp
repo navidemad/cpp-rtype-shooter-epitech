@@ -1,9 +1,24 @@
 #pragma once
 
 #include <string>
+#include <map>
 
-class IResource {
+#if defined (WIN32)
+# if defined (_MSC_VER)
+#  pragma warning(disable: 4251)
+# endif
+# define MYLIB_EXPORT __declspec(dllexport)
+#else
+# define MYLIB_EXPORT
+#endif
+
+struct MYLIB_EXPORT IResource {
 	public:
+
+        struct Vec2 {
+            Vec2(double x, double y) : x(x), y(y) { }
+            double x, y;
+        };
 
 		enum class Direction : char {
 			LEFT	= 0x00,
@@ -13,19 +28,29 @@ class IResource {
 			UNKNOWN
 		};
 
-		enum class Type : char {
-			PLAYER	= 0x00,
-			BULLET	= 0x01,
-			ENNEMY	= 0x02,
-			BONUS	= 0x03,
+		enum Type {
+            PLAYER      = 1 << 0,
+            BULLET      = 1 << 1,
+            BONUS       = 1 << 2,
+            COLLIDE     = 1 << 3,
+            MOVEMENT    = 1 << 4,
+            MONSTER     = 1 << 5,
+            CASTER      = 1 << 6,
+            MELEE       = 1 << 7,
+            SUPER       = 1 << 8,
 	        UNKNOWN
-			};
-		IResource(const std::string name) : mName(name) { }
-		virtual ~IResource() = default;
+		};
 
-		virtual double 			getSpeed(void) const = 0;
-		inline std::string const 	&getName() const { return mName; }
+        IResource(void) = default;
+        virtual ~IResource(void) = default;
+        virtual std::string                 getName(void) const = 0;
+        virtual double                      getHeight(void) const = 0;
+        virtual double                      getWidth(void) const = 0;
+        virtual int                         getLife(void) const = 0;
+        virtual double 			            getMoveSpeed(void) const = 0;
+        virtual double                      getFireSpeed(void) const = 0;
+        virtual IResource::Type             getType(void) const = 0;
+        virtual IResource::Vec2             move(double deltaTime) const = 0;
+        virtual IResource::Vec2             fire(double deltaTime) const = 0;
 
-		private:
-			const std::string	mName;
 };

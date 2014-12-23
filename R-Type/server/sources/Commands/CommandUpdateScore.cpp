@@ -6,7 +6,7 @@
 IClientSocket::Message CommandUpdateScore::getMessage(void) const {
 	CommandUpdateScore::PacketFromServer packet;
 	std::memset(&packet, 0, sizeof(CommandUpdateScore::PacketFromServer));
-	std::copy(mPseudo.begin(), mPseudo.begin() + std::min(mPseudo.size(), sizeof(packet.pseudo) - 1), packet.pseudo);
+	std::copy(mPseudo.cbegin(), mPseudo.cbegin() + std::min(mPseudo.size(), sizeof(packet.pseudo) - 1), packet.pseudo);
 	packet.id = mId;
 	packet.score = mScore;
 

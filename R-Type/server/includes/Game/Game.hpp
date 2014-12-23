@@ -18,6 +18,7 @@
 #include <memory>
 #include <list>
 #include <functional>
+#include <map>
 
 namespace NGame
 {
@@ -35,8 +36,8 @@ namespace NGame
             public:
                 virtual ~OnGameEvent(void) = default;
 				virtual void onRemovePeerFromWhiteList(const Peer&) = 0;
-				virtual void onNotifyUsersComponentRemoved(const std::vector<NGame::User>&, uint64_t) = 0;
-                virtual void onNotifyUsersComponentAdded(const std::vector<NGame::User>&, const NGame::Component&) = 0;
+				virtual void onNotifyUsersComponentRemoved(const std::vector<NGame::User>, uint64_t) = 0;
+                virtual void onNotifyUsersComponentAdded(const std::vector<NGame::User>, const NGame::Component&) = 0;
 				virtual void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t) = 0;
 				virtual void onNotifyTimeElapsedPing(const Peer &, double) = 0;
             };
@@ -73,7 +74,7 @@ namespace NGame
 			NGame::Game::OnGameEvent* getListener(void);
 			double getCurrentFrame();
 			NGame::Properties& getProperties(void);
-			std::vector<NGame::User>& getUsers(void);
+			std::vector<NGame::User> getUsers(void) const;
 			std::vector<NGame::Component>& getComponents(void);
 			NGame::Game::State& getState(void);
 			const Peer& getOwner(void);
@@ -108,10 +109,10 @@ namespace NGame
             bool collisionWithEnnemy(NGame::Component&, NGame::Component&);
 
         public:
-            std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &);
             NGame::User& findUserByHost(const Peer &);
-            std::vector<NGame::User>::iterator findUserById(uint64_t);
-			std::vector<NGame::Component>::iterator findComponentById(uint64_t);
+            NGame::User& findUserById(uint64_t id);
+
+            NGame::Component& findComponentById(uint64_t id);
 
         // workflow internal game
         private:
@@ -146,6 +147,8 @@ namespace NGame
             unsigned int mIndex;
             NGame::Game::OnGameEvent *mListener;
 			std::clock_t mTimer;
+            std::clock_t mLastTime;
+            double mDeltaTime;
             NGame::Properties mProperties;
             std::vector<NGame::User> mUsers;
             std::vector<NGame::Component> mComponents;
@@ -154,7 +157,8 @@ namespace NGame
             Peer mOwner;
 			bool mPullEnded;
 			uint64_t mCurrentComponentMaxId;
-
+        private:
+            //static std::map<IResource::Type, std::string> mDLLoader;
 
         // overload << display
         public:
@@ -169,7 +173,8 @@ namespace NGame
                     "     - getNbSpectators:  '" << rhs->getProperties().getNbSpectators() << "'" << std::endl << 
                     "     - getMaxSpectators: '" << rhs->getProperties().getMaxSpectators() << "'" << std::endl <<
                     "  [mUsers => " << rhs->getUsers().size() << " rows]" << std::endl;
-                    for (const auto& user: rhs->getUsers())
+                    auto users = rhs->getUsers();
+                    for (auto user : users)
                         os << 
                     "    [User]" << std::endl <<
                     "      - getPeer.host:   '" << user.getPeer().host << "'" << std::endl <<
