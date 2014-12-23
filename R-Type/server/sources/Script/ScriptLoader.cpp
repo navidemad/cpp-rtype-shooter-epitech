@@ -34,8 +34,8 @@ bool ScriptLoader::loadAll(void) {
         try {
             if (fs.good() && !fs.fail()) {
                 const std::string& key = Utils::removeExtension(Utils::basename(pathFile));
-                mScripts.insert(std::make_pair(key, parser.createScriptFromFile(fs)));
                 logInfo(key);
+                mScripts.insert(std::make_pair(key, parser.createScriptFromFile(fs)));
             }
         }
         catch (const ScriptException&e) {
@@ -43,7 +43,6 @@ bool ScriptLoader::loadAll(void) {
         }
     }
     logInfo("Loading scripts: " + Utils::toString<unsigned int>(mScripts.size()) + " rows loaded");
-    return true;
     return mScripts.size() > 0;
 }
 

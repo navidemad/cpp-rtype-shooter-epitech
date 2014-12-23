@@ -62,6 +62,7 @@ void NGame::Game::pull(void) {
 	}
 	catch (const GameException& e) {
 		Utils::logError(e.what());
+		std::cout << "setState(NGame::Game::State::DONE) BY [NGame::Game::pull catch GameException]" << std::endl;
 		setState(NGame::Game::State::DONE);
 	}
 
@@ -82,6 +83,7 @@ void NGame::Game::broadcastMap(void) {
 		}
         ++mIndex;
     }
+    std::cout << "setState(NGame::Game::State::DONE) BY [NGame::Game::broadcastMap fin script]" << std::endl;
 	setState(NGame::Game::State::DONE);
 	logInfo("Level finished");
 }
@@ -145,7 +147,7 @@ NGame::Properties& NGame::Game::getProperties(void) {
 	return mProperties;
 }
 
-std::vector<NGame::User> NGame::Game::getUsers(void) const {
+std::vector<NGame::User>& NGame::Game::getUsers(void) {
 	Scopedlock(mMutex);
 
 	return mUsers;
@@ -381,28 +383,28 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& /*component*/, NGame::Co
 ** workflow STL
 */
 int NGame::Game::countUserByType(NGame::USER_TYPE type) {
-    std::vector<NGame::User> users = getUsers();
+    std::vector<NGame::User>& users = getUsers();
     return std::count_if(users.cbegin(), users.cend(), [&type](const NGame::User& user) { return user.getType() == type; });
 }
 
-NGame::User& NGame::Game::findUserByHost(const Peer &peer) const {
-    std::vector<NGame::User> users = getUsers();
-    std::vector<NGame::User>::iterator it = std::find_if(users.begin(), users.end(), [&peer](const NGame::User& user) { return user.getPeer() == peer; });
-    if (it == users.end())
+NGame::User& NGame::Game::findUserByHost(const Peer &peer) {
+    std::vector<NGame::User>& users = getUsers();
+    auto it = std::find_if(users.begin(), users.end(), [&peer](const NGame::User& user) { return user.getPeer() == peer; });
+    if (it == users.cend())
         throw GameException("user not found for this peer");
     return *it;
 }
 
 NGame::User& NGame::Game::findUserById(uint64_t id) {
-    std::vector<NGame::User> users = getUsers();
-    std::vector<NGame::User>::iterator it = std::find_if(users.begin(), users.end(), [&id](const NGame::User& user) { return user.getId() == id; });
+    std::vector<NGame::User>& users = getUsers();
+    auto it = std::find_if(users.begin(), users.end(), [&id](const NGame::User& user) { return user.getId() == id; });
     if (it == users.end())
         throw GameException("user not found for this id");
     return *it;
 }
 
 NGame::Component& NGame::Game::findComponentById(uint64_t id) {
-    std::vector<NGame::Component> components = getComponents();
+    std::vector<NGame::Component>& components = getComponents();
     std::vector<NGame::Component>::iterator it = std::find_if(components.begin(), components.end(), [&id](const NGame::Component& component) { return component.getId() == id; });
     if (it == components.end())
         throw GameException("component not found for this id");
@@ -621,7 +623,7 @@ void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
         if (Utils::basename(path.second) == commandScriptRequire->getRessourceName())
             return;
             */
-    throw GameException("require an invalide entity name");
+    //throw GameException("require an invalide entity name");
 }
 
 void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {

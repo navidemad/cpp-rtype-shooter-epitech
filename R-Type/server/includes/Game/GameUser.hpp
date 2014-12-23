@@ -5,16 +5,36 @@
 
 #include <string>
 #include <cstdint>
+#include <iostream>
 
 namespace NGame
 {
 
     class User {
 
-        // ctor / dtor
+        // ctor / dtor / copy / operator=
         public:
 			User(void) = default;
 			~User(void) = default;
+            User(const User& rhs) {
+                if (this != &rhs) {
+                    mPeer = rhs.getPeer();
+                    mPseudo = rhs.getPseudo();
+                    mType = rhs.getType();
+                    mUserId = rhs.getId();
+                    mScore = rhs.getScore();
+                }
+            }
+            User& operator=(const User& rhs) {
+                if (this != &rhs) {
+                    mPeer = rhs.getPeer();
+                    mPseudo = rhs.getPseudo();
+                    mType = rhs.getType();
+                    mUserId = rhs.getId();
+                    mScore = rhs.getScore();
+                }
+                return *this;
+            }
 
         // setters
         public:
