@@ -831,7 +831,6 @@ void	RTypeClient::setPseudo(std::string const &pseudo)
 
 void	RTypeClient::setGame(std::string const &game)
 {
-	std::cout << "test list game in " << __FUNCTION__ << " at line " << __LINE__ << ": " << game << std::endl;
 	mCurrentGame = game;
 }
 

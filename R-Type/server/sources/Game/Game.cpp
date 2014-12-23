@@ -381,8 +381,6 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& /*component*/, NGame::Co
 ** workflow STL
 */
 NGame::User& NGame::Game::findUserByHost(const Peer &peer) {
-	Scopedlock(mMutex);
-
 	std::vector<NGame::User>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&](const NGame::User& user) { return user.getPeer() == peer; });
 	if (it == mUsers.end())
 		throw GameException("user not found for this peer");
@@ -391,8 +389,6 @@ NGame::User& NGame::Game::findUserByHost(const Peer &peer) {
 }
 
 NGame::User& NGame::Game::findUserById(uint64_t id) {
-	Scopedlock(mMutex);
-
 	std::vector<NGame::User>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&id](const NGame::User& user) { return user.getId() == id; });
 	if (it == mUsers.end())
 		throw GameException("user not found for this id");
@@ -401,8 +397,6 @@ NGame::User& NGame::Game::findUserById(uint64_t id) {
 }
 
 NGame::Component& NGame::Game::findComponentById(uint64_t id) {
-	Scopedlock(mMutex);
-	
 	std::vector<NGame::Component>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&id](const NGame::Component& component) { return component.getId() == id; });
     if (it == mComponents.end())
         throw GameException("component not found for this id");
