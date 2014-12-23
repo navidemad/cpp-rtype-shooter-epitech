@@ -127,6 +127,7 @@ void			ECSManager::updateSystem(uint32_t delta)
 			}
 		}
 	});
+	addEntity();
 }
 
 void	ECSManager::removeEntity(unsigned int id)
@@ -167,4 +168,20 @@ Entity		&ECSManager::getEntityWithSpecificCompenent(ComponentType::Type typeToSe
 void		ECSManager::setFirstId(unsigned int id)
 {
 	mFirstId = id;
+}
+
+void	ECSManager::addEntity()
+{
+	while (!mAddEntity.empty())
+	{
+		std::pair<unsigned int, std::list<Component *>> const &elem = mAddEntity.front();
+
+		Entity &entity = createEntity(elem.first);
+		for (Component *component : elem.second)
+		{
+			entity.addComponent(component);
+		}
+
+		mAddEntity.pop_front();
+	}
 }

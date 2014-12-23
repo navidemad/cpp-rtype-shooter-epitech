@@ -52,6 +52,7 @@ class ECSManager : public NoCopyable
 	private:
 		void									removeEntity(unsigned int);
 		void									removeAllEntity();
+		void									addEntity();
 
 	private:
 		RTypeClient								*mClient;
@@ -66,6 +67,8 @@ class ECSManager : public NoCopyable
 
 		unsigned int									mCurrentId;
 		unsigned int									mFirstId;
+
 	protected:
-		std::list<unsigned int>							mRemoveId;
+		std::list<unsigned int>											mRemoveId;
+		std::list < std::pair<unsigned int, std::list<Component *>>>	mAddEntity;
 };

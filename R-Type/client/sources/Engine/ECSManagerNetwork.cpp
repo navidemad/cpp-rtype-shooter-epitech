@@ -69,17 +69,15 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
+	id += mFirstId + 1;
 	try
 	{
         if (!mDLLoader.count(type)) {
             std::cerr << "Type non géré par le client encore" << std::endl;
             return;
         }
-		if (!isEntityCreated(id + mFirstId))
+		if (!isEntityCreated(id))
 		{
-			createEntity(id + mFirstId);
-
-			Entity &entity = getEntity(id + mFirstId);
 			auto lib = PortabilityBuilder::getDynLib();
 			try {
 				if (!mDLLoader.count(type))
@@ -89,13 +87,17 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 					return;
 				auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 
-				entity.addComponent(new Drawable(resource->getName()));
-				entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
+				std::pair<unsigned int, std::list<Component *>>		elemToInsert;
+
+				elemToInsert.first = id;
+				elemToInsert.second.push_back(new Drawable(resource->getName()));
+				elemToInsert.second.push_back(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 				if (type == IResource::Type::BULLET)
 				{
-					entity.addComponent(new Velocity(cos(angle), sin(angle), 200));
+					elemToInsert.second.push_back(new Velocity(cos(angle), sin(angle), 200));
 					getClient()->getGui()->playSound("shot");
 				}
+				mAddEntity.push_back(elemToInsert);
 				lib->libraryFree();
 			}
 			catch (const DynLibException& e) {
@@ -108,7 +110,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 		}
 		else
 		{
-			Entity &entity = getEntity(id + mFirstId);
+			Entity &entity = getEntity(id);
 			Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
 			pos->setX((Config::Window::x / 100.f) * x);
