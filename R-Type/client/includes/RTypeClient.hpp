@@ -47,6 +47,8 @@ public:
 		std::shared_ptr<IGraphic>					mGui;
 		std::string									mCurrentLevel;
 		std::string									mCurrentGame;
+		uint8_t										mCurrentNbPlayerMax;
+		uint8_t										mCurrentNbPublicMax;
 		std::string									mScript;
 		ServerCommunication							mServer;
 
@@ -112,6 +114,8 @@ public:
 		void	setGame(std::string const &);
 		void	setMusicVolume(std::string const &);
 		void	setLevel(std::string const &);
+		void	setNbPlayerMax(std::string const &);
+		void	setNbPublicMax(std::string const &);
 		void	setScript(std::string const &);
 		bool	createGame();
 		void	connectToServer();

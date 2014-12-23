@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 namespace Config
 {
@@ -21,6 +22,8 @@ namespace Config
 	{
 		const std::string	defaultNameGame = "de_dust2";
 		const std::string	defaultLevelGame = "stage_1";
+		const uint32_t		defaultNbPlayerMax = 4;
+		const uint32_t		defaultNbPublicMax = 4;
 	}
 
 	namespace Network

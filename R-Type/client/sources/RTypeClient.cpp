@@ -497,7 +497,7 @@ void			RTypeClient::initAudio()
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 400));
 	music.addComponent(new Font("0", "Music volume: "));
-	music.addComponent(new ButtonInput(musicVolume, &RTypeClient::setMusicVolume));
+	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100}));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -515,50 +515,75 @@ void			RTypeClient::initCreateMenu()
 	ECSManager &engine = *mEngine[RTypeClient::CREATE_MENU];
 
 	Entity		&menuScreen = engine.createEntity();
-
 	menuScreen.addComponent(new Position(0, 0));
 	menuScreen.addComponent(new Drawable("menu"));
 
 	Entity		&logoScreen = engine.createEntity();
-
 	logoScreen.addComponent(new Position(900, 60));
 	logoScreen.addComponent(new Drawable("logo"));
 
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
-
 	cursorGame.addComponent(new Position(0, 500));
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	Entity		&logoCharacter = engine.createEntity();
+	logoCharacter.addComponent(new Position(0, 400));
+	logoCharacter.addComponent(new Drawable("logoOption"));
+
 	Entity		inputPortGame = engine.createEntity();
 	Font	*fontPortGame = new Font("0", Config::Game::defaultNameGame);
-
 	inputPortGame.addComponent(new Position(960, 400));
 	inputPortGame.addComponent(fontPortGame);
 
+	Entity		inputLevel = engine.createEntity();
+	Font	*fontLevel = new Font("0", Config::Game::defaultLevelGame);
+	inputLevel.addComponent(new Position(960, 500));
+	inputLevel.addComponent(fontLevel);
+
+	Entity		inputNbPlayerMax = engine.createEntity();
+	Font	*fontInputNbPlayerMax = new Font("0", std::to_string(Config::Game::defaultNbPlayerMax));
+	inputNbPlayerMax.addComponent(new Position(960, 600));
+	inputNbPlayerMax.addComponent(fontInputNbPlayerMax);
+
+	Entity		inputNbPublicMax = engine.createEntity();
+	Font	*fontInputNbPublicMax = new Font("0", std::to_string(Config::Game::defaultNbPublicMax));
+	inputNbPublicMax.addComponent(new Position(960, 700));
+	inputNbPublicMax.addComponent(fontInputNbPublicMax);
+
 	Entity		portGame = engine.createEntity();
 	cursor->addEntity(portGame.getId());
-
 	portGame.addComponent(new Position(420, 400));
 	portGame.addComponent(new Font("0", "Server name"));
 	portGame.addComponent(new ButtonInput(fontPortGame, &RTypeClient::setGame));
 
-	Entity		&logoCharacter = engine.createEntity();
+	Entity		level = engine.createEntity();
+	cursor->addEntity(level.getId());
+	level.addComponent(new Position(420, 500));
+	level.addComponent(new Font("0", "Level"));
+	level.addComponent(new ButtonInput(fontLevel, &RTypeClient::setLevel));
 
-	logoCharacter.addComponent(new Position(0, 400));
-	logoCharacter.addComponent(new Drawable("logoOption"));
+	Entity		nbPlayerMax = engine.createEntity();
+	cursor->addEntity(nbPlayerMax.getId());
+	nbPlayerMax.addComponent(new Position(420, 600));
+	nbPlayerMax.addComponent(new Font("0", "Nb. player max"));
+	nbPlayerMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPlayerMax, &RTypeClient::setNbPlayerMax, {1, 2, 3, 4}));
+
+	Entity		nbPublicMax = engine.createEntity();
+	cursor->addEntity(nbPublicMax.getId());
+	nbPublicMax.addComponent(new Position(420, 700));
+	nbPublicMax.addComponent(new Font("0", "Nb. player max"));
+	nbPublicMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { 0, 1, 2, 3, 4 }));
 
 	Entity		&createGame = engine.createEntity();
 	cursor->addEntity(createGame.getId());
-
-	createGame.addComponent(new Position(420, 500));
-	createGame.addComponent(new Font("0", "Create game"));
+	createGame.addComponent(new Position(420, 800));
+	createGame.addComponent(new Font("0", "Launch"));
 	createGame.addComponent(new ButtonCreateGame());
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
-
 	backGame.addComponent(new Position(1150, 900));
 	backGame.addComponent(new Font("0", "Back"));
 	backGame.addComponent(new ButtonMenuGame());
@@ -847,6 +872,24 @@ void	RTypeClient::setMusicVolume(std::string const &musicVolume)
 void	RTypeClient::setLevel(std::string const &level)
 {
 	mCurrentLevel = level;
+}
+
+void	RTypeClient::setNbPlayerMax(std::string const &nbPlayerMax)
+{
+	std::istringstream buffer(nbPlayerMax);
+	uint8_t value;
+	buffer >> value;
+
+	mCurrentNbPlayerMax = (value <= Config::Game::defaultNbPlayerMax) ? value : Config::Game::defaultNbPlayerMax;
+}
+
+void	RTypeClient::setNbPublicMax(std::string const &nbPublicMax)
+{
+	std::istringstream buffer(nbPublicMax);
+	uint8_t value;
+	buffer >> value;
+
+	mCurrentNbPublicMax = (value <= Config::Game::defaultNbPublicMax) ? value : Config::Game::defaultNbPublicMax;
 }
 
 void	RTypeClient::setScript(std::string const &script)

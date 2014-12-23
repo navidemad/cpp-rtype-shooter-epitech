@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sstream>
+
 #include "RTypeClient.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/Component.hpp"
@@ -89,6 +91,55 @@ class ButtonInput : public Button
 	private:
 		Font	*mFont;
 		void	(RTypeClient::*mFct)(std::string const &);
+};
+
+template<typename T>
+class ButtonKeyInput : public Button
+{
+	public:
+		ButtonKeyInput(Font *font, void(RTypeClient::*handler)(std::string const &), std::vector<T> const &list) : 
+			Button(100), mFont(font), mHandler(handler), mList(list) {}
+		~ButtonKeyInput() {}
+
+	public:
+		void	process(Entity &entity, uint32_t delta)
+		{
+			updateTimer(delta);
+			if (hasTimeElapsed())
+			{
+				// get value from Font
+				std::istringstream buffer(mFont->getText());
+				T value;
+				buffer >> value;
+
+				// search value
+				std::vector<T>::const_iterator it;
+				for (it = mList.begin(); it != mList.end() && *it != value; ++it) { }
+				if (it == mList.end())
+					it = mList.begin();
+
+				RTypeClient *client = entity.getEntityManager()->getClient();
+				if (entity.getEntityManager()->getClient()->getGui()->isPressed("left"))
+				{
+					if (it != mList.begin())
+						--it;
+					mFont->setText(std::to_string(*it));
+					(client->*mHandler)(mFont->getText());
+				}
+				else if (entity.getEntityManager()->getClient()->getGui()->isPressed("right"))
+				{
+					if (it != mList.end() - 1)
+						++it;
+					mFont->setText(std::to_string(*it));
+					(client->*mHandler)(mFont->getText());
+				}
+			}
+		}
+
+	private:
+		Font					*mFont;
+		void					(RTypeClient::*mHandler)(std::string const &);
+		std::vector<T> const	mList;
 };
 
 class ButtonVolumeMusic : public Button
