@@ -310,7 +310,7 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 	double obsY = obstacle.getY() - obstacle.getHeight() / 2.;
 
 	return (
-		(y + component.getHeight() > obsY && y < obsY + obstacle.getHeight()) 
+		(y + component.getHeight() > obsY && y < obsY + obstacle.getHeight())
 			&&
 		(x + component.getWidth() > obsX && x < obsX + obstacle.getWidth())
 		);
@@ -404,7 +404,7 @@ NGame::Component& NGame::Game::findComponentById(uint64_t id) {
 	std::vector<NGame::Component>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&id](const NGame::Component& component) { return component.getId() == id; });
     if (it == mComponents.end())
         throw GameException("component not found for this id");
-    
+
 	return *it;
 }
 
@@ -510,7 +510,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 void NGame::Game::delUser(const Peer &peer) {
 	Scopedlock(mMutex);
 
-	for (auto it = mUsers.cbegin(); it != mUsers.cend(); it++) {
+	for (auto it = mUsers.begin(); it != mUsers.end(); it++) {
 		if (it->getPeer() == peer) {
 			if (it->getType() == NGame::USER_TYPE::PLAYER)
 				tryDelPlayer();
@@ -555,12 +555,12 @@ void NGame::Game::updatePositionComponent(NGame::Component& component) {
 
 NGame::Component NGame::Game::fire(const Peer &peer) {
 	Scopedlock(mMutex);
-	
+
 	double bulletWidth = 32.;
 	double bulletHeight = 32.;
 	double bulletSpeed = 0.0016;
 	short bulletAngle = 0;
-	
+
 	NGame::Component component_user = findComponentById(findUserByHost(peer).getId());
 	NGame::Component component;
 
