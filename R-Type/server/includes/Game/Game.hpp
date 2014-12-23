@@ -10,6 +10,7 @@
 #include "IScriptCommand.hpp"
 #include "Script.hpp"
 #include "PlayerCommunicationManager.hpp"
+#include "ResourceManager.hpp"
 
 #include <chrono>
 #include <ctime>
@@ -28,7 +29,7 @@ namespace NGame
         // ctor / dtor
         public:
             explicit Game(const NGame::Properties& properties, const std::shared_ptr<Script>&);
-            ~Game(void);
+            ~Game(void) = default;
 
         // events
         public:
@@ -41,7 +42,7 @@ namespace NGame
 				virtual void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t) = 0;
 				virtual void onNotifyTimeElapsedPing(const Peer &, double) = 0;
             };
-        
+
         // pull function called by threadPool
         public:
             void pull(void);
@@ -62,10 +63,6 @@ namespace NGame
 				IScriptCommand::Instruction	commandCode;
 				void						(NGame::Game::*fctPtr)(const IScriptCommand* command);
 			};
-			struct tokenAngle {
-				IResource::Direction		directionCode;
-				short						angle;
-			};
 			static const NGame::Game::tokenExec tokenExecTab[];
 
         // getters
@@ -76,7 +73,7 @@ namespace NGame
 			NGame::Properties& getProperties(void);
 			std::vector<NGame::User>& getUsers(void);
 			std::vector<NGame::Component>& getComponents(void);
-			NGame::Game::State& getState(void);
+            NGame::Game::State getState(void) const;
 			const Peer& getOwner(void);
 			bool getPullEnded(void);
 			uint64_t getCurrentComponentMaxId(void);
@@ -98,6 +95,7 @@ namespace NGame
         // utils
         private:
             void logInfo(const std::string &log) const;
+            inline bool isStillRunning(void) const;
 
         // check :: collision
         private:
@@ -111,7 +109,7 @@ namespace NGame
         public:
             NGame::User& findUserByHost(const Peer &);
             NGame::User& findUserById(uint64_t id);
-
+            std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &peer);
             NGame::Component& findComponentById(uint64_t id);
 
         // workflow internal game
@@ -129,7 +127,7 @@ namespace NGame
         public:
             void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
             void delUser(const Peer &);
-            
+
         // workflow gaming fire + move
         public:
 			NGame::Component fire(const Peer &);
@@ -143,6 +141,7 @@ namespace NGame
 
         // attributes
         private:
+            ResourceManager mResourceManager;
 			std::shared_ptr<Script> mScript;
             unsigned int mIndex;
             NGame::Game::OnGameEvent *mListener;
@@ -165,17 +164,17 @@ namespace NGame
             friend std::ostream& operator << (std::ostream& os, std::shared_ptr<Game> rhs) {
                 os <<
                     "[Game]" << std::endl <<
-                    "  [mProperties]" << std::endl << 
-                    "     - getName:          '" << rhs->getProperties().getName() << "'" << std::endl << 
+                    "  [mProperties]" << std::endl <<
+                    "     - getName:          '" << rhs->getProperties().getName() << "'" << std::endl <<
                     "     - getLevelName:     '" << rhs->getProperties().getLevelName() << "'" << std::endl <<
-                    "     - getNbPlayers:     '" << rhs->getProperties().getNbPlayers() << "'" << std::endl << 
-                    "     - getMaxPlayers:    '" << rhs->getProperties().getMaxPlayers() << "'" << std::endl << 
-                    "     - getNbSpectators:  '" << rhs->getProperties().getNbSpectators() << "'" << std::endl << 
+                    "     - getNbPlayers:     '" << rhs->getProperties().getNbPlayers() << "'" << std::endl <<
+                    "     - getMaxPlayers:    '" << rhs->getProperties().getMaxPlayers() << "'" << std::endl <<
+                    "     - getNbSpectators:  '" << rhs->getProperties().getNbSpectators() << "'" << std::endl <<
                     "     - getMaxSpectators: '" << rhs->getProperties().getMaxSpectators() << "'" << std::endl <<
                     "  [mUsers => " << rhs->getUsers().size() << " rows]" << std::endl;
                     auto users = rhs->getUsers();
                     for (auto user : users)
-                        os << 
+                        os <<
                     "    [User]" << std::endl <<
                     "      - getPeer.host:   '" << user.getPeer().host << "'" << std::endl <<
                     "      - getPeer.udpPort:   '" << user.getPeer().udpPort << "'" << std::endl <<
