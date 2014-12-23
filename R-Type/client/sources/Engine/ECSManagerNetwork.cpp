@@ -71,10 +71,10 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 {
 	try
 	{
-        if (!mDLLoader.count(type)) {
+/*        if (!mDLLoader.count(type)) {
             std::cerr << "Type non géré par le client encore" << std::endl;
             return;
-        }
+        }*/
 		if (!isEntityCreated(id + mFirstId))
 		{
 			createEntity(id + mFirstId);
