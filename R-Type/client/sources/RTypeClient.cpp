@@ -899,7 +899,7 @@ void	RTypeClient::setScript(std::string const &script)
 
 bool	RTypeClient::createGame()
 {
-	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentGame, mCurrentLevel,  4, 4);
+	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentGame, mCurrentLevel, mCurrentNbPlayerMax, mCurrentNbPublicMax);
 	return true;
 }
 

@@ -98,7 +98,7 @@ class ButtonKeyInput : public Button
 {
 	public:
 		ButtonKeyInput(Font *font, void(RTypeClient::*handler)(std::string const &), std::vector<T> const &list) : 
-			Button(100), mFont(font), mHandler(handler), mList(list) {}
+			Button(256), mFont(font), mHandler(handler), mList(list) {}
 		~ButtonKeyInput() {}
 
 	public:
@@ -128,6 +128,7 @@ class ButtonKeyInput : public Button
 				}
 				else if (entity.getEntityManager()->getClient()->getGui()->isPressed("right"))
 				{
+					std::cout << "R typeid vaut " << typeid(*it).name() << std::endl;
 					if (it != mList.end() - 1)
 						++it;
 					mFont->setText(std::to_string(*it));
