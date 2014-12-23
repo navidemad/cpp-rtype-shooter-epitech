@@ -8,6 +8,7 @@ namespace Config
 	namespace Window
 	{
 		const std::string	nameWindow = "R-Type Project";
+		const bool			fullscreenMode = false;
 
 		const unsigned int	x = 1920;
 		const unsigned int	y = 1080;

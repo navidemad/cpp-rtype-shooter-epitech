@@ -50,6 +50,15 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 		sf::RenderWindow	&getWindow();
 		void				setScale(std::string const &key, float sizeX, float sizeY);
 
+		void				setStyle(uint32_t style);
+		void				updateWindow();
+
+	// window's attributes
+	private:
+		sf::VideoMode						mVideoMode;
+		std::string const					mTitle;
+		uint32_t							mStyle;
+
 	// attributes
 	private:
 		sf::RenderWindow					mWindow;

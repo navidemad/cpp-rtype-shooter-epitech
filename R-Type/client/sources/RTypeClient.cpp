@@ -36,7 +36,7 @@ RTypeClient::RTypeClient()
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
-  mSoundVolume(Config::Audio::volume)
+  mSoundVolume(Config::Audio::volume), mFullscreenMode(Config::Window::fullscreenMode)
 {
 	initECS();
 	initStart();
@@ -448,15 +448,28 @@ void			RTypeClient::initGame()
 	cursorGame.addComponent(new Drawable("searchBar"));
 
 	Entity		pseudoGame = engine.createEntity();
-	Font	*fontPseudoGame = new Font("0", Config::Network::defaultPseudo);
+	Font		*fontPseudoGame = new Font("0", Config::Network::defaultPseudo);
 	pseudoGame.addComponent(new Position(1400, 400));
 	pseudoGame.addComponent(fontPseudoGame);
 
+	Entity		fullscreenGame = engine.createEntity();
+	Font		*fontFullscreenGame = new Font("0", Config::Window::fullscreenMode ? "yes" : "no");
+	fullscreenGame.addComponent(new Position(1400, 500));
+	fullscreenGame.addComponent(fontFullscreenGame);
+
+	// set pseudo game
 	Entity		pseudoGameButton = engine.createEntity();
 	cursor->addEntity(pseudoGameButton.getId());
 	pseudoGameButton.addComponent(new Position(960, 400));
 	pseudoGameButton.addComponent(new Font("0", "Pseudo"));
 	pseudoGameButton.addComponent(new ButtonInput(fontPseudoGame, &RTypeClient::setPseudo));
+
+	// enable/disable fullscreen mode
+	Entity		fullscreenButton = engine.createEntity();
+	cursor->addEntity(fullscreenButton.getId());
+	fullscreenButton.addComponent(new Position(960, 500));
+	fullscreenButton.addComponent(new Font("0", "Fullscreen"));
+	fullscreenButton.addComponent(new ButtonStateInput(fontFullscreenGame, &RTypeClient::setFullscreen));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -504,14 +517,14 @@ void			RTypeClient::initAudio()
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 400));
 	music.addComponent(new Font("0", "Music volume"));
-	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 }));
+	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
 
 	// sound volume
 	Entity		sound = engine.createEntity();
 	cursor->addEntity(sound.getId());
 	sound.addComponent(new Position(960, 500));
 	sound.addComponent(new Font("0", "Sound volume"));
-	sound.addComponent(new ButtonKeyInput<uint32_t>(soundVolume, &RTypeClient::setSoundVolume, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 }));
+	sound.addComponent(new ButtonKeyInput<uint32_t>(soundVolume, &RTypeClient::setSoundVolume, { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -891,6 +904,15 @@ void	RTypeClient::setSoundVolume(std::string const &soundVolume)
 
 	mSoundVolume = value;
 	mGui->setVolumeSound(mSoundVolume);
+}
+
+void	RTypeClient::setFullscreen(bool enable)
+{
+	mFullscreenMode = enable;
+
+	auto sg = std::static_pointer_cast<SFMLGraphic>(mGui);
+	sg->setStyle(mFullscreenMode ? sf::Style::Fullscreen : sf::Style::Default);
+	sg->updateWindow();
 }
 
 void	RTypeClient::setLevel(std::string const &level)

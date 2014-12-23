@@ -117,6 +117,21 @@ void	ButtonInput::process(Entity &entity, uint32_t delta)
 	(client->*mFct)(text);
 }
 
+void	ButtonStateInput::process(Entity &entity, uint32_t delta)
+{
+	bool enable = (mFont->getText() == "yes");
+
+	updateTimer(delta);
+	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
+	{
+		enable = !enable;
+		mFont->setText(enable ? "yes" : "no");
+		resetTimer();
+	}
+	RTypeClient *client = entity.getEntityManager()->getClient();
+	(client->*mFct)(enable);
+}
+
 void	ButtonCreateGame::process(Entity &entity, uint32_t delta)
 {
 	updateTimer(delta);

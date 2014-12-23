@@ -6,10 +6,12 @@
 std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 
 SFMLGraphic::SFMLGraphic() :
-	mWindow(sf::VideoMode(1280, 720), "R-type"), 
-	mInputManager(this), mMusicCurrentKey(""), mSoundVolume(Config::Audio::volume)
+	mVideoMode(sf::VideoMode(1280, 720)), mTitle(Config::Window::nameWindow), mStyle(sf::Style::Default),
+	mWindow(mVideoMode, mTitle, mStyle), mInputManager(this), mMusicCurrentKey(""), 
+	mSoundVolume(Config::Audio::volume)
 {
 	mWindow.setActive(false);
+	mWindow.setFramerateLimit(60);
 }
 
 SFMLGraphic::~SFMLGraphic()
@@ -185,6 +187,22 @@ void				SFMLGraphic::setScale(std::string const &key, float sizeX, float sizeY)
 	for (uint32_t i = 0; i < mContentManager.getSprites()->getResource(key).getSize(); ++i)
 	{
 		mContentManager.getSprites()->getResource(key).getSprite(0).setScale(sizeX, sizeY);
+	}
+}
+
+void				SFMLGraphic::setStyle(uint32_t style)
+{
+	mStyle = style;
+}
+
+void				SFMLGraphic::updateWindow()
+{
+	static bool		one = false;
+
+	if (mStyle != sf::Style::Default && !one)
+	{
+		mWindow.create(mVideoMode, mTitle, mStyle);
+		one = !one;
 	}
 }
 
