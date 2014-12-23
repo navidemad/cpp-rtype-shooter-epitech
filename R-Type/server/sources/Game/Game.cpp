@@ -398,7 +398,7 @@ NGame::Component& NGame::Game::findComponentById(uint64_t id) {
     if (it == mComponents.end())
         throw GameException("component not found for this id");
 
-    return *it;
+	return *it;
 }
 
 /*
@@ -503,13 +503,12 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 void NGame::Game::delUser(const Peer &peer) {
     Scopedlock(mMutex);
 
-    for (auto it = mUsers.cbegin(); it != mUsers.cend(); ++it) {
-        if (it->getPeer() == peer) {
-            if (it->getType() == NGame::USER_TYPE::PLAYER)
-                tryDelPlayer();
-            if (it->getType() == NGame::USER_TYPE::SPECTATOR)
-                tryDelSpectator();
-
+	for (auto it = mUsers.begin(); it != mUsers.end(); it++) {
+		if (it->getPeer() == peer) {
+			if (it->getType() == NGame::USER_TYPE::PLAYER)
+				tryDelPlayer();
+			if (it->getType() == NGame::USER_TYPE::SPECTATOR)
+				tryDelSpectator();
             mUsers.erase(it);
             return;
         }

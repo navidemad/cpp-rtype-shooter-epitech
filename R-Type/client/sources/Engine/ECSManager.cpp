@@ -112,6 +112,7 @@ void			ECSManager::updateSystem(uint32_t delta)
 {
 	const size_t	limit = mCurrentId;
 
+	removeAllEntity();
 	std::for_each(mSystem.begin(), mSystem.end(), [&](System * currentSystem) {
 		for (size_t i = 0; i != limit; ++i)
 		{
