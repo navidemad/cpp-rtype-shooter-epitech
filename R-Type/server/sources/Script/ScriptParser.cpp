@@ -11,7 +11,7 @@ const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
 	{ "", nullptr }
 };
 
-std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) {
+std::shared_ptr<NGame::Script> ScriptParser::createScriptFromFile(std::ifstream &file) {
 
 	std::vector<const IScriptCommand*> commands;
 
@@ -42,10 +42,10 @@ std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) 
 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 
-	auto script = std::make_shared<Script>();
-    *script = commands;
+    auto gameScript = std::make_shared<NGame::Script>();
+    *gameScript = commands;
 
-	return script;
+	return gameScript;
 }
 
 const IScriptCommand* ScriptParser::commandScriptName(void) {

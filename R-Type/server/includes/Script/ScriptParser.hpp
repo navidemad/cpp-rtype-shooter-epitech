@@ -17,7 +17,7 @@ class ScriptParser : public NoCopyable {
 
 	// internal functions
 	public:
-		std::shared_ptr<Script> createScriptFromFile(std::ifstream &);
+        std::shared_ptr<NGame::Script> createScriptFromFile(std::ifstream &);
 
     // workflow commands
     private:

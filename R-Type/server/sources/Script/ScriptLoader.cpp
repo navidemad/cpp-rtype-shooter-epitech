@@ -13,11 +13,11 @@ bool ScriptLoader::has(const std::string& stage_name) const {
     return mScripts.find(stage_name) != mScripts.end();
 }
 
-const std::shared_ptr<Script>& ScriptLoader::get(const std::string& stage_name) const {
+const std::shared_ptr<NGame::Script>& ScriptLoader::get(const std::string& stage_name) const {
     return mScripts.at(stage_name);
 }
 
-const std::map<std::string, std::shared_ptr<Script>>& ScriptLoader::getScripts() const {
+const std::map<std::string, std::shared_ptr<NGame::Script>>& ScriptLoader::getScripts() const {
     return mScripts;
 }
 

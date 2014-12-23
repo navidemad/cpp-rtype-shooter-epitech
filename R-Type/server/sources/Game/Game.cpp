@@ -18,12 +18,12 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
     { IScriptCommand::Instruction::SPAWN, &NGame::Game::scriptCommandSpawn }
 };
 
-NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<Script>& script) :
+NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<NGame::Script>& script) :
+mProperties(properties),
+mState(NGame::Game::State::NOT_STARTED),
 mScript(script),
 mIndex(0),
 mListener(nullptr),
-mProperties(properties),
-mState(NGame::Game::State::NOT_STARTED),
 mMutex(PortabilityBuilder::getMutex()),
 mPullEnded(true),
 mCurrentComponentMaxId(Config::Game::minIdComponent)
@@ -78,6 +78,7 @@ void NGame::Game::broadcastMap(void) {
 
 void NGame::Game::checkCollisions(void) {
     return;
+    /*
     auto components = getComponents();
     for (auto it = components.begin(); it != components.end();) {
         if (collision(*it))
@@ -98,6 +99,7 @@ void NGame::Game::checkCollisions(void) {
         else
             ++it;
     }
+    */
 }
 
 void NGame::Game::moveEntities(void) {
@@ -111,7 +113,7 @@ void NGame::Game::moveEntities(void) {
 /*
 ** getters
 */
-std::shared_ptr<Script>& NGame::Game::getScript(void) {
+std::shared_ptr<NGame::Script>& NGame::Game::getScript(void) {
     Scopedlock(mMutex);
 
     return mScript;
@@ -137,12 +139,6 @@ std::vector<NGame::User>& NGame::Game::getUsers(void) {
     Scopedlock(mMutex);
 
     return mUsers;
-}
-
-std::vector<NGame::Component>& NGame::Game::getComponents(void) {
-    Scopedlock(mMutex);
-
-    return mComponents;
 }
 
 NGame::Game::State NGame::Game::getState(void) const {
@@ -172,51 +168,16 @@ uint64_t NGame::Game::getCurrentComponentMaxId(void) {
 /*
 ** setters
 */
-void NGame::Game::setScript(std::shared_ptr<Script>& script) {
-    Scopedlock(mMutex);
-
-    mScript = script;
-}
-
 void NGame::Game::setListener(NGame::Game::OnGameEvent* listener) {
     Scopedlock(mMutex);
 
     mListener = listener;
 }
 
-void NGame::Game::setProperties(NGame::Properties& properties) {
-    Scopedlock(mMutex);
-
-    mProperties = properties;
-}
-
-void NGame::Game::setUsers(std::vector<NGame::User>& users) {
-    Scopedlock(mMutex);
-
-    mUsers = users;
-}
-
-void NGame::Game::setComponents(std::vector<NGame::Component>& components) {
-    Scopedlock(mMutex);
-
-    mComponents = components;
-}
-
 void NGame::Game::setState(NGame::Game::State state) {
     Scopedlock(mMutex);
 
     mState = state;
-}
-
-void NGame::Game::initTimer(void) {
-    Scopedlock(mMutex);
-
-    mTimer = std::clock();
-    mLastTime = std::clock();
-}
-
-void NGame::Game::setMutex(std::shared_ptr<IMutex>& mutex) {
-    mMutex = mutex;
 }
 
 void NGame::Game::setOwner(const Peer& owner) {
@@ -247,14 +208,24 @@ void NGame::Game::logInfo(const std::string &log) const {
     Utils::logInfo(ss.str());
 }
 
-inline bool NGame::Game::isStillRunning(void) const {
+bool NGame::Game::isStillRunning(void) const {
     return (getState() == NGame::Game::State::RUNNING);
+}
+
+void NGame::Game::initTimer(void) {
+    Scopedlock(mMutex);
+
+    mTimer = std::clock();
+    mLastTime = std::clock();
 }
 
 /*
 ** check :: collision
 */
-bool NGame::Game::collision(NGame::Component& component) {
+bool NGame::Game::collision(NGame::Component& /*component*/) {
+    return true;
+
+    /*
     static const auto& functionsHandleCollision = std::vector<std::function<bool(NGame::Component&, NGame::Component&)>>
     {
         std::bind(&NGame::Game::collisionWithNoLife, this, std::placeholders::_1),
@@ -267,7 +238,7 @@ bool NGame::Game::collision(NGame::Component& component) {
     for (auto& obstacle : components) {
         if (collisionTouch(component, obstacle)) {
             return true; // a debugger below
-            /*
+            
             std::cout << "collisionTouch = true" << std::endl;
             int i;
             i = 1;
@@ -279,10 +250,10 @@ bool NGame::Game::collision(NGame::Component& component) {
             }
             std::cout << "functionsHandleCollision return false" << std::endl;
             }
-            */
         }
     }
     return false;
+    */
 }
 
 bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame::Component& obstacle) const {
@@ -451,7 +422,7 @@ void NGame::Game::tryAddPlayer(NGame::User& user) {
 
     getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
 
-    const auto listener = getListener();
+    auto listener = getListener();
     if (listener)
         listener->onNotifyUsersComponentAdded(getUsers(), component);
 
@@ -495,7 +466,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
     else if (type == NGame::USER_TYPE::SPECTATOR)
         tryAddSpectator(user);
 
-    const auto listener = getListener();
+    auto listener = getListener();
     if (listener)
         listener->onNotifyTimeElapsedPing(peer, getCurrentFrame());
 }
@@ -516,7 +487,7 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
-    const auto listener = getListener();
+    auto listener = getListener();
     if (listener)
         listener->onRemovePeerFromWhiteList(user.getPeer());
     tryDelPlayer();
@@ -659,7 +630,7 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
 
     getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
 
-    const auto listener = getListener();
+    auto listener = getListener();
     if (listener)
     listener->onNotifyUsersComponentAdded(getUsers(), component);
 

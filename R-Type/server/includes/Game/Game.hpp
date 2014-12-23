@@ -1,25 +1,24 @@
 #pragma once
 
-#include "IMutex.hpp"
-#include "Client.hpp"
 #include "NoCopyable.hpp"
-#include "IResource.hpp"
-#include "GameProperties.hpp"
-#include "GameUser.hpp"
-#include "GameComponent.hpp"
-#include "IScriptCommand.hpp"
-#include "Script.hpp"
-#include "PlayerCommunicationManager.hpp"
-#include "ResourceManager.hpp"
 
-#include <chrono>
+#include "IMutex.hpp"
+#include "IResource.hpp"
+#include "IScriptCommand.hpp"
+
+#include "Client.hpp"
+#include "Script.hpp"
+#include "Properties.hpp"
+#include "User.hpp"
+#include "Component.hpp"
+#include "Resources.hpp"
+#include "PlayerCommunicationManager.hpp"
+
 #include <ctime>
-#include <iostream>
 #include <string>
 #include <memory>
 #include <list>
 #include <functional>
-#include <map>
 
 namespace NGame
 {
@@ -28,7 +27,7 @@ namespace NGame
 
         // ctor / dtor
         public:
-            explicit Game(const NGame::Properties& properties, const std::shared_ptr<Script>&);
+            explicit Game(const NGame::Properties& properties, const std::shared_ptr<NGame::Script>&);
             ~Game(void) = default;
 
         // events
@@ -67,12 +66,11 @@ namespace NGame
 
         // getters
         public:
-			std::shared_ptr<Script>& getScript(void);
+            std::shared_ptr<NGame::Script>& getScript(void);
 			NGame::Game::OnGameEvent* getListener(void);
 			double getCurrentFrame();
 			NGame::Properties& getProperties(void);
 			std::vector<NGame::User>& getUsers(void);
-			std::vector<NGame::Component>& getComponents(void);
             NGame::Game::State getState(void) const;
 			const Peer& getOwner(void);
 			bool getPullEnded(void);
@@ -80,14 +78,8 @@ namespace NGame
 
         // setters
         public:
-			void setScript(std::shared_ptr<Script>&);
 			void setListener(NGame::Game::OnGameEvent*);
-			void setProperties(NGame::Properties&);
-			void setUsers(std::vector<NGame::User>&);
-			void setComponents(std::vector<NGame::Component>&);
 			void setState(NGame::Game::State);
-            void initTimer(void);
-			void setMutex(std::shared_ptr<IMutex>&);
 			void setOwner(const Peer&);
 			void setPullEnded(bool);
 			void setCurrentComponentMaxId(uint64_t);
@@ -95,7 +87,8 @@ namespace NGame
         // utils
         private:
             void logInfo(const std::string &log) const;
-            inline bool isStillRunning(void) const;
+            bool isStillRunning(void) const;
+            void initTimer(void);
 
         // check :: collision
         private:
@@ -109,7 +102,6 @@ namespace NGame
         public:
             NGame::User& findUserByHost(const Peer &);
             NGame::User& findUserById(uint64_t id);
-
             NGame::Component& findComponentById(uint64_t id);
 
         // workflow internal game
@@ -141,50 +133,21 @@ namespace NGame
 
         // attributes
         private:
-            ResourceManager mResourceManager;
-			std::shared_ptr<Script> mScript;
+            NGame::Resources mResources;
+            NGame::Properties mProperties;
+            NGame::Game::State mState;
+            std::shared_ptr<NGame::Script> mScript;
             unsigned int mIndex;
             NGame::Game::OnGameEvent *mListener;
 			std::clock_t mTimer;
             std::clock_t mLastTime;
-            //double mDeltaTime;
-            NGame::Properties mProperties;
             std::vector<NGame::User> mUsers;
             std::vector<NGame::Component> mComponents;
-			NGame::Game::State mState;
             std::shared_ptr<IMutex> mMutex;
             Peer mOwner;
 			bool mPullEnded;
 			uint64_t mCurrentComponentMaxId;
-        private:
-            //static std::map<IResource::Type, std::string> mDLLoader;
 
-        // overload << display
-        public:
-            friend std::ostream& operator << (std::ostream& os, std::shared_ptr<Game> rhs) {
-                os <<
-                    "[Game]" << std::endl <<
-                    "  [mProperties]" << std::endl << 
-                    "     - getName:          '" << rhs->getProperties().getName() << "'" << std::endl << 
-                    "     - getLevelName:     '" << rhs->getProperties().getLevelName() << "'" << std::endl <<
-                    "     - getNbPlayers:     '" << rhs->getProperties().getNbPlayers() << "'" << std::endl << 
-                    "     - getMaxPlayers:    '" << rhs->getProperties().getMaxPlayers() << "'" << std::endl << 
-                    "     - getNbSpectators:  '" << rhs->getProperties().getNbSpectators() << "'" << std::endl << 
-                    "     - getMaxSpectators: '" << rhs->getProperties().getMaxSpectators() << "'" << std::endl <<
-                    "  [mUsers => " << rhs->getUsers().size() << " rows]" << std::endl;
-                    auto users = rhs->getUsers();
-                    for (auto user : users)
-                        os << 
-                    "    [User]" << std::endl <<
-                    "      - getPeer.host:   '" << user.getPeer().host << "'" << std::endl <<
-                    "      - getPeer.udpPort:   '" << user.getPeer().udpPort << "'" << std::endl <<
-                    "      - getPeer.tcpPort:   '" << user.getPeer().tcpPort << "'" << std::endl <<
-                    "      - getPseudo: '" << user.getPseudo() << "'" << std::endl <<
-                    "      - getType:   '" << (user.getType() == NGame::USER_TYPE::PLAYER ? "PLAYER" : "SPECTATOR") << "'" << std::endl <<
-                    "      - getId:     '" << user.getId() << "'" << std::endl <<
-                    "      - getScore:  '" << user.getScore() << "'" << std::endl;
-                return os;
-            }
     };
 
 }
