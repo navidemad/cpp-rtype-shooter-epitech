@@ -55,5 +55,5 @@ class ECSManagerNetwork : public QObject, public ECSManager
 		void	createBonus();
 
 	private:
-		std::map<IResource::Type, std::string>		mDLLoader;
+		static std::map<IResource::Type, std::string> mDLLoader;
 };

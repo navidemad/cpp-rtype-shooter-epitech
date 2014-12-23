@@ -9,8 +9,7 @@ MOC_DIR		=	build/moc
 UI_DIR		=	build/ui
 RCC_DIR		=	build/rcc
 
-win32:RC_ICONS 	+= 	
-ICON 		= 	
+win32:RC_ICONS 	+= assets/icon/icon.ico
 
 win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /arch:SSE2 /fp:fast /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -Wextra -pedantic -std=c++11 -g -Wno-write-strings
