@@ -10,7 +10,7 @@ MOC_DIR			=	build/moc
 UI_DIR			=	build/ui
 RCC_DIR			=	build/rcc
 
-win32:QMAKE_CXXFLAGS	+=	-Wall /O0 /MP
+win32:QMAKE_CXXFLAGS	+=	-Wall /O2 /MP
 unix:QMAKE_CXXFLAGS	+=	-Wall -Wextra -pedantic -std=c++11 -g -Wno-write-strings
 
 QMAKE_CXX = clang++
