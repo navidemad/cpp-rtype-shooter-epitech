@@ -107,10 +107,6 @@ namespace NGame
             bool collisionWithBullet(NGame::Component&, NGame::Component&);
             bool collisionWithEnnemy(NGame::Component&, NGame::Component&);
 
-        // workflow STL
-        private:
-            int countUserByType(NGame::USER_TYPE);
-
         public:
             std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &);
             NGame::User& findUserByHost(const Peer &);

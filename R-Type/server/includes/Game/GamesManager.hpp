@@ -68,8 +68,10 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
 	// internal methods
 	private:
         void removeClientsFromWhitelist(const std::shared_ptr<NGame::Game>&);
-        const std::shared_ptr<NGame::Game>& findGameByName(const std::string& name);
-        const std::shared_ptr<NGame::Game>& findGameByHost(const Peer &peer);
+        std::shared_ptr<NGame::Game> findGameByName(const std::string& name);
+        std::shared_ptr<NGame::Game> findGameByHost(const Peer &peer);
+		void addGameInList(const std::shared_ptr<NGame::Game> &game);
+		void removeGameFromList(const std::shared_ptr<NGame::Game> &game);
 
     // scoped functions
     public:
@@ -82,7 +84,6 @@ class GamesManager : public NoCopyable, public PlayerCommunicationManager::OnPla
         GamesManager::OnGamesManagerEvent *mListener;
 		ScriptLoader mScriptLoader;
         PlayerCommunicationManager mPlayerCommunicationManager;
-		
         mutable std::vector<std::shared_ptr<NGame::Game>> mGames;
-        std::mutex mMutexTest;
+
 };
