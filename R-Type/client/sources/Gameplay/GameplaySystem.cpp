@@ -108,3 +108,26 @@ void	LeftSystem::process(Entity &entity, uint32_t delta)
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalMove(IResource::Direction::RIGHT);
 	}
 }
+
+BackSystem::BackSystem()
+{
+	setComponentNeeded(ComponentType::BACK);
+}
+
+BackSystem::~BackSystem()
+{
+}
+
+void	BackSystem::process(Entity &entity, uint32_t delta)
+{
+	Back *back = static_cast<Back *>(entity.getSpecificComponent(ComponentType::BACK));
+
+	back->addDelta(delta);
+
+	if (back->hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("back"))
+	{
+		back->resetTimer();
+		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalLeaveGame();
+		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::Game::MENU);
+	}
+}

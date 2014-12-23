@@ -29,4 +29,9 @@ namespace Config
 		const std::string	adress = "127.0.0.1";
 		const std::string	defaultPseudo = "anon en mousse";
 	}
+
+	namespace Audio
+	{
+		const float			volume = 100.f;
+	}
 }

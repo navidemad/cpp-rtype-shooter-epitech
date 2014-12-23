@@ -16,6 +16,9 @@ public:
 		PRESS_START = 0,
 		MENU,
 		OPTION,
+		NETWORK,
+		GAME,
+		AUDIO,
 		SEARCH_MENU,
 		CREATE_MENU,
 		RTYPE,
@@ -54,31 +57,46 @@ public:
 		int										mPort;
 		std::string								mAdresse;
 		std::string								mPseudo;
+		float									mMusicVolume;
 
 	private: // init function
 		void						init();
 
+		void						initPressStart();
 		void						initMenu();
 		void						initOption();
-		void						initPressStart();
+		void							initNetwork();
+		void							initGame();
+		void							initAudio();
 		void						initRtype();
 		void						initSearchMenu();
 		void						initCreateMenu();
 		void						initArtwork();
+		void						initConnect();
+		void						initStart();
+		void						initECS();
+		void						initStop();
+		void						initInitECS();
 
 	private:
+		void						startPressStart();
 		void						startMenu();
 		void						startOption();
-		void						startPressStart();
+		void							startNetwork();
+		void							startGame();
+		void							startAudio();
 		void						startRtype();
 		void						startSearchMenu();
 		void						startCreateMenu();
 		void						startArtwork();
 
 	private:
+		void						stopPressStart();
 		void						stopMenu();
 		void						stopOption();
-		void						stopPressStart();
+		void							stopNetwork();
+		void							stopGame();
+		void							stopAudio();
 		void						stopRtype();
 		void						stopSearchMenu();
 		void						stopCreateMenu();
@@ -92,6 +110,7 @@ public:
 		void	setIpAdresse(std::string const &);
 		void	setPseudo(std::string const &);
 		void	setGame(std::string const &);
+		void	setMusicVolume(std::string const &);
 		void	setLevel(std::string const &);
 		void	setScript(std::string const &);
 		bool	createGame();

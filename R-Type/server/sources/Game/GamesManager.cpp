@@ -5,8 +5,7 @@
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
 #include "Default.hpp"
-
-#include <csignal>
+#include "Utils.hpp"
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -21,14 +20,6 @@ GamesManager::GamesManager(void) :
 GamesManager::~GamesManager(void) 
 {
     mGames.clear();
-    mThreadPool->stop();
-}
-
-volatile std::sig_atomic_t interruptedSignal;
- 
-extern "C" void signal_handler(int signal)
-{
-    interruptedSignal = signal;
 }
 
 int GamesManager::run(void) {
@@ -38,13 +29,7 @@ int GamesManager::run(void) {
         return EXIT_FAILURE;
     }
 
-    if (std::signal(SIGINT, signal_handler) == SIG_ERR)
-    {
-        std::cerr << "Cannot set signal_handler" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    while (!interruptedSignal)
+    while (!Utils::interruptedSignal)
         loopGames();
 
     return EXIT_SUCCESS;

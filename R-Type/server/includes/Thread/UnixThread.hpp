@@ -11,7 +11,7 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 
 	// ctor dtor
 	public:
-		UnixThread(void) : mIsRunning(false) {}
+		UnixThread(void) = default;
 		~UnixThread(void) = default;
 
 	// enum ret value
@@ -26,15 +26,11 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 
 			if (pthread_create(&mThread, NULL, start_thread_trampoline<U, T>, this) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_create()");
-
-			mIsRunning = true;
 		}
 
-		void wait(void **retVal = NULL) {
-			if (pthread_join(mThread, retVal) != UnixThread::PTHREAD_SUCCESS)
-				throw ThreadException("fail pthread_join()");
-
-			mIsRunning = false;
+		void wait(void) {
+		  if (pthread_join(mThread, NULL) != UnixThread::PTHREAD_SUCCESS)
+		  		throw ThreadException("fail pthread_join()");
 		}
 
 		void *start(void) {
@@ -43,15 +39,12 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 		}
 
 		void cancel(void) {
-			if (mIsRunning == true && pthread_cancel(mThread) != UnixThread::PTHREAD_SUCCESS)
+			if (pthread_cancel(mThread) != UnixThread::PTHREAD_SUCCESS)
 				throw ThreadException("fail pthread_cancel()");
-
-			mIsRunning = false;
-    	}
+		}
 
 		void exit(void *status) {
 			pthread_exit(status);
-			mIsRunning = false;
 		}
 
 	// attributes
@@ -59,6 +52,5 @@ class UnixThread : public NoCopyable, public IThread<U, T> {
 		pthread_t mThread;
 		U mCallObj;
 		T mFctParam;
-		bool mIsRunning;
 
 };

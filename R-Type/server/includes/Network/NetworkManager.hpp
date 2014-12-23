@@ -55,7 +55,10 @@ class NetworkManager : public NoCopyable {
 		void	initFds(void);
 		void	checkFds(void);
 		void	socketCallback(int socketFd, bool readable, bool writable);
-		bool	stillUnderControl(int socketFd);
+		bool	stillUnderControl(const std::list<NetworkManager::Socket>::iterator &socket, int socketFd);
+		void	readCallBack(int socketFd);
+		void	writeCallBack(int socketFd);
+		void	endCallBack(int socketFd);
 
 	// attributes
 	private:

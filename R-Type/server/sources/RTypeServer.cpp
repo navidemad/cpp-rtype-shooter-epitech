@@ -5,7 +5,9 @@
 #include "Default.hpp"
 #include <cstdlib>
 #include <ctime>
+#include "Utils.hpp"
 #include <iostream>
+#include <csignal>
 
 RTypeServer::RTypeServer(void) {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -14,6 +16,7 @@ RTypeServer::RTypeServer(void) {
 }
 
 int RTypeServer::run(void) {
+	signal(SIGINT, Utils::signal_handler);
 	startInfo();
 	mClientManager.run();
 	return mGamesManager.run();

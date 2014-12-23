@@ -52,3 +52,13 @@ public:
 public:
 	void	process(Entity &, uint32_t /* */);
 };
+
+class BackSystem : public System
+{
+public:
+	BackSystem();
+	~BackSystem();
+
+public:
+	void	process(Entity &, uint32_t /* */);
+};

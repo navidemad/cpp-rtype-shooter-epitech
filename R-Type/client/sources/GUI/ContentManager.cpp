@@ -55,13 +55,13 @@ void	ContentManager::loadFonts()
 
 void	ContentManager::loadMusics()
 {
-	mMusics->loadResources("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg");
-	mMusics->loadResources("Game", "./assets/musics/Touhou_8/[02] Illusionary Night ~ Ghostly Eyes.ogg");
-	mMusics->loadResources("Boss", "./assets/musics/Touhou_8/[08] Retribution for the Eternal Night ~ Imperishable Night.ogg");
+	//mMusics->loadResources("Menu", "./assets/musics/Touhou_8/[01] Eternal Night Vignette ~ Eastern Night.ogg");
+	//mMusics->loadResources("Game", "./assets/musics/Touhou_8/[02] Illusionary Night ~ Ghostly Eyes.ogg");
+	//mMusics->loadResources("Boss", "./assets/musics/Touhou_8/[08] Retribution for the Eternal Night ~ Imperishable Night.ogg");
 
-	//mMusics->loadResources("Menu", "./assets/musics/FFXIII/01_-_Prelude_to_FINAL_FANTASY_XIII.ogg");
-	//mMusics->loadResources("Game", "./assets/musics/FFXIII/01_-_Blinded_By_Light.ogg");
-	//mMusics->loadResources("Boss", "./assets/musics/FFXIII/05_-_Saber_39_s_Edge.ogg");
+	mMusics->loadResources("Menu", "./assets/musics/FFXIII/01_-_Prelude_to_FINAL_FANTASY_XIII.ogg");
+	mMusics->loadResources("Game", "./assets/musics/FFXIII/01_-_Blinded_By_Light.ogg");
+	mMusics->loadResources("Boss", "./assets/musics/FFXIII/05_-_Saber_39_s_Edge.ogg");
 }
 
 void	ContentManager::loadSounds()
@@ -70,6 +70,7 @@ void	ContentManager::loadSounds()
 	mSounds->loadResources("option", "./assets/sounds/efx/se_option.wav");
 	mSounds->loadResources("pause", "./assets/sounds/efx/se_pause.wav");
 	mSounds->loadResources("pldead", "./assets/sounds/efx/se_pldead00.wav");
+	mSounds->loadResources("shot", "./assets/sounds/efx/se_tan00.wav");
 }
 
 std::shared_ptr<IResourceManager<sf::Texture>> const	&ContentManager::getTextures() const

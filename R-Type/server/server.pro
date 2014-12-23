@@ -22,15 +22,15 @@ INCLUDEPATH		+=	.					\
 				includes/Mutex				\
 				includes/Thread				\
 				includes/CondVar			\
-				includes/Game			\
-				includes/Script			\
+				includes/Game                           \
+				includes/Script                         \
 				includes/Readdir			\
-				../shared/includes/Exceptions \
-				../shared/includes/DynLib			\
+				../shared/includes/Exceptions           \
+				../shared/includes/DynLib		\
 				../shared/includes			\
 				../shared/includes/Network		\
 				../shared/includes/Commands		\
-                ../shared/includes/Error                \
+                                ../shared/includes/Error                \
 				dependencies/includes			\
 				build					\
 				build/ui				\
@@ -44,17 +44,17 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Exceptions/ThreadException.hpp			\
 				includes/Exceptions/CondVarException.hpp		\
 				includes/Exceptions/GameException.hpp			\
-				../shared/includes/Exceptions/DynLibException.hpp			\
+				../shared/includes/Exceptions/DynLibException.hpp	\
 				includes/Exceptions/GamesManagerException.hpp		\
 				includes/Mutex/ScopedLock.hpp				\
 				includes/Mutex/IMutex.hpp				\
 				includes/CondVar/ICondVar.hpp				\
-				../shared/includes/DynLib/IDynLib.hpp				\
-				includes/Readdir/IReaddir.hpp \
+				../shared/includes/DynLib/IDynLib.hpp			\
+				includes/Readdir/IReaddir.hpp                           \
 				includes/Network/NetworkManager.hpp     		\
 				includes/Network/PlayerCommunicationManager.hpp		\
 				../shared/includes/Config.hpp				\
-				../shared/includes/Utils.hpp				\
+				../shared/includes/Utils.hpp    			\
 				../shared/includes/Network/IClientSocket.hpp		\
 				../shared/includes/Network/IServerSocket.hpp		\
                                 ../shared/includes/Commands/ICommand.hpp        	\
@@ -105,7 +105,7 @@ HEADERS			+=	../shared/includes/NoCopyable.hpp			\
 				includes/Game/GamesManager.hpp 				\
 				../shared/includes/Network/Peer.hpp
 
-unix:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
+UNIX:HEADERS		+=	includes/Mutex/UnixMutex.hpp				\
 				includes/Network/UnixTcpClient.hpp			\
 				includes/Network/UnixTcpServer.hpp			\
 				includes/Network/UnixUdpClient.hpp			\

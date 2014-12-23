@@ -31,7 +31,10 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 		bool				playSound(std::string const &key, bool onLoop = false);
 		void				stopMusic();
 		void				stopSound(std::string const &key);
-		void				setVolume(std::string const &key, float volume = 100.0);
+		float				getVolumeMusic() const;
+		void				setVolumeMusic(float volume);
+		float				getVolumeSound(std::string const &key) const;
+		void				setVolumeSound(std::string const &key, float volume = 100.0);
 		std::string	const	&getInputText() const;
 
 		bool				isOpen() const;

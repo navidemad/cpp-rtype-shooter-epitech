@@ -2,16 +2,19 @@
 #include <iostream>
 #include <algorithm>
 
+std::sig_atomic_t Utils::interruptedSignal = 0;
+
+void  Utils::signal_handler(int signal)
+{
+  Utils::interruptedSignal = signal;
+}
+
 void Utils::logInfo(const std::string &log) {
-#ifdef _DEBUG
 	std::cout << log << std::endl;
-#endif
 }
 
 void Utils::logError(const std::string &log) {
-#ifdef _DEBUG
 	std::cerr << log << std::endl;
-#endif
 }
 
 std::string Utils::basename(const std::string &pathname)

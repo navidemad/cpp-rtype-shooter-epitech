@@ -33,3 +33,6 @@ Left::~Left() { }
 
 Right::Right() : Gameplay(ComponentType::RIGHT, 8000) { }
 Right::~Right() { }
+
+Back::Back() : Gameplay(ComponentType::BACK, 0) { }
+Back::~Back() { }
