@@ -112,7 +112,7 @@ class ButtonKeyInput : public Button
 {
 	public:
 		ButtonKeyInput(Font *font, void(RTypeClient::*handler)(std::string const &), std::vector<T> const &list) : 
-			Button(256), mFont(font), mHandler(handler), mList(list) {}
+			Button(100), mFont(font), mHandler(handler), mList(list) {}
 		~ButtonKeyInput() {}
 
 	public:

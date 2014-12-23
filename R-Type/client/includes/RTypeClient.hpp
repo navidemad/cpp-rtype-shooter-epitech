@@ -62,6 +62,7 @@ public:
 		float									mMusicVolume;
 		float									mSoundVolume;
 		bool									mFullscreenMode;
+		bool									m60FPSMode;
 
 	private: // init function
 		void						init();
@@ -120,6 +121,7 @@ public:
 		void	setNbPlayerMax(std::string const &);
 		void	setNbPublicMax(std::string const &);
 		void	setFullscreen(bool enable = false);
+		void	setFPSMode(bool enable = false);
 		void	setScript(std::string const &);
 		bool	createGame();
 		void	connectToServer();

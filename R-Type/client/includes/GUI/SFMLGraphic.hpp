@@ -52,6 +52,7 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 
 		void				setStyle(uint32_t style);
 		void				updateWindow();
+		void				setFPSMode(bool enbale);
 
 	// window's attributes
 	private:

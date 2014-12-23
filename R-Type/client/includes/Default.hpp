@@ -9,6 +9,7 @@ namespace Config
 	{
 		const std::string	nameWindow = "R-Type Project";
 		const bool			fullscreenMode = false;
+		const bool			FPSMode = false;
 
 		const unsigned int	x = 1920;
 		const unsigned int	y = 1080;

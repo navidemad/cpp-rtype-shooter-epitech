@@ -36,7 +36,7 @@ RTypeClient::RTypeClient()
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
-  mSoundVolume(Config::Audio::volume), mFullscreenMode(Config::Window::fullscreenMode)
+  mSoundVolume(Config::Audio::volume), mFullscreenMode(Config::Window::fullscreenMode), m60FPSMode(Config::Window::FPSMode)
 {
 	initECS();
 	initStart();
@@ -457,6 +457,11 @@ void			RTypeClient::initGame()
 	fullscreenGame.addComponent(new Position(1400, 500));
 	fullscreenGame.addComponent(fontFullscreenGame);
 
+	Entity		FPSModeGame = engine.createEntity();
+	Font		*fontFPSModeGame = new Font("0", Config::Window::FPSMode ? "yes" : "no");
+	FPSModeGame.addComponent(new Position(1400, 600));
+	FPSModeGame.addComponent(fontFPSModeGame);
+
 	// set pseudo game
 	Entity		pseudoGameButton = engine.createEntity();
 	cursor->addEntity(pseudoGameButton.getId());
@@ -470,6 +475,13 @@ void			RTypeClient::initGame()
 	fullscreenButton.addComponent(new Position(960, 500));
 	fullscreenButton.addComponent(new Font("0", "Fullscreen"));
 	fullscreenButton.addComponent(new ButtonStateInput(fontFullscreenGame, &RTypeClient::setFullscreen));
+
+	// enable/disable 60fps mode
+	Entity		FPSMode = engine.createEntity();
+	cursor->addEntity(FPSMode.getId());
+	FPSMode.addComponent(new Position(960, 600));
+	FPSMode.addComponent(new Font("0", "60 fps mode"));
+	FPSMode.addComponent(new ButtonStateInput(fontFPSModeGame, &RTypeClient::setFPSMode));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -913,6 +925,13 @@ void	RTypeClient::setFullscreen(bool enable)
 	auto sg = std::static_pointer_cast<SFMLGraphic>(mGui);
 	sg->setStyle(mFullscreenMode ? sf::Style::Fullscreen : sf::Style::Default);
 	sg->updateWindow();
+}
+
+void	RTypeClient::setFPSMode(bool enable)
+{
+	m60FPSMode = enable;
+	auto sg = std::static_pointer_cast<SFMLGraphic>(mGui);
+	sg->setFPSMode(m60FPSMode);
 }
 
 void	RTypeClient::setLevel(std::string const &level)

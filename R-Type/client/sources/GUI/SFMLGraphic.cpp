@@ -11,7 +11,6 @@ SFMLGraphic::SFMLGraphic() :
 	mSoundVolume(Config::Audio::volume)
 {
 	mWindow.setActive(false);
-	mWindow.setFramerateLimit(60);
 }
 
 SFMLGraphic::~SFMLGraphic()
@@ -204,6 +203,11 @@ void				SFMLGraphic::updateWindow()
 		mWindow.create(mVideoMode, mTitle, mStyle);
 		one = !one;
 	}
+}
+
+void				SFMLGraphic::setFPSMode(bool enable)
+{
+	mWindow.setFramerateLimit(enable ? 60 : 0);
 }
 
 /*
