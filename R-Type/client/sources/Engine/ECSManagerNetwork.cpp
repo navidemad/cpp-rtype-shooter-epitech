@@ -16,11 +16,11 @@
 #include "DynLibException.hpp"
 
 std::map<IResource::Type, std::string> ECSManagerNetwork::mDLLoader {
-    { IResource::Type::PLAYER, "./../shared/ressources/player/player" },
-    { IResource::Type::CASTER, "./../shared/ressources/caster/caster" },
-    { IResource::Type::MELEE, "./../shared/ressources/melee/melee" },
-    { IResource::Type::SUPER, "./../shared/ressources/super/super" },
-    { IResource::Type::BULLET, "./../shared/ressources/bullet/bullet" }
+    { IResource::Type::PLAYER, "./../shared/resources/player/player" },
+    { IResource::Type::CASTER, "./../shared/resources/caster/caster" },
+    { IResource::Type::MELEE, "./../shared/resources/melee/melee" },
+    { IResource::Type::SUPER, "./../shared/resources/super/super" },
+    { IResource::Type::BULLET, "./../shared/resources/bullet/bullet" }
 };
 
 ECSManagerNetwork::ECSManagerNetwork()
@@ -71,10 +71,10 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 {
 	try
 	{
-/*        if (!mDLLoader.count(type)) {
+        if (!mDLLoader.count(type)) {
             std::cerr << "Type non géré par le client encore" << std::endl;
             return;
-        }*/
+        }
 		if (!isEntityCreated(id + mFirstId))
 		{
 			createEntity(id + mFirstId);
@@ -87,9 +87,9 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 				lib->libraryLoad(mDLLoader[type]);
 				if (lib->functionLoad("entry_point") == nullptr)
 					return;
-				auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+				auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 
-				entity.addComponent(new Drawable(ressource->getName()));
+				entity.addComponent(new Drawable(resource->getName()));
 				entity.addComponent(new Position((Config::Window::x / 100.f) * x, (Config::Window::y / 100.f) * y));
 				if (type == IResource::Type::BULLET)
 				{
