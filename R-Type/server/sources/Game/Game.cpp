@@ -37,9 +37,9 @@ mCurrentComponentMaxId(Config::Game::minIdComponent)
 void NGame::Game::pull(void) {
     setPullEnded(false);
 
-    static const auto& functionsPull = std::vector<std::function<void(void)>> 
+    static const auto& functionsPull = std::vector<std::function<void(void)>>
     {
-        std::bind(&NGame::Game::broadcastMap, this), 
+        std::bind(&NGame::Game::broadcastMap, this),
         std::bind(&NGame::Game::checkCollisions, this),
         std::bind(&NGame::Game::moveEntities, this)
     };
@@ -348,6 +348,10 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& /*component*/, NGame::Co
 /*
 ** workflow STL
 */
+std::vector<NGame::User>::iterator NGame::Game::findIteratorUserByHost(const Peer &peer) {
+	return std::find_if(mUsers.begin(), mUsers.end(), [&](const NGame::User& user) { return user.getPeer() == peer; });
+}
+
 NGame::User& NGame::Game::findUserByHost(const Peer &peer) {
     std::vector<NGame::User>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&](const NGame::User& user) { return user.getPeer() == peer; });
     if (it == mUsers.end())
@@ -472,18 +476,24 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-    Scopedlock(mMutex);
+	std::vector<NGame::User>::iterator user;
+	NGame::USER_TYPE type;
 
-	for (auto it = mUsers.begin(); it != mUsers.end(); it++) {
-		if (it->getPeer() == peer) {
-			if (it->getType() == NGame::USER_TYPE::PLAYER)
-				tryDelPlayer();
-			if (it->getType() == NGame::USER_TYPE::SPECTATOR)
-				tryDelSpectator();
-            mUsers.erase(it);
-            return;
-        }
-    }
+	{
+		Scopedlock(mMutex);
+
+		user = findIteratorUserByHost(peer);
+		if (user == mUsers.end())
+			throw GameException("Try to delete an undefined address ip");
+
+		type = user->getType();
+		mUsers.erase(user);
+	}
+
+	if (type == NGame::USER_TYPE::PLAYER)
+		tryDelPlayer();
+	else if (type == NGame::USER_TYPE::SPECTATOR)
+		tryDelSpectator();
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
