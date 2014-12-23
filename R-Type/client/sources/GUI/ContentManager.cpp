@@ -34,10 +34,12 @@ void	ContentManager::loadSprites()
 	sprites->loadResources("cursor", "assets/sprites/cursor.png");
 
 	// sprites use essentially for ingame
-	sprites->loadResources("ball", "assets/sprites/r-typesheet2.gif", 8, 2, SpriteManager::SpriteOffset(29, 470, 544, 66), true); // circle blaster
+	sprites->loadResources("bullet", "assets/sprites/r-typesheet2.gif", 8, 2, SpriteManager::SpriteOffset(29, 470, 544, 66), true); // circle blaster
 	sprites->loadResources("player", "assets/sprites/r-typesheet42.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 166, 21), true);
-	sprites->loadResources("monster", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true);
-	sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(157, 34, 288, 24), true);
+    sprites->loadResources("caster", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true);
+    sprites->loadResources("melee", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true); // a changer
+    sprites->loadResources("super", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true); // a changer
+    sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(157, 34, 288, 24), true);
 
 	// load sketches drawing by tran_y on smartphone 5.2" (Xperia Z2 with pen/pencil)
 	sprites->loadResources("sketch01", "assets/sprites/sketchs/sketch-1418753217209.jpg");

@@ -37,7 +37,8 @@ INCLUDEPATH		+=	.					\
 				build/moc
 
 HEADERS			+=	../shared/includes/NoCopyable.hpp			\
-				includes//Default.hpp							\
+				../shared/includes/Vertex.hpp					\
+				includes/Default.hpp							\
 				includes/Exceptions/MutexException.hpp			\
 				includes/Exceptions/SocketException.hpp			\
 				includes/Exceptions/ThreadException.hpp			\

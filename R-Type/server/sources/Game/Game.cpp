@@ -28,9 +28,11 @@ mMutex(PortabilityBuilder::getMutex()),
 mPullEnded(true),
 mCurrentComponentMaxId(Config::Game::minIdComponent)
 {
+
 }
 
-NGame::Game::~Game(void) {
+NGame::Game::~Game(void)
+{
 
 }
 
@@ -38,7 +40,17 @@ NGame::Game::~Game(void) {
 ** pull function called by threadPool
 */
 void NGame::Game::pull(void) {
-	setPullEnded(false);
+    setPullEnded(false);
+
+    /*
+    have to apply something like here: 'http://alexreidy.me/game-programming-an-explanation-of-delta-time/'
+    clock_t currentTime = std::clock();
+    {
+        Scopedlock(mMutex);
+        mDeltaTime = (static_cast<double>(currentTime - mLastTime) / static_cast<double>(CLOCKS_PER_SEC));
+        mLastTime = currentTime;
+    }
+    */
 
 	try {
 		if (getState() == NGame::Game::State::RUNNING)
@@ -46,7 +58,7 @@ void NGame::Game::pull(void) {
 		if (getState() == NGame::Game::State::RUNNING)
 			checkCollisions();
 		if (getState() == NGame::Game::State::RUNNING)
-			moveEntities();
+            moveEntities();
 	}
 	catch (const GameException& e) {
 		Utils::logError(e.what());
@@ -82,9 +94,11 @@ void NGame::Game::checkCollisions(void) {
 		{
 			if ((*it).getType() == IResource::Type::PLAYER) // exception quand on spam SPACE
 			{
-				const auto& user = findUserById((*it).getId());
-				if (user != getUsers().end())
-					transferPlayerToSpectators(*user);
+                try {
+                    NGame::User& user = findUserById((*it).getId());
+                    transferPlayerToSpectators(user);
+                }
+                catch (const GameException&) { }
 			}
 			auto listener = getListener();
 		    if (listener)
@@ -96,11 +110,11 @@ void NGame::Game::checkCollisions(void) {
 	}
 }
 
-void NGame::Game::moveEntities(void) {
-	auto& components = getComponents();
+void NGame::Game::moveEntities() {
+	auto components = getComponents();
 	for (auto& component : components)
 		if (component.getType() != IResource::Type::PLAYER)
-			updatePositionComponent(component);
+            updatePositionComponent(component);
 }
 
 /*
@@ -205,6 +219,7 @@ void NGame::Game::initTimer(void) {
     Scopedlock(mMutex);
 
     mTimer = std::clock();
+    mLastTime = std::clock();
 }
 
 void NGame::Game::setMutex(std::shared_ptr<IMutex>& mutex) {
@@ -294,8 +309,8 @@ bool NGame::Game::collisionTouch(const NGame::Component& component, const NGame:
 		);
 }
 
-bool NGame::Game::collisionWithNoLife(NGame::Component& component) {
-	return findUserById(component.getId()) != getUsers().end() && component.getLife() == 0;
+bool NGame::Game::collisionWithNoLife(NGame::Component&) {
+    return true;
 }
 
 bool NGame::Game::collisionWithBonus(NGame::Component& component, NGame::Component& obstacle) {
@@ -309,8 +324,11 @@ bool NGame::Game::collisionWithBonus(NGame::Component& component, NGame::Compone
 bool NGame::Game::collisionWithBullet(NGame::Component& component, NGame::Component& obstacle) {
 	if (obstacle.getType() == IResource::Type::BULLET)
 	{
-		const auto& user = findUserById(obstacle.getId());
-		bool friendBullet = user != getUsers().end();
+        bool friendBullet = false;
+        try {
+            findUserById(obstacle.getId());
+            friendBullet = true;
+        }  catch (const GameException&) { }
 		switch (component.getType())
 		{
 		case IResource::Type::PLAYER:
@@ -325,8 +343,10 @@ bool NGame::Game::collisionWithBullet(NGame::Component& component, NGame::Compon
 	return false;
 }
 
-bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Component& obstacle) {
-	if (obstacle.getType() == IResource::Type::ENNEMY)
+bool NGame::Game::collisionWithEnnemy(NGame::Component& /*component*/, NGame::Component& /*obstacle*/) {
+    return false;
+    /*
+	if (obstacle.getType() == IResource::Type::CASTER)
 	{
 		const auto& user = findUserById(component.getId());
 		bool friendBullet = user != getUsers().end();
@@ -351,6 +371,7 @@ bool NGame::Game::collisionWithEnnemy(NGame::Component& component, NGame::Compon
 		}
 	}
 	return false;
+    */
 }
 
 /*
@@ -365,22 +386,27 @@ std::vector<NGame::User>::iterator NGame::Game::findIteratorUserByHost(const Pee
 }
 
 NGame::User& NGame::Game::findUserByHost(const Peer &peer) {
-	std::vector<NGame::User>& users = getUsers();
-	std::vector<NGame::User>::iterator it = std::find_if(users.begin(), users.end(), [&](const NGame::User& user) { return user.getPeer() == peer; });
-	if (it == users.end())
-		throw GameException("user not found for this peer");
-	return *it;
+    std::vector<NGame::User>& users = getUsers();
+    std::vector<NGame::User>::iterator it = std::find_if(users.begin(), users.end(), [&peer](const NGame::User& user) { return user.getPeer() == peer; });
+    if (it == users.end())
+        throw GameException("user not found for this peer");
+    return *it;
 }
 
-const NGame::User& findUserByHost(const Peer &);
-
-
-std::vector<NGame::User>::iterator NGame::Game::findUserById(uint64_t id) {
-	return std::find_if(getUsers().begin(), getUsers().end(), [&id](const NGame::User& user) { return user.getId() == id; });
+NGame::User& NGame::Game::findUserById(uint64_t id) {
+    std::vector<NGame::User>& users = getUsers();
+    std::vector<NGame::User>::iterator it = std::find_if(users.begin(), users.end(), [&id](const NGame::User& user) { return user.getId() == id; });
+    if (it == users.end())
+        throw GameException("user not found for this id");
+    return *it;
 }
 
-std::vector<NGame::Component>::iterator NGame::Game::findComponentById(uint64_t id) {
-	return std::find_if(getComponents().begin(), getComponents().end(), [&id](const NGame::Component& component) { return component.getId() == id; });
+NGame::Component& NGame::Game::findComponentById(uint64_t id) {
+    std::vector<NGame::Component>& components = getComponents();
+    std::vector<NGame::Component>::iterator it = std::find_if(components.begin(), components.end(), [&id](const NGame::Component& component) { return component.getId() == id; });
+    if (it == components.end())
+        throw GameException("component not found for this id");
+    return *it;
 }
 
 /*
@@ -483,17 +509,31 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 }
 
 void NGame::Game::delUser(const Peer &peer) {
-	auto user = findIteratorUserByHost(peer);
+    auto& user = findIteratorUserByHost(peer);
 
-	if (user == getUsers().end())
-		throw GameException("Try to delete an undefined address ip");
+    if ((*user).getType() == NGame::USER_TYPE::PLAYER)
+        tryDelPlayer();
+    else if ((*user).getType() == NGame::USER_TYPE::SPECTATOR)
+        tryDelSpectator();
 
-	if ((*user).getType() == NGame::USER_TYPE::PLAYER)
+    {
+        Scopedlock(mMutex);
+        mUsers.erase(user);
+    }
+
+    /*
+    NGame::User& user = findUserByHost(peer);
+
+	if (user.getType() == NGame::USER_TYPE::PLAYER)
 		tryDelPlayer();
-	else if ((*user).getType() == NGame::USER_TYPE::SPECTATOR)
-		tryDelSpectator();
-
-	eraseUserOfList(user);
+	else if (user.getType() == NGame::USER_TYPE::SPECTATOR)
+        tryDelSpectator();
+    
+    {
+        Scopedlock(mMutex);
+        mUsers.erase(std::remove(mUsers.begin(), mUsers.end(), user), mUsers.end());
+    }
+    */
 }
 
 void NGame::Game::transferPlayerToSpectators(NGame::User& user) {
@@ -509,9 +549,15 @@ void NGame::Game::updatePositionComponent(NGame::Component& component) {
 	double pi = 3.14159265358979323846;
 	double angleInRad = component.getAngle() * pi / 180;
 	double speed = component.getSpeed();
-	double dx = speed * cos(angleInRad);
-	double dy = speed * sin(angleInRad);
+    double dx = speed * cos(angleInRad);// * mDeltaTime;
+    double dy = speed * sin(angleInRad);// * mDeltaTime;
 
+    /*
+    std::cout << "dx = '" << dx << "'" << std::endl;
+    std::cout << "mDeltaTime = '" << mDeltaTime << "'" << std::endl;
+    std::cout << "dx * mDeltaTime = '" << dx * mDeltaTime << "'" << std::endl;
+    le mDeltaTime semble pas bon
+    */
 	component.setX(component.getX() + dx);
 	component.setY(component.getY() + dy);
 }
@@ -528,15 +574,12 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 	double bulletSpeed = 0.0016;
 	short bulletAngle = 0;
 	
-	const auto& user = findIteratorUserByHost(peer);
-	if (user == getUsers().end())
-		throw GameException("fire a player that not in this game");
-	const auto& component_user = findComponentById((*user).getId());
-	if (component_user == getComponents().end())
-		throw GameException("NGame::Game::fire component_user that not in this game");
+    NGame::User& user = findUserByHost(peer);
 
-	component.setX((*component_user).getX());
-	component.setY((*component_user).getY());
+    NGame::Component& component_user = findComponentById(user.getId());
+
+	component.setX(component_user.getX());
+	component.setY(component_user.getY());
 	component.setWidth(bulletWidth);
 	component.setHeight(bulletHeight);
 	component.setAngle(bulletAngle);
@@ -551,17 +594,13 @@ NGame::Component NGame::Game::fire(const Peer &peer) {
 }
 
 const NGame::Component& NGame::Game::move(const Peer &peer, IResource::Direction direction) {
-	const auto& user = findIteratorUserByHost(peer);
-	if (user == getUsers().end())
-		throw GameException("fire a player that not in this game");
-	const auto& component = findComponentById((*user).getId());
-	if (component == getComponents().end())
-		throw GameException("NGame::Game::move component_user that not in this game");
+    NGame::User& user = findUserByHost(peer);
+    NGame::Component& component = findComponentById(user.getId());
 
-    (*component).setAngle(Config::Game::angleTab[direction]);
-	updatePositionComponent(*component);
+    component.setAngle(Config::Game::angleTab[direction]);
+	updatePositionComponent(component);
 
-	return *component;
+	return component;
 }
 
 /*
@@ -571,22 +610,83 @@ void	NGame::Game::scriptCommandName(const IScriptCommand* command) {
 	auto commandScriptName = dynamic_cast<const ScriptName*>(command);
 
     if (!commandScriptName)
-    	return;
+        throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptName*'");
 
 	if (commandScriptName->getStageName() != getProperties().getLevelName())
 		throw GameException("script name request doesn't match with the level name of current game");
 }
 
 void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
-	auto commandScriptRequire = dynamic_cast<const ScriptName*>(command);
+	auto commandScriptRequire = dynamic_cast<const ScriptRequire*>(command);
 
     if (!commandScriptRequire)
-    	return;
+        throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptRequire*'");
+
+    for (const auto& path : mDLLoader)
+        if (Utils::basename(path.second) == commandScriptRequire->getRessourceName())
+            return;
+    throw GameException("require an invalide entity name");
 }
 
 void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
-	auto commandScriptSpawn = dynamic_cast<const ScriptName*>(command);
+	auto commandScriptSpawn = dynamic_cast<const ScriptSpawn*>(command);
 
     if (!commandScriptSpawn)
-    	return;
+        throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptSpawn*'");
+
+    /*
+    for (const auto& path : mDLLoader)
+    if (Utils::basename(path.second) == commandScriptSpawn->getSpawnName()) {
+        auto lib = PortabilityBuilder::getDynLib();
+        try {
+            lib->libraryLoad(path.second);
+            if (lib->functionLoad("entry_point") == nullptr)
+                return;
+            auto ressource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+
+            NGame::Component component;
+
+            setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
+
+            component.setX(commandScriptSpawn->getX());
+            component.setY(commandScriptSpawn->getY());
+            component.setAngle(commandScriptSpawn->getAngle());
+            component.setResource(ressource);
+
+
+
+
+        }
+        catch (const DynLibException& e) {
+            std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
+        }
+    }
+
+
+
+        component.setWidth(playerWidth);
+    component.setHeight(playerHeight);
+    component.setAngle(playerAngle);
+    component.setSpeed(playerSpeed);
+    component.setLife(10);
+    component.setType(IResource::Type::PLAYER);
+    component.setId(getCurrentComponentMaxId());
+
+    addComponentInList(component);
+    user.setId(getCurrentComponentMaxId());
+    addUserInList(user);
+
+    getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
+
+    const auto listener = getListener();
+    if (listener)
+        listener->onNotifyUsersComponentAdded(getUsers(), component);
+
+
+    commandScriptSpawn->
+    NGame::Component component;
+
+    if (mListener)
+        mListener->onNotifyUsersComponentAdded(getUsers(), component);
+    */
 }

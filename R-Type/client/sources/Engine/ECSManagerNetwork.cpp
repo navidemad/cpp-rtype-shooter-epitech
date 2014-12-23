@@ -15,11 +15,17 @@
 #include "IResource.hpp"
 #include "DynLibException.hpp"
 
+std::map<IResource::Type, std::string> ECSManagerNetwork::mDLLoader {
+    { IResource::Type::PLAYER, "./../shared/ressources/player/player" },
+    { IResource::Type::CASTER, "./../shared/ressources/caster/caster" },
+    { IResource::Type::MELEE, "./../shared/ressources/melee/melee" },
+    { IResource::Type::SUPER, "./../shared/ressources/super/super" },
+    { IResource::Type::BULLET, "./../shared/ressources/bullet/bullet" }
+};
+
 ECSManagerNetwork::ECSManagerNetwork()
 {
-	mDLLoader[IResource::Type::PLAYER]  = "./../shared/entities/Player/Player";
-	mDLLoader[IResource::Type::ENNEMY]  = "./../shared/entities/Monster/Monster";
-	mDLLoader[IResource::Type::BULLET ] = "./../shared/entities/Ball/Ball";
+
 }
 
 void ECSManagerNetwork::OnDestroyResource(int id)
@@ -51,6 +57,10 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 {
 	try
 	{
+        if (!mDLLoader.count(type)) {
+            std::cerr << "Type non géré par le client encore" << std::endl;
+            return;
+        }
 		if (!isEntityCreated(id + mFirstId))
 		{
 			createEntity(id + mFirstId);

@@ -3,9 +3,12 @@
 #include "GamesManagerException.hpp"
 #include "PlayerCommunicationManager.hpp"
 #include "Default.hpp"
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 RTypeServer::RTypeServer(void) {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	mClientManager.setListener(this);
 	mGamesManager.setListener(this);
 }
