@@ -128,7 +128,6 @@ class ButtonKeyInput : public Button
 				}
 				else if (entity.getEntityManager()->getClient()->getGui()->isPressed("right"))
 				{
-					std::cout << "R typeid vaut " << typeid(*it).name() << std::endl;
 					if (it != mList.end() - 1)
 						++it;
 					mFont->setText(std::to_string(*it));
