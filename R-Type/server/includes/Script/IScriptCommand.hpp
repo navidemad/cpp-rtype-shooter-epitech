@@ -9,6 +9,7 @@ class IScriptCommand {
 	public:
         virtual ~IScriptCommand() = default;
     public:
+        virtual IScriptCommand* clone(void) const = 0;
         virtual double getFrame(void) const = 0;
         virtual void setFrame(double) = 0;
         virtual IScriptCommand::Instruction getInstruction(void) const = 0;
@@ -17,6 +18,7 @@ class IScriptCommand {
 
 class ScriptRequire : public IScriptCommand {
     public:
+        virtual IScriptCommand* clone(void) const { return new ScriptRequire(*this); }
         virtual double getFrame(void) const { return mFrame; }
         virtual void setFrame(double frame) { mFrame = frame; }
         virtual IScriptCommand::Instruction getInstruction(void) const { return mInstruction; }
@@ -48,6 +50,7 @@ class ScriptRequire : public IScriptCommand {
 
 class ScriptName : public IScriptCommand {
     public:
+        virtual IScriptCommand* clone(void) const { return new ScriptName(*this); }
         virtual double getFrame(void) const { return mFrame; }
         virtual void setFrame(double frame) { mFrame = frame; }
         virtual IScriptCommand::Instruction getInstruction(void) const { return mInstruction; }
@@ -79,6 +82,7 @@ class ScriptName : public IScriptCommand {
 
 class ScriptSpawn : public IScriptCommand {
     public:
+        virtual IScriptCommand* clone(void) const { return new ScriptSpawn(*this); }
         virtual double getFrame(void) const { return mFrame; }
         virtual void setFrame(double frame) { mFrame = frame; }
         virtual IScriptCommand::Instruction getInstruction(void) const { return mInstruction; }

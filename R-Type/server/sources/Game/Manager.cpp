@@ -73,11 +73,11 @@ void NGame::Manager::createGame(const NGame::Properties& properties, const Peer 
     }
     catch (const GamesManagerException&) {
         if (properties.getMaxPlayers() < 1 || properties.getMaxPlayers() > Config::Game::maxPlayersInAGame)
-            throw GamesManagerException("Invalid max nb players", ErrorStatus(ErrorStatus::Error::KO));
+            throw GamesManagerException("Invalid max nb players: requested '" + Utils::toString<int>(properties.getMaxPlayers()), ErrorStatus(ErrorStatus::Error::KO));
         if (properties.getMaxSpectators() < 0 || properties.getMaxSpectators() > Config::Game::maxSpectatorsInAGame)
-            throw GamesManagerException("Invalid max nb observers", ErrorStatus(ErrorStatus::Error::KO));
+            throw GamesManagerException("Invalid max nb observers: requested '" + Utils::toString<int>(properties.getMaxSpectators()), ErrorStatus(ErrorStatus::Error::KO));
         if (mScriptLoader.has(properties.getLevelName()) == false)
-            throw GamesManagerException("Invalid level name", ErrorStatus(ErrorStatus::Error::KO));
+            throw GamesManagerException("Invalid level name: requested '" + properties.getLevelName(), ErrorStatus(ErrorStatus::Error::KO));
 
 		auto game = std::make_shared<NGame::Game>(properties, mScriptLoader.get(properties.getLevelName()));
         game->setListener(this);

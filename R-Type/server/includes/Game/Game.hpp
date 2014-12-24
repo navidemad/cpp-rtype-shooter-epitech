@@ -27,7 +27,7 @@ namespace NGame
 
         // ctor / dtor
     public:
-        explicit Game(const NGame::Properties& properties, const std::shared_ptr<NGame::Script>&);
+        explicit Game(const NGame::Properties&, const std::shared_ptr<NGame::Script>&);
         ~Game(void) = default;
 
         // events

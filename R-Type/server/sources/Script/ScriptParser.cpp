@@ -42,10 +42,7 @@ std::shared_ptr<NGame::Script> ScriptParser::createScriptFromFile(std::ifstream 
 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 
-    auto gameScript = std::make_shared<NGame::Script>();
-    *gameScript = commands;
-
-	return gameScript;
+    return std::make_shared<NGame::Script>(commands);
 }
 
 const IScriptCommand* ScriptParser::commandScriptName(void) {

@@ -39,7 +39,7 @@ void	WindowsTcpServer::bindSocket(int port) {
 	serverAddr.sin_port = htons(port);
 
 	if (bind(mServerFd, reinterpret_cast<struct sockaddr *>(&serverAddr), sizeof(serverAddr)) == SOCKET_ERROR)
-		throw SocketException("fail bind()");
+		throw SocketException("fail bind() tcp");
 }
 
 void	WindowsTcpServer::listenSocket(int queueSize) {

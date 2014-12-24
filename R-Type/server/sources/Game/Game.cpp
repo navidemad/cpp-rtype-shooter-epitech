@@ -21,7 +21,7 @@ const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
 NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<NGame::Script>& script) :
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),
-mScript(script),
+mScript(std::make_shared<NGame::Script>(*script)),
 mIndex(0),
 mListener(nullptr),
 mMutex(PortabilityBuilder::getMutex()),
@@ -60,6 +60,7 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::broadcastMap(void) {
+    /*
     while (getScript()->last(mIndex) == false) {
         auto currentCommand = getScript()->get(mIndex);
         if (getCurrentFrame() < currentCommand->getFrame())
@@ -72,6 +73,7 @@ void NGame::Game::broadcastMap(void) {
         }
         ++mIndex;
     }
+    */
     setState(NGame::Game::State::DONE);
     logInfo("Level finished");
 }

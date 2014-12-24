@@ -5,23 +5,22 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
-#include "NoCopyable.hpp"
 
 namespace NGame
 {
 
-    class Script : public NoCopyable {
+    class Script {
 
         // ctor / dtor
     public:
-        Script(void) = default;
-        virtual ~Script(void);
+        Script(const std::vector<const IScriptCommand*>& commands);
+        ~Script(void);
+        Script(const Script& rhs);
+        Script& operator=(const Script& rhs);
 
         // getters
     public:
-        Script& operator=(const std::vector<const IScriptCommand*>&);
         const std::vector<const IScriptCommand*>& getCommands(void) const;
-
 
         // workflow script
     public:
