@@ -37,22 +37,16 @@ mCurrentComponentMaxId(Config::Game::minIdComponent)
 void NGame::Game::pull(void) {
     setPullEnded(false);
 
-    static const auto& functionsPull = std::vector<std::function<void(void)>>
-    {
-        std::bind(&NGame::Game::broadcastMap, this),
-        std::bind(&NGame::Game::checkCollisions, this),
-        std::bind(&NGame::Game::moveEntities, this)
-    };
-
     try {
-        for (const auto& fct : functionsPull) {
-            if (isStillRunning()) {
-                fct();
-            }
-        }
+        if (getState() == NGame::Game::State::RUNNING)
+            broadcastMap();
+        if (getState() == NGame::Game::State::RUNNING)
+            checkCollisions();
+        if (getState() == NGame::Game::State::RUNNING)
+            moveEntities();
     }
     catch (const GameException& e) {
-        Utils::logError(e.what());
+        Utils::logInfo(e.what());
         setState(NGame::Game::State::DONE);
     }
 
@@ -60,7 +54,6 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::broadcastMap(void) {
-    /*
     while (getScript()->last(mIndex) == false) {
         auto currentCommand = getScript()->get(mIndex);
         if (getCurrentFrame() < currentCommand->getFrame())
@@ -73,7 +66,6 @@ void NGame::Game::broadcastMap(void) {
         }
         ++mIndex;
     }
-    */
     setState(NGame::Game::State::DONE);
     logInfo("Level finished");
 }
@@ -576,6 +568,8 @@ void	NGame::Game::scriptCommandName(const IScriptCommand* command) {
 
     if (commandScriptName->getStageName() != getProperties().getLevelName())
         throw GameException("script name request doesn't match with the level name of current game");
+
+    std::cout << __FUNCTION__ << std::endl;
 }
 
 void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
@@ -584,6 +578,7 @@ void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
     if (!commandScriptRequire)
         throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptRequire*'");
 
+    std::cout << __FUNCTION__ << std::endl;
     /*
     for (const auto& path : mDLLoader)
     if (Utils::basename(path.second) == commandScriptRequire->getResourceName())
@@ -598,6 +593,7 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
     if (!commandScriptSpawn)
         throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptSpawn*'");
 
+    std::cout << __FUNCTION__ << std::endl;
     /*
     for (const auto& path : mDLLoader)
     if (Utils::basename(path.second) == commandScriptSpawn->getSpawnName()) {
