@@ -47,6 +47,8 @@ public:
 		std::shared_ptr<IGraphic>					mGui;
 		std::string									mCurrentLevel;
 		std::string									mCurrentGame;
+		uint8_t										mCurrentNbPlayerMax;
+		uint8_t										mCurrentNbPublicMax;
 		std::string									mScript;
 		ServerCommunication							mServer;
 
@@ -58,6 +60,9 @@ public:
 		std::string								mAdresse;
 		std::string								mPseudo;
 		float									mMusicVolume;
+		float									mSoundVolume;
+		bool									mFullscreenMode;
+		bool									m60FPSMode;
 
 	private: // init function
 		void						init();
@@ -111,7 +116,12 @@ public:
 		void	setPseudo(std::string const &);
 		void	setGame(std::string const &);
 		void	setMusicVolume(std::string const &);
+		void	setSoundVolume(std::string const &);
 		void	setLevel(std::string const &);
+		void	setNbPlayerMax(std::string const &);
+		void	setNbPublicMax(std::string const &);
+		void	setFullscreen(bool enable = false);
+		void	setFPSMode(bool enable = false);
 		void	setScript(std::string const &);
 		bool	createGame();
 		void	connectToServer();

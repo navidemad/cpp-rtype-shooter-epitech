@@ -1,12 +1,15 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 namespace Config
 {
 	namespace Window
 	{
 		const std::string	nameWindow = "R-Type Project";
+		const bool			fullscreenMode = false;
+		const bool			FPSMode = false;
 
 		const unsigned int	x = 1920;
 		const unsigned int	y = 1080;
@@ -21,6 +24,8 @@ namespace Config
 	{
 		const std::string	defaultNameGame = "de_dust2";
 		const std::string	defaultLevelGame = "stage_1";
+		const uint32_t		defaultNbPlayerMax = 4;
+		const uint32_t		defaultNbPublicMax = 4;
 	}
 
 	namespace Network

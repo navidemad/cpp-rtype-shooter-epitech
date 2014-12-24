@@ -35,7 +35,8 @@ RTypeClient::RTypeClient()
   mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), 
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
-  mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume)
+  mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
+  mSoundVolume(Config::Audio::volume), mFullscreenMode(Config::Window::fullscreenMode), m60FPSMode(Config::Window::FPSMode)
 {
 	initECS();
 	initStart();
@@ -447,15 +448,40 @@ void			RTypeClient::initGame()
 	cursorGame.addComponent(new Drawable("searchBar"));
 
 	Entity		pseudoGame = engine.createEntity();
-	Font	*fontPseudoGame = new Font("0", Config::Network::defaultPseudo);
+	Font		*fontPseudoGame = new Font("0", Config::Network::defaultPseudo);
 	pseudoGame.addComponent(new Position(1400, 400));
 	pseudoGame.addComponent(fontPseudoGame);
 
+	Entity		fullscreenGame = engine.createEntity();
+	Font		*fontFullscreenGame = new Font("0", Config::Window::fullscreenMode ? "yes" : "no");
+	fullscreenGame.addComponent(new Position(1400, 500));
+	fullscreenGame.addComponent(fontFullscreenGame);
+
+	Entity		FPSModeGame = engine.createEntity();
+	Font		*fontFPSModeGame = new Font("0", Config::Window::FPSMode ? "yes" : "no");
+	FPSModeGame.addComponent(new Position(1400, 600));
+	FPSModeGame.addComponent(fontFPSModeGame);
+
+	// set pseudo game
 	Entity		pseudoGameButton = engine.createEntity();
 	cursor->addEntity(pseudoGameButton.getId());
 	pseudoGameButton.addComponent(new Position(960, 400));
 	pseudoGameButton.addComponent(new Font("0", "Pseudo"));
 	pseudoGameButton.addComponent(new ButtonInput(fontPseudoGame, &RTypeClient::setPseudo));
+
+	// enable/disable fullscreen mode
+	Entity		fullscreenButton = engine.createEntity();
+	cursor->addEntity(fullscreenButton.getId());
+	fullscreenButton.addComponent(new Position(960, 500));
+	fullscreenButton.addComponent(new Font("0", "Fullscreen"));
+	fullscreenButton.addComponent(new ButtonStateInput(fontFullscreenGame, &RTypeClient::setFullscreen));
+
+	// enable/disable 60fps mode
+	Entity		FPSMode = engine.createEntity();
+	cursor->addEntity(FPSMode.getId());
+	FPSMode.addComponent(new Position(960, 600));
+	FPSMode.addComponent(new Font("0", "60 fps mode"));
+	FPSMode.addComponent(new ButtonStateInput(fontFPSModeGame, &RTypeClient::setFPSMode));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -486,18 +512,31 @@ void			RTypeClient::initAudio()
 	cursorGame.addComponent(new Position(0, 400));
 	cursorGame.addComponent(new Drawable("searchBar"));
 
-	// volume value
+	// volume music value
 	Entity		musicGame = engine.createEntity();
-	Font		*musicVolume = new Font("0", std::to_string(static_cast<int>(mGui->getVolumeMusic())));
-	musicGame.addComponent(new Position(1400, 400));
+	Font		*musicVolume = new Font("0", std::to_string(static_cast<uint32_t>(mGui->getVolumeMusic())));
+	musicGame.addComponent(new Position(1450, 400));
 	musicGame.addComponent(musicVolume);
+
+	// volume music value
+	Entity		soundGame = engine.createEntity();
+	Font		*soundVolume = new Font("0", std::to_string(static_cast<uint32_t>(mSoundVolume)));
+	soundGame.addComponent(new Position(1450, 500));
+	soundGame.addComponent(soundVolume);
 
 	// music volume
 	Entity		music = engine.createEntity();
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 400));
-	music.addComponent(new Font("0", "Music volume: "));
-	music.addComponent(new ButtonInput(musicVolume, &RTypeClient::setMusicVolume));
+	music.addComponent(new Font("0", "Music volume"));
+	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
+
+	// sound volume
+	Entity		sound = engine.createEntity();
+	cursor->addEntity(sound.getId());
+	sound.addComponent(new Position(960, 500));
+	sound.addComponent(new Font("0", "Sound volume"));
+	sound.addComponent(new ButtonKeyInput<uint32_t>(soundVolume, &RTypeClient::setSoundVolume, { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -515,50 +554,75 @@ void			RTypeClient::initCreateMenu()
 	ECSManager &engine = *mEngine[RTypeClient::CREATE_MENU];
 
 	Entity		&menuScreen = engine.createEntity();
-
 	menuScreen.addComponent(new Position(0, 0));
 	menuScreen.addComponent(new Drawable("menu"));
 
 	Entity		&logoScreen = engine.createEntity();
-
 	logoScreen.addComponent(new Position(900, 60));
 	logoScreen.addComponent(new Drawable("logo"));
 
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
-
 	cursorGame.addComponent(new Position(0, 500));
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	Entity		&logoCharacter = engine.createEntity();
+	logoCharacter.addComponent(new Position(0, 400));
+	logoCharacter.addComponent(new Drawable("logoOption"));
+
 	Entity		inputPortGame = engine.createEntity();
 	Font	*fontPortGame = new Font("0", Config::Game::defaultNameGame);
-
 	inputPortGame.addComponent(new Position(960, 400));
 	inputPortGame.addComponent(fontPortGame);
 
+	Entity		inputLevel = engine.createEntity();
+	Font	*fontLevel = new Font("0", Config::Game::defaultLevelGame);
+	inputLevel.addComponent(new Position(960, 500));
+	inputLevel.addComponent(fontLevel);
+
+	Entity		inputNbPlayerMax = engine.createEntity();
+	Font	*fontInputNbPlayerMax = new Font("0", std::to_string(Config::Game::defaultNbPlayerMax));
+	inputNbPlayerMax.addComponent(new Position(960, 600));
+	inputNbPlayerMax.addComponent(fontInputNbPlayerMax);
+
+	Entity		inputNbPublicMax = engine.createEntity();
+	Font	*fontInputNbPublicMax = new Font("0", std::to_string(Config::Game::defaultNbPublicMax));
+	inputNbPublicMax.addComponent(new Position(960, 700));
+	inputNbPublicMax.addComponent(fontInputNbPublicMax);
+
 	Entity		portGame = engine.createEntity();
 	cursor->addEntity(portGame.getId());
-
 	portGame.addComponent(new Position(420, 400));
 	portGame.addComponent(new Font("0", "Server name"));
 	portGame.addComponent(new ButtonInput(fontPortGame, &RTypeClient::setGame));
 
-	Entity		&logoCharacter = engine.createEntity();
+	Entity		level = engine.createEntity();
+	cursor->addEntity(level.getId());
+	level.addComponent(new Position(420, 500));
+	level.addComponent(new Font("0", "Level"));
+	level.addComponent(new ButtonInput(fontLevel, &RTypeClient::setLevel));
 
-	logoCharacter.addComponent(new Position(0, 400));
-	logoCharacter.addComponent(new Drawable("logoOption"));
+	Entity		nbPlayerMax = engine.createEntity();
+	cursor->addEntity(nbPlayerMax.getId());
+	nbPlayerMax.addComponent(new Position(420, 600));
+	nbPlayerMax.addComponent(new Font("0", "Nb. player max"));
+	nbPlayerMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPlayerMax, &RTypeClient::setNbPlayerMax, {1, 2, 3, 4}));
+
+	Entity		nbPublicMax = engine.createEntity();
+	cursor->addEntity(nbPublicMax.getId());
+	nbPublicMax.addComponent(new Position(420, 700));
+	nbPublicMax.addComponent(new Font("0", "Nb. player max"));
+	nbPublicMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { 0, 1, 2, 3, 4 }));
 
 	Entity		&createGame = engine.createEntity();
 	cursor->addEntity(createGame.getId());
-
-	createGame.addComponent(new Position(420, 500));
-	createGame.addComponent(new Font("0", "Create game"));
+	createGame.addComponent(new Position(420, 800));
+	createGame.addComponent(new Font("0", "Launch"));
 	createGame.addComponent(new ButtonCreateGame());
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
-
 	backGame.addComponent(new Position(1150, 900));
 	backGame.addComponent(new Font("0", "Back"));
 	backGame.addComponent(new ButtonMenuGame());
@@ -844,9 +908,53 @@ void	RTypeClient::setMusicVolume(std::string const &musicVolume)
 	mGui->setVolumeMusic(mMusicVolume);
 }
 
+void	RTypeClient::setSoundVolume(std::string const &soundVolume)
+{
+	std::istringstream buffer(soundVolume);
+	float value;
+	buffer >> value;
+
+	mSoundVolume = value;
+	mGui->setVolumeSound(mSoundVolume);
+}
+
+void	RTypeClient::setFullscreen(bool enable)
+{
+	mFullscreenMode = enable;
+
+	auto sg = std::static_pointer_cast<SFMLGraphic>(mGui);
+	sg->setStyle(mFullscreenMode ? sf::Style::Fullscreen : sf::Style::Default);
+	sg->updateWindow();
+}
+
+void	RTypeClient::setFPSMode(bool enable)
+{
+	m60FPSMode = enable;
+	auto sg = std::static_pointer_cast<SFMLGraphic>(mGui);
+	sg->setFPSMode(m60FPSMode);
+}
+
 void	RTypeClient::setLevel(std::string const &level)
 {
 	mCurrentLevel = level;
+}
+
+void	RTypeClient::setNbPlayerMax(std::string const &nbPlayerMax)
+{
+	std::istringstream buffer(nbPlayerMax);
+	uint8_t value;
+	buffer >> value;
+
+	mCurrentNbPlayerMax = (value <= Config::Game::defaultNbPlayerMax) ? value : Config::Game::defaultNbPlayerMax;
+}
+
+void	RTypeClient::setNbPublicMax(std::string const &nbPublicMax)
+{
+	std::istringstream buffer(nbPublicMax);
+	uint8_t value;
+	buffer >> value;
+
+	mCurrentNbPublicMax = (value <= Config::Game::defaultNbPublicMax) ? value : Config::Game::defaultNbPublicMax;
 }
 
 void	RTypeClient::setScript(std::string const &script)
@@ -856,7 +964,7 @@ void	RTypeClient::setScript(std::string const &script)
 
 bool	RTypeClient::createGame()
 {
-	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentGame, mCurrentLevel,  4, 4);
+	std::static_pointer_cast<ECSManagerNetwork>(mEngine[SEARCH_MENU])->SignalCreateGame(mCurrentGame, mCurrentLevel, mCurrentNbPlayerMax, mCurrentNbPublicMax);
 	return true;
 }
 
