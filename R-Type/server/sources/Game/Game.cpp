@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "GameException.hpp"
+#include "DynLibException.hpp"
 #include "PortabilityBuilder.hpp"
 #include "ScopedLock.hpp"
 #include "Utils.hpp"
@@ -10,12 +11,19 @@
 #include <memory>
 #include <algorithm>
 #include <iostream>
-#include <map>
 
 const NGame::Game::tokenExec NGame::Game::tokenExecTab[] = {
     { IScriptCommand::Instruction::NAME, &NGame::Game::scriptCommandName },
     { IScriptCommand::Instruction::REQUIRE, &NGame::Game::scriptCommandRequire },
     { IScriptCommand::Instruction::SPAWN, &NGame::Game::scriptCommandSpawn }
+};
+
+std::map<IResource::Type, std::string> NGame::Game::mDLLoader{
+    { IResource::Type::PLAYER, "./../shared/resources/player/player" },
+    { IResource::Type::CASTER, "./../shared/resources/caster/caster" },
+    { IResource::Type::MELEE, "./../shared/resources/melee/melee" },
+    { IResource::Type::SUPER, "./../shared/resources/super/super" },
+    { IResource::Type::BULLET, "./../shared/resources/bullet/bullet" }
 };
 
 NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<NGame::Script>& script) :
@@ -200,10 +208,6 @@ void NGame::Game::logInfo(const std::string &log) const {
 
     ss << Utils::RED << "[GAME]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
     Utils::logInfo(ss.str());
-}
-
-bool NGame::Game::isStillRunning(void) const {
-    return (getState() == NGame::Game::State::RUNNING);
 }
 
 void NGame::Game::initTimer(void) {
@@ -568,8 +572,6 @@ void	NGame::Game::scriptCommandName(const IScriptCommand* command) {
 
     if (commandScriptName->getStageName() != getProperties().getLevelName())
         throw GameException("script name request doesn't match with the level name of current game");
-
-    std::cout << __FUNCTION__ << std::endl;
 }
 
 void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
@@ -578,13 +580,12 @@ void	NGame::Game::scriptCommandRequire(const IScriptCommand* command) {
     if (!commandScriptRequire)
         throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptRequire*'");
 
-    std::cout << __FUNCTION__ << std::endl;
-    /*
-    for (const auto& path : mDLLoader)
-    if (Utils::basename(path.second) == commandScriptRequire->getResourceName())
-    return;
-    */
-    //throw GameException("require an invalide entity name");
+    for (const auto& path : mDLLoader) {
+        if (commandScriptRequire->getResourceName().compare(Utils::basename(path.second))) {
+            return;
+        }
+    }
+    throw GameException("require an invalide entity name 'scriptCommandRequire'");
 }
 
 void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
@@ -593,60 +594,43 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
     if (!commandScriptSpawn)
         throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptSpawn*'");
 
-    std::cout << __FUNCTION__ << std::endl;
-    /*
-    for (const auto& path : mDLLoader)
-    if (Utils::basename(path.second) == commandScriptSpawn->getSpawnName()) {
-    auto lib = PortabilityBuilder::getDynLib();
-    try {
-    lib->libraryLoad(path.second);
-    if (lib->functionLoad("entry_point") == nullptr)
-    return;
-    auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+    for (const auto& path : mDLLoader) {
+        if (commandScriptSpawn->getSpawnName() == Utils::basename(path.second)) {
+            auto lib = PortabilityBuilder::getDynLib();
+            try {
+                lib->libraryLoad(path.second);
+                if (lib->functionLoad("entry_point") == nullptr)
+                    return;
+                auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
 
-    NGame::Component component;
+                NGame::Component component;
 
-    setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
+                setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
 
-    component.setX(commandScriptSpawn->getX());
-    component.setY(commandScriptSpawn->getY());
-    component.setAngle(commandScriptSpawn->getAngle());
-    component.setResource(resource);
+                component.setX(commandScriptSpawn->getX());
+                component.setY(commandScriptSpawn->getY());
+                component.setAngle(commandScriptSpawn->getAngle());
+                
+                component.setWidth(resource->getWidth());
+                component.setHeight(resource->getHeight());
+                component.setSpeed(resource->getMoveSpeed());
+                component.setLife(resource->getLife());
+                component.setType(resource->getType());
+                component.setId(getCurrentComponentMaxId());
 
+                addComponentInList(component);
 
+                auto listener = getListener();
+                if (listener)
+                    listener->onNotifyUsersComponentAdded(getUsers(), component);
 
-
+                lib->libraryFree();
+                return;
+            }
+            catch (const DynLibException& e) {
+                throw GameException(e.what());
+            }
+        }
     }
-    catch (const DynLibException& e) {
-    std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
-    }
-    }
-
-
-
-    component.setWidth(playerWidth);
-    component.setHeight(playerHeight);
-    component.setAngle(playerAngle);
-    component.setSpeed(playerSpeed);
-    component.setLife(10);
-    component.setType(IResource::Type::PLAYER);
-    component.setId(getCurrentComponentMaxId());
-
-    addComponentInList(component);
-    user.setId(getCurrentComponentMaxId());
-    addUserInList(user);
-
-    getProperties().setNbPlayers(getProperties().getNbPlayers() + 1);
-
-    auto listener = getListener();
-    if (listener)
-    listener->onNotifyUsersComponentAdded(getUsers(), component);
-
-
-    commandScriptSpawn->
-    NGame::Component component;
-
-    if (mListener)
-    mListener->onNotifyUsersComponentAdded(getUsers(), component);
-    */
+    throw GameException("require an invalide entity name 'scriptCommandSpawn'");
 }

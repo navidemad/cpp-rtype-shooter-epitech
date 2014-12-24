@@ -5,16 +5,17 @@
 #include "IMutex.hpp"
 #include "IResource.hpp"
 #include "IScriptCommand.hpp"
+#include "IDynLib.hpp"
 
 #include "Client.hpp"
 #include "Script.hpp"
 #include "Properties.hpp"
 #include "User.hpp"
 #include "Component.hpp"
-#include "Resources.hpp"
 #include "PlayerCommunicationManager.hpp"
 
 #include <ctime>
+#include <map>
 #include <string>
 #include <memory>
 #include <list>
@@ -63,6 +64,7 @@ namespace NGame
             void						(NGame::Game::*fctPtr)(const IScriptCommand* command);
         };
         static const NGame::Game::tokenExec tokenExecTab[];
+        static const std::map<std::string, std::string> ressourcesTab[];
 
         // getters
     public:
@@ -86,8 +88,8 @@ namespace NGame
 
         // utils
     private:
+        void loadDll(void);
         void logInfo(const std::string &log) const;
-        bool isStillRunning(void) const;
         void initTimer(void);
 
         // check :: collision
@@ -134,7 +136,7 @@ namespace NGame
 
         // attributes
     private:
-        NGame::Resources mResources;
+        static std::map<IResource::Type, std::string> mDLLoader;
         NGame::Properties mProperties;
         NGame::Game::State mState;
         std::shared_ptr<NGame::Script> mScript;

@@ -101,8 +101,7 @@ HEADERS			+=	includes/RTypeServer.hpp								\
 				includes/Game/Manager.hpp 									\
 				includes/Game/Properties.hpp								\
 				includes/Game/User.hpp										\
-				includes/Game/Component.hpp									\
-				includes/Game/Resources.hpp
+				includes/Game/Component.hpp
 
 UNIX:HEADERS	+=	../shared/includes/DynLib/UnixDynLib.hpp				\
 				includes/Mutex/UnixMutex.hpp								\
@@ -186,8 +185,7 @@ SOURCES			+=	sources/main.cpp										\
 				sources/Game/Manager.cpp 									\
 				sources/Game/Properties.cpp									\
 				sources/Game/User.cpp										\
-				sources/Game/Component.cpp									\
-				sources/Game/Resources.cpp
+				sources/Game/Component.cpp
 
 unix:SOURCES		+=	../shared/sources/DynLib/UnixDynLib.cpp				\
 				sources/Network/UnixTcpClient.cpp							\

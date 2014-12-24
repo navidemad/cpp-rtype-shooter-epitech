@@ -68,6 +68,6 @@ const IScriptCommand* ScriptParser::commandScriptSpawn(void) {
 	command->setSpawnName(mParser.extractWord());
     command->setX(mParser.extractValue<double>());
 	command->setY(mParser.extractValue<double>());
-    command->setAngle(mParser.extractValue<double>());
+    command->setAngle(mParser.extractValue<short>());
 	return command;
 }

@@ -1,5 +1,5 @@
 # Nom du stage
-name "stage_2"
+name "stage_1"
 
 # Liste des ressources requises
 require "caster"
@@ -7,6 +7,112 @@ require "melee"
 require "super"
 
 # Apparitions de 3 casters
-spawn 3.2 caster 87.0 25.0 180.0
-spawn 3.2 caster 87.0 50.0 180.0
-spawn 3.2 caster 87.0 75.0 180.0
+spawn 3.2 caster 87.0 25.0 180
+spawn 3.2 caster 87.0 50.0 180
+spawn 3.2 caster 87.0 75.0 180
+
+# Apparitions de 2 melee
+spawn 6.2 melee 87.0 25.0 225
+spawn 6.2 melee 87.0 75.0 135
+spawn 6.2 melee 87.0 25.0 225
+
+# Apparitions de 2 super
+spawn 9.2 super 87.0 40.0 180
+spawn 9.2 super 87.0 60.0 180
+spawn 9.2 super 87.0 40.0 180
+
+# Apparitions de 2 melee
+spawn 12.6 melee 50.0 25.0 90
+spawn 12.6 melee 50.0 75.0 270
+
+# Apparitions de 3 casters
+spawn 16.2 caster 87.0 25.0 180
+spawn 16.2 caster 87.0 50.0 180
+spawn 16.2 caster 87.0 75.0 180
+
+# Apparitions de 5 casters
+spawn 20.0 caster 87.0 25.0 180
+spawn 20.0 caster 87.0 50.0 180
+spawn 20.0 caster 87.0 75.0 180
+spawn 21.0 caster 87.0 25.0 180
+spawn 22.0 caster 87.0 55.0 180
+
+# Apparitions de 3 casters + 3 melee
+spawn 25.0 caster 87.0 25.0 180
+spawn 25.0 caster 87.0 50.0 180
+spawn 25.0 caster 87.0 75.0 180
+spawn 27.2 melee 87.0 25.0 225
+spawn 27.2 melee 87.0 55.0 225
+spawn 27.2 melee 87.0 85.0 225
+
+
+# Apparitions de 3 casters + 3 super
+spawn 30.0 caster 87.0 25.0 180
+spawn 30.0 caster 87.0 55.0 180
+spawn 30.0 caster 87.0 60.0 180
+spawn 31.2 super 87.0 40.0 180
+spawn 31.2 super 87.0 80.0 180
+spawn 31.2 super 87.0 60.0 180
+
+
+# Apparitions de 3 melee + 3 super
+spawn 35.2 melee 87.0 40.0 225
+spawn 35.2 melee 87.0 50.0 225
+spawn 35.2 melee 87.0 60.0 225
+spawn 36.2 super 87.0 40.0 180
+spawn 36.2 super 87.0 60.0 180
+spawn 36.2 super 87.0 80.0 180
+
+# Apparitions de 3 caster + 3 melee + 3 super
+spawn 40.2 melee 87.0 40.0 225
+spawn 40.2 melee 87.0 50.0 225
+spawn 40.2 melee 87.0 60.0 225
+spawn 40.2 super 87.0 40.0 180
+spawn 40.2 super 87.0 60.0 180
+spawn 41.2 super 87.0 80.0 180
+spawn 41.0 caster 87.0 25.0 180
+spawn 41.0 caster 87.0 55.0 180
+spawn 41.0 caster 87.0 60.0 180
+
+# Apparitions de 3 casters
+spawn 46.2 caster 87.0 25.0 180
+spawn 46.2 caster 87.0 50.0 180
+spawn 46.2 caster 87.0 75.0 180
+
+# Apparitions de 3 super
+spawn 48.2 super 87.0 40.0 180
+spawn 48.2 super 87.0 60.0 180
+spawn 48.2 super 87.0 40.0 180
+
+# Apparitions de 2 melee
+spawn 52.6 melee 50.0 25.0 90
+spawn 52.6 melee 50.0 75.0 270
+
+# Apparitions de la mort
+spawn 54.2 melee 87.0 40.0 225
+spawn 54.2 melee 87.0 50.0 225
+spawn 54.2 melee 87.0 60.0 225
+spawn 55.2 super 87.0 40.0 180
+spawn 55.2 super 87.0 60.0 180
+spawn 55.2 super 87.0 80.0 180
+spawn 55.0 caster 87.0 25.0 180
+spawn 55.0 caster 87.0 55.0 180
+spawn 55.0 caster 87.0 60.0 180
+spawn 56.2 melee 87.0 40.0 225
+spawn 56.2 melee 87.0 50.0 225
+spawn 56.2 melee 87.0 60.0 225
+spawn 58.2 super 87.0 40.0 180
+spawn 58.2 super 87.0 60.0 180
+spawn 58.2 super 87.0 80.0 180
+spawn 59.0 caster 87.0 25.0 180
+spawn 59.0 caster 87.0 55.0 180
+spawn 59.0 caster 87.0 60.0 180
+spawn 60.2 melee 87.0 40.0 225
+spawn 60.2 melee 87.0 50.0 225
+spawn 60.2 melee 87.0 60.0 225
+spawn 63.2 super 87.0 40.0 180
+spawn 63.2 super 87.0 60.0 180
+spawn 63.2 super 87.0 80.0 180
+spawn 63.0 caster 87.0 25.0 180
+spawn 63.0 caster 87.0 55.0 180
+spawn 63.0 caster 87.0 60.0 180

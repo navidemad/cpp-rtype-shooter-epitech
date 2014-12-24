@@ -115,8 +115,8 @@ class ScriptSpawn : public IScriptCommand {
         void setX(double x) { mX = x; }
         double getY(void) const { return mY; }
         void setY(double y) { mY = y; }
-        double getAngle(void) const { return mAngle; }
-        void setAngle(double angle) { mAngle = angle; }
+        short getAngle(void) const { return mAngle; }
+        void setAngle(short angle) { mAngle = angle; }
     private:
         double mFrame;
         IScriptCommand::Instruction mInstruction;
@@ -124,5 +124,5 @@ class ScriptSpawn : public IScriptCommand {
         std::string mSpawnName;
         double mX;
         double mY;
-        double mAngle;
+        short mAngle;
 };

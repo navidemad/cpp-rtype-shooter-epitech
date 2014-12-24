@@ -72,17 +72,22 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 	id += mFirstId + 1;
 	try
 	{
-        if (!mDLLoader.count(type)) {
-            std::cerr << "unhandled type requested" << std::endl;
+        std::string pathDll = "";
+        for (const auto& value : mDLLoader) {
+            if (type & value.first) {
+                pathDll = value.second;
+                break;
+            }
+        }
+        if (pathDll == "") {
+            std::cerr << "unhandled type requested: '" << type << "'" << std::endl;
             return;
         }
 		if (!isEntityCreated(id))
 		{
 			auto lib = PortabilityBuilder::getDynLib();
 			try {
-				if (!mDLLoader.count(type))
-					return;
-				lib->libraryLoad(mDLLoader[type]);
+                lib->libraryLoad(pathDll);
 				if (lib->functionLoad("entry_point") == nullptr)
 					return;
 				auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
