@@ -47,8 +47,8 @@ public:
 		std::shared_ptr<IGraphic>					mGui;
 		std::string									mCurrentLevel;
 		std::string									mCurrentGame;
-		uint8_t										mCurrentNbPlayerMax;
-		uint8_t										mCurrentNbPublicMax;
+        int										    mCurrentNbPlayerMax;
+        int										    mCurrentNbPublicMax;
 		std::string									mScript;
 		ServerCommunication							mServer;
 

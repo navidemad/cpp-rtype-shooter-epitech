@@ -36,6 +36,7 @@ RTypeClient::RTypeClient()
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
+  mCurrentNbPlayerMax(Config::Game::defaultNbPlayerMax), mCurrentNbPublicMax(Config::Game::defaultNbPublicMax),
   mSoundVolume(Config::Audio::volume), mFullscreenMode(Config::Window::fullscreenMode), m60FPSMode(Config::Window::FPSMode)
 {
 	initECS();
@@ -607,13 +608,13 @@ void			RTypeClient::initCreateMenu()
 	cursor->addEntity(nbPlayerMax.getId());
 	nbPlayerMax.addComponent(new Position(420, 600));
 	nbPlayerMax.addComponent(new Font("0", "Nb. player max"));
-	nbPlayerMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPlayerMax, &RTypeClient::setNbPlayerMax, {1, 2, 3, 4}));
+	nbPlayerMax.addComponent(new ButtonKeyInput<int>(fontInputNbPlayerMax, &RTypeClient::setNbPlayerMax, {1, 2, 3, 4}));
 
 	Entity		nbPublicMax = engine.createEntity();
 	cursor->addEntity(nbPublicMax.getId());
 	nbPublicMax.addComponent(new Position(420, 700));
-	nbPublicMax.addComponent(new Font("0", "Nb. player max"));
-	nbPublicMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { 0, 1, 2, 3, 4 }));
+	nbPublicMax.addComponent(new Font("0", "Nb. observer max"));
+    nbPublicMax.addComponent(new ButtonKeyInput<int>(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { 0, 1, 2, 3, 4 }));
 
 	Entity		&createGame = engine.createEntity();
 	cursor->addEntity(createGame.getId());
@@ -941,20 +942,12 @@ void	RTypeClient::setLevel(std::string const &level)
 
 void	RTypeClient::setNbPlayerMax(std::string const &nbPlayerMax)
 {
-	std::istringstream buffer(nbPlayerMax);
-	uint8_t value;
-	buffer >> value;
-
-	mCurrentNbPlayerMax = (value <= Config::Game::defaultNbPlayerMax) ? value : Config::Game::defaultNbPlayerMax;
+    mCurrentNbPlayerMax = std::min(std::stoi(nbPlayerMax), Config::Game::defaultNbPlayerMax);
 }
 
 void	RTypeClient::setNbPublicMax(std::string const &nbPublicMax)
 {
-	std::istringstream buffer(nbPublicMax);
-	uint8_t value;
-	buffer >> value;
-
-	mCurrentNbPublicMax = (value <= Config::Game::defaultNbPublicMax) ? value : Config::Game::defaultNbPublicMax;
+    mCurrentNbPublicMax = std::min(std::stoi(nbPublicMax), Config::Game::defaultNbPublicMax);
 }
 
 void	RTypeClient::setScript(std::string const &script)
