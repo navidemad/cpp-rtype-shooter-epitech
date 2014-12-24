@@ -32,11 +32,12 @@ Q_DECLARE_METATYPE(IResource::Direction)
 RTypeClient::RTypeClient()
 : mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), 
   mGui(SFMLGraphic::getInstance()), mCurrentLevel(Config::Game::defaultLevelGame),
-  mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), 
+  mCurrentGame(Config::Game::defaultNameGame), 
+  mCurrentNbPlayerMax(Config::Game::defaultNbPlayerMax), mCurrentNbPublicMax(Config::Game::defaultNbPublicMax),
+  mServer(Config::Network::port), 
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
-  mCurrentNbPlayerMax(Config::Game::defaultNbPlayerMax), mCurrentNbPublicMax(Config::Game::defaultNbPublicMax),
   mSoundVolume(Config::Audio::volume), mFullscreenMode(Config::Window::fullscreenMode), m60FPSMode(Config::Window::FPSMode)
 {
 	initECS();

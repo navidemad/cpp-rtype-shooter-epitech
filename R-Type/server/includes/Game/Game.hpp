@@ -103,7 +103,7 @@ namespace NGame
         NGame::User& findUserByHost(const Peer &);
         NGame::User& findUserById(uint64_t id);
         NGame::Component& findComponentById(uint64_t id);
-        std::vector<NGame::User>::iterator NGame::Game::findIteratorUserByHost(const Peer &peer);
+        std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &peer);
 
         // workflow internal game
     private:
