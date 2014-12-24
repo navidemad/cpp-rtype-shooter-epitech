@@ -22,7 +22,6 @@ NGame::Game::Game(const NGame::Properties& properties, const std::shared_ptr<NGa
 mProperties(properties),
 mState(NGame::Game::State::NOT_STARTED),
 mScript(std::make_shared<NGame::Script>(*script)),
-mIndex(0),
 mListener(nullptr),
 mMutex(PortabilityBuilder::getMutex()),
 mPullEnded(true),
@@ -54,8 +53,9 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::broadcastMap(void) {
-    while (getScript()->last(mIndex) == false) {
-        auto currentCommand = getScript()->get(mIndex);
+    while (!(getScript()->isFinish()))
+    {
+        const auto& currentCommand = getScript()->currentCommand();
         if (getCurrentFrame() < currentCommand->getFrame())
             return;
         for (const auto& instr : tokenExecTab) {
@@ -64,7 +64,7 @@ void NGame::Game::broadcastMap(void) {
                 break;
             }
         }
-        ++mIndex;
+        getScript()->goToNextCommand();
     }
     setState(NGame::Game::State::DONE);
     logInfo("Level finished");

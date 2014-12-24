@@ -12,26 +12,28 @@ namespace NGame
     class Script {
 
         // ctor / dtor
-    public:
-        Script(const std::vector<const IScriptCommand*>& commands);
-        ~Script(void);
-        Script(const Script& rhs);
-        Script& operator=(const Script& rhs);
+        public:
+            Script(const std::vector<const IScriptCommand*>& commands);
+            ~Script(void);
+            Script(const Script& rhs);
+            Script& operator=(const Script& rhs);
+            void deepCopy(const NGame::Script& rhs);
 
         // getters
-    public:
-        const std::vector<const IScriptCommand*>& getCommands(void) const;
+        public:
+            const std::vector<const IScriptCommand*>& getCommands(void) const;
 
         // workflow script
-    public:
-        bool last(unsigned int) const;
-        const IScriptCommand* get(unsigned int) const;
-        unsigned int size(void) const;
+        public:
+            const IScriptCommand* currentCommand(void) const;
+            bool isFinish(void) const;
+            void goToNextCommand(void);
 
         // attributes
-    private:
-        std::vector<const IScriptCommand*> mCommands;
-        unsigned int mSize;
+        private:
+            std::vector<const IScriptCommand*> mCommands;
+            unsigned int mSize;
+            unsigned int mIndex;
     };
 
 }

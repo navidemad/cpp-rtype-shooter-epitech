@@ -138,7 +138,6 @@ namespace NGame
         NGame::Properties mProperties;
         NGame::Game::State mState;
         std::shared_ptr<NGame::Script> mScript;
-        unsigned int mIndex;
         NGame::Game::OnGameEvent *mListener;
         std::clock_t mTimer;
         std::clock_t mLastTime;
