@@ -19,11 +19,11 @@ int                     Player::getLife(void) const {
 }
 
 double 			        Player::getMoveSpeed(void) const {
-    return 1.25;
+    return 0.5;
 }
 
-double                  Player::getFireSpeed(void) const {
-	return 1.;
+double                  Player::getFireDeltaTime(void) const {
+    return 0.8;
 }
 
 IResource::Type         Player::getType(void) const {

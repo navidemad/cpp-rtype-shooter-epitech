@@ -45,7 +45,7 @@ struct MYLIB_EXPORT IResource {
         virtual double                      getWidth(void) const = 0;
         virtual int                         getLife(void) const = 0;
         virtual double 			            getMoveSpeed(void) const = 0;
-        virtual double                      getFireSpeed(void) const = 0;
+        virtual double                      getFireDeltaTime(void) const = 0;
         virtual IResource::Type             getType(void) const = 0;
         virtual IResource::Vec2             move(double deltaTime) const = 0;
         virtual IResource::Vec2             fire(double deltaTime) const = 0;

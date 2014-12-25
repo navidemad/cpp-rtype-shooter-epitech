@@ -19,11 +19,11 @@ int                     Caster::getLife(void) const {
 }
 
 double 			        Caster::getMoveSpeed(void) const {
-    return 1.0;
+    return 0.5;
 }
 
-double                  Caster::getFireSpeed(void) const {
-	return .5;
+double                  Caster::getFireDeltaTime(void) const {
+    return 0.8;
 }
 
 IResource::Type         Caster::getType(void) const {

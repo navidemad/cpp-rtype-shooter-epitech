@@ -80,9 +80,9 @@ void NGame::Game::checkCollisions(void) {
 
     for (auto it = mComponents.begin(); it != mComponents.end();)
     {
-        if ((*it)->getX() < Config::Window::xMin || 
-            (*it)->getX() > Config::Window::xMax || 
-            (*it)->getY() < Config::Window::yMin || 
+        if ((*it)->getX() < Config::Window::xMin ||
+            (*it)->getX() > Config::Window::xMax ||
+            (*it)->getY() < Config::Window::yMin ||
             (*it)->getY() > Config::Window::yMax)
         {
             if ((*it)->getType() == IResource::Type::PLAYER)
@@ -191,14 +191,10 @@ void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user)
 }
 
 void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& component) {
-    if (!component->canMove())
-        return;
 
-    double pi = 3.14159265358979323846;
-    double angleInRad = component->getAngle() * pi / 180;
-    double speed = component->getMoveSpeed();
-    double dx = speed * cos(angleInRad);
-    double dy = speed * sin(angleInRad);
+    double angleInRad = component->getAngle() * 3.14 / 180;
+    double dx = component->getMoveSpeed() * cos(angleInRad);
+    double dy = component->getMoveSpeed() * sin(angleInRad);
 
     component->setX(component->getX() + dx);
     component->setY(component->getY() + dy);
@@ -257,7 +253,7 @@ void    NGame::Game::spawn(const std::string& name, double x, double y, short an
                 component->setMoveSpeed(component->getResource()->getMoveSpeed());
                 component->setLife(component->getResource()->getLife());
                 component->setType(component->getResource()->getType());
-                
+
                 addComponentInList(component);
 
                 auto listener = getListener();
@@ -283,284 +279,6 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
     spawn(commandScriptSpawn->getSpawnName(), commandScriptSpawn->getX(), commandScriptSpawn->getY(), commandScriptSpawn->getAngle(), 0);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ** getters
 */
@@ -577,7 +295,7 @@ NGame::Game::OnGameEvent* NGame::Game::getListener(void) {
 double NGame::Game::getCurrentFrame(void) {
     Scopedlock(mMutex);
 
-    return (mTimer.getDelta() / 1E6);
+    return (static_cast<double>(mScriptTimer.getDelta() / 1E3));
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {
@@ -662,7 +380,7 @@ void NGame::Game::logInfo(const std::string &log) const {
 void NGame::Game::initTimer(void) {
     Scopedlock(mMutex);
 
-    mTimer.restart();
+    mScriptTimer.restart();
 }
 
 /*

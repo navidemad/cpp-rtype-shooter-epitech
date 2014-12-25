@@ -22,7 +22,6 @@ namespace NGame
 
         // rate frame
         public:
-            bool canMove(void);
             bool canFire(void);
 
         // setters
@@ -33,7 +32,7 @@ namespace NGame
             void setHeight(double height);
             void setAngle(short angle);
             void setMoveSpeed(double speed);
-            void setFireSpeed(double speed);
+            void setFireDeltaTime(double speed);
             void setLife(double life);
             void setId(uint64_t id);
             void setType(IResource::Type type);
@@ -48,7 +47,7 @@ namespace NGame
             double getHeight(void) const;
             short getAngle(void) const;
             double getMoveSpeed(void) const;
-            double getFireSpeed(void) const;
+            double getFireDeltaTime(void) const;
             double getLife(void) const;
             uint64_t getId(void) const;
             IResource::Type getType(void) const;
@@ -58,7 +57,7 @@ namespace NGame
 
         // attributes
         private:
-            Timer mMoveTimer, mFireTimer;
+            Timer mFireTimer;
         private:
 			double mX;
 			double mY;
@@ -66,7 +65,7 @@ namespace NGame
 			double mHeight;
             short mAngle;
             double mMoveSpeed;
-            double mFireSpeed;
+            double mFireDeltaTime;
 			double mLife;
             uint64_t mId;
             uint64_t mOwnerId;

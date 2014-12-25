@@ -10,7 +10,7 @@ struct MYLIB_EXPORT Player : public IResource {
     virtual double                  getWidth(void) const;
 	virtual int                     getLife(void) const;
 	virtual double 			        getMoveSpeed(void) const;
-	virtual double                  getFireSpeed(void) const;
+    virtual double                  getFireDeltaTime(void) const;
     virtual IResource::Type         getType(void) const;
 	virtual IResource::Vec2         move(double deltaTime) const;
 	virtual IResource::Vec2         fire(double deltaTime) const;

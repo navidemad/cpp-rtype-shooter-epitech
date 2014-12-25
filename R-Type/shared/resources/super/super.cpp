@@ -19,11 +19,11 @@ int                     Super::getLife(void) const {
 }
 
 double 			        Super::getMoveSpeed(void) const {
-    return 2.5;
+    return 0.5;
 }
 
-double                  Super::getFireSpeed(void) const {
-	return 1.;
+double                  Super::getFireDeltaTime(void) const {
+    return 0.8;
 }
 
 IResource::Type         Super::getType(void) const {

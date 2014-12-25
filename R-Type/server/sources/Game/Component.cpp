@@ -1,20 +1,12 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN),mDynLib(PortabilityBuilder::getDynLib()) {
+NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
 
-}
-
-bool NGame::Component::canMove(void) {
-    if (mMoveTimer.getDelta() > 20000) {
-        mMoveTimer.restart();
-        return true;
-    }
-    return false;
 }
 
 bool NGame::Component::canFire(void) {
-    if (mFireTimer.getDelta() > 20000) {
+    if (mFireTimer.getDelta() / 1E3 > getFireDeltaTime()) {
         mFireTimer.restart();
         return true;
     }
@@ -45,8 +37,8 @@ void NGame::Component::setMoveSpeed(double moveSpeed) {
     mMoveSpeed = moveSpeed;
 }
 
-void NGame::Component::setFireSpeed(double fireSpeed) {
-    mFireSpeed = fireSpeed;
+void NGame::Component::setFireDeltaTime(double fireDeltaTime) {
+    mFireDeltaTime = fireDeltaTime;
 }
 
 void NGame::Component::setLife(double life) { 
@@ -92,8 +84,8 @@ double NGame::Component::getMoveSpeed(void) const {
     return mMoveSpeed; 
 }
 
-double NGame::Component::getFireSpeed(void) const {
-    return mFireSpeed;
+double NGame::Component::getFireDeltaTime(void) const {
+    return mFireDeltaTime;
 }
 
 double NGame::Component::getLife(void) const { 
