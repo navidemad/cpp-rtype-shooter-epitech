@@ -60,9 +60,9 @@ void	PlayerPacketBuilder::fetchHeader(void) {
 }
 
 void	PlayerPacketBuilder::fetchBody(void) {
-	cleanDatagramsList(ICommand::HEADER_SIZE);
+	cleanDatagramsList(mCurrentCommand->getSizeToRead());
 
-	if (mDatagrams.size() == 0 || mDatagrams.front().msgSize < ICommand::HEADER_SIZE)
+	if (mDatagrams.size() == 0 || mDatagrams.front().msgSize < mCurrentCommand->getSizeToRead())
 		return;
 
 	bool error = false;
