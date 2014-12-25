@@ -72,13 +72,15 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 	id += mFirstId + 1;
 	try
 	{
-        std::string pathDll = "";
-        for (const auto& value : mDLLoader) {
-            if (type & value.first) {
-                pathDll = value.second;
-                break;
-            }
-        }
+		std::string pathDll;
+		for (auto pair : mDLLoader)
+		{
+			if (type == pair.first)
+			{
+				pathDll = pair.second;
+				break;
+			}
+		}
         if (pathDll == "") {
             std::cerr << "unhandled type requested: '" << type << "'" << std::endl;
             return;

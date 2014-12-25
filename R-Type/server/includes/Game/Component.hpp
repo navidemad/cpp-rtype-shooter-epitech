@@ -3,6 +3,8 @@
 #include "IResource.hpp"
 #include "IDynLib.hpp"
 
+#include <queue>
+#include <chrono>
 #include <memory>
 #include <cstdint>
 
@@ -18,6 +20,15 @@ namespace NGame
             Component& operator=(const Component& rhs);
             ~Component(void) = default;
             void deepCopy(const NGame::Component& rhs);
+
+        // rate frame
+        public:
+            bool canMove(void);
+            bool canFire(void);
+            void addMove(short);
+            bool wantMove(void) const;
+            short angleMove(void) const;
+            void subMove(void);
 
         // setters
         public:
@@ -51,6 +62,9 @@ namespace NGame
             std::shared_ptr<IDynLib> getDynLib(void) const;
 
         // attributes
+        private:
+            std::chrono::steady_clock::time_point last_move, last_fire;
+            std::queue<short> queueMovements;
         private:
 			double mX;
 			double mY;

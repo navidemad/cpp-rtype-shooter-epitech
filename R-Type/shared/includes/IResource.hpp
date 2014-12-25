@@ -32,13 +32,10 @@ struct MYLIB_EXPORT IResource {
             PLAYER      = 1 << 0,
             BULLET      = 1 << 1,
             BONUS       = 1 << 2,
-            COLLIDE     = 1 << 3,
-            MOVEMENT    = 1 << 4,
-            MONSTER     = 1 << 5,
-            CASTER      = 1 << 6,
-            MELEE       = 1 << 7,
-            SUPER       = 1 << 8,
-	        UNKNOWN
+            CASTER      = 1 << 3,
+            MELEE       = 1 << 4,
+            SUPER       = 1 << 5,
+	        UNKNOWN     = 1 << 6
 		};
 
         IResource(void) = default;

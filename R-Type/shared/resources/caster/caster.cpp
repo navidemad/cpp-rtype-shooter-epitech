@@ -19,7 +19,7 @@ int                     Caster::getLife(void) const {
 }
 
 double 			        Caster::getMoveSpeed(void) const {
-	return .42;
+    return 2.5;
 }
 
 double                  Caster::getFireSpeed(void) const {
@@ -27,7 +27,7 @@ double                  Caster::getFireSpeed(void) const {
 }
 
 IResource::Type         Caster::getType(void) const {
-    return static_cast<IResource::Type>(IResource::Type::MONSTER | IResource::Type::CASTER | IResource::Type::COLLIDE);
+    return IResource::Type::CASTER;
 }
 
 IResource::Vec2         Caster::move(double deltaTime) const {

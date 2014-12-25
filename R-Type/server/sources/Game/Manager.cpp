@@ -117,7 +117,6 @@ void NGame::Manager::playGame(const Peer &peer, const std::string &name, const s
     try {
         joinGame(NGame::USER_TYPE::PLAYER, peer, name, pseudo);
         mPlayerCommunicationManager.addPeerToWhiteList(peer);
-        onPlayerMove(IResource::Direction::RIGHT, peer);
     }
     catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));

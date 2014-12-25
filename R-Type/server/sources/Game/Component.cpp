@@ -1,15 +1,13 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {}
+NGame::Component::Component(uint64_t id) : last_move(std::chrono::steady_clock::now()), last_fire(std::chrono::steady_clock::now()), mId(id), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {}
 
 NGame::Component::Component(const NGame::Component& rhs) {
-    std::cout << "copy ctor component" << std::endl;
     if (this != &rhs)
         deepCopy(rhs);
 }
 NGame::Component& NGame::Component::operator = (const NGame::Component& rhs) {
-    std::cout << "operator= component" << std::endl;
     if (this != &rhs)
         deepCopy(rhs);
     return *this;
@@ -28,6 +26,46 @@ void NGame::Component::deepCopy(const NGame::Component& rhs) {
     mType = rhs.getType();
     mOwnerId = rhs.getOwnerId();
     mDynLib = rhs.getDynLib();
+}
+
+void NGame::Component::addMove(short angle) {
+    queueMovements.push(angle);
+}
+
+bool NGame::Component::wantMove(void) const {
+    return queueMovements.size() > 0;
+}
+
+short NGame::Component::angleMove(void) const {
+    return queueMovements.front();
+}
+
+void NGame::Component::subMove(void) {
+    queueMovements.pop();
+}
+
+bool NGame::Component::canMove(void) {
+    std::chrono::steady_clock::time_point now_move = std::chrono::steady_clock::now();
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(now_move - last_move);
+    double deltatime = time_span.count() * 1000;
+    if (deltatime > 2.5) // getMoveSpeed
+    {
+        last_move = now_move;
+        return true;
+    }
+    return false;
+}
+
+bool NGame::Component::canFire(void) {
+    std::chrono::steady_clock::time_point now_fire = std::chrono::steady_clock::now();
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(now_fire - last_fire);
+    double deltatime = time_span.count() * 1000;
+    if (deltatime > 0.001) // getFireSpeed
+    {
+        last_fire = now_fire;
+        return true;
+    }
+    return false;
 }
 
 void NGame::Component::setX(double x) { 

@@ -19,15 +19,15 @@ int                     Player::getLife(void) const {
 }
 
 double 			        Player::getMoveSpeed(void) const {
-	return .33;
+    return 1.25;
 }
 
 double                  Player::getFireSpeed(void) const {
-	return 3.;
+	return 1.;
 }
 
 IResource::Type         Player::getType(void) const {
-    return static_cast<IResource::Type>(IResource::Type::PLAYER);
+    return IResource::Type::PLAYER;
 }
 
 IResource::Vec2         Player::move(double deltaTime) const {

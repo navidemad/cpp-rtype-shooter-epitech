@@ -19,7 +19,7 @@ int                     Melee::getLife(void) const {
 }
 
 double 			        Melee::getMoveSpeed(void) const {
-	return .50;
+    return 2.5;
 }
 
 double                  Melee::getFireSpeed(void) const {
@@ -27,7 +27,7 @@ double                  Melee::getFireSpeed(void) const {
 }
 
 IResource::Type         Melee::getType(void) const {
-    return static_cast<IResource::Type>(IResource::Type::MONSTER | IResource::Type::MELEE | IResource::Type::COLLIDE);
+    return IResource::Type::MELEE;
 }
 
 IResource::Vec2         Melee::move(double) const {

@@ -19,7 +19,7 @@ int                     Super::getLife(void) const {
 }
 
 double 			        Super::getMoveSpeed(void) const {
-	return .20;
+    return 2.5;
 }
 
 double                  Super::getFireSpeed(void) const {
@@ -27,7 +27,7 @@ double                  Super::getFireSpeed(void) const {
 }
 
 IResource::Type         Super::getType(void) const {
-    return static_cast<IResource::Type>(IResource::Type::MONSTER | IResource::Type::SUPER | IResource::Type::COLLIDE);
+    return IResource::Type::SUPER;
 }
 
 IResource::Vec2         Super::move(double deltaTime) const {

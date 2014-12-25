@@ -49,7 +49,6 @@ void NGame::Game::pull(void) {
             checkCollisions();
         if (getState() == NGame::Game::State::RUNNING)
             moveEntities();
-        Sleep(17); // 60fps = 1000 / 60
     }
     catch (const GameException& e) {
         Utils::logInfo(e.what());
@@ -105,15 +104,24 @@ void NGame::Game::checkCollisions(void) {
 void NGame::Game::moveEntities(void) {
     Scopedlock(mMutex);
 
-    std::vector<std::shared_ptr<NGame::Component>>::iterator it = mComponents.begin();
-    std::vector<std::shared_ptr<NGame::Component>>::iterator it_end = mComponents.end();
-    while (it != it_end)
+    for (auto component : mComponents)
     {
-        if (!((*it)->getResource()->getType() & IResource::Type::PLAYER))
+        if (component->canMove())
         {
-            updatePositionComponent(*it);
+            if (component->getType() == IResource::Type::PLAYER)
+            {
+                if (component->wantMove())
+                {
+                    component->setAngle(component->angleMove());
+                    component->subMove();
+                    updatePositionComponent(component);
+                }
+            }
+            else
+            {
+                updatePositionComponent(component);
+            }
         }
-        ++it;
     }
 }
 
@@ -230,12 +238,7 @@ void NGame::Game::fire(const Peer &peer) {
 
 void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
     Scopedlock(mMutex);
-
-    std::shared_ptr<NGame::User>& user = findUserByHost(peer);
-    std::shared_ptr<NGame::Component>& component = findComponentByOwnerId(user->getId());
-
-    component->setAngle(Config::Game::angleTab[direction]);
-    updatePositionComponent(component);
+    findComponentByOwnerId(findUserByHost(peer)->getId())->addMove(Config::Game::angleTab[direction]);
 }
 
 void    NGame::Game::spawn(const std::string& name, double x, double y, short angle, uint64_t ownerId) {
@@ -673,7 +676,6 @@ void NGame::Game::initTimer(void) {
     Scopedlock(mMutex);
 
     mTimer = std::clock();
-    mLastTime = std::clock();
 }
 
 /*

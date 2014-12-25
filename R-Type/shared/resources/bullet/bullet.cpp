@@ -19,7 +19,7 @@ int                     Bullet::getLife(void) const {
 }
 
 double 			        Bullet::getMoveSpeed(void) const {
-    return .50;
+    return 2.5;
 }
 
 double                  Bullet::getFireSpeed(void) const {
@@ -27,7 +27,7 @@ double                  Bullet::getFireSpeed(void) const {
 }
 
 IResource::Type         Bullet::getType(void) const {
-    return static_cast<IResource::Type>(IResource::Type::BULLET | IResource::Type::COLLIDE);
+    return IResource::Type::BULLET;
 }
 
 IResource::Vec2         Bullet::move(double) const {

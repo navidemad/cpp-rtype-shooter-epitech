@@ -30,7 +30,7 @@ namespace Config
 
 	namespace Network
 	{
-		const unsigned int	port = 4247;
+		const unsigned int	port = 4249;
 		const std::string	adress = "127.0.0.1";
 		const std::string	defaultPseudo = "Steve";
 	}

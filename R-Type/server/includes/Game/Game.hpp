@@ -136,7 +136,6 @@ namespace NGame
         std::shared_ptr<NGame::Script> mScript;
         NGame::Game::OnGameEvent *mListener;
         std::clock_t mTimer;
-        std::clock_t mLastTime;
         std::vector<std::shared_ptr<NGame::User>> mUsers;
         std::vector<std::shared_ptr<NGame::Component>> mComponents;
         std::shared_ptr<IMutex> mMutex;
