@@ -131,11 +131,11 @@ namespace NGame
         // attributes
     private:
         static std::map<IResource::Type, std::string> mDLLoader;
+        NGame::Timer mTimer;
         NGame::Properties mProperties;
         NGame::Game::State mState;
         std::shared_ptr<NGame::Script> mScript;
         NGame::Game::OnGameEvent *mListener;
-        std::clock_t mTimer;
         std::vector<std::shared_ptr<NGame::User>> mUsers;
         std::vector<std::shared_ptr<NGame::Component>> mComponents;
         std::shared_ptr<IMutex> mMutex;

@@ -87,7 +87,7 @@ void NGame::Game::checkCollisions(void) {
         {
             if ((*it)->getType() == IResource::Type::PLAYER)
             {
-                auto user = findUserById((*it)->getId());
+                auto user = findUserById((*it)->getOwnerId());
                 transferPlayerToSpectators(user);
             }
             if (mListener)
@@ -577,7 +577,7 @@ NGame::Game::OnGameEvent* NGame::Game::getListener(void) {
 double NGame::Game::getCurrentFrame(void) {
     Scopedlock(mMutex);
 
-    return (static_cast<double>(std::clock() - mTimer) / static_cast<double>(CLOCKS_PER_SEC));
+    return (mTimer.getDelta() / 1E6);
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {
@@ -662,7 +662,7 @@ void NGame::Game::logInfo(const std::string &log) const {
 void NGame::Game::initTimer(void) {
     Scopedlock(mMutex);
 
-    mTimer = std::clock();
+    mTimer.restart();
 }
 
 /*
