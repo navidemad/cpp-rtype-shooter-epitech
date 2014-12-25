@@ -5,7 +5,6 @@
 #include "IMutex.hpp"
 #include "IResource.hpp"
 #include "IScriptCommand.hpp"
-#include "IDynLib.hpp"
 
 #include "Client.hpp"
 #include "Script.hpp"
@@ -37,8 +36,8 @@ namespace NGame
         public:
             virtual ~OnGameEvent(void) = default;
             virtual void onRemovePeerFromWhiteList(const Peer&) = 0;
-            virtual void onNotifyUsersComponentRemoved(const std::vector<NGame::User>, uint64_t) = 0;
-            virtual void onNotifyUsersComponentAdded(const std::vector<NGame::User>, const NGame::Component&) = 0;
+            virtual void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>>, uint64_t) = 0;
+            virtual void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>>, const std::shared_ptr<NGame::Component>&) = 0;
             virtual void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t) = 0;
             virtual void onNotifyTimeElapsedPing(const Peer &, double) = 0;
         };
@@ -72,7 +71,7 @@ namespace NGame
         NGame::Game::OnGameEvent* getListener(void);
         double getCurrentFrame();
         NGame::Properties& getProperties(void);
-        std::vector<NGame::User>& getUsers(void);
+        std::vector<std::shared_ptr<NGame::User>>& getUsers(void);
         NGame::Game::State getState(void) const;
         const Peer& getOwner(void);
         bool getPullEnded(void);
@@ -94,30 +93,27 @@ namespace NGame
 
         // check :: collision
     private:
-        bool collision(NGame::Component& component);
-        bool collisionTouch(const NGame::Component&, const NGame::Component&) const;
-        bool collisionWithNoLife(NGame::Component& component);
-        bool collisionWithBonus(NGame::Component&, NGame::Component&);
-        bool collisionWithBullet(NGame::Component&, NGame::Component&);
-        bool collisionWithEnnemy(NGame::Component&, NGame::Component&);
+        bool collision(std::shared_ptr<NGame::Component>& component);
+        bool collisionTouch(const std::shared_ptr<NGame::Component>&, const std::shared_ptr<NGame::Component>&) const;
+        bool collisionWithNoLife(std::shared_ptr<NGame::Component>& component);
+        bool collisionWithBonus(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);
+        bool collisionWithBullet(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);
+        bool collisionWithEnnemy(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);
 
     public:
-        NGame::User& findUserByHost(const Peer &);
-        NGame::User& findUserById(uint64_t id);
-        NGame::Component& findComponentById(uint64_t id);
-        std::vector<NGame::User>::iterator findIteratorUserByHost(const Peer &peer);
+        std::shared_ptr<NGame::User>& findUserByHost(const Peer &);
+        std::shared_ptr<NGame::User>& findUserById(uint64_t id);
+        std::shared_ptr<NGame::Component>& findComponentById(uint64_t id);
+        std::shared_ptr<NGame::Component>& findComponentByOwnerId(uint64_t id);
+        std::vector<std::shared_ptr<NGame::User>>::iterator findIteratorUserByHost(const Peer &peer);
 
         // workflow internal game
     private:
-        void addComponentInList(const NGame::Component&);
-        void addUserInList(const NGame::User&);
-        void eraseUserOfList(std::vector<NGame::User>::iterator& it);
-        void tryAddPlayer(NGame::User&);
-        void tryDelPlayer(void);
-        void tryAddSpectator(const NGame::User&);
-        void tryDelSpectator(void);
-        void transferPlayerToSpectators(NGame::User &);
-        void updatePositionComponent(NGame::Component&);
+        void spawn(const std::string& name, double x, double y, short angle, uint64_t ownerId);
+        void addComponentInList(const std::shared_ptr<NGame::Component>&);
+        void addUserInList(const std::shared_ptr<NGame::User>&);
+        void transferPlayerToSpectators(std::shared_ptr<NGame::User> &);
+        void updatePositionComponent(std::shared_ptr<NGame::Component>&);
 
     public:
         void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
@@ -125,13 +121,11 @@ namespace NGame
 
         // workflow gaming fire + move
     public:
-        NGame::Component fire(const Peer &);
-        const NGame::Component& move(const Peer &, IResource::Direction);
+        void fire(const Peer &);
+        void move(const Peer &, IResource::Direction);
 
         // workflow scripts actions
     private:
-        void scriptCommandName(const IScriptCommand* command);
-        void scriptCommandRequire(const IScriptCommand* command);
         void scriptCommandSpawn(const IScriptCommand* command);
 
         // attributes
@@ -143,8 +137,8 @@ namespace NGame
         NGame::Game::OnGameEvent *mListener;
         std::clock_t mTimer;
         std::clock_t mLastTime;
-        std::vector<NGame::User> mUsers;
-        std::vector<NGame::Component> mComponents;
+        std::vector<std::shared_ptr<NGame::User>> mUsers;
+        std::vector<std::shared_ptr<NGame::Component>> mComponents;
         std::shared_ptr<IMutex> mMutex;
         Peer mOwner;
         bool mPullEnded;

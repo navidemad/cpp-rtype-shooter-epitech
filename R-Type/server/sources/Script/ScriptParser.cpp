@@ -5,8 +5,6 @@
 #include <algorithm>
 
 const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
-    { "name", &ScriptParser::commandScriptName },
-    { "require", &ScriptParser::commandScriptRequire },
     { "spawn", &ScriptParser::commandScriptSpawn },
 	{ "", nullptr }
 };
@@ -43,22 +41,6 @@ std::shared_ptr<NGame::Script> ScriptParser::createScriptFromFile(std::ifstream 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 
     return std::make_shared<NGame::Script>(commands);
-}
-
-const IScriptCommand* ScriptParser::commandScriptName(void) {
-	auto command = new ScriptName;
-	command->setFrame(0);
-	command->setInstruction(IScriptCommand::Instruction::NAME);
-	command->setStageName(mParser.extractWord());
-	return command;
-}
-
-const IScriptCommand* ScriptParser::commandScriptRequire(void) {
-	auto command = new ScriptRequire;
-	command->setFrame(0);
-	command->setInstruction(IScriptCommand::Instruction::REQUIRE);
-    command->setResourceName(mParser.extractWord());
-	return command;
 }
 
 const IScriptCommand* ScriptParser::commandScriptSpawn(void) {

@@ -8,8 +8,8 @@ class UnixDynLib : public IDynLib {
 
 	// ctor dtor
 	public:
-		UnixDynLib(void) = default;
-		~UnixDynLib(void) = default;
+		UnixDynLib(void);
+		~UnixDynLib(void);
 
 	// copy / move operators
 	public:

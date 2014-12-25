@@ -3,6 +3,14 @@
 
 const std::string UnixDynLib::extension = ".so";
 
+UnixDynLib::UnixDynLib(void) : mHandle(nullptr) {
+
+}
+
+UnixDynLib::~UnixDynLib(void) {
+    libraryFree();
+}
+
 void    UnixDynLib::libraryLoad(const std::string& libraryName) {
     std::string path = normalize(libraryName);
 

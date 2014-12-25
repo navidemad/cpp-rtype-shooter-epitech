@@ -1,6 +1,9 @@
 #pragma once
 
 #include "IResource.hpp"
+#include "IDynLib.hpp"
+
+#include <memory>
 #include <cstdint>
 
 namespace NGame
@@ -14,6 +17,7 @@ namespace NGame
             Component(const Component& rhs);
             Component& operator=(const Component& rhs);
             ~Component(void) = default;
+            void deepCopy(const NGame::Component& rhs);
 
         // setters
         public:
@@ -22,10 +26,13 @@ namespace NGame
             void setWidth(double width);
             void setHeight(double height);
             void setAngle(short angle);
-            void setSpeed(double speed);
+            void setMoveSpeed(double speed);
+            void setFireSpeed(double speed);
             void setLife(double life);
             void setId(uint64_t id);
             void setType(IResource::Type type);
+            void setOwnerId(uint64_t ownerId);
+            void setResource(IResource*);
 
         // getters
         public:
@@ -34,10 +41,14 @@ namespace NGame
             double getWidth(void) const;
             double getHeight(void) const;
             short getAngle(void) const;
-            double getSpeed(void) const;
+            double getMoveSpeed(void) const;
+            double getFireSpeed(void) const;
             double getLife(void) const;
             uint64_t getId(void) const;
             IResource::Type getType(void) const;
+            uint64_t getOwnerId(void) const;
+            IResource* getResource(void) const;
+            std::shared_ptr<IDynLib> getDynLib(void) const;
 
         // attributes
         private:
@@ -45,12 +56,15 @@ namespace NGame
 			double mY;
 			double mWidth;
 			double mHeight;
-			short mAngle;
-			double mSpeed;
+            short mAngle;
+            double mMoveSpeed;
+            double mFireSpeed;
 			double mLife;
             uint64_t mId;
+            uint64_t mOwnerId;
             IResource::Type mType;
-
+            IResource* mResource;
+            std::shared_ptr<IDynLib> mDynLib;
         };
 
 }

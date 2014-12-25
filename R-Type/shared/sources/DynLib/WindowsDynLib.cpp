@@ -7,6 +7,14 @@
 
 const std::string WindowsDynLib::extension = ".dll";
 
+WindowsDynLib::WindowsDynLib(void) : mDLLHandle(nullptr) {
+
+}
+
+WindowsDynLib::~WindowsDynLib(void) {
+    libraryFree();
+}
+
 void    WindowsDynLib::libraryLoad(const std::string& libraryName) {
     std::string path = normalize(libraryName);
 

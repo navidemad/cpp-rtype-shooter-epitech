@@ -47,8 +47,8 @@ namespace NGame
             };
 
     		void onRemovePeerFromWhiteList(const Peer&);
-    		void onNotifyUsersComponentRemoved(const std::vector<NGame::User>, uint64_t);
-            void onNotifyUsersComponentAdded(const std::vector<NGame::User>, const NGame::Component&);
+            void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>>, uint64_t);
+            void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>>, const std::shared_ptr<NGame::Component>&);
     		void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t);
     		void onNotifyTimeElapsedPing(const Peer &, double);
 

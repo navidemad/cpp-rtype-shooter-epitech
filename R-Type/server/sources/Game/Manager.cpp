@@ -147,8 +147,8 @@ void NGame::Manager::leaveGame(const Peer &peer) {
 void NGame::Manager::updatePseudo(const Peer &peer, const std::string &pseudo) {
     try {
         const std::shared_ptr<NGame::Game>& gamebyhost = findGameByHost(peer);
-        NGame::User& user = gamebyhost->findUserByHost(peer);
-        user.setPseudo(pseudo);
+        std::shared_ptr<NGame::User>& user = gamebyhost->findUserByHost(peer);
+        user->setPseudo(pseudo);
     } catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
@@ -160,10 +160,7 @@ void NGame::Manager::updatePseudo(const Peer &peer, const std::string &pseudo) {
 void NGame::Manager::onPlayerFire(const Peer &peer) {
     try {
         const std::shared_ptr<NGame::Game>& gamebyhost = findGameByHost(peer);
-        NGame::Component component = gamebyhost->fire(peer);
-        std::vector<NGame::User> users = gamebyhost->getUsers();
-        for (const auto& user : users)
-           mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
+        gamebyhost->fire(peer);
     } catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
@@ -172,10 +169,7 @@ void NGame::Manager::onPlayerFire(const Peer &peer) {
 void NGame::Manager::onPlayerMove(IResource::Direction direction, const Peer &peer) {
     try {
         const std::shared_ptr<NGame::Game>& gamebyhost = findGameByHost(peer);
-        const NGame::Component& component = gamebyhost->move(peer, direction);
-        std::vector<NGame::User> users = gamebyhost->getUsers();
-        for (const auto& user : users)
-           mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
+        gamebyhost->move(peer, direction);
     } catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
@@ -192,10 +186,10 @@ void NGame::Manager::removeGameFromList(const std::shared_ptr<NGame::Game> &game
 */
 void NGame::Manager::terminatedGame(const std::shared_ptr<NGame::Game>& game) {
     std::list<Peer> peerUsers;
-    std::vector<NGame::User> gameUsers = game->getUsers();
+    std::vector<std::shared_ptr<NGame::User>> gameUsers = game->getUsers();
     for (const auto& user : gameUsers) {
-        onNotifyUserGainScore(user.getPeer(), user.getId(), user.getPseudo(), user.getScore());
-        peerUsers.push_back(user.getPeer());
+        onNotifyUserGainScore(user->getPeer(), user->getId(), user->getPseudo(), user->getScore());
+        peerUsers.push_back(user->getPeer());
     }
 
     if (mListener)
@@ -209,14 +203,14 @@ void NGame::Manager::onRemovePeerFromWhiteList(const Peer& peer) {
     mPlayerCommunicationManager.removePeerFromWhiteList(peer);
 }
 
-void NGame::Manager::onNotifyUsersComponentRemoved(const std::vector<NGame::User> users, uint64_t id) {
+void NGame::Manager::onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>> users, uint64_t id) {
     for (auto user : users)
-        mPlayerCommunicationManager.sendDestroyResource(user.getPeer(), id);
+        mPlayerCommunicationManager.sendDestroyResource(user->getPeer(), id);
 }
 
-void NGame::Manager::onNotifyUsersComponentAdded(const std::vector<NGame::User> users, const NGame::Component& component) {
+void NGame::Manager::onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>> users, const std::shared_ptr<NGame::Component>& component) {
     for (auto user : users)
-        mPlayerCommunicationManager.sendMoveResource(user.getPeer(), component.getId(), component.getType(), component.getX(), component.getY(), component.getAngle());
+        mPlayerCommunicationManager.sendMoveResource(user->getPeer(), component->getId(), component->getType(), component->getX(), component->getY(), component->getAngle());
 }
 
 void NGame::Manager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
@@ -228,10 +222,10 @@ void NGame::Manager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPin
 }
 
 void    NGame::Manager::removeClientsFromWhitelist(const std::shared_ptr<NGame::Game> &game) {
-    std::vector<NGame::User> gameUsers = game->getUsers();
+    std::vector<std::shared_ptr<NGame::User>> gameUsers = game->getUsers();
 
-	std::for_each(gameUsers.begin(), gameUsers.end(), [&](const NGame::User& user) {
-        mPlayerCommunicationManager.removePeerFromWhiteList(user.getPeer());
+    std::for_each(gameUsers.begin(), gameUsers.end(), [&](const std::shared_ptr<NGame::User>& user) {
+        mPlayerCommunicationManager.removePeerFromWhiteList(user->getPeer());
     });
 }
 
@@ -261,10 +255,10 @@ std::shared_ptr<NGame::Game> NGame::Manager::findGameByName(const std::string& n
 std::shared_ptr<NGame::Game> NGame::Manager::findGameByHost(const Peer &peer) {
     std::vector<std::shared_ptr<NGame::Game>> games = getGames();
     for (const std::shared_ptr<NGame::Game>& game : games) {
-        std::vector<NGame::User> users = game->getUsers();
+        std::vector<std::shared_ptr<NGame::User>> users = game->getUsers();
         if (users.size() != 0)
             for (auto user: users)
-                if (user.getPeer() == peer)
+                if (user->getPeer() == peer)
                     return game;
     }
     throw GamesManagerException("findGameByName doesn't match", ErrorStatus(ErrorStatus::Error::KO));

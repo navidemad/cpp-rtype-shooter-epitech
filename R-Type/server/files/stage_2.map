@@ -1,11 +1,3 @@
-# Nom du stage
-name "stage_1"
-
-# Liste des ressources requises
-require "caster"
-require "melee"
-require "super"
-
 # Apparitions de 3 casters
 spawn 3.2 caster 87.0 25.0 180
 spawn 3.2 caster 87.0 50.0 180

@@ -1,33 +1,33 @@
 #include "Component.hpp"
+#include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN) { }
+NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {}
 
 NGame::Component::Component(const NGame::Component& rhs) {
-    if (this != &rhs) {
-        mX = rhs.getX();
-        mY = rhs.getY();
-        mWidth = rhs.getWidth();
-        mHeight = rhs.getHeight();
-        mAngle = rhs.getAngle();
-        mSpeed = rhs.getSpeed();
-        mLife = rhs.getLife();
-        mId = rhs.getId();
-        mType = rhs.getType();
-    }
+    std::cout << "copy ctor component" << std::endl;
+    if (this != &rhs)
+        deepCopy(rhs);
 }
 NGame::Component& NGame::Component::operator = (const NGame::Component& rhs) {
-    if (this != &rhs) {
-        mX = rhs.getX();
-        mY = rhs.getY();
-        mWidth = rhs.getWidth();
-        mHeight = rhs.getHeight();
-        mAngle = rhs.getAngle();
-        mSpeed = rhs.getSpeed();
-        mLife = rhs.getLife();
-        mId = rhs.getId();
-        mType = rhs.getType();
-    }
+    std::cout << "operator= component" << std::endl;
+    if (this != &rhs)
+        deepCopy(rhs);
     return *this;
+}
+
+void NGame::Component::deepCopy(const NGame::Component& rhs) {
+    mX = rhs.getX();
+    mY = rhs.getY();
+    mWidth = rhs.getWidth();
+    mHeight = rhs.getHeight();
+    mAngle = rhs.getAngle();
+    mMoveSpeed = rhs.getMoveSpeed();
+    mFireSpeed = rhs.getFireSpeed();
+    mLife = rhs.getLife();
+    mId = rhs.getId();
+    mType = rhs.getType();
+    mOwnerId = rhs.getOwnerId();
+    mDynLib = rhs.getDynLib();
 }
 
 void NGame::Component::setX(double x) { 
@@ -50,8 +50,12 @@ void NGame::Component::setAngle(short angle) {
     mAngle = angle; 
 }
 
-void NGame::Component::setSpeed(double speed) { 
-    mSpeed = speed; 
+void NGame::Component::setMoveSpeed(double moveSpeed) { 
+    mMoveSpeed = moveSpeed;
+}
+
+void NGame::Component::setFireSpeed(double fireSpeed) {
+    mFireSpeed = fireSpeed;
 }
 
 void NGame::Component::setLife(double life) { 
@@ -64,6 +68,14 @@ void NGame::Component::setId(uint64_t id) {
 
 void NGame::Component::setType(IResource::Type type) { 
     mType = type; 
+}
+
+void NGame::Component::setOwnerId(uint64_t ownerId) {
+    mOwnerId = ownerId;
+}
+
+void NGame::Component::setResource(IResource* resource) {
+    mResource = resource;
 }
 
 double NGame::Component::getX(void) const { 
@@ -85,8 +97,12 @@ short NGame::Component::getAngle(void) const {
     return mAngle; 
 }
 
-double NGame::Component::getSpeed(void) const { 
-    return mSpeed; 
+double NGame::Component::getMoveSpeed(void) const { 
+    return mMoveSpeed; 
+}
+
+double NGame::Component::getFireSpeed(void) const {
+    return mFireSpeed;
 }
 
 double NGame::Component::getLife(void) const { 
@@ -99,4 +115,16 @@ uint64_t NGame::Component::getId(void) const {
 
 IResource::Type NGame::Component::getType(void) const { 
     return mType; 
+}
+
+uint64_t NGame::Component::getOwnerId(void) const {
+    return mOwnerId;
+}
+
+IResource* NGame::Component::getResource(void) const {
+    return mResource;
+}
+
+std::shared_ptr<IDynLib> NGame::Component::getDynLib(void) const {
+    return mDynLib;
 }
