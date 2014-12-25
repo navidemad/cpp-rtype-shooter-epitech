@@ -72,7 +72,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 	id += mFirstId + 1;
 	try
 	{
-		std::string pathDll;
+		std::string pathDll = "";
 		for (auto pair : mDLLoader)
 		{
 			if (type == pair.first)
