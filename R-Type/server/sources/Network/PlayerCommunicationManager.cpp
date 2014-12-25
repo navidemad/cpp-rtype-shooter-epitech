@@ -27,7 +27,7 @@ PlayerCommunicationManager::~PlayerCommunicationManager(void) {
 }
 
 void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &log) const {
-	return; // debug pour avoir moins de log qui font lag
+    return;
 	std::stringstream ss;
 
 	ss << Utils::RED << "[UDP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.udpPort << "]> " << Utils::WHITE << log; 
@@ -39,11 +39,12 @@ void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, 
 		Scopedlock(mMutex);
 
 		if (findPeer(peer) == mAllowedPeers.end()) {
-		  logInfo(peer, "Not whitelisted - Not treated");
+			logInfo(peer, "Not whitelisted - Not treated");
 			return;
 		}
-		else
+        else {
 		  logInfo(peer, "Whitelisted - Treated");
+        }
 	}
 
 	for (const auto &instr : commandExecTab)

@@ -5,13 +5,11 @@
 #include <algorithm>
 
 const ScriptParser::tokenExec ScriptParser::tokenExecTab[] = {
-    { "name", &ScriptParser::commandScriptName },
-    { "require", &ScriptParser::commandScriptRequire },
     { "spawn", &ScriptParser::commandScriptSpawn },
 	{ "", nullptr }
 };
 
-std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) {
+std::shared_ptr<NGame::Script> ScriptParser::createScriptFromFile(std::ifstream &file) {
 
 	std::vector<const IScriptCommand*> commands;
 
@@ -42,26 +40,7 @@ std::shared_ptr<Script> ScriptParser::createScriptFromFile(std::ifstream &file) 
 
 	std::sort(commands.begin(), commands.end(), [](const IScriptCommand* left, const IScriptCommand* right) { return left->getFrame() < right->getFrame(); });
 
-	auto script = std::make_shared<Script>();
-    *script = commands;
-
-	return script;
-}
-
-const IScriptCommand* ScriptParser::commandScriptName(void) {
-	auto command = new ScriptName;
-	command->setFrame(0);
-	command->setInstruction(IScriptCommand::Instruction::NAME);
-	command->setStageName(mParser.extractWord());
-	return command;
-}
-
-const IScriptCommand* ScriptParser::commandScriptRequire(void) {
-	auto command = new ScriptRequire;
-	command->setFrame(0);
-	command->setInstruction(IScriptCommand::Instruction::REQUIRE);
-    command->setResourceName(mParser.extractWord());
-	return command;
+    return std::make_shared<NGame::Script>(commands);
 }
 
 const IScriptCommand* ScriptParser::commandScriptSpawn(void) {
@@ -71,6 +50,6 @@ const IScriptCommand* ScriptParser::commandScriptSpawn(void) {
 	command->setSpawnName(mParser.extractWord());
     command->setX(mParser.extractValue<double>());
 	command->setY(mParser.extractValue<double>());
-    command->setAngle(mParser.extractValue<double>());
+    command->setAngle(mParser.extractValue<short>());
 	return command;
 }

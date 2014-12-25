@@ -24,19 +24,19 @@ namespace Config
 	{
 		const std::string	defaultNameGame = "de_dust2";
 		const std::string	defaultLevelGame = "stage_1";
-		const uint32_t		defaultNbPlayerMax = 4;
-		const uint32_t		defaultNbPublicMax = 4;
+        const int		    defaultNbPlayerMax = 4;
+		const int		    defaultNbPublicMax = 4;
 	}
 
 	namespace Network
 	{
-		const unsigned int	port = 4246;
+		const unsigned int	port = 4247;
 		const std::string	adress = "127.0.0.1";
 		const std::string	defaultPseudo = "Steve";
 	}
 
 	namespace Audio
 	{
-		const float			volume = 100.f;
+		const float			volume = 50.f;
 	}
 }

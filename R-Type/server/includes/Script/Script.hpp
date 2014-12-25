@@ -5,29 +5,35 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
-#include "NoCopyable.hpp"
 
-class Script : public NoCopyable {
+namespace NGame
+{
 
-    // ctor / dtor
-    public:
-        Script(void) = default;
-        virtual ~Script(void);
+    class Script {
 
-	// getters
-	public:
-        Script& operator=(const std::vector<const IScriptCommand*>&);
-		const std::vector<const IScriptCommand*>& getCommands(void) const;
-        
+        // ctor / dtor
+        public:
+            Script(const std::vector<const IScriptCommand*>& commands);
+            ~Script(void);
+            Script(const Script& rhs);
+            Script& operator=(const Script& rhs);
+            void deepCopy(const NGame::Script& rhs);
 
-	// workflow script
-	public:
-        bool last(unsigned int) const;
-		const IScriptCommand* get(unsigned int) const;
-        unsigned int size(void) const;
+        // getters
+        public:
+            const std::vector<const IScriptCommand*>& getCommands(void) const;
 
-	// attributes
-	private:
-		std::vector<const IScriptCommand*> mCommands;
-        unsigned int mSize;
-};
+        // workflow script
+        public:
+            const IScriptCommand* currentCommand(void) const;
+            bool isFinish(void) const;
+            void goToNextCommand(void);
+
+        // attributes
+        private:
+            std::vector<const IScriptCommand*> mCommands;
+            unsigned int mSize;
+            unsigned int mIndex;
+    };
+
+}

@@ -91,7 +91,7 @@ IClientSocket::Message	WindowsTcpClient::receive(unsigned int sizeToRead) {
 	std::copy(mInBuffer.begin(), mInBuffer.begin() + sizeToRead, back_inserter(message.msg));
 	mInBuffer.erase(mInBuffer.begin(), mInBuffer.begin() + sizeToRead);
 	message.msgSize = sizeToRead;
-
+    
 	return message;
 }
 

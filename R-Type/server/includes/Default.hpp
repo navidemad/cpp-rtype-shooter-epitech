@@ -39,7 +39,7 @@ namespace Config
 
 	namespace Network
 	{
-        static const int                                tcpPort = 4246;
+        static const int                                tcpPort = 4247;
         static const int                                tcpQueue = 1024;
         static const int                                udpPort = 4243;
         static const std::string	                    localAdress = "127.0.0.1";

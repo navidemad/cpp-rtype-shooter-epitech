@@ -45,7 +45,7 @@ void	WindowsUdpClient::bindSocket(int port) {
 	clientAddr.sin_port = htons(port);
 
 	if (bind(mSocketFd, reinterpret_cast<struct sockaddr *>(&clientAddr), sizeof(clientAddr)) < 0)
-		throw SocketException("fail bind()");
+		throw SocketException("fail bind() udp");
 }
 
 void	WindowsUdpClient::initFromSocket(void *socketFd, const std::string &addr, int port) {

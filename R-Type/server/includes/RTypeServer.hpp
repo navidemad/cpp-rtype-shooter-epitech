@@ -2,10 +2,10 @@
 
 #include "Peer.hpp"
 #include "ClientManager.hpp"
-#include "GamesManager.hpp"
+#include "Manager.hpp"
 #include "NoCopyable.hpp"
 
-class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEvent, public GamesManager::OnGamesManagerEvent {
+class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEvent, public NGame::Manager::OnManagerEvent {
 
     // ctor / dtor
     public:
@@ -37,6 +37,6 @@ class RTypeServer : public NoCopyable, public ClientManager::OnClientManagerEven
 	// attributes
 	private:
 		ClientManager mClientManager;
-		GamesManager mGamesManager;
+		NGame::Manager mGamesManager;
 
 };

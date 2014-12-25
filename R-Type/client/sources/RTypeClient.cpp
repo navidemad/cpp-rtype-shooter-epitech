@@ -32,7 +32,9 @@ Q_DECLARE_METATYPE(IResource::Direction)
 RTypeClient::RTypeClient()
 : mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), 
   mGui(SFMLGraphic::getInstance()), mCurrentLevel(Config::Game::defaultLevelGame),
-  mCurrentGame(Config::Game::defaultNameGame), mServer(Config::Network::port), 
+  mCurrentGame(Config::Game::defaultNameGame), 
+  mCurrentNbPlayerMax(Config::Game::defaultNbPlayerMax), mCurrentNbPublicMax(Config::Game::defaultNbPublicMax),
+  mServer(Config::Network::port), 
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
@@ -941,20 +943,12 @@ void	RTypeClient::setLevel(std::string const &level)
 
 void	RTypeClient::setNbPlayerMax(std::string const &nbPlayerMax)
 {
-	std::istringstream buffer(nbPlayerMax);
-	uint8_t value;
-	buffer >> value;
-
-	mCurrentNbPlayerMax = (value <= Config::Game::defaultNbPlayerMax) ? value : Config::Game::defaultNbPlayerMax;
+    mCurrentNbPlayerMax = std::min(std::stoi(nbPlayerMax), Config::Game::defaultNbPlayerMax);
 }
 
 void	RTypeClient::setNbPublicMax(std::string const &nbPublicMax)
 {
-	std::istringstream buffer(nbPublicMax);
-	uint8_t value;
-	buffer >> value;
-
-	mCurrentNbPublicMax = (value <= Config::Game::defaultNbPublicMax) ? value : Config::Game::defaultNbPublicMax;
+    mCurrentNbPublicMax = std::min(std::stoi(nbPublicMax), Config::Game::defaultNbPublicMax);
 }
 
 void	RTypeClient::setScript(std::string const &script)

@@ -62,7 +62,6 @@ void ServerCommunication::OnDeleteGame(const std::string &name){
 }
 
 void ServerCommunication::OnFire(void){
-	std::cout << "ServerCommunication::OnFire" << std::endl;
 	std::shared_ptr<ICommand> command(new CommandFire);
 
 	sendCommand(command.get(), false);

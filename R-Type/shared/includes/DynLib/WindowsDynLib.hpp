@@ -10,8 +10,8 @@ class WindowsDynLib : public NoCopyable, public IDynLib {
 
 	// ctor dtor
 	public:
-        WindowsDynLib(void) = default;
-        ~WindowsDynLib(void) = default;
+        WindowsDynLib(void);
+        ~WindowsDynLib(void);
 
 	// interface implementation
 	public:

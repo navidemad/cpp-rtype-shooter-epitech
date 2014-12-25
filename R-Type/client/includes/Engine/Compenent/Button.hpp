@@ -129,7 +129,7 @@ class ButtonKeyInput : public Button
 				buffer >> value;
 
 				// search value
-				std::vector<T>::const_iterator it;
+				typename std::vector<T>::const_iterator it;
 				for (it = mList.begin(); it != mList.end() && *it != value; ++it) { }
 				if (it == mList.end())
 					it = mList.begin();

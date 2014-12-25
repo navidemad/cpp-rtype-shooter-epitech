@@ -1,3 +1,4 @@
+
 #include <qhostaddress.h>
 #include "Network/TcpClient.hpp"
 #include "SocketException.hpp"
@@ -10,13 +11,15 @@ TcpClient::TcpClient(void)
 
 TcpClient::~TcpClient(void) {
 }
-
+#include <iostream>
 void	TcpClient::connect(const std::string &addr, int port) {
 	close(false);
 	mQTcpSocket->connectToHost(QString(addr.c_str()), port);
 
 	if (mQTcpSocket->waitForConnected(-1) == false)
 		throw SocketException("fail QTcpSocket::connectToHost & QTcpSocket::waitForConnected");
+
+    std::cout << "TcpClient listen on port '" << port << "'" << std::endl;
 
 	QObject::connect(mQTcpSocket.get(), SIGNAL(readyRead()), this, SLOT(markAsReadable()));
 	QObject::connect(mQTcpSocket.get(), SIGNAL(disconnected()), this, SLOT(close()));
