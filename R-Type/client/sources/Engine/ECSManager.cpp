@@ -175,10 +175,10 @@ void	ECSManager::addEntity()
 {
 	while (!mAddEntity.empty())
 	{
-		std::pair<unsigned int, std::list<Component *>> const &elem = mAddEntity.front();
+        auto pair = mAddEntity.front();
 
-		Entity &entity = createEntity(elem.first);
-		for (Component *component : elem.second)
+        Entity &entity = createEntity(pair.first);
+        for (Component *component : pair.second)
 		{
 			entity.addComponent(component);
 		}

@@ -25,10 +25,6 @@ namespace NGame
         public:
             bool canMove(void);
             bool canFire(void);
-            void addMove(short);
-            bool wantMove(void) const;
-            short angleMove(void) const;
-            void subMove(void);
 
         // setters
         public:
@@ -63,8 +59,7 @@ namespace NGame
 
         // attributes
         private:
-            std::chrono::steady_clock::time_point last_move, last_fire;
-            std::queue<short> queueMovements;
+            std::chrono::system_clock::time_point last_move, last_fire;
         private:
 			double mX;
 			double mY;

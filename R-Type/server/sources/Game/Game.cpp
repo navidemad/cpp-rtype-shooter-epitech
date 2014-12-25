@@ -76,53 +76,37 @@ void NGame::Game::broadcastMap(void) {
 }
 
 void NGame::Game::checkCollisions(void) {
-    return;
-    /*
-    auto components = getComponents();
-    for (auto it = components.begin(); it != components.end();) {
-    if (collision(*it))
+    Scopedlock(mMutex);
+
+    for (auto it = mComponents.begin(); it != mComponents.end();)
     {
-    if ((*it).getType() == IResource::Type::PLAYER) // exception quand on spam SPACE
-    {
-    try {
-    NGame::User& user = findUserById((*it).getId());
-    transferPlayerToSpectators(user);
+        if ((*it)->getX() < Config::Window::xMin || 
+            (*it)->getX() > Config::Window::xMax || 
+            (*it)->getY() < Config::Window::yMin || 
+            (*it)->getY() > Config::Window::yMax)
+        {
+            if ((*it)->getType() == IResource::Type::PLAYER)
+            {
+                auto user = findUserById((*it)->getId());
+                transferPlayerToSpectators(user);
+            }
+            if (mListener)
+                mListener->onNotifyUsersComponentRemoved(mUsers, (*it)->getId());
+            it = mComponents.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
-    catch (const GameException&) {}
-    }
-    auto listener = getListener();
-    if (listener)
-    listener->onNotifyUsersComponentRemoved(getUsers(), (*it).getId());
-    it = components.erase(it);
-    }
-    else
-    ++it;
-    }
-    */
 }
 
 void NGame::Game::moveEntities(void) {
     Scopedlock(mMutex);
 
     for (auto component : mComponents)
-    {
-        if (component->canMove())
-        {
-            if (component->getType() == IResource::Type::PLAYER)
-            {
-                if (component->wantMove())
-                {
-                    component->setAngle(component->angleMove());
-                    component->subMove();
-                    updatePositionComponent(component);
-                }
-            }
-            else
-            {
-                updatePositionComponent(component);
-            }
-        }
-    }
+        if (component->getType() != IResource::Type::PLAYER)
+            updatePositionComponent(component);
 }
 
 /*
@@ -196,18 +180,19 @@ void NGame::Game::delUser(const Peer &peer) {
 }
 
 void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user) {
-    getProperties().setNbPlayers(getProperties().getNbPlayers() - 1);
-    auto listener = getListener();
-    if (listener)
-        listener->onRemovePeerFromWhiteList(user->getPeer());
-    if (getProperties().getNbSpectators() >= getProperties().getMaxSpectators())
+    mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
+    if (mListener)
+        mListener->onRemovePeerFromWhiteList(user->getPeer());
+    if (mProperties.getNbSpectators() >= mProperties.getMaxSpectators())
         throw GameException("No place for new spectators"); // checker que faire si plus de place
     user->setType(NGame::USER_TYPE::SPECTATOR);
-    addUserInList(user);
-    getProperties().setNbSpectators(getProperties().getNbSpectators() + 1);
+    mUsers.push_back(user);
+    mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
 }
 
 void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& component) {
+    if (!component->canMove())
+        return;
 
     double pi = 3.14159265358979323846;
     double angleInRad = component->getAngle() * pi / 180;
@@ -238,7 +223,9 @@ void NGame::Game::fire(const Peer &peer) {
 
 void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
     Scopedlock(mMutex);
-    findComponentByOwnerId(findUserByHost(peer)->getId())->addMove(Config::Game::angleTab[direction]);
+    auto component = findComponentByOwnerId(findUserByHost(peer)->getId());
+    component->setAngle(Config::Game::angleTab[direction]);
+    updatePositionComponent(component);
 }
 
 void    NGame::Game::spawn(const std::string& name, double x, double y, short angle, uint64_t ownerId) {

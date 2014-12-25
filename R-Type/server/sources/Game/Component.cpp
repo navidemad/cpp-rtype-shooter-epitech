@@ -1,7 +1,14 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : last_move(std::chrono::steady_clock::now()), last_fire(std::chrono::steady_clock::now()), mId(id), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {}
+NGame::Component::Component(uint64_t id) : 
+    last_move(std::chrono::high_resolution_clock::now()),
+    last_fire(std::chrono::high_resolution_clock::now()),
+    mId(id),
+    mType(IResource::Type::UNKNOWN),mDynLib(PortabilityBuilder::getDynLib())
+{
+
+}
 
 NGame::Component::Component(const NGame::Component& rhs) {
     if (this != &rhs)
@@ -28,41 +35,23 @@ void NGame::Component::deepCopy(const NGame::Component& rhs) {
     mDynLib = rhs.getDynLib();
 }
 
-void NGame::Component::addMove(short angle) {
-    queueMovements.push(angle);
-}
-
-bool NGame::Component::wantMove(void) const {
-    return queueMovements.size() > 0;
-}
-
-short NGame::Component::angleMove(void) const {
-    return queueMovements.front();
-}
-
-void NGame::Component::subMove(void) {
-    queueMovements.pop();
-}
-
 bool NGame::Component::canMove(void) {
-    std::chrono::steady_clock::time_point now_move = std::chrono::steady_clock::now();
-    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(now_move - last_move);
-    double deltatime = time_span.count() * 1000;
-    if (deltatime > 2.5) // getMoveSpeed
+    auto now = std::chrono::high_resolution_clock::now();
+    auto duration_in_sec = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_move).count();
+    if (duration_in_sec > 20) // getMoveSpeed() milliseconds
     {
-        last_move = now_move;
+        last_move = now;
         return true;
     }
     return false;
 }
 
 bool NGame::Component::canFire(void) {
-    std::chrono::steady_clock::time_point now_fire = std::chrono::steady_clock::now();
-    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(now_fire - last_fire);
-    double deltatime = time_span.count() * 1000;
-    if (deltatime > 0.001) // getFireSpeed
+    auto now = std::chrono::high_resolution_clock::now();
+    auto duration_in_sec = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_fire).count();
+    if (duration_in_sec > 20) // getFireSpeed() milliseconds
     {
-        last_fire = now_fire;
+        last_fire = now;
         return true;
     }
     return false;
