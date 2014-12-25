@@ -15,9 +15,10 @@ const PlayerCommunicationManager::CommandExec PlayerCommunicationManager::comman
 	{ ICommand::Instruction::FIRE, &PlayerCommunicationManager::recvFire }
 };
 
-PlayerCommunicationManager::PlayerCommunicationManager(void) : 
+PlayerCommunicationManager::PlayerCommunicationManager(void) :
 mPlayerPacketBuilder(Config::Network::udpPort),
 mMutex(PortabilityBuilder::getMutex()),
+mThreadPool(ThreadPool::getInstance()),
 mListener(nullptr) {
 	mPlayerPacketBuilder.setListener(this);
 }
@@ -30,7 +31,7 @@ void PlayerCommunicationManager::logInfo(const Peer &peer, const std::string &lo
     return;
 	std::stringstream ss;
 
-	ss << Utils::RED << "[UDP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.udpPort << "]> " << Utils::WHITE << log; 
+	ss << Utils::RED << "[UDP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.udpPort << "]> " << Utils::WHITE << log;
 	Utils::logInfo(ss.str());
 }
 
@@ -49,7 +50,7 @@ void PlayerCommunicationManager::onPacketAvailable(const PlayerPacketBuilder &, 
 
 	for (const auto &instr : commandExecTab)
 		if (instr.instruction == command->getInstruction()) {
-			(this->*instr.ftPtr)(command, peer);
+			*mThreadPool << std::bind(instr.ftPtr, this, command, peer);
 			return;
 		}
 }
@@ -86,7 +87,7 @@ void PlayerCommunicationManager::removePeerFromWhiteList(const Peer &peer) {
 }
 
 std::list<Peer>::iterator PlayerCommunicationManager::findPeer(const Peer &peer) {
-  return std::find_if(mAllowedPeers.begin(), mAllowedPeers.end(), [&](const Peer &peerIt) { 
+  return std::find_if(mAllowedPeers.begin(), mAllowedPeers.end(), [&](const Peer &peerIt) {
       return peer == peerIt;
     });
 }

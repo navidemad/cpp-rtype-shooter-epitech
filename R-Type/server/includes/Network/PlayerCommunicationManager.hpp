@@ -5,6 +5,7 @@
 #include "IMutex.hpp"
 #include "IResource.hpp"
 #include "NoCopyable.hpp"
+#include "ThreadPool.hpp"
 
 #include <list>
 
@@ -68,6 +69,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 		PlayerPacketBuilder mPlayerPacketBuilder;
 		std::list<Peer> mAllowedPeers;
 		std::shared_ptr<IMutex> mMutex;
+		std::shared_ptr<ThreadPool> mThreadPool;
 		PlayerCommunicationManager::OnPlayerCommunicationManagerEvent *mListener;
 
 };
