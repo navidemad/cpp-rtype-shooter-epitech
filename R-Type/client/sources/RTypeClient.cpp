@@ -612,7 +612,7 @@ void			RTypeClient::initCreateMenu()
 	Entity		nbPublicMax = engine.createEntity();
 	cursor->addEntity(nbPublicMax.getId());
 	nbPublicMax.addComponent(new Position(420, 700));
-	nbPublicMax.addComponent(new Font("0", "Nb. player max"));
+	nbPublicMax.addComponent(new Font("0", "Nb. public max"));
 	nbPublicMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { 0, 1, 2, 3, 4 }));
 
 	Entity		&createGame = engine.createEntity();
@@ -738,18 +738,18 @@ void	RTypeClient::initArtwork()
 	Entity		&sketch01 = engine.createEntity();
 	sketch01.addComponent(new Position(0, 0));
 	sketch01.addComponent(new Drawable("sketch01"));
-	/*
+
 	Entity		&sketch02 = engine.createEntity();
-	sketch02.addComponent(new Position(0, 0));
+	sketch02.addComponent(new Position(1280 * 2, 0));
 	sketch02.addComponent(new Drawable("sketch02"));
 
 	Entity		&sketch03 = engine.createEntity();
-	sketch03.addComponent(new Position(0, 0));
+	sketch03.addComponent(new Position(1280 * 3, 0));
 	sketch03.addComponent(new Drawable("sketch03"));
 
 	Entity		&sketch04 = engine.createEntity();
-	sketch04.addComponent(new Position(0, 0));
-	sketch04.addComponent(new Drawable("sketch04"));*/
+	sketch04.addComponent(new Position(1280 * 4, 0));
+	sketch04.addComponent(new Drawable("sketch04"));
 
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
@@ -924,7 +924,7 @@ void	RTypeClient::setFullscreen(bool enable)
 
 	auto sg = std::static_pointer_cast<SFMLGraphic>(mGui);
 	sg->setStyle(mFullscreenMode ? sf::Style::Fullscreen : sf::Style::Default);
-	sg->updateWindow();
+	//sg->updateWindow();
 }
 
 void	RTypeClient::setFPSMode(bool enable)
