@@ -17,7 +17,8 @@ QMAKE_CXXFLAGS  -= -O2
 QMAKE_CXXFLAGS  -= -O1
 QMAKE_CXXFLAGS  -= -O2
 QMAKE_CXXFLAGS  -= -O1
-QMAKE_CXXFLAGS  += -Ofast
+win32:QMAKE_CXXFLAGS  += /O2
+unix:QMAKE_CXXFLAGS  += -Ofast
 
 INCLUDEPATH		+=	.														\
 				includes													\
