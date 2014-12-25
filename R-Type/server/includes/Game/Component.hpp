@@ -2,6 +2,8 @@
 
 #include "IResource.hpp"
 #include "IDynLib.hpp"
+#include "Timer.hpp"
+#include "NoCopyable.hpp"
 
 #include <queue>
 #include <chrono>
@@ -11,15 +13,12 @@
 namespace NGame
 {
 
-    class Component {
+    class Component : public NoCopyable {
 
         // ctor / dtor
         public:
             explicit Component(uint64_t id = 0);
-            Component(const Component& rhs);
-            Component& operator=(const Component& rhs);
             ~Component(void) = default;
-            void deepCopy(const NGame::Component& rhs);
 
         // rate frame
         public:
@@ -59,7 +58,7 @@ namespace NGame
 
         // attributes
         private:
-            std::chrono::system_clock::time_point last_move, last_fire;
+            Timer mMoveTimer, mFireTimer;
         private:
 			double mX;
 			double mY;

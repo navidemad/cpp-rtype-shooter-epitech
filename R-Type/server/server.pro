@@ -104,6 +104,7 @@ HEADERS			+=	includes/RTypeServer.hpp								\
 				includes/Game/NGame.hpp 									\
 				includes/Game/Game.hpp 										\
 				includes/Game/Manager.hpp 									\
+				includes/Game/Timer.hpp										\
 				includes/Game/Properties.hpp								\
 				includes/Game/User.hpp										\
 				includes/Game/Component.hpp
@@ -189,6 +190,7 @@ SOURCES			+=	sources/main.cpp										\
 				sources/Game/Game.cpp 										\
 				sources/Game/Manager.cpp 									\
 				sources/Game/Properties.cpp									\
+				sources/Game/Timer.cpp										\
 				sources/Game/User.cpp										\
 				sources/Game/Component.cpp
 

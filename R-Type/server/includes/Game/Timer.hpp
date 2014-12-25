@@ -3,21 +3,25 @@
 #include "NoCopyable.hpp"
 
 #include <chrono>
-#include <ctime>
 
-class Timer : public NoCopyable {
+namespace NGame {
 
-    // ctor / dtor
-    public:
-        Timer(void);
-        ~Timer(void);
+    class Timer : public NoCopyable {
 
-    // internal functions
-    public:
-        void reset(void);
-		double frame() const;
+        // ctor / dtor
+        public:
+            Timer(void);
+            ~Timer(void) = default;
 
-    // attributes
-    private:
-        std::clock_t mStartTime;
-};
+        // internal functions
+        public:
+            long long getDelta(void) const;
+            void restart(void);
+
+        // attributes
+        private:
+            std::chrono::system_clock::time_point mLast;
+
+    };
+
+}

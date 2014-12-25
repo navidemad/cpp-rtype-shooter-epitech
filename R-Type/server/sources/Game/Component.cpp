@@ -1,57 +1,21 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : 
-    last_move(std::chrono::high_resolution_clock::now()),
-    last_fire(std::chrono::high_resolution_clock::now()),
-    mId(id),
-    mType(IResource::Type::UNKNOWN),mDynLib(PortabilityBuilder::getDynLib())
-{
+NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN),mDynLib(PortabilityBuilder::getDynLib()) {
 
-}
-
-NGame::Component::Component(const NGame::Component& rhs) {
-    if (this != &rhs)
-        deepCopy(rhs);
-}
-NGame::Component& NGame::Component::operator = (const NGame::Component& rhs) {
-    if (this != &rhs)
-        deepCopy(rhs);
-    return *this;
-}
-
-void NGame::Component::deepCopy(const NGame::Component& rhs) {
-    mX = rhs.getX();
-    mY = rhs.getY();
-    mWidth = rhs.getWidth();
-    mHeight = rhs.getHeight();
-    mAngle = rhs.getAngle();
-    mMoveSpeed = rhs.getMoveSpeed();
-    mFireSpeed = rhs.getFireSpeed();
-    mLife = rhs.getLife();
-    mId = rhs.getId();
-    mType = rhs.getType();
-    mOwnerId = rhs.getOwnerId();
-    mDynLib = rhs.getDynLib();
 }
 
 bool NGame::Component::canMove(void) {
-    auto now = std::chrono::high_resolution_clock::now();
-    auto duration_in_sec = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_move).count();
-    if (duration_in_sec > 20) // getMoveSpeed() milliseconds
-    {
-        last_move = now;
+    if (mMoveTimer.getDelta() > 20000) {
+        mMoveTimer.restart();
         return true;
     }
     return false;
 }
 
 bool NGame::Component::canFire(void) {
-    auto now = std::chrono::high_resolution_clock::now();
-    auto duration_in_sec = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_fire).count();
-    if (duration_in_sec > 20) // getFireSpeed() milliseconds
-    {
-        last_fire = now;
+    if (mFireTimer.getDelta() > 20000) {
+        mFireTimer.restart();
         return true;
     }
     return false;

@@ -1,23 +1,13 @@
-#pragma once
+#include "Timer.hpp"
 
-#include "NoCopyable.hpp"
+NGame::Timer::Timer(void) : mLast(std::chrono::high_resolution_clock::now()) {
 
-#include <chrono>
-#include <ctime>
+}
 
-class Timer : public NoCopyable {
+long long NGame::Timer::getDelta(void) const {
+    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - mLast).count();
+}
 
-    // ctor / dtor
-    public:
-        Timer(void);
-        ~Timer(void);
-
-    // internal functions
-    public:
-        void reset(void);
-		double frame() const;
-
-    // attributes
-    private:
-        std::clock_t mStartTime;
-};
+void NGame::Timer::restart(void) {
+    mLast = std::chrono::high_resolution_clock::now();
+}
