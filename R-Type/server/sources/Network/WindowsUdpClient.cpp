@@ -57,7 +57,7 @@ void	WindowsUdpClient::initFromSocket(void *socketFd, const std::string &addr, i
 }
 
 void	WindowsUdpClient::closeClient(void) {
-    Scopedlock(mMutex);
+    ScopedLock scopedlock(mMutex);;
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -72,13 +72,13 @@ void	WindowsUdpClient::closeClient(void) {
 }
 
 void	WindowsUdpClient::send(const IClientSocket::Message &message) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	mOutDatagrams.push_back(message);
 }
 
 IClientSocket::Message	WindowsUdpClient::receive(unsigned int sizeToRead) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mInDatagrams.size() == 0)
 		throw SocketException("No datagrams available");
@@ -105,7 +105,7 @@ IClientSocket::Message	WindowsUdpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	WindowsUdpClient::nbBytesToRead(void) const {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mInDatagrams.size() == 0)
 		return 0;
@@ -137,7 +137,7 @@ void	WindowsUdpClient::onSocketWritable(int) {
 }
 
 int WindowsUdpClient::sendSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mOutDatagrams.size() == 0)
 		return 0;
@@ -164,7 +164,7 @@ int WindowsUdpClient::sendSocket(void) {
 }
 
 void WindowsUdpClient::recvSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	char buffer[1024];
 	WSABUF buf = { 1024, buffer };

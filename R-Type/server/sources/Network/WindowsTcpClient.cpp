@@ -60,7 +60,7 @@ void	WindowsTcpClient::initFromSocket(void *socketFd, const std::string &addr, i
 }
 
 void	WindowsTcpClient::closeClient(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -75,13 +75,13 @@ void	WindowsTcpClient::closeClient(void) {
 }
 
 void	WindowsTcpClient::send(const IClientSocket::Message &message) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	mOutBuffer.insert(mOutBuffer.end(), message.msg.begin(), message.msg.end());
 }
 
 IClientSocket::Message	WindowsTcpClient::receive(unsigned int sizeToRead) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	IClientSocket::Message message;
 
@@ -91,12 +91,12 @@ IClientSocket::Message	WindowsTcpClient::receive(unsigned int sizeToRead) {
 	std::copy(mInBuffer.begin(), mInBuffer.begin() + sizeToRead, back_inserter(message.msg));
 	mInBuffer.erase(mInBuffer.begin(), mInBuffer.begin() + sizeToRead);
 	message.msgSize = sizeToRead;
-    
+
 	return message;
 }
 
 unsigned int	WindowsTcpClient::nbBytesToRead(void) const {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	return mInBuffer.size();
 }
@@ -129,7 +129,7 @@ void	WindowsTcpClient::onSocketWritable(int) {
 }
 
 int WindowsTcpClient::sendSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mOutBuffer.size() == 0)
 		return 0;
@@ -137,7 +137,7 @@ int WindowsTcpClient::sendSocket(void) {
 	int sizeToSend = mOutBuffer.size() > 1024 ? 1024 : mOutBuffer.size();
 	WSABUF buf = { sizeToSend, mOutBuffer.data() };
 	DWORD nbBytesSent;
-	
+
 	if (WSASend(mSocketFd, &buf, 1, &nbBytesSent, 0, NULL, NULL) == SOCKET_ERROR)
 		throw SocketException("Fail send()");
 
@@ -147,13 +147,13 @@ int WindowsTcpClient::sendSocket(void) {
 }
 
 void WindowsTcpClient::recvSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	char buffer[1024];
 	WSABUF buf = { 1024, buffer };
 	DWORD nbBytesRead;
 	DWORD flags = 0;
-	
+
 	if (WSARecv(mSocketFd, &buf, 1, &nbBytesRead, &flags, NULL, NULL) == SOCKET_ERROR)
 		throw SocketException("fail recv()");
 	else if (nbBytesRead == 0)

@@ -8,5 +8,5 @@ class UnixReaddir : public IReaddir
 		UnixReaddir();
 		~UnixReaddir();
 	public:
-		std::list<std::string> readFolder(const std::string&);
+		std::list<std::string> readFolder(const std::string&) const;
 };

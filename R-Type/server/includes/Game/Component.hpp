@@ -57,7 +57,7 @@ namespace NGame
             IResource::Type getType(void) const;
             uint64_t getOwnerId(void) const;
             IResource* getResource(void) const;
-            std::shared_ptr<IDynLib> getDynLib(void) const;
+            const std::shared_ptr<IDynLib> &getDynLib(void) const;
 
         // attributes
         private:

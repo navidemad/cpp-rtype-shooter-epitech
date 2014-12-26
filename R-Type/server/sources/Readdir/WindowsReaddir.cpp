@@ -8,7 +8,7 @@ WindowsReaddir::WindowsReaddir(void) {
 WindowsReaddir::~WindowsReaddir(void) {
 }
 
-std::list<std::string> WindowsReaddir::readFolder(const std::string &folderName) {
+std::list<std::string> WindowsReaddir::readFolder(const std::string &folderName) const {
 	std::list<std::string> files;
 
 	HANDLE hFind;
@@ -33,7 +33,7 @@ std::list<std::string> WindowsReaddir::readFolder(const std::string &folderName)
 	return files;
 }
 
-std::wstring WindowsReaddir::s2ws(const std::string& s)
+std::wstring WindowsReaddir::s2ws(const std::string& s) const
 {
     int len;
     int slength = static_cast<int>(s.length() + 1);

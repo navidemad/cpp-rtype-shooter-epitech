@@ -11,7 +11,7 @@
 #include <iostream>
 
 NGame::Manager::Manager(void) :
-    mThreadPool(ThreadPool::getInstance()), 
+    mThreadPool(ThreadPool::getInstance()),
     mMutex(PortabilityBuilder::getMutex()), mListener(nullptr)
 {
 	mPlayerCommunicationManager.setListener(this);
@@ -56,13 +56,13 @@ void    NGame::Manager::setListener(NGame::Manager::OnManagerEvent *listener) {
 }
 
 std::vector<std::shared_ptr<NGame::Game>>& NGame::Manager::getGames(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	return mGames;
 }
 
 void NGame::Manager::addGameInList(const std::shared_ptr<NGame::Game> &game) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	mGames.push_back(game);
 }
@@ -92,7 +92,7 @@ void NGame::Manager::removeGame(const Peer &peer, const std::string& name) {
     	if (peer != gamebyname->getOwner())
             throw GamesManagerException("You can remove a game only if you are owner", ErrorStatus(ErrorStatus::Error::KO));
     	removeClientsFromWhitelist(gamebyname);
-        gamebyname->setState(NGame::Game::State::DONE);      
+        gamebyname->setState(NGame::Game::State::DONE);
     } catch (const GameException& e) {
         throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
@@ -105,8 +105,8 @@ void NGame::Manager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const
     catch (const GamesManagerException&) {
         try {
             const std::shared_ptr<NGame::Game>& gamebyname = findGameByName(name);
-            gamebyname->addUser(typeUser, peer, pseudo);   
-        } 
+            gamebyname->addUser(typeUser, peer, pseudo);
+        }
         catch (const GameException& e) {
             throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
         }
@@ -155,7 +155,7 @@ void NGame::Manager::updatePseudo(const Peer &peer, const std::string &pseudo) {
 
 /*
 ** PlayerCommunicationManager::OnPlayerCommunicationManagerEvent
-*/ 
+*/
 void NGame::Manager::onPlayerFire(const Peer &peer) {
     try {
         const std::shared_ptr<NGame::Game>& gamebyhost = findGameByHost(peer);
@@ -176,7 +176,7 @@ void NGame::Manager::onPlayerMove(IResource::Direction direction, const Peer &pe
 }
 
 void NGame::Manager::removeGameFromList(const std::shared_ptr<NGame::Game> &game) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	mGames.erase(std::remove(mGames.begin(), mGames.end(), game), mGames.end());
 }
@@ -203,12 +203,12 @@ void NGame::Manager::onRemovePeerFromWhiteList(const Peer& peer) {
     mPlayerCommunicationManager.removePeerFromWhiteList(peer);
 }
 
-void NGame::Manager::onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>> users, uint64_t id) {
+void NGame::Manager::onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>> &users, uint64_t id) {
     for (auto user : users)
         mPlayerCommunicationManager.sendDestroyResource(user->getPeer(), id);
 }
 
-void NGame::Manager::onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>> users, const std::shared_ptr<NGame::Component>& component) {
+void NGame::Manager::onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>> &users, const std::shared_ptr<NGame::Component>& component) {
     for (auto user : users)
         mPlayerCommunicationManager.sendMoveResource(user->getPeer(), component->getId(), component->getType(), component->getX(), component->getY(), component->getAngle());
 }
@@ -238,7 +238,7 @@ std::list<NGame::Properties> NGame::Manager::getGamesProperties(void) {
 	std::list<NGame::Properties> gamesProperties;
 
     std::vector<std::shared_ptr<NGame::Game>> games = getGames();
-    for (auto game : games)
+    for (const auto &game : games)
         gamesProperties.push_back(game->getProperties());
 
     return gamesProperties;
@@ -257,7 +257,7 @@ std::shared_ptr<NGame::Game> NGame::Manager::findGameByHost(const Peer &peer) {
     for (const std::shared_ptr<NGame::Game>& game : games) {
         std::vector<std::shared_ptr<NGame::User>> users = game->getUsers();
         if (users.size() != 0)
-            for (auto user: users)
+            for (const auto &user: users)
                 if (user->getPeer() == peer)
                     return game;
     }

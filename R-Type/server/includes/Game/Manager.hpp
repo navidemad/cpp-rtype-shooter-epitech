@@ -18,7 +18,7 @@
 
 namespace NGame
 {
-    
+
     class Manager : public NoCopyable, public PlayerCommunicationManager::OnPlayerCommunicationManagerEvent, public NGame::Game::OnGameEvent {
 
         // ctor / dtor
@@ -47,8 +47,8 @@ namespace NGame
             };
 
     		void onRemovePeerFromWhiteList(const Peer&);
-            void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>>, uint64_t);
-            void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>>, const std::shared_ptr<NGame::Component>&);
+            void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>> &, uint64_t);
+            void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>> &, const std::shared_ptr<NGame::Component>&);
     		void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t);
     		void onNotifyTimeElapsedPing(const Peer &, double);
 
@@ -68,7 +68,7 @@ namespace NGame
             const NGame::Properties &getGameProperties(const std::string &name);
             std::list<NGame::Properties> getGamesProperties(void);
     		std::list<std::string> getScriptsName(void) const;
-    		
+
     	// internal methods
     	private:
             void removeClientsFromWhitelist(const std::shared_ptr<NGame::Game>&);

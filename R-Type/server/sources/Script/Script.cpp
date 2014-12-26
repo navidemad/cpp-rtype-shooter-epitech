@@ -15,7 +15,7 @@ NGame::Script::Script(const NGame::Script& rhs) {
         deepCopy(rhs);
 }
 
-NGame::Script& NGame::Script::operator = (const NGame::Script& rhs) {
+const NGame::Script& NGame::Script::operator = (const NGame::Script& rhs) {
     if (this != &rhs)
         deepCopy(rhs);
     return *this;

@@ -26,9 +26,9 @@ WindowsCondVar::~WindowsCondVar(void) {
         throw CondVarException("fail CloseHandle(BROADCAST)");
 }
 
-void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
+void WindowsCondVar::wait(const std::shared_ptr<IMutex> &externalMutex) {
 
-    { Scopedlock(mWaitersCountLock); 
+    { ScopedLock scopedlock(mWaitersCountLock);
         ++mWaitersCount; }
 
     externalMutex->unlock();
@@ -39,7 +39,7 @@ void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
 
     bool lastWaiter;
 
-    { Scopedlock(mWaitersCountLock);
+    { ScopedLock scopedlock(mWaitersCountLock);
         --mWaitersCount;
         lastWaiter = result == WAIT_OBJECT_0 + WindowsCondVar::Event::BROADCAST && mWaitersCount == 0;
     }
@@ -57,7 +57,7 @@ void	WindowsCondVar::notifyOne(void) {
 
     bool haveWaiters;
 
-    { Scopedlock(mWaitersCountLock);
+    { ScopedLock scopedlock(mWaitersCountLock);
         haveWaiters = (mWaitersCount > 0);
     }
 
@@ -69,7 +69,7 @@ void	WindowsCondVar::notifyAll(void) {
 
     bool haveWaiters;
 
-    { Scopedlock(mWaitersCountLock);
+    { ScopedLock scopedlock(mWaitersCountLock);
     haveWaiters = (mWaitersCount > 0);
     }
 

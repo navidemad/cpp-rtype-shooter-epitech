@@ -21,7 +21,7 @@ class WindowsCondVar : public NoCopyable, public ICondVar {
 
 	// interface implementation
 	public:
-        void wait(std::shared_ptr<IMutex>);
+        void wait(const std::shared_ptr<IMutex> &);
 		void notifyOne(void);
 		void notifyAll(void);
 

@@ -27,7 +27,7 @@ void RTypeServer::startInfo(void) const {
 		<< "     R-Type Server     " << std::endl
 		<< "        Welcome        " << std::endl
 		<< std::endl
-		<< "  Port TCP | Port UCP  " << std::endl
+		<< "  Port TCP | Port UDP  " << std::endl
 		<< "    " << Config::Network::tcpPort << "   |   " << Config::Network::udpPort << std::endl
 		<< std::endl;
 }

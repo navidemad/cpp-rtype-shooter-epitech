@@ -11,5 +11,5 @@ class IReaddir {
 
 	// interface implementation
 	public:
-		virtual std::list<std::string> readFolder(const std::string&) = 0;
+		virtual std::list<std::string> readFolder(const std::string&) const = 0;
 };

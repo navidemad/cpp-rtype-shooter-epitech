@@ -4,7 +4,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <errno.h>
-#include <arpa/inet.h> 
+#include <arpa/inet.h>
 #include <cstring>
 #include "ScopedLock.hpp"
 #include "PortabilityBuilder.hpp"
@@ -59,7 +59,7 @@ void	UnixUdpClient::initFromSocket(void *socketFd, const std::string &addr, int 
 }
 
 void	UnixUdpClient::closeClient(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -74,14 +74,14 @@ void	UnixUdpClient::closeClient(void) {
 }
 
 void	UnixUdpClient::send(const IClientSocket::Message &message) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	mOutDatagrams.push_back(message);
 }
 
 IClientSocket::Message	UnixUdpClient::receive(unsigned int sizeToRead) {
-	Scopedlock(mMutex);
-	
+	ScopedLock scopedlock(mMutex);;
+
 	if (mInDatagrams.size() == 0)
 		throw SocketException("No datagrams available");
 
@@ -94,7 +94,7 @@ IClientSocket::Message	UnixUdpClient::receive(unsigned int sizeToRead) {
 	else {
 		IClientSocket::Message &datagram = mInDatagrams.front();
 
-		message.msg.insert(message.msg.end(), datagram.msg.begin(), datagram.msg.begin() + sizeToRead);		
+		message.msg.insert(message.msg.end(), datagram.msg.begin(), datagram.msg.begin() + sizeToRead);
 		message.msgSize = sizeToRead;
 		message.host = datagram.host;
 		message.port = datagram.port;
@@ -107,8 +107,8 @@ IClientSocket::Message	UnixUdpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	UnixUdpClient::nbBytesToRead(void) const {
-	Scopedlock(mMutex);
-	
+	ScopedLock scopedlock(mMutex);;
+
 	if (mInDatagrams.size() == 0)
 		return 0;
 
@@ -139,7 +139,7 @@ void	UnixUdpClient::onSocketWritable(int) {
 }
 
 int UnixUdpClient::sendSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
     if (mOutDatagrams.size() == 0)
         return 0;
@@ -163,7 +163,7 @@ int UnixUdpClient::sendSocket(void) {
 }
 
 void UnixUdpClient::recvSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	char buffer[1024];
 	struct sockaddr_in addr;

@@ -12,8 +12,7 @@ UnixReaddir::UnixReaddir(void) {
 UnixReaddir::~UnixReaddir(void) {
 }
 
-std::list<std::string> UnixReaddir::readFolder(const std::string& folderName){
-
+std::list<std::string> UnixReaddir::readFolder(const std::string& folderName) const {
   DIR *dir;
   struct dirent *ent;
   struct stat st;

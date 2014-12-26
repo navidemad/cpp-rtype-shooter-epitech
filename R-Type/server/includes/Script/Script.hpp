@@ -13,10 +13,10 @@ namespace NGame
 
         // ctor / dtor
         public:
-            Script(const std::vector<const IScriptCommand*>& commands);
+            explicit Script(const std::vector<const IScriptCommand*>& commands);
             ~Script(void);
             Script(const Script& rhs);
-            Script& operator=(const Script& rhs);
+            const Script& operator=(const Script& rhs);
             void deepCopy(const NGame::Script& rhs);
 
         // getters

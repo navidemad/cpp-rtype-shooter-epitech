@@ -17,7 +17,7 @@ namespace NGame
 			User(void) = default;
 			~User(void) = default;
             User(const User& rhs);
-            User& operator=(const User& rhs);
+            const User& operator=(const User& rhs);
 
         // setters
         public:

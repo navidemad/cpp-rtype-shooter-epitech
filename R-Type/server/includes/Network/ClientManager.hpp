@@ -13,7 +13,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 
 	// ctor / dtor
 	public:
-        ClientManager(void);
+   ClientManager(void);
 		~ClientManager(void);
 
 	// handle client manager
@@ -55,6 +55,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 	// intern methods
 	private:
 		std::list<std::shared_ptr<Client>>::iterator findClient(const Peer &peer);
+		std::list<std::shared_ptr<Client>>::const_iterator findClient(const Peer &peer) const;
 		void logInfo(const Peer &peer, const std::string &log) const;
 
 	// send commands

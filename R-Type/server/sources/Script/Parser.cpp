@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Parser.hpp"
+#include <algorithm>
 
 Parser::Parser() : mTokenSep(' ')
 {
@@ -9,7 +10,7 @@ Parser::Parser() : mTokenSep(' ')
 Parser::~Parser(void) {
 
 }
-#include <algorithm>
+
 std::string Parser::extractWord(void){
 	std::string	word;
 
@@ -17,7 +18,7 @@ std::string Parser::extractWord(void){
 		return "";
 
 	word = this->mWtab.front();
-	word.erase(std::remove(word.begin(), word.end(), '\"'), word.end()); // remove quote
+	word.erase(std::remove(word.begin(), word.end(), '\"'), word.end());
 	this->jumpToNextToken();
 
 	return word;

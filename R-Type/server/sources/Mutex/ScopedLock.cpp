@@ -1,6 +1,6 @@
 #include "ScopedLock.hpp"
 
-ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex, const char* /*callerFunctionName*/, const char* /*callerFile*/, const unsigned long /*callerLine*/) : mMutex(mutex) {
+ScopedLock::ScopedLock(std::shared_ptr<IMutex> mutex) : mMutex(mutex) {
 	mMutex->lock();
 }
 
