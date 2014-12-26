@@ -130,6 +130,5 @@ void	BackSystem::process(Entity &entity, uint32_t delta)
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->SignalLeaveGame();
 		static_cast<ECSManagerNetwork *>(entity.getEntityManager())->OnEndGame("");
 		entity.getEntityManager()->getClient()->setIdGame(RTypeClient::Game::MENU);
-
 	}
 }

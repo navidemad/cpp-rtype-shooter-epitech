@@ -72,6 +72,7 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
 	id += mFirstId + 1;
+
 	try
 	{
 		std::string pathDll = "";
