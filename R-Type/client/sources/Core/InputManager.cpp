@@ -54,9 +54,9 @@ std::string const &InputManager::getEnteredKey() const
 	return mEnteredKey;
 }
 
-bool	InputManager::isPressed(std::string key)
+bool	InputManager::isPressed(const std::string &key) const
 {
-	return mPoolEvent[key];
+	return mPoolEvent.at(key);
 }
 
 void	InputManager::clear()

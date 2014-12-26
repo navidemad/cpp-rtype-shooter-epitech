@@ -44,26 +44,19 @@ HEADERS		+=	../shared/includes/NoCopyable.hpp			\
 			includes/Default.hpp					\
 			includes/Audio/MusicManager.hpp				\
 			includes/Audio/SoundManager.hpp				\
-			includes/Core/CollisionSystem.hpp			\
-			includes/Core/DamageSystem.hpp				\
 			includes/Core/DrawableSystem.hpp			\
                         includes/Core/ButtonSystem.hpp                          \
                         includes/Core/VelocitySystem.hpp			\
                         includes/Core/BackgroundSystem.hpp                          \
                         includes/Core/DrawableFontSystem.hpp			\
-                        includes/Core/ScriptSystem.hpp			\
 			includes/Core/InputManager.hpp				\
                         includes/Core/TextInputSystem.hpp			\
-			includes/Core/MovementSystem.hpp			\
                         includes/Core/ListSystem.hpp                    	\
 			includes/Core/System.hpp				\
-                        includes/Engine/Compenent/Collision.hpp			\
 			includes/Engine/Component.hpp				\
                         includes/Engine/ComponentType.h				\
-                        includes/Engine/Compenent/Controllable.hpp		\
                         includes/Engine/Compenent/List.hpp              	\
                         includes/Engine/Compenent/Cursor.hpp            	\
-                        includes/Engine/Compenent/Script.hpp            	\
                         includes/Engine/Compenent/Button.hpp                    \
                         includes/Engine/Compenent/Drawable.hpp			\
                         includes/Engine/Compenent/Background.hpp		\
@@ -75,7 +68,6 @@ HEADERS		+=	../shared/includes/NoCopyable.hpp			\
 			includes/Engine/Entity.hpp				\
                         includes/Engine/Compenent/Position.hpp			\
                         includes/Engine/Compenent/Font.hpp			\
-			includes/Engine/Compenent/Script.hpp				\
 			includes/GUI/ContentManager.hpp				\
 			includes/GUI/FontManager.hpp				\
 			includes/GUI/IGraphic.hpp				\
@@ -121,38 +113,31 @@ HEADERS		+=	../shared/includes/NoCopyable.hpp			\
 			../shared/includes/Network/Peer.hpp                     \
 			../shared/includes/Network/SocketException.hpp 		\
 			../shared/includes/Commands/CommandFactory.hpp		\
-			../shared/includes/Error/ErrorStatus.hpp		\
-			entity/includes/IEntity.hpp
+			../shared/includes/Error/ErrorStatus.hpp
 
 unix:HEADERS += 	includes/UnixPortabilityBuilder.hpp 			\
 			../shared/includes/DynLib/UnixDynLib.hpp
 
 win32:HEADERS += 	includes/WindowsPortabilityBuilder.hpp			\
 			../shared/includes/DynLib/WindowsDynLib.hpp
-	
+
 SOURCES		+=	sources/main.cpp						\
 			sources/RTypeClient.cpp						\
 			sources/Audio/MusicManager.cpp					\
 			sources/Audio/SoundManager.cpp					\
-			sources/Core/CollisionSystem.cpp				\
-			sources/Core/DamageSystem.cpp					\
 			sources/Core/DrawableSystem.cpp					\
 			sources/Core/BackgroundSystem.cpp				\
                         sources/Core/VelocitySystem.cpp					\
                         sources/Core/DrawableFontSystem.cpp				\
-                        sources/Core/ScriptSystem.cpp					\
                         sources/Core/TextInputSystem.cpp				\
                         sources/Core/ListSystem.cpp					\
                         sources/Core/ButtonSystem.cpp					\
 			sources/Core/InputManager.cpp					\
-			sources/Core/MovementSystem.cpp					\
 			sources/Core/System.cpp						\
-			sources/Engine/Collision.cpp					\
                         sources/Engine/Button.cpp					\
                         sources/Engine/List.cpp                 			\
                         sources/Engine/Cursor.cpp					\
 			sources/Engine/Component.cpp					\
-			sources/Engine/Controllable.cpp					\
                         sources/Engine/Font.cpp                         		\
                         sources/Engine/TextInput.cpp                         		\
 			sources/Engine/Drawable.cpp					\
@@ -162,7 +147,6 @@ SOURCES		+=	sources/main.cpp						\
                         sources/Engine/ECSManagerNetwork.cpp				\
 			sources/Engine/Entity.cpp					\
                         sources/Engine/Position.cpp					\
-			sources/Engine/Script.cpp					\
 			sources/GUI/ContentManager.cpp					\
 			sources/GUI/FontManager.cpp					\
 			sources/GUI/SFMLGraphic.cpp					\
@@ -244,7 +228,7 @@ unix:LIBS	+=	-lsfml-audio 		\
 			-lsfml-graphics 	\
 			-lsfml-network 		\
 			-lsfml-window 		\
-			-lsfml-system	
+			-lsfml-system
 
 unix:LIBS += -ldl
 

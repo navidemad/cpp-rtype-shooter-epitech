@@ -15,7 +15,6 @@
 #include "Engine/Compenent/Drawable.hpp"
 #include "Engine/Compenent/Button.hpp"
 #include "Engine/Compenent/List.hpp"
-#include "Core/ScriptSystem.hpp"
 #include "Core/DrawableSystem.hpp"
 #include "Core/BackgroundSystem.hpp"
 #include "Core/VelocitySystem.hpp"
@@ -30,11 +29,12 @@ Q_DECLARE_METATYPE(std::string)
 Q_DECLARE_METATYPE(IResource::Direction)
 
 RTypeClient::RTypeClient()
-: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT), 
+: mCurrentId(RTypeClient::PRESS_START), mEngine(RTypeClient::LIMIT),
   mGui(SFMLGraphic::getInstance()), mCurrentLevel(Config::Game::defaultLevelGame),
-  mCurrentGame(Config::Game::defaultNameGame), 
+  mCurrentGame(Config::Game::defaultNameGame),
   mCurrentNbPlayerMax(Config::Game::defaultNbPlayerMax), mCurrentNbPublicMax(Config::Game::defaultNbPublicMax),
-  mServer(Config::Network::port), 
+  mScript(""),
+  mServer(Config::Network::port),
   mInit(RTypeClient::LIMIT), mStart(RTypeClient::LIMIT), mStop(RTypeClient::LIMIT),
   mPort(Config::Network::port), mAdresse(Config::Network::adress),
   mPseudo(Config::Network::defaultPseudo), mMusicVolume(Config::Audio::volume),
@@ -238,7 +238,6 @@ void			RTypeClient::initRtype()
 	engine.addSystem(new LeftSystem);
 	engine.addSystem(new RightSystem);
 	engine.addSystem(new FireSystem);
-	engine.addSystem(new ScriptSystem);
 	engine.addSystem(new BackSystem);
 
 	// content system
@@ -672,7 +671,7 @@ void			RTypeClient::initMenu()
 	ECSManager &engine = *mEngine[RTypeClient::MENU];
 
 	Entity		&menuScreen = engine.createEntity();
-	
+
 	menuScreen.addComponent(new Position(0, 0));
 	menuScreen.addComponent(new Drawable("menu"));
 
@@ -694,7 +693,7 @@ void			RTypeClient::initMenu()
 	createGame.addComponent(new Position(1150, 500));
 	createGame.addComponent(new Font("0", "Create room"));
 	createGame.addComponent(new ButtonGame());
-	
+
 	Entity		&searchGame = engine.createEntity();
 	cursor->addEntity(searchGame.getId());
 

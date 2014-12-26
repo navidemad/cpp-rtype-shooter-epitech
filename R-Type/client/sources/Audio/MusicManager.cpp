@@ -12,7 +12,7 @@ MusicManager::~MusicManager()
 
 }
 
-std::shared_ptr<MusicManager>	MusicManager::getInstance()
+const std::shared_ptr<MusicManager>	&MusicManager::getInstance()
 {
 	if (mInstance == nullptr)
 		mInstance = std::shared_ptr<MusicManager>(new MusicManager);

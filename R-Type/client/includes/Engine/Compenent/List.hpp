@@ -39,13 +39,11 @@ struct List : public Component
 		bool	hasTimeElapsed() const;
 		void	resetTimer();
 		void	updateTimer(uint32_t delta);
-		
-//	private:
+
 		std::list<information_room>										mListRoom;
 		std::vector<std::list<information_room>::iterator>				mListRoomButton;
 		std::vector<std::list<information_room>::iterator>::iterator	mCurrentRoom;
 
-//	private:
 		const unsigned int												mNbRoomButton;
 		uint32_t														mTimeElapsed;
 		uint32_t														mCycle;

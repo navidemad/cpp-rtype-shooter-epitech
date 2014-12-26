@@ -12,7 +12,7 @@ SpriteManager::~SpriteManager()
 
 }
 
-std::shared_ptr<SpriteManager>	SpriteManager::getInstance()
+const std::shared_ptr<SpriteManager>	&SpriteManager::getInstance()
 {
     if (mInstance == nullptr)
         mInstance = std::shared_ptr<SpriteManager>(new SpriteManager);
@@ -36,9 +36,9 @@ void			SpriteManager::loadResources(std::string const &key, std::string const &p
 												uint32_t columns, uint32_t lines,
 												SpriteOffset const &so, bool loop)
 {
-	SpriteModel model(path, columns, lines, sf::IntRect(so.getRectLeft(), 
-														so.getRectTop(), 
-														so.getRectWidth(), 
+	SpriteModel model(path, columns, lines, sf::IntRect(so.getRectLeft(),
+														so.getRectTop(),
+														so.getRectWidth(),
 														so.getRectHeight()));
 	model.setLoop(loop);
 	mListResources.insert(std::pair<std::string, SpriteModel>(key, model));

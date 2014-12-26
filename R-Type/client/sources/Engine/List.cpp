@@ -21,63 +21,6 @@ void	List::updateTimer(uint32_t delta)
 	mTimeElapsed += delta;
 }
 
-
-/*
-void	List::process(Entity &entity, uint32_t delta)
-{
-	updateTimer(delta);
-
-	if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("z"))
-	{
-		if (mListRoomButton.begin() == mCurrentRoom)
-		{
-			if (mListRoom.begin() != *(mListRoomButton.begin()))
-			{
-				std::list<information_room>::iterator it = std::find(mListRoom.begin(), mListRoom.end(), *(*(mListRoomButton.begin())));
-				--it;
-
-				for (unsigned int i = 0; i != mNbRoomButton || it != mListRoom.end(); ++i, ++it)
-				{
-					mListRoomButton[i] = it;
-				}
-			}
-		}
-		else
-		{
-			--mCurrentRoom;
-		}
-
-		resetTimer();
-	}
-
-	else if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("z"))
-	{
-		resetTimer();
-	}
-	else if (hasTimeElapsed() && entity.getEntityManager()->getClient()->getGui()->isPressed("action"))
-	{
-		resetTimer();
-	}
-
-	displayRoom(entity);
-}
-*/
-/*
-void		List::displayRoom(Entity &entity)
-{
-	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
-	Font *sprite = static_cast<Font *>(entity.getSpecificComponent(ComponentType::FONT));
-
-	unsigned int	x = pos->getX();
-	unsigned int	y = pos->getY();
-
-	for (unsigned int i = 0; mListRoomButton.size() != i || i != mNbRoomButton; ++i)
-	{
-		entity.getEntityManager()->getClient()->getGui()->drawFont(sprite->getFont(), (*(mListRoomButton[i])).mName, x, y, 100);
-		y += 100;
-	}
-}*/
-
 List::List(void (RTypeClient::*fct)(std::string const &), unsigned int const nbRoomButton) : Component(ComponentType::LIST), mListRoomButton(nbRoomButton), mNbRoomButton(nbRoomButton)
 {
 	mFct = fct;

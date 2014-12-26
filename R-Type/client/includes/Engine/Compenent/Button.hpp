@@ -13,7 +13,7 @@ class Button : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
-		Button(uint32_t);
+		explicit Button(uint32_t);
 		virtual ~Button();
 
 	protected:
@@ -111,7 +111,7 @@ template<typename T>
 class ButtonKeyInput : public Button
 {
 	public:
-		ButtonKeyInput(Font *font, void(RTypeClient::*handler)(std::string const &), std::vector<T> const &list) : 
+		ButtonKeyInput(Font *font, void(RTypeClient::*handler)(std::string const &), std::vector<T> const &list) :
 			Button(100), mFont(font), mHandler(handler), mList(list) {}
 		~ButtonKeyInput() {}
 
