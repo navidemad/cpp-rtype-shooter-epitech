@@ -16,13 +16,13 @@ class WindowsDynLib : public NoCopyable, public IDynLib {
 	// interface implementation
 	public:
         void    libraryLoad(const std::string&);
-		void*   functionLoad(const std::string&);
+		void*   functionLoad(const std::string&) const;
         void    libraryFree(void);
 
     // internal functions
     private:
-        std::wstring s2ws(const std::string& s);
-        std::string normalize(const std::string& libraryName);
+        std::wstring s2ws(const std::string& s) const;
+        std::string normalize(const std::string& libraryName) const;
 
     // string extension
     public:

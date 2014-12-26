@@ -17,7 +17,7 @@ class FontManager : public NoCopyable, public IResourceManager<sf::Font>
 
 	// instance
 	public:
-		static std::shared_ptr<FontManager>		getInstance();
+		static const std::shared_ptr<FontManager>		&getInstance();
 	private:
 		static std::shared_ptr<FontManager>		mInstance;
 

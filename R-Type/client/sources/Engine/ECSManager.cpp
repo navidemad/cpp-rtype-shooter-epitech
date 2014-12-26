@@ -32,8 +32,6 @@ unsigned int	ECSManager::getCurrentId() const
 
 Entity						&ECSManager::createEntity()
 {
-	//std::list<Component *> list;
-
 	mEntity.push_back(new Entity(mCurrentId, this));
 	mEntityComponent.push_back(new std::list<Component *>); // must initialize an empty list
 	mEntityBitset.push_back(0); // bitset set to 0
@@ -85,7 +83,7 @@ bool		ECSManager::addComponent(const unsigned int id, Component *component)
 	{
 		return component->getComponentId() == _component->getComponentId();
 	};
-	 
+
 	std::list<Component *>	&listComponent = *mEntityComponent.at(id);
 
 	if (std::find_if(listComponent.begin(), listComponent.end(), searchId) == listComponent.end())

@@ -101,7 +101,7 @@ bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
 void NGame::Game::resolvCollisions(void) {
     ScopedLock scopedlock(mMutex);
 
-    for (auto it = mComponents.cbegin(); it != mComponents.cend();)
+    for (auto it = mComponents.begin(); it != mComponents.end();)
     {
         if (needRemove(*it))
         {
@@ -218,11 +218,8 @@ void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& com
     double dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
     double dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
 
-    if (component->getType() == IResource::Type::PLAYER)
-    {
-        component->setX(component->getX() + dx);
-        component->setY(component->getY() + dy);
-    }
+    component->setX(component->getX() + dx);
+    component->setY(component->getY() + dy);
 
     if (mListener)
         mListener->onNotifyUsersComponentAdded(mUsers, component);

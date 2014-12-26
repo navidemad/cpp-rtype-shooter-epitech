@@ -28,7 +28,7 @@ class IGraphic
 		virtual void				update() = 0;
 		virtual void				clear() = 0;
 		virtual void				show() = 0;
-		virtual bool				isPressed(std::string const &) = 0;
+		virtual bool				isPressed(std::string const &) const = 0;
 		virtual uint64_t			getDelta() = 0;
 		virtual void				close() = 0;
 };

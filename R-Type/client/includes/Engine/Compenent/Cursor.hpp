@@ -12,12 +12,12 @@ class Cursor : public NoCopyable, public Component
 	public:
 		Cursor();
 		~Cursor();
-		
+
 	public:
 		bool			next();
 		bool			prev();
 		void			addEntity(unsigned int);
-		unsigned int	getIdEntity();
+		unsigned int	getIdEntity() const;
 		void			block();
 		bool			isBlocked() const;
 
