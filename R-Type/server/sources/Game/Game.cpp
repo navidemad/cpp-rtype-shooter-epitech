@@ -90,10 +90,8 @@ bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
     for (auto c2 : mComponents) {
         if (c1->getId() == c2->getId())
             continue;
-        // c1(87.0122; 25.8201)    c2(87; 25)
-        //std::cout << "c1(" << c1->getX() << " ; " << c1->getY() << ") c2(" << c2->getX() << " ; " << c2->getY() << ")" << std::endl;
         if (c1->intersect(c2)) {
-            //std::cout << "[COLLIDE]" << std::endl;
+            std::cout << "[COLLIDE]" << std::endl;
         }
     }
 
