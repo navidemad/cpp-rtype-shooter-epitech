@@ -131,7 +131,7 @@ namespace NGame
         // attributes
     private:
         static std::map<IResource::Type, std::string> mDLLoader;
-        NGame::Timer mScriptTimer;
+        NGame::Timer mScriptTimer, mFpsTimer;
         NGame::Properties mProperties;
         NGame::Game::State mState;
         std::shared_ptr<NGame::Script> mScript;

@@ -19,7 +19,7 @@ int                     Super::getLife(void) const {
 }
 
 double 			        Super::getMoveSpeed(void) const {
-    return 0.5;
+    return 0.025;
 }
 
 double                  Super::getFireDeltaTime(void) const {

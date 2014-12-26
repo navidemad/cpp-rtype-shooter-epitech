@@ -104,9 +104,13 @@ void NGame::Game::checkCollisions(void) {
 void NGame::Game::moveEntities(void) {
     Scopedlock(mMutex);
 
+    if (mFpsTimer.getDelta() < 30)
+        return;
+    
     for (auto component : mComponents)
         if (component->getType() != IResource::Type::PLAYER)
             updatePositionComponent(component);
+    mFpsTimer.restart();
 }
 
 /*
@@ -191,10 +195,10 @@ void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user)
 }
 
 void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& component) {
-
     double angleInRad = component->getAngle() * 3.14 / 180;
-    double dx = component->getMoveSpeed() * cos(angleInRad);
-    double dy = component->getMoveSpeed() * sin(angleInRad);
+    double speed = component->getMoveSpeed();
+    double dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
+    double dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
 
     component->setX(component->getX() + dx);
     component->setY(component->getY() + dy);

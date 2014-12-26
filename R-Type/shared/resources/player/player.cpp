@@ -19,7 +19,7 @@ int                     Player::getLife(void) const {
 }
 
 double 			        Player::getMoveSpeed(void) const {
-    return 0.5;
+    return 0.03;
 }
 
 double                  Player::getFireDeltaTime(void) const {

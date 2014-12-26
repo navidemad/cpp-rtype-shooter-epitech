@@ -19,7 +19,7 @@ int                     Bullet::getLife(void) const {
 }
 
 double 			        Bullet::getMoveSpeed(void) const {
-    return 0.5;
+    return 0.015;
 }
 
 double                  Bullet::getFireDeltaTime(void) const {

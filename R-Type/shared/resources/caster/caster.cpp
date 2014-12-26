@@ -19,7 +19,7 @@ int                     Caster::getLife(void) const {
 }
 
 double 			        Caster::getMoveSpeed(void) const {
-    return 0.5;
+    return 0.025;
 }
 
 double                  Caster::getFireDeltaTime(void) const {

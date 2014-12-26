@@ -19,7 +19,7 @@ int                     Melee::getLife(void) const {
 }
 
 double 			        Melee::getMoveSpeed(void) const {
-    return 0.5;
+    return 0.025;
 }
 
 double                  Melee::getFireDeltaTime(void) const {
