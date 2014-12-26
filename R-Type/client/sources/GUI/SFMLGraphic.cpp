@@ -5,9 +5,11 @@
 
 std::shared_ptr<IGraphic>	SFMLGraphic::mInstance = nullptr;
 
+const unsigned int SFMLGraphic::TIME = 1000000;
+
 SFMLGraphic::SFMLGraphic() :
 	mVideoMode(sf::VideoMode(1280, 720)), mTitle(Config::Window::nameWindow), mStyle(sf::Style::Default),
-	mWindow(mVideoMode, mTitle, mStyle), mInputManager(this), mMusicCurrentKey(""), 
+	mWindow(mVideoMode, mTitle, mStyle), mInputManager(this), mMusicCurrentKey(""),
 	mSoundVolume(Config::Audio::volume)
 {
 	mWindow.setActive(false);
@@ -18,7 +20,7 @@ SFMLGraphic::~SFMLGraphic()
 
 }
 
-std::shared_ptr<IGraphic>	SFMLGraphic::getInstance()
+const std::shared_ptr<IGraphic>	&SFMLGraphic::getInstance()
 {
 	if (mInstance == nullptr)
 		mInstance = std::shared_ptr<IGraphic>(new SFMLGraphic);
@@ -145,7 +147,7 @@ void	SFMLGraphic::handleEvent()
 {
 }
 
-bool	SFMLGraphic::isPressed(std::string const &key)
+bool	SFMLGraphic::isPressed(std::string const &key) const
 {
 	return mInputManager.isPressed(key);
 }

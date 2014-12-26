@@ -19,7 +19,7 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 
 	// instance
 	public:
-		static std::shared_ptr<IGraphic>	getInstance();
+		static const std::shared_ptr<IGraphic>	&getInstance();
 	private:
 		static std::shared_ptr<IGraphic>	mInstance;
 
@@ -43,7 +43,7 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 		void				update();
 		void				clear();
 		void				show();
-		bool				isPressed(std::string const &);
+		bool				isPressed(std::string const &) const;
 		uint64_t			getDelta();
 		void				close();
 
@@ -72,5 +72,5 @@ class SFMLGraphic : public NoCopyable, public IGraphic
 		std::map<uint32_t, uint64_t>		mIdTimeElapse;
 		float								mSoundVolume;
 
-#define TIME 1000000
+		static const unsigned int TIME;
 };

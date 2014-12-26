@@ -76,8 +76,6 @@ HEADERS		+=	../shared/includes/NoCopyable.hpp			\
 			includes/GUI/SpriteManager.hpp				\
 			includes/GUI/SpriteModel.hpp				\
 			includes/GUI/TextureManager.hpp				\
-			includes/Network/INetworkManager.hpp			\
-			includes/Network/INetworkManager.hpp			\
 			includes/Network/ServerCommunication.hpp		\
 			includes/Network/TcpClient.hpp				\
 			includes/Network/UdpClient.hpp				\
