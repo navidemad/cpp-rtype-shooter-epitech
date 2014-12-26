@@ -46,7 +46,7 @@ void NGame::Game::pull(void) {
         if (getState() == NGame::Game::State::RUNNING)
             broadcastMap();
         if (getState() == NGame::Game::State::RUNNING)
-            checkCollisions();
+            resolvCollisions();
         if (getState() == NGame::Game::State::RUNNING)
             moveEntities();
     }
@@ -75,15 +75,46 @@ void NGame::Game::broadcastMap(void) {
     logInfo("Level finished");
 }
 
-void NGame::Game::checkCollisions(void) {
+bool NGame::Game::collide(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2) const {
+    double x = c1->getX() - c1->getWidth() / 2.;
+    double y = c1->getY() - c1->getHeight() / 2.;
+    double obsX = c2->getX() - c2->getWidth() / 2.;
+    double obsY = c2->getY() - c2->getHeight() / 2.;
+    return ((y + c1->getHeight() > obsY && y < obsY + c2->getHeight()) &&
+            (x + c1->getWidth()  > obsX && x < obsX + c2->getWidth()));
+}
+
+bool NGame::Game::outScreen(const std::shared_ptr<NGame::Component>& c1) const {
+    return
+        c1->getX() < Config::Window::xMin ||
+        c1->getX() > Config::Window::xMax ||
+        c1->getY() < Config::Window::yMin ||
+        c1->getY() > Config::Window::yMax;
+}
+
+bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
+    if (outScreen(c1))
+        return true;
+
+    for (auto c2 : mComponents) {
+        if (c1->getId() == c2->getId())
+            continue;
+        // c1(87.0122; 25.8201)    c2(87; 25)
+        std::cout << "c1(" << c1->getX() << " ; " << c1->getY() << ") c2(" << c2->getX() << " ; " << c2->getY() << ")" << std::endl;
+        if (c1->intersect(c2)) {
+            std::cout << "[COLLIDE]" << std::endl;
+        }
+    }
+
+    return false;
+}
+
+void NGame::Game::resolvCollisions(void) {
     Scopedlock(mMutex);
 
-    for (auto it = mComponents.begin(); it != mComponents.end();)
+    for (auto it = mComponents.cbegin(); it != mComponents.cend();)
     {
-        if ((*it)->getX() < Config::Window::xMin ||
-            (*it)->getX() > Config::Window::xMax ||
-            (*it)->getY() < Config::Window::yMin ||
-            (*it)->getY() > Config::Window::yMax)
+        if (needRemove(*it))
         {
             if ((*it)->getType() == IResource::Type::PLAYER)
             {
@@ -104,7 +135,7 @@ void NGame::Game::checkCollisions(void) {
 void NGame::Game::moveEntities(void) {
     Scopedlock(mMutex);
 
-    if (mFpsTimer.getDelta() < 30)
+    if (mFpsTimer.getDelta() < Config::Game::fpsLimit)
         return;
     
     for (auto component : mComponents)
@@ -200,8 +231,11 @@ void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& com
     double dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
     double dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
 
-    component->setX(component->getX() + dx);
-    component->setY(component->getY() + dy);
+    if (component->getType() == IResource::Type::PLAYER)
+    {
+        component->setX(component->getX() + dx);
+        component->setY(component->getY() + dy);
+    }
 
     if (mListener)
         mListener->onNotifyUsersComponentAdded(mUsers, component);
@@ -432,8 +466,6 @@ std::shared_ptr<NGame::Component>& NGame::Game::findComponentByOwnerId(uint64_t 
 /*
 ** check :: collision
 */
-bool NGame::Game::collision(std::shared_ptr<NGame::Component>& /*component*/) {
-    return true;
 
     /*
     static const auto& functionsHandleCollision = std::vector<std::function<bool(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&)>>
@@ -464,7 +496,6 @@ bool NGame::Game::collision(std::shared_ptr<NGame::Component>& /*component*/) {
     }
     return false;
     */
-}
 
 bool NGame::Game::collisionTouch(const std::shared_ptr<NGame::Component>& component, const std::shared_ptr<NGame::Component>& obstacle) const {
     if (&obstacle == &component)

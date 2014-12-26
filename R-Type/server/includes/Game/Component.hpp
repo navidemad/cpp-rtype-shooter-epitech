@@ -24,6 +24,10 @@ namespace NGame
         public:
             bool canFire(void);
 
+        // struct rectangle
+        public:
+            bool intersect(const std::shared_ptr<Component>& rhs) const;
+
         // setters
         public:
             void setX(double x);

@@ -46,7 +46,7 @@ namespace NGame
     public:
         void pull(void);
     private:
-        void checkCollisions(void);
+        void resolvCollisions(void);
         void broadcastMap(void);
         void moveEntities(void);
 
@@ -93,7 +93,9 @@ namespace NGame
 
         // check :: collision
     private:
-        bool collision(std::shared_ptr<NGame::Component>& component);
+        bool needRemove(const std::shared_ptr<NGame::Component>& c1);
+        bool outScreen(const std::shared_ptr<NGame::Component>& c1) const;
+        bool collide(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2) const;
         bool collisionTouch(const std::shared_ptr<NGame::Component>&, const std::shared_ptr<NGame::Component>&) const;
         bool collisionWithNoLife(std::shared_ptr<NGame::Component>& component);
         bool collisionWithBonus(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);

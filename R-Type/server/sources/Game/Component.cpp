@@ -13,6 +13,20 @@ bool NGame::Component::canFire(void) {
     return false;
 }
 
+bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) const {
+    auto c1_top = mY - mHeight / 2;
+    auto c1_bottom = mY + mHeight / 2;
+    auto c1_left = mX - mWidth / 2;
+    auto c1_right = mX + mWidth / 2;
+
+    auto c2_top = rhs->getY() - rhs->getHeight() / 2;
+    auto c2_bottom = rhs->getY() + rhs->getHeight() / 2;
+    auto c2_left = rhs->getX() - rhs->getWidth() / 2;
+    auto c2_right = rhs->getX() + rhs->getWidth() / 2;
+
+    return !((c1_bottom > c2_top) || (c1_top < c2_bottom) || (c1_left > c2_right) || (c1_right < c2_left));
+}
+
 void NGame::Component::setX(double x) { 
     mX = x; 
 }
