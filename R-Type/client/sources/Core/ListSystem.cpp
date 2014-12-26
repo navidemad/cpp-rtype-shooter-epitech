@@ -21,8 +21,8 @@ ListSystem::ListSystem()
 
 void	ListSystem::displayRoom(Entity &entity, Font *font, Position *pos, List *list)
 {
-	unsigned int	x = static_cast<unsigned int>(pos->getX());
-	unsigned int	y = static_cast<unsigned int>(pos->getY());
+	uint32_t	x = static_cast<unsigned int>(pos->getX());
+	uint32_t	y = static_cast<unsigned int>(pos->getY());
 
 	std::vector<std::list<information_room>::iterator>::iterator it = list->mListRoomButton.begin();
 
