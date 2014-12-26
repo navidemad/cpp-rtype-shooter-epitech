@@ -103,7 +103,7 @@ bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
 void NGame::Game::resolvCollisions(void) {
     ScopedLock scopedlock(mMutex);
 
-    for (auto it = mComponents.cbegin(); it != mComponents.cend();)
+    for (auto it = mComponents.begin(); it != mComponents.end();)
     {
         if (needRemove(*it))
         {
