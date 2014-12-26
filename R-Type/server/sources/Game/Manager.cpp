@@ -161,7 +161,6 @@ void NGame::Manager::onPlayerFire(const Peer &peer) {
         const std::shared_ptr<NGame::Game>& gamebyhost = findGameByHost(peer);
         gamebyhost->fire(peer);
     } catch (const GameException& e) {
-        throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
 }
 
@@ -170,8 +169,6 @@ void NGame::Manager::onPlayerMove(IResource::Direction direction, const Peer &pe
         const std::shared_ptr<NGame::Game>& gamebyhost = findGameByHost(peer);
         gamebyhost->move(peer, direction);
     } catch (const GameException& e) {
-        std::cout << "Manager::onPlayerMove :: e.what: '" << e.what() << "'" << std::endl;
-        throw GamesManagerException(e.what(), ErrorStatus(ErrorStatus::Error::KO));
     }
 }
 
