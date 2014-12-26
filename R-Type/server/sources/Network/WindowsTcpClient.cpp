@@ -60,7 +60,7 @@ void	WindowsTcpClient::initFromSocket(void *socketFd, const std::string &addr, i
 }
 
 void	WindowsTcpClient::closeClient(void) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -75,13 +75,13 @@ void	WindowsTcpClient::closeClient(void) {
 }
 
 void	WindowsTcpClient::send(const IClientSocket::Message &message) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	mOutBuffer.insert(mOutBuffer.end(), message.msg.begin(), message.msg.end());
 }
 
 IClientSocket::Message	WindowsTcpClient::receive(unsigned int sizeToRead) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	IClientSocket::Message message;
 
@@ -96,7 +96,7 @@ IClientSocket::Message	WindowsTcpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	WindowsTcpClient::nbBytesToRead(void) const {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	return mInBuffer.size();
 }
@@ -129,7 +129,7 @@ void	WindowsTcpClient::onSocketWritable(int) {
 }
 
 int WindowsTcpClient::sendSocket(void) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	if (mOutBuffer.size() == 0)
 		return 0;
@@ -147,7 +147,7 @@ int WindowsTcpClient::sendSocket(void) {
 }
 
 void WindowsTcpClient::recvSocket(void) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	char buffer[1024];
 	WSABUF buf = { 1024, buffer };

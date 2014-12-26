@@ -30,7 +30,7 @@ bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) c
     }
     else
     {
-        std::cout << "((" << c1_x1 << " < " << c2_x2 << ") && (" << c1_x2 << " > " << c2_x1 << ") && (" << c1_y1 << " < " << c2_y2 << ") && (" << c1_y2 << " > " << c2_y1 << "))" << std::endl;
+        //std::cout << "((" << c1_x1 << " < " << c2_x2 << ") && (" << c1_x2 << " > " << c2_x1 << ") && (" << c1_y1 << " < " << c2_y2 << ") && (" << c1_y2 << " > " << c2_y1 << "))" << std::endl;
     }
     return ((c1_x1 < c2_x2) && (c1_x2 > c2_x1) && (c1_y1 < c2_y2) && (c1_y2 > c2_y1));
 }
