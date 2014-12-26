@@ -74,24 +74,28 @@ void	InputManager::update()
 {
 	sf::Event	currentEvent;
 
-	if (mGraphic && mGraphic->getWindow().isOpen())
-	while (mGraphic->getWindow().pollEvent(currentEvent))
+	try
 	{
-		if (sf::Event::Closed)
-			mGraphic->close();
-		if (sf::Event::KeyPressed == currentEvent.type)
-		{
-			pressedKey(currentEvent.key.code);
-		}
-		else if (sf::Event::KeyReleased == currentEvent.type)
-		{
-			releasedKey(currentEvent.key.code);
-		}
-		if (sf::Event::TextEntered == currentEvent.type)
-		{
-			enteredKey(currentEvent.text.unicode);
-		}
+		if (mGraphic && mGraphic->getWindow().isOpen())
+			while (mGraphic->getWindow().pollEvent(currentEvent))
+			{
+				if (sf::Event::Closed)
+					mGraphic->close();
+				if (sf::Event::KeyPressed == currentEvent.type)
+				{
+					pressedKey(currentEvent.key.code);
+				}
+				else if (sf::Event::KeyReleased == currentEvent.type)
+				{
+					releasedKey(currentEvent.key.code);
+				}
+				if (sf::Event::TextEntered == currentEvent.type)
+				{
+					enteredKey(currentEvent.text.unicode);
+				}
+			}
 	}
+	catch (std::exception &/* */) { }
 }
 
 void	InputManager::init()
