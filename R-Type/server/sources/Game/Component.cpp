@@ -14,17 +14,25 @@ bool NGame::Component::canFire(void) {
 }
 
 bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) const {
-    auto c1_top = mY - mHeight / 2;
-    auto c1_bottom = mY + mHeight / 2;
-    auto c1_left = mX - mWidth / 2;
-    auto c1_right = mX + mWidth / 2;
+    auto c1_x1 = mX;
+    auto c1_y1 = mY;
+    auto c1_x2 = c1_x1 + mWidth;
+    auto c1_y2 = c1_y1 + mHeight;
 
-    auto c2_top = rhs->getY() - rhs->getHeight() / 2;
-    auto c2_bottom = rhs->getY() + rhs->getHeight() / 2;
-    auto c2_left = rhs->getX() - rhs->getWidth() / 2;
-    auto c2_right = rhs->getX() + rhs->getWidth() / 2;
+    auto c2_x1 = rhs->getX();
+    auto c2_y1 = rhs->getY();
+    auto c2_x2 = c2_x1 + rhs->getWidth();
+    auto c2_y2 = c2_y1 + rhs->getHeight();
 
-    return !((c1_bottom > c2_top) || (c1_top < c2_bottom) || (c1_left > c2_right) || (c1_right < c2_left));
+    if ((c1_x1 < c2_x2) && (c1_x2 > c2_x1) && (c1_y1 < c2_y2) && (c1_y2 > c2_y1))
+    {
+        return true;
+    }
+    else
+    {
+        //std::cout << "((" << c1_x1 << " < " << c2_x2 << ") && (" << c1_x2 << " > " << c2_x1 << ") && (" << c1_y1 << " < " << c2_y2 << ") && (" << c1_y2 << " > " << c2_y1 << "))" << std::endl;
+    }
+    return ((c1_x1 < c2_x2) && (c1_x2 > c2_x1) && (c1_y1 < c2_y2) && (c1_y2 > c2_y1));
 }
 
 void NGame::Component::setX(double x) { 

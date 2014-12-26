@@ -17,7 +17,7 @@ class MusicManager : public NoCopyable, public IResourceManager<std::string>
 
 	// instance
 	public:
-		static std::shared_ptr<MusicManager>	getInstance();
+		static const std::shared_ptr<MusicManager>	&getInstance();
 	private:
 		static std::shared_ptr<MusicManager>	mInstance;
 

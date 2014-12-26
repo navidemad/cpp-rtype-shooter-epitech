@@ -9,11 +9,11 @@ class Drawable : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
-		Drawable(std::string);
+		Drawable(const std::string &);
 		~Drawable();
 
     public:
-	    void				setName(std::string &name) { mName = name; }
+	    void				setName(const std::string &name) { mName = name; }
 	    const std::string	&getName() const { return mName; }
 
     private:

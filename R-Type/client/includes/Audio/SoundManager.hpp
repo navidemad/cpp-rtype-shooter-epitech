@@ -26,7 +26,7 @@ class SoundManager : public NoCopyable, public IResourceManager<sf::sSound>
 
 	// instance
 	public:
-		static std::shared_ptr<SoundManager>	getInstance();
+		static const std::shared_ptr<SoundManager>	&getInstance();
 	private:
 		static std::shared_ptr<SoundManager>	mInstance;
 

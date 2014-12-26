@@ -22,7 +22,7 @@ std::list<NetworkManager::Socket>::const_iterator NetworkManager::findSocket(int
 }
 
 void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *listener) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     if (socketFd == -1)
         throw SocketException("Invalid socket cannot be under the NetworkManager control");
@@ -40,7 +40,7 @@ void	NetworkManager::addSocket(int socketFd, NetworkManager::OnSocketEvent *list
 }
 
 void	NetworkManager::removeSocket(int socketFd) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     auto socket = findSocket(socketFd);
     if (socket == mSockets.end())
@@ -80,7 +80,7 @@ void	NetworkManager::doSelect(void) {
 }
 
 void	NetworkManager::initFds(void) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     FD_ZERO(&mReadFds);
     FD_ZERO(&mWriteFds);
@@ -92,7 +92,7 @@ void	NetworkManager::initFds(void) {
 }
 
 void	NetworkManager::checkFds(void) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     for (auto &socket : mSockets) {
         bool readable = FD_ISSET(socket.fd, &mReadFds) != 0;
@@ -108,7 +108,7 @@ void	NetworkManager::checkFds(void) {
 void	NetworkManager::readCallBack(int socketFd) const {
 	std::list<NetworkManager::Socket>::const_iterator socket;
 	{
-		ScopedLock scopedlock(mMutex);;
+		ScopedLock scopedlock(mMutex);
 
 		socket = findSocket(socketFd);
 		if (socket == mSockets.end())
@@ -121,7 +121,7 @@ void	NetworkManager::readCallBack(int socketFd) const {
 void	NetworkManager::writeCallBack(int socketFd) const {
 	std::list<NetworkManager::Socket>::const_iterator socket;
 	{
-		ScopedLock scopedlock(mMutex);;
+		ScopedLock scopedlock(mMutex);
 
 		socket = findSocket(socketFd);
 		if (socket == mSockets.end())
@@ -132,7 +132,7 @@ void	NetworkManager::writeCallBack(int socketFd) const {
 }
 
 void	NetworkManager::endCallBack(int socketFd) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	std::list<NetworkManager::Socket>::iterator socket = findSocket(socketFd);
 	if (socket != mSockets.end())

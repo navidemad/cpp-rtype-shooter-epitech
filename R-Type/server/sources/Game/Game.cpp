@@ -90,10 +90,8 @@ bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
     for (auto c2 : mComponents) {
         if (c1->getId() == c2->getId())
             continue;
-        // c1(87.0122; 25.8201)    c2(87; 25)
-        //std::cout << "c1(" << c1->getX() << " ; " << c1->getY() << ") c2(" << c2->getX() << " ; " << c2->getY() << ")" << std::endl;
         if (c1->intersect(c2)) {
-            //std::cout << "[COLLIDE]" << std::endl;
+            std::cout << "[COLLIDE]" << std::endl;
         }
     }
 
@@ -103,7 +101,7 @@ bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
 void NGame::Game::resolvCollisions(void) {
     ScopedLock scopedlock(mMutex);
 
-    for (auto it = mComponents.cbegin(); it != mComponents.cend();)
+    for (auto it = mComponents.begin(); it != mComponents.end();)
     {
         if (needRemove(*it))
         {
@@ -122,7 +120,7 @@ void NGame::Game::resolvCollisions(void) {
 }
 
 void NGame::Game::moveEntities(void) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     if (mFpsTimer.getDelta() < Config::Game::fpsLimit)
         return;
@@ -137,13 +135,13 @@ void NGame::Game::moveEntities(void) {
 ** workflow internal game
 */
 void NGame::Game::addComponentInList(const std::shared_ptr<NGame::Component>& component) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mComponents.push_back(component);
 }
 
 void NGame::Game::addUserInList(const std::shared_ptr<NGame::User>& user) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mUsers.push_back(user);
 }
@@ -189,7 +187,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 void NGame::Game::delUser(const Peer &peer) {
     NGame::USER_TYPE type;
     {
-        ScopedLock scopedlock(mMutex);;
+        ScopedLock scopedlock(mMutex);
         std::vector<std::shared_ptr<NGame::User>>::iterator user = findIteratorUserByHost(peer);
         if (user == mUsers.end())
             throw GameException("Try to delete an undefined address ip");
@@ -220,14 +218,8 @@ void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& com
     double dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
     double dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
 
-    if (component->getType() == IResource::Type::PLAYER)
-    {
-        component->setX(component->getX() + dx);
-        component->setY(component->getY() + dy);
-    }
-
-    if (mListener)
-        mListener->onNotifyUsersComponentAdded(mUsers, component);
+    component->setX(component->getX() + dx);
+    component->setY(component->getY() + dy);
 }
 
 /*
@@ -237,7 +229,7 @@ void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& com
 void NGame::Game::fire(const Peer &peer) {
     std::shared_ptr<NGame::Component> component_player;
     {
-        ScopedLock scopedlock(mMutex);;
+        ScopedLock scopedlock(mMutex);
         std::shared_ptr<NGame::User>& user = findUserByHost(peer);
         component_player = findComponentByOwnerId(user->getId());
     }
@@ -245,10 +237,12 @@ void NGame::Game::fire(const Peer &peer) {
 }
 
 void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
     auto component = findComponentByOwnerId(findUserByHost(peer)->getId());
     component->setAngle(Config::Game::angleTab[direction]);
     updatePositionComponent(component);
+    if (mListener)
+        mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
 void    NGame::Game::spawn(const std::string& name, double x, double y, short angle, uint64_t ownerId) {
@@ -310,7 +304,7 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
 ** getters
 */
 std::shared_ptr<NGame::Script>& NGame::Game::getScript(void) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mScript;
 }
@@ -320,43 +314,43 @@ NGame::Game::OnGameEvent* NGame::Game::getListener(void) const {
 }
 
 double NGame::Game::getCurrentFrame(void) const {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return (static_cast<double>(mScriptTimer.getDelta() / 1E3));
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mProperties;
 }
 
 std::vector<std::shared_ptr<NGame::User>>& NGame::Game::getUsers(void) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mUsers;
 }
 
 NGame::Game::State NGame::Game::getState(void) const {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mState;
 }
 
 const Peer& NGame::Game::getOwner(void) const {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mOwner;
 }
 
 bool NGame::Game::getPullEnded(void) const {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mPullEnded;
 }
 
 uint64_t NGame::Game::getCurrentComponentMaxId(void) const {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     return mCurrentComponentMaxId;
 }
@@ -365,31 +359,31 @@ uint64_t NGame::Game::getCurrentComponentMaxId(void) const {
 ** setters
 */
 void NGame::Game::setListener(NGame::Game::OnGameEvent* listener) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mListener = listener;
 }
 
 void NGame::Game::setState(NGame::Game::State state) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mState = state;
 }
 
 void NGame::Game::setOwner(const Peer& owner) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mOwner = owner;
 }
 
 void NGame::Game::setPullEnded(bool pullEnded) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mPullEnded = pullEnded;
 }
 
 void NGame::Game::setCurrentComponentMaxId(uint64_t currentComponentMaxId) {
-    ScopedLock scopedlock(mMutex);;
+    ScopedLock scopedlock(mMutex);
 
     mCurrentComponentMaxId = currentComponentMaxId;
 }

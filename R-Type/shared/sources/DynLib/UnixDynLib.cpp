@@ -19,7 +19,7 @@ void    UnixDynLib::libraryLoad(const std::string& libraryName) {
     dlerror();
 }
 
-void*  UnixDynLib::functionLoad(const std::string& functionName) {
+void*  UnixDynLib::functionLoad(const std::string& functionName) const {
   char *error;
   void *tmp = dlsym(mHandle, functionName.c_str());
 
@@ -33,7 +33,7 @@ void    UnixDynLib::libraryFree() {
         dlclose(mHandle);
 }
 
-std::string UnixDynLib::normalize(const std::string& libraryName) {
+std::string UnixDynLib::normalize(const std::string& libraryName) const {
   std::string path = libraryName;
     if (path.length()) {
       auto it = path.end() - 1;

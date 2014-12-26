@@ -30,6 +30,8 @@ ECSManagerNetwork::ECSManagerNetwork()
 
 void ECSManagerNetwork::OnDestroyResource(int id)
 {
+	id += mFirstId + 1;
+
 	try {
 		mLivingEntity.at(id) = false;
 		mRemoveId.push_back(id);
@@ -43,7 +45,7 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 
 	try
 	{
-		for (unsigned int id = mFirstId;; ++id)
+		for (unsigned int id = mFirstId + 1;; ++id)
 		{
 			mLivingEntity.at(id) = false;
 			mRemoveId.push_back(id);
@@ -70,6 +72,7 @@ void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStat
 void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, short angle, int id)
 {
 	id += mFirstId + 1;
+
 	try
 	{
 		std::string pathDll = "";
@@ -90,9 +93,11 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 			auto lib = PortabilityBuilder::getDynLib();
 			try {
                 lib->libraryLoad(pathDll);
-				if (lib->functionLoad("entry_point") == nullptr)
+
+        void *entrypoint = lib->functionLoad("entry_point");
+				if (entrypoint == nullptr)
 					return;
-				auto resource = reinterpret_cast<IResource*(*)(void)>(lib->functionLoad("entry_point"))();
+				auto resource = reinterpret_cast<IResource*(*)(void)>(entrypoint)();
 
 				std::pair<unsigned int, std::list<Component *>>		elemToInsert;
 
@@ -109,10 +114,6 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 			}
 			catch (const DynLibException& e) {
 				std::cout << "Exception DynLibException caught: '" << e.what() << "'" << std::endl;
-				// ATTENTION IL FAUT DELETE LENTITE SI LA DLL N'EXISTE PAS
-				// si l'entité n'a pas bien été loadé
-				// car apres dans le else d'en dessous tu fais getSpecificComponent
-				// que tu reinterpret_cast en Position* du coup sa va te renvoyait nullptr (cf mon patch: Entity.cpp getSpecificComponent)
 			}
 		}
 		else
@@ -156,7 +157,7 @@ void ECSManagerNetwork::OnUpdateScore(const std::string &/*name*/, int /*id*/, i
 }
 
 void ECSManagerNetwork::OnCloseSocket(void){
-	
+
 }
 
 void ECSManagerNetwork::OnFailConnect(void){

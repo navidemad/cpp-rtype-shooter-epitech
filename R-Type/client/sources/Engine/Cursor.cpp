@@ -61,7 +61,7 @@ void	Cursor::addEntity(unsigned int id)
 	mCurrent = mListEntity.begin();
 }
 
-unsigned int	Cursor::getIdEntity()
+unsigned int	Cursor::getIdEntity() const
 {
 	return (*mCurrent);
 }

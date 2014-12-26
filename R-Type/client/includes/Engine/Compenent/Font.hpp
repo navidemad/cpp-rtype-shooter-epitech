@@ -9,14 +9,14 @@ class Font : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
-		Font(std::string font, std::string text);
+		Font(const std::string &font, const std::string &text);
 		~Font();
-	
+
 	public:
-		void				setFont(std::string);
+		void				setFont(const std::string &);
 		const std::string	&getFont() const;
 
-		void				setText(std::string);
+		void				setText(const std::string &);
 		const std::string	&getText() const;
 
 	private:

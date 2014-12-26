@@ -13,7 +13,7 @@ SoundManager::~SoundManager()
 
 }
 
-std::shared_ptr<SoundManager>	SoundManager::getInstance()
+const std::shared_ptr<SoundManager>	&SoundManager::getInstance()
 {
     if (mInstance.get() == nullptr)
         mInstance = std::shared_ptr<SoundManager>(new SoundManager);

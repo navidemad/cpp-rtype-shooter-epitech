@@ -17,7 +17,7 @@ class TextureManager : public NoCopyable, public IResourceManager<sf::Texture>
 
 	// instance
 	public:
-		static std::shared_ptr<TextureManager>	getInstance(void);
+		static const std::shared_ptr<TextureManager>	&getInstance(void);
 	private:
 		static std::shared_ptr<TextureManager>	mInstance;
 

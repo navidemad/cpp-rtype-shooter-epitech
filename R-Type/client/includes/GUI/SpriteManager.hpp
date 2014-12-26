@@ -17,7 +17,7 @@ class SpriteManager : public NoCopyable, public IResourceManager<SpriteModel>
 
 	// instance
 	public:
-		static std::shared_ptr<SpriteManager>	getInstance();
+		static const std::shared_ptr<SpriteManager>	&getInstance();
 	private:
 		static std::shared_ptr<SpriteManager>	mInstance;
 

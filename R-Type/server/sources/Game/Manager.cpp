@@ -56,13 +56,13 @@ void    NGame::Manager::setListener(NGame::Manager::OnManagerEvent *listener) {
 }
 
 std::vector<std::shared_ptr<NGame::Game>>& NGame::Manager::getGames(void) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	return mGames;
 }
 
 void NGame::Manager::addGameInList(const std::shared_ptr<NGame::Game> &game) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	mGames.push_back(game);
 }
@@ -176,7 +176,7 @@ void NGame::Manager::onPlayerMove(IResource::Direction direction, const Peer &pe
 }
 
 void NGame::Manager::removeGameFromList(const std::shared_ptr<NGame::Game> &game) {
-	ScopedLock scopedlock(mMutex);;
+	ScopedLock scopedlock(mMutex);
 
 	mGames.erase(std::remove(mGames.begin(), mGames.end(), game), mGames.end());
 }
