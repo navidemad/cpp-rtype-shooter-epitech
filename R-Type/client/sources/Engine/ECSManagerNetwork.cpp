@@ -30,6 +30,8 @@ ECSManagerNetwork::ECSManagerNetwork()
 
 void ECSManagerNetwork::OnDestroyResource(int id)
 {
+	id += mFirstId + 1;
+
 	try {
 		mLivingEntity.at(id) = false;
 		mRemoveId.push_back(id);
@@ -43,7 +45,7 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 
 	try
 	{
-		for (unsigned int id = mFirstId;; ++id)
+		for (unsigned int id = mFirstId + 1;; ++id)
 		{
 			mLivingEntity.at(id) = false;
 			mRemoveId.push_back(id);
