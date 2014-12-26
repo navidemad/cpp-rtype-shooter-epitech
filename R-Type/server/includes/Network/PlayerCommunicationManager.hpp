@@ -26,6 +26,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 	// internal methods
 	private:
 		std::list<Peer>::iterator findPeer(const Peer &peer);
+		std::list<Peer>::const_iterator findPeer(const Peer &peer) const;
 		void logInfo(const Peer &peer, const std::string &log) const;
 
 	public:

@@ -21,9 +21,7 @@ namespace Config
         static const uint64_t	                        minIdComponent = 6;
         static const int                                maxPlayersInAGame = 4;
         static const int                                maxSpectatorsInAGame = 4;
-        static std::map<IResource::Direction, short>    angleTab 
-        = 
-        { 
+        static std::map<IResource::Direction, short>    angleTab = {
             { IResource::Direction::RIGHT, 0 },
             { IResource::Direction::BOTTOM, 90 },
             { IResource::Direction::LEFT, 180 },

@@ -11,7 +11,7 @@ class WindowsReaddir : public IReaddir
 		WindowsReaddir();
 		~WindowsReaddir();
 	public:
-		std::list<std::string> readFolder(const std::string &folderName);
-		std::wstring s2ws(const std::string& s);
-	private:
+		std::list<std::string> readFolder(const std::string &folderName) const;
+		std::wstring s2ws(const std::string& s) const;
+
 };

@@ -21,8 +21,6 @@ class ScriptParser : public NoCopyable {
 
     // workflow commands
     private:
-        const IScriptCommand* commandScriptName(void);
-        const IScriptCommand* commandScriptRequire(void);
         const IScriptCommand* commandScriptSpawn(void);
 
     // attributes

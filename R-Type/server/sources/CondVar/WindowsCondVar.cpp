@@ -26,9 +26,9 @@ WindowsCondVar::~WindowsCondVar(void) {
         throw CondVarException("fail CloseHandle(BROADCAST)");
 }
 
-void WindowsCondVar::wait(std::shared_ptr<IMutex> externalMutex) {
+void WindowsCondVar::wait(const std::shared_ptr<IMutex> &externalMutex) {
 
-    { Scopedlock(mWaitersCountLock); 
+    { Scopedlock(mWaitersCountLock);
         ++mWaitersCount; }
 
     externalMutex->unlock();

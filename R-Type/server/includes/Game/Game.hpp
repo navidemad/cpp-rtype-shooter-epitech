@@ -36,8 +36,8 @@ namespace NGame
         public:
             virtual ~OnGameEvent(void) = default;
             virtual void onRemovePeerFromWhiteList(const Peer&) = 0;
-            virtual void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>>, uint64_t) = 0;
-            virtual void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>>, const std::shared_ptr<NGame::Component>&) = 0;
+            virtual void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>> &, uint64_t) = 0;
+            virtual void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>> &, const std::shared_ptr<NGame::Component>&) = 0;
             virtual void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t) = 0;
             virtual void onNotifyTimeElapsedPing(const Peer &, double) = 0;
         };
@@ -68,14 +68,14 @@ namespace NGame
         // getters
     public:
         std::shared_ptr<NGame::Script>& getScript(void);
-        NGame::Game::OnGameEvent* getListener(void);
-        double getCurrentFrame();
+        NGame::Game::OnGameEvent* getListener(void) const;
+        double getCurrentFrame() const;
         NGame::Properties& getProperties(void);
         std::vector<std::shared_ptr<NGame::User>>& getUsers(void);
         NGame::Game::State getState(void) const;
-        const Peer& getOwner(void);
-        bool getPullEnded(void);
-        uint64_t getCurrentComponentMaxId(void);
+        const Peer& getOwner(void) const;
+        bool getPullEnded(void) const;
+        uint64_t getCurrentComponentMaxId(void) const;
 
         // setters
     public:

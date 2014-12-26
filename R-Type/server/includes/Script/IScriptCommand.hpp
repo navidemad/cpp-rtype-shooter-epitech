@@ -24,8 +24,8 @@ class ScriptSpawn : public IScriptCommand {
         virtual IScriptCommand::Instruction getInstruction(void) const { return mInstruction; }
         virtual void setInstruction(IScriptCommand::Instruction instruction) { mInstruction = instruction; }
     public:
-        explicit ScriptSpawn() = default;
-        virtual ~ScriptSpawn() = default;
+        ScriptSpawn() = default;
+        ~ScriptSpawn() = default;
         ScriptSpawn(const ScriptSpawn& rhs) :
             mFrame(rhs.getFrame()),
             mInstruction(rhs.getInstruction()),
@@ -33,7 +33,7 @@ class ScriptSpawn : public IScriptCommand {
             mX(rhs.getX()),
             mY(rhs.getY()),
             mAngle(rhs.getAngle()) { }
-        ScriptSpawn& operator=(const ScriptSpawn& rhs) {
+        const ScriptSpawn& operator=(const ScriptSpawn& rhs) {
             if (this != &rhs) {
                 mFrame = rhs.getFrame();
                 mInstruction = rhs.getInstruction();

@@ -17,7 +17,7 @@ ClientManager::~ClientManager(void) {
 void ClientManager::logInfo(const Peer &peer, const std::string &log) const {
 	std::stringstream ss;
 
-	ss << Utils::RED << "[TCP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.tcpPort << "]> " << Utils::WHITE << log; 
+	ss << Utils::RED << "[TCP]" << Utils::YELLOW << "[" << peer.host << ":" << peer.tcpPort << "]> " << Utils::WHITE << log;
 	Utils::logInfo(ss.str());
 }
 
@@ -138,7 +138,7 @@ void	ClientManager::sendError(const std::list<Peer> &peers, const ErrorStatus &e
 void	ClientManager::sendShowGame(const std::list<Peer> &peers, const std::string &name, const std::string &levelName, int nbPlayers, int maxPlayers, int nbObservers, int maxObservers) {
 	for (const auto &peer : peers) {
 		const auto &client = findClient(peer);
-			
+
 		if (client != mClients.end()) {
 			logInfo((*client)->getPeer(), "SEND ShowGame");
 			(*client)->sendShowGame(name, levelName, nbPlayers, maxPlayers, nbObservers, maxObservers);
@@ -169,6 +169,12 @@ void	ClientManager::sendShowLevel(const std::list<Peer> &peers, const std::strin
 }
 
 std::list<std::shared_ptr<Client>>::iterator ClientManager::findClient(const Peer &peer) {
+	return std::find_if(mClients.begin(), mClients.end(), [&](const std::shared_ptr<Client> &client) {
+		return client->getPeer() == peer;
+	});
+}
+
+std::list<std::shared_ptr<Client>>::const_iterator ClientManager::findClient(const Peer &peer) const {
 	return std::find_if(mClients.begin(), mClients.end(), [&](const std::shared_ptr<Client> &client) {
 		return client->getPeer() == peer;
 	});

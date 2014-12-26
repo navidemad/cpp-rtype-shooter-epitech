@@ -4,7 +4,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <errno.h>
-#include <arpa/inet.h> 
+#include <arpa/inet.h>
 #include <cstring>
 #include "ScopedLock.hpp"
 #include "PortabilityBuilder.hpp"
@@ -39,9 +39,9 @@ void	UnixTcpClient::initSocket(void) {
 }
 
 void	UnixTcpClient::connectSocket(const std::string &addr, int port) {
-  struct sockaddr_in serv_addr; 
+  struct sockaddr_in serv_addr;
 
-  memset(&serv_addr, 0, sizeof(serv_addr)); 
+  memset(&serv_addr, 0, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(port);
 
@@ -61,7 +61,7 @@ void	UnixTcpClient::initFromSocket(void *socketFd, const std::string &addr, int 
 }
 
 void	UnixTcpClient::closeClient(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	if (mSocketFd != -1) {
 		mNetworkManager->removeSocket(mSocketFd);
@@ -76,14 +76,14 @@ void	UnixTcpClient::closeClient(void) {
 }
 
 void	UnixTcpClient::send(const IClientSocket::Message &message) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	mOutBuffer.insert(mOutBuffer.end(), message.msg.begin(), message.msg.end());
 }
 
 IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
-	Scopedlock(mMutex);
-	
+	ScopedLock scopedlock(mMutex);;
+
 	IClientSocket::Message message;
 
 	if (sizeToRead > mInBuffer.size())
@@ -97,8 +97,8 @@ IClientSocket::Message	UnixTcpClient::receive(unsigned int sizeToRead) {
 }
 
 unsigned int	UnixTcpClient::nbBytesToRead(void) const {
-	Scopedlock(mMutex);
-	
+	ScopedLock scopedlock(mMutex);;
+
 	return mInBuffer.size();
 }
 
@@ -130,7 +130,7 @@ void	UnixTcpClient::onSocketWritable(int) {
 }
 
 int UnixTcpClient::sendSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
     if (mOutBuffer.size() == 0)
         return 0;
@@ -147,7 +147,7 @@ int UnixTcpClient::sendSocket(void) {
 }
 
 void UnixTcpClient::recvSocket(void) {
-	Scopedlock(mMutex);
+	ScopedLock scopedlock(mMutex);;
 
 	char buffer[1024];
 	int nbBytesRead = ::recv(mSocketFd, buffer, 1024, 0);

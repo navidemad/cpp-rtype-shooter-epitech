@@ -32,14 +32,14 @@ class NetworkManager : public NoCopyable {
 
 	// ctor - dtor
 	private:
-		explicit NetworkManager(void);
+		NetworkManager(void);
 	public:
 		~NetworkManager(void);
 
 
 	// singleton handle instance
 	public:
-		static std::shared_ptr<NetworkManager> getInstance(void);
+		static const std::shared_ptr<NetworkManager> &getInstance(void);
         static std::shared_ptr<NetworkManager> mInstance;
 
 	// handle sockets
@@ -50,14 +50,15 @@ class NetworkManager : public NoCopyable {
 	// internal tools
 	private:
 		std::list<NetworkManager::Socket>::iterator findSocket(int socketFd);
+		std::list<NetworkManager::Socket>::const_iterator findSocket(int socketFd) const;
 		void	refreshMaxFd(void);
 		void	doSelect(void);
 		void	initFds(void);
 		void	checkFds(void);
 		void	socketCallback(int socketFd, bool readable, bool writable);
-		bool	stillUnderControl(const std::list<NetworkManager::Socket>::iterator &socket, int socketFd);
-		void	readCallBack(int socketFd);
-		void	writeCallBack(int socketFd);
+		bool	stillUnderControl(const std::list<NetworkManager::Socket>::const_iterator &socket, int socketFd) const;
+		void	readCallBack(int socketFd) const;
+		void	writeCallBack(int socketFd) const;
 		void	endCallBack(int socketFd);
 
 	// attributes

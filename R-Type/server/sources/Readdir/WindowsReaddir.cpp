@@ -8,7 +8,7 @@ WindowsReaddir::WindowsReaddir(void) {
 WindowsReaddir::~WindowsReaddir(void) {
 }
 
-std::list<std::string> WindowsReaddir::readFolder(const std::string &folderName) {
+std::list<std::string> WindowsReaddir::readFolder(const std::string &folderName) const {
 	std::list<std::string> files;
 
 	HANDLE hFind;
