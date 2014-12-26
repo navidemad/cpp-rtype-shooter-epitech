@@ -6,20 +6,20 @@ std::string             Caster::getName(void) const {
     return "caster";
 }
 
-double                  Caster::getHeight(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Caster::getHeight(void) const {
+    return 50;
 }
 
-double                  Caster::getWidth(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Caster::getWidth(void) const {
+    return 50;
 }
 
-int                     Caster::getLife(void) const {
+short                     Caster::getLife(void) const {
 	return 2;
 }
 
 double 			        Caster::getMoveSpeed(void) const {
-    return 0.025;
+    return 0.6;
 }
 
 double                  Caster::getFireDeltaTime(void) const {
@@ -31,11 +31,11 @@ IResource::Type         Caster::getType(void) const {
 }
 
 IResource::Vec2         Caster::move(double deltaTime) const {
-	return IResource::Vec2(-50., ((static_cast<int>(std::round(deltaTime)) % 2) * 2 - 1) * 100.);
+	return IResource::Vec2(-50, ((static_cast<int>(std::round(deltaTime)) % 2) * 2 - 1) * 100);
 }
 
 IResource::Vec2         Caster::fire(double) const {
-	return IResource::Vec2(-150., std::rand() % 100 - 60);
+	return IResource::Vec2(-150, std::rand() % 100 - 60);
 }
 
 extern "C"

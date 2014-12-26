@@ -33,7 +33,7 @@ mMutex(PortabilityBuilder::getMutex()),
 mPullEnded(true),
 mCurrentComponentMaxId(Config::Game::minIdComponent)
 {
-
+    std::cout << "Game stage_name: '" << mProperties.getLevelName() << "' created" << std::endl;
 }
 
 /*
@@ -59,8 +59,10 @@ void NGame::Game::pull(void) {
 }
 
 void NGame::Game::broadcastMap(void) {
-    while (!(getScript()->isFinish())) {
-        const auto& currentCommand = getScript()->currentCommand();
+    ScopedLock scopedlock(mMutex);
+
+    while (!(mScript->isFinish())) {
+        const auto& currentCommand = mScript->currentCommand();
         if (getCurrentFrame() < currentCommand->getFrame())
             return;
         for (const auto& instr : tokenExecTab) {
@@ -69,30 +71,94 @@ void NGame::Game::broadcastMap(void) {
                 break;
             }
         }
-        getScript()->goToNextCommand();
+        mScript->goToNextCommand();
     }
-    setState(NGame::Game::State::DONE);
+    mState = NGame::Game::State::DONE;
     logInfo("Level finished");
 }
 
 bool NGame::Game::outScreen(const std::shared_ptr<NGame::Component>& c1) const {
     return
-        c1->getX() < Config::Window::xMin ||
-        c1->getX() > Config::Window::xMax ||
-        c1->getY() < Config::Window::yMin ||
-        c1->getY() > Config::Window::yMax;
+        c1->getX() < 0 || c1->getX() > Config::Window::Width ||
+        c1->getY() < 0 || c1->getY() > Config::Window::Height;
+}
+
+bool NGame::Game::handleCollisionBonus(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>&) {
+    if (c1->getType() == IResource::Type::PLAYER) {
+        c1->setLife(c1->getLife() * 2);
+    }
+    return false;
+}
+
+bool NGame::Game::handleCollisionBullet(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2) {
+    if (c1->getType() != IResource::Type::PLAYER &&
+        c1->getType() != IResource::Type::CASTER &&
+        c1->getType() != IResource::Type::MELEE &&
+        c1->getType() != IResource::Type::SUPER)
+        return false;
+
+    if (c1->getType() == IResource::Type::PLAYER && c2->getOwner() != nullptr) {
+        return false;
+    }
+
+    c1->setLife(c1->getLife() - 1);
+
+    bool stillAlive = c1->getLife() > 0;
+
+    if (!stillAlive) {
+        if (c1->getType() == IResource::Type::CASTER ||
+            c1->getType() == IResource::Type::MELEE ||
+            c1->getType() == IResource::Type::SUPER) {
+            if (c2->getOwner() != nullptr) {
+                c2->getOwner()->setScore(c2->getOwner()->getScore());
+                if (mListener)
+                    mListener->onNotifyUserGainScore(c2->getOwner()->getPeer(), c2->getOwner()->getId(), c2->getOwner()->getPseudo(), c2->getOwner()->getScore());
+            }
+        }
+    }
+
+    return stillAlive;
+}
+
+bool NGame::Game::handleCollisionPlayer(const std::shared_ptr<NGame::Component>&, const std::shared_ptr<NGame::Component>&) {
+    return false;
+}
+
+bool NGame::Game::handleCollisionMonster(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>&) {
+    return (c1->getType() == IResource::Type::PLAYER);
+}
+
+bool NGame::Game::handleCollision(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2) {
+
+    static std::map<IResource::Type, std::function<bool(const std::shared_ptr<NGame::Component>&, const std::shared_ptr<NGame::Component>&)>> handler
+    {
+        { IResource::Type::BONUS, std::bind(&NGame::Game::handleCollisionBonus, this, std::placeholders::_1, std::placeholders::_2) },
+        { IResource::Type::BULLET, std::bind(&NGame::Game::handleCollisionBullet, this, std::placeholders::_1, std::placeholders::_2) },
+        { IResource::Type::PLAYER, std::bind(&NGame::Game::handleCollisionPlayer, this, std::placeholders::_1, std::placeholders::_2) },
+        { IResource::Type::CASTER, std::bind(&NGame::Game::handleCollisionMonster, this, std::placeholders::_1, std::placeholders::_2) },
+        { IResource::Type::MELEE, std::bind(&NGame::Game::handleCollisionMonster, this, std::placeholders::_1, std::placeholders::_2) },
+        { IResource::Type::SUPER, std::bind(&NGame::Game::handleCollisionMonster, this, std::placeholders::_1, std::placeholders::_2) },
+};
+
+    if (handler.find(c2->getType()) == handler.end()) {
+        std::cout << "handleCollision with unknown type" << std::endl;
+        return false;
+    }
+
+    return handler[c2->getType()](c1, c2);
 }
 
 bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
-    if (outScreen(c1))
+    if (outScreen(c1)) {
+        std::cout << "outScreen component id " << c1->getId() << " : '" << c1->getResource()->getName() << "'" << std::endl;
         return true;
+    }
 
     for (auto c2 : mComponents) {
         if (c1->getId() == c2->getId())
             continue;
-        if (c1->intersect(c2)) {
-            std::cout << "[COLLIDE]" << std::endl;
-        }
+        if (c1->intersect(c2))
+            return handleCollision(c1, c2);
     }
 
     return false;
@@ -106,8 +172,7 @@ void NGame::Game::resolvCollisions(void) {
         if (needRemove(*it))
         {
             if ((*it)->getType() == IResource::Type::PLAYER)
-                transferPlayerToSpectators(findUserById((*it)->getOwnerId()));
-
+                transferPlayerToSpectators((*it)->getOwner());
             if (mListener)
                 mListener->onNotifyUsersComponentRemoved(mUsers, (*it)->getId());
             it = mComponents.erase(it);
@@ -126,8 +191,8 @@ void NGame::Game::moveEntities(void) {
         return;
 
     for (auto &component : mComponents)
-        if (component->getType() != IResource::Type::PLAYER)
-            updatePositionComponent(component);
+    if (component->getType() != IResource::Type::PLAYER)
+        updatePositionComponent(component);
     mFpsTimer.restart();
 }
 
@@ -167,9 +232,12 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
             initTimer();
             setState(NGame::Game::State::RUNNING);
         }
-        double spawnX = 1.;
-        double spawnY = Config::Window::yMax / (1 + user->getId());
-        spawn("player", spawnX, spawnY, Config::Game::angleTab[IResource::Direction::RIGHT], user->getId());
+        short spawnX = 50;
+        short spawnY = 50 + static_cast<short>(user->getId()) * 60;
+        {
+            ScopedLock scopedlock(mMutex);
+            spawn("player", spawnX, spawnY, Config::Game::angleTab[IResource::Direction::RIGHT], user);
+        }
     }
     else if (type == NGame::USER_TYPE::SPECTATOR) {
         if (getProperties().getNbSpectators() >= getProperties().getMaxSpectators())
@@ -213,13 +281,13 @@ void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user)
 }
 
 void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& component) {
-    double angleInRad = component->getAngle() * 3.14 / 180;
-    double speed = component->getMoveSpeed();
-    double dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
-    double dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
+    auto angleInRad = component->getAngle() * 3.14 / 180;
+    auto speed = component->getMoveSpeed();
+    auto dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
+    auto dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
 
-    component->setX(component->getX() + dx);
-    component->setY(component->getY() + dy);
+    component->setX(component->getX() + static_cast<short>(dx));
+    component->setY(component->getY() + static_cast<short>(dy));
 }
 
 /*
@@ -232,8 +300,8 @@ void NGame::Game::fire(const Peer &peer) {
         ScopedLock scopedlock(mMutex);
         std::shared_ptr<NGame::User>& user = findUserByHost(peer);
         component_player = findComponentByOwnerId(user->getId());
+        spawn("bullet", component_player->getX(), component_player->getY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
     }
-    spawn("bullet", component_player->getX(), component_player->getY(), Config::Game::angleTab[IResource::Direction::RIGHT], component_player->getId());
 }
 
 void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
@@ -245,7 +313,7 @@ void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
         mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
-void    NGame::Game::spawn(const std::string& name, double x, double y, short angle, uint64_t ownerId) {
+void    NGame::Game::spawn(const std::string& name, short x, short y, short angle, const std::shared_ptr<NGame::User>& owner) {
     for (const auto& path : mDLLoader) {
         if (name == Utils::basename(path.second)) {
             try {
@@ -255,18 +323,16 @@ void    NGame::Game::spawn(const std::string& name, double x, double y, short an
                 void* entry_point = component->getDynLib()->functionLoad("entry_point");
                 if (entry_point == nullptr)
                     throw DynLibException("entry_point function not found");
-                IResource* resource = reinterpret_cast<IResource*(*)(void)>(entry_point)    ();
+                IResource* resource = reinterpret_cast<IResource*(*)(void)>(entry_point)();
                 if (!resource)
                     throw DynLibException("failed when trying to reinterpret_cast<IResource*>");
 
-                setCurrentComponentMaxId(getCurrentComponentMaxId() + 1);
-
-                component->setId(getCurrentComponentMaxId());
+                component->setId(++mCurrentComponentMaxId);
 
                 component->setX(x);
                 component->setY(y);
                 component->setAngle(angle);
-                component->setOwnerId(ownerId);
+                component->setOwner(owner);
                 component->setResource(resource);
 
                 component->setWidth(component->getResource()->getWidth());
@@ -275,11 +341,10 @@ void    NGame::Game::spawn(const std::string& name, double x, double y, short an
                 component->setLife(component->getResource()->getLife());
                 component->setType(component->getResource()->getType());
 
-                addComponentInList(component);
+                mComponents.push_back(component);
 
-                auto listener = getListener();
-                if (listener)
-                    listener->onNotifyUsersComponentAdded(getUsers(), component);
+                if (mListener)
+                    mListener->onNotifyUsersComponentAdded(mUsers, component);
 
                 return;
             }
@@ -297,25 +362,17 @@ void	NGame::Game::scriptCommandSpawn(const IScriptCommand* command) {
     if (!commandScriptSpawn)
         throw GameException("dynamic_cast failed when try converting 'const IScriptCommand*' to 'const ScriptSpawn*'");
 
-    spawn(commandScriptSpawn->getSpawnName(), commandScriptSpawn->getX(), commandScriptSpawn->getY(), commandScriptSpawn->getAngle(), 0);
+    spawn(commandScriptSpawn->getSpawnName(), commandScriptSpawn->getX(), commandScriptSpawn->getY(), commandScriptSpawn->getAngle(), nullptr);
 }
 
 /*
 ** getters
 */
-std::shared_ptr<NGame::Script>& NGame::Game::getScript(void) {
-    ScopedLock scopedlock(mMutex);
-
-    return mScript;
-}
-
 NGame::Game::OnGameEvent* NGame::Game::getListener(void) const {
     return mListener;
 }
 
 double NGame::Game::getCurrentFrame(void) const {
-    ScopedLock scopedlock(mMutex);
-
     return (static_cast<double>(mScriptTimer.getDelta() / 1E3));
 }
 
@@ -420,7 +477,11 @@ std::shared_ptr<NGame::User>& NGame::Game::findUserByHost(const Peer &peer) {
 }
 
 std::shared_ptr<NGame::User>& NGame::Game::findUserById(uint64_t id) {
-    std::vector<std::shared_ptr<NGame::User>>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&id](const std::shared_ptr<NGame::User>& user) { return user->getId() == id; });
+    std::cout << "findUserById for id: '" << id << "'" << std::endl;
+    std::vector<std::shared_ptr<NGame::User>>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&id](const std::shared_ptr<NGame::User>& user) {
+        std::cout << "# it  user->getId() : '" << user->getId() << "'" << std::endl;
+        return user->getId() == id;
+    });
     if (it == mUsers.end())
         throw GameException("user not found for this id");
 
@@ -438,134 +499,10 @@ std::shared_ptr<NGame::Component>& NGame::Game::findComponentById(uint64_t id) {
 std::shared_ptr<NGame::Component>& NGame::Game::findComponentByOwnerId(uint64_t ownerId) {
     std::vector<std::shared_ptr<NGame::Component>>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&ownerId](const std::shared_ptr<NGame::Component>& component) {
         //std::cout << "component.getOwnerId(): '" << component.getOwnerId() << "' and ownerId: '" << ownerId << "'" << std::endl;
-        return component->getOwnerId() == ownerId;
+        return component->getOwner()->getId() == ownerId;
     });
     if (it == mComponents.end())
         throw GameException("component not found for component.getOwnerId() = '" + Utils::toString<uint64_t>(ownerId) +"'");
 
     return *it;
 }
-
-/*
-** check :: collision
-*/
-
-    /*
-    static const auto& functionsHandleCollision = std::vector<std::function<bool(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&)>>
-    {
-    std::bind(&NGame::Game::collisionWithNoLife, this, std::placeholders::_1),
-    std::bind(&NGame::Game::collisionWithBonus, this, std::placeholders::_1, std::placeholders::_2),
-    std::bind(&NGame::Game::collisionWithBullet, this, std::placeholders::_1, std::placeholders::_2),
-    std::bind(&NGame::Game::collisionWithEnnemy, this, std::placeholders::_1, std::placeholders::_2)
-    };
-
-    auto& components = getComponents();
-    for (auto& obstacle : components) {
-    if (collisionTouch(component, obstacle)) {
-    return true; // a debugger below
-
-    std::cout << "collisionTouch = true" << std::endl;
-    int i;
-    i = 1;
-    for (const auto& fct : functionsHandleCollision) {
-    std::cout << "functionsHandleCollision #" << i++ << std::endl;
-    if (fct(component, obstacle)) {
-    std::cout << "functionsHandleCollision return true" << std::endl;
-    return true;
-    }
-    std::cout << "functionsHandleCollision return false" << std::endl;
-    }
-    }
-    }
-    return false;
-    */
-
-bool NGame::Game::collisionTouch(const std::shared_ptr<NGame::Component>& component, const std::shared_ptr<NGame::Component>& obstacle) const {
-    if (&obstacle == &component)
-        return false;
-
-    if (component->getX() < Config::Window::xMin || component->getX() > Config::Window::xMax || component->getY() < Config::Window::yMin || component->getX() > Config::Window::yMax)
-    {
-        std::cout << "####### ID: '" << component->getId() << "' OUT OF SCREEN ########" << std::endl;
-        return true;
-    }
-
-    return false; // a debugger below
-    double x = component->getX() - component->getWidth() / 2.; // probleme car getWidth est en px et getX en ratio %
-    double y = component->getY() - component->getHeight() / 2.;
-    double obsX = obstacle->getX() - obstacle->getWidth() / 2.;
-    double obsY = obstacle->getY() - obstacle->getHeight() / 2.;
-
-    return (
-        (y + component->getHeight() > obsY && y < obsY + obstacle->getHeight())
-        &&
-        (x + component->getWidth() > obsX && x < obsX + obstacle->getWidth())
-        );
-}
-
-bool NGame::Game::collisionWithNoLife(std::shared_ptr<NGame::Component>&) {
-    return true;
-}
-
-bool NGame::Game::collisionWithBonus(std::shared_ptr<NGame::Component>& component, std::shared_ptr<NGame::Component>& obstacle) {
-    if (obstacle->getType() == IResource::Type::PLAYER && component->getType() == IResource::Type::BONUS) {
-        component->setLife(component->getLife() * 2); // les bonus double votre nombre de vie (à changer par la vitesse ou par le nombre de boulettes)
-        return true;
-    }
-    return false;
-}
-
-bool NGame::Game::collisionWithBullet(std::shared_ptr<NGame::Component>& component, std::shared_ptr<NGame::Component>& obstacle) {
-    if (obstacle->getType() == IResource::Type::BULLET)
-    {
-        bool friendBullet = false;
-        try {
-            findUserById(obstacle->getId());
-            friendBullet = true;
-        }
-        catch (const GameException&) {}
-        switch (component->getType())
-        {
-        case IResource::Type::PLAYER:
-            if (friendBullet)
-                return false;
-            component->setLife(component->getLife() - 1);
-            return component->getLife() == 0;
-        default:
-            break;
-        }
-    }
-    return false;
-}
-
-bool NGame::Game::collisionWithEnnemy(std::shared_ptr<NGame::Component>& /*component*/, std::shared_ptr<NGame::Component>& /*obstacle*/) {
-    return false;
-    /*
-    if (obstacle->getType() == IResource::Type::CASTER)
-    {
-    const auto& user = findUserById(component->getId());
-    bool friendBullet = user != getUsers().end();
-    switch (component->getType())
-    {
-    case IResource::Type::PLAYER:
-    // contact direct player avec monstre => mort instané du player
-    return true;
-    case IResource::Type::BULLET:
-    // bullet d'un joueur qui touche un monstre
-    if (friendBullet)
-    {
-    user->setScore(user->getScore() + 1);
-    auto listener = getListener();
-    if (listener)
-    listener->onNotifyUserGainScore(user->getPeer(), user->getId(), user->getPseudo(), user->getScore());
-    component->setLife(component->getLife() - 1);
-    return component->getLife() == 0;
-    }
-    default:
-    break;
-    }
-    }
-    return false;
-    */
-}
-

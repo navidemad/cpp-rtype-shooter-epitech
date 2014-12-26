@@ -6,20 +6,20 @@ std::string             Bullet::getName(void) const {
     return "bullet";
 }
 
-double                  Bullet::getHeight(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Bullet::getHeight(void) const {
+    return 33;
 }
 
-double                  Bullet::getWidth(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Bullet::getWidth(void) const {
+    return 34;
 }
 
-int                     Bullet::getLife(void) const {
+short                     Bullet::getLife(void) const {
     return 1;
 }
 
 double 			        Bullet::getMoveSpeed(void) const {
-    return 0.015;
+    return 0.6;
 }
 
 double                  Bullet::getFireDeltaTime(void) const {
@@ -31,11 +31,11 @@ IResource::Type         Bullet::getType(void) const {
 }
 
 IResource::Vec2         Bullet::move(double) const {
-    return IResource::Vec2(50., 0.);
+    return IResource::Vec2(50, 0);
 }
 
 IResource::Vec2         Bullet::fire(double) const {
-    return IResource::Vec2(0., 0.);
+    return IResource::Vec2(0, 0);
 }
 
 extern "C"

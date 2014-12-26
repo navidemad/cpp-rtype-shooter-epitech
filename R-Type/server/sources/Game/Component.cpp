@@ -14,40 +14,47 @@ bool NGame::Component::canFire(void) {
 }
 
 bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) const {
-    auto c1_x1 = mX;
-    auto c1_y1 = mY;
-    auto c1_x2 = c1_x1 + mWidth;
-    auto c1_y2 = c1_y1 + mHeight;
 
-    auto c2_x1 = rhs->getX();
-    auto c2_y1 = rhs->getY();
-    auto c2_x2 = c2_x1 + rhs->getWidth();
-    auto c2_y2 = c2_y1 + rhs->getHeight();
+    auto c1_left = this->getX();
+    auto c2_left = rhs->getX();
 
-    if ((c1_x1 < c2_x2) && (c1_x2 > c2_x1) && (c1_y1 < c2_y2) && (c1_y2 > c2_y1))
-    {
+    auto c1_right = c1_left + this->getWidth();
+    auto c2_right = c2_left + rhs->getWidth();
+
+    auto c1_top = this->getY();
+    auto c2_top = rhs->getY();
+
+    auto c1_bot = c1_top + this->getHeight();
+    auto c2_bot = c2_top + rhs->getHeight();
+    
+    if (c1_right >= c2_left && c1_right <= c2_right && c1_bot >= c2_top && c1_bot <= c2_bot)
         return true;
-    }
-    else
-    {
-        //std::cout << "((" << c1_x1 << " < " << c2_x2 << ") && (" << c1_x2 << " > " << c2_x1 << ") && (" << c1_y1 << " < " << c2_y2 << ") && (" << c1_y2 << " > " << c2_y1 << "))" << std::endl;
-    }
-    return ((c1_x1 < c2_x2) && (c1_x2 > c2_x1) && (c1_y1 < c2_y2) && (c1_y2 > c2_y1));
+
+    if (c1_right >= c2_left && c1_right <= c2_right && c1_top >= c2_top && c1_top <= c2_bot)
+        return true;
+
+    if (c1_left >= c2_left && c1_left <= c2_right && c1_bot >= c2_top && c1_bot <= c2_bot)
+        return true;
+
+    if (c1_left >= c2_left && c1_left <= c2_right && c1_top >= c2_top && c1_top <= c2_bot)
+        return true;
+
+    return false;
 }
 
-void NGame::Component::setX(double x) { 
+void NGame::Component::setX(short x) {
     mX = x; 
 }
 
-void NGame::Component::setY(double y) {
+void NGame::Component::setY(short y) {
     mY = y;
 }
 
-void NGame::Component::setWidth(double width) {
+void NGame::Component::setWidth(short width) {
     mWidth = width;
 }
 
-void NGame::Component::setHeight(double height) {
+void NGame::Component::setHeight(short height) {
     mHeight = height;
 }
 
@@ -63,7 +70,7 @@ void NGame::Component::setFireDeltaTime(double fireDeltaTime) {
     mFireDeltaTime = fireDeltaTime;
 }
 
-void NGame::Component::setLife(double life) {
+void NGame::Component::setLife(short life) {
     mLife = life;
 }
 
@@ -75,26 +82,26 @@ void NGame::Component::setType(IResource::Type type) {
     mType = type;
 }
 
-void NGame::Component::setOwnerId(uint64_t ownerId) {
-    mOwnerId = ownerId;
+void NGame::Component::setOwner(const std::shared_ptr<NGame::User>& owner) {
+    mOwner = owner;
 }
 
 void NGame::Component::setResource(IResource* resource) {
     mResource = resource;
 }
 
-double NGame::Component::getX(void) const {
+short NGame::Component::getX(void) const {
     return mX;
 }
-double NGame::Component::getY(void) const {
+short NGame::Component::getY(void) const {
     return mY;
 }
 
-double NGame::Component::getWidth(void) const {
+short NGame::Component::getWidth(void) const {
     return mWidth;
 }
 
-double NGame::Component::getHeight(void) const {
+short NGame::Component::getHeight(void) const {
     return mHeight;
 }
 
@@ -110,7 +117,7 @@ double NGame::Component::getFireDeltaTime(void) const {
     return mFireDeltaTime;
 }
 
-double NGame::Component::getLife(void) const {
+short NGame::Component::getLife(void) const {
     return mLife;
 }
 
@@ -122,8 +129,8 @@ IResource::Type NGame::Component::getType(void) const {
     return mType;
 }
 
-uint64_t NGame::Component::getOwnerId(void) const {
-    return mOwnerId;
+std::shared_ptr<NGame::User>& NGame::Component::getOwner(void) {
+    return mOwner;
 }
 
 IResource* NGame::Component::getResource(void) const {

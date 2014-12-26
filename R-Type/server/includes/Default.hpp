@@ -9,10 +9,8 @@ namespace Config
 {
 	namespace Window
 	{
-        static const double	                            xMin = 0.0;
-        static const double	                            xMax = 100.0;
-        static const double	                            yMin = 0.0;
-        static const double	                            yMax = 100.0;
+        static const short Width = 1920;
+        static const short Height = 1080;
 	}
 
 	namespace Game

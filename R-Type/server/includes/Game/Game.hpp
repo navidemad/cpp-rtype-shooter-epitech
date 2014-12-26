@@ -67,7 +67,6 @@ namespace NGame
 
         // getters
     public:
-        std::shared_ptr<NGame::Script>& getScript(void);
         NGame::Game::OnGameEvent* getListener(void) const;
         double getCurrentFrame() const;
         NGame::Properties& getProperties(void);
@@ -95,11 +94,13 @@ namespace NGame
     private:
         bool needRemove(const std::shared_ptr<NGame::Component>& c1);
         bool outScreen(const std::shared_ptr<NGame::Component>& c1) const;
+        bool handleCollision(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
+        bool handleCollisionBonus(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
+        bool handleCollisionBullet(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
+        bool handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
+        bool handleCollisionMonster(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
+
         bool collisionTouch(const std::shared_ptr<NGame::Component>&, const std::shared_ptr<NGame::Component>&) const;
-        bool collisionWithNoLife(std::shared_ptr<NGame::Component>& component);
-        bool collisionWithBonus(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);
-        bool collisionWithBullet(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);
-        bool collisionWithEnnemy(std::shared_ptr<NGame::Component>&, std::shared_ptr<NGame::Component>&);
 
     public:
         std::shared_ptr<NGame::User>& findUserByHost(const Peer &);
@@ -110,7 +111,7 @@ namespace NGame
 
         // workflow internal game
     private:
-        void spawn(const std::string& name, double x, double y, short angle, uint64_t ownerId);
+        void spawn(const std::string& name, short x, short y, short angle, const std::shared_ptr<NGame::User>& owner);
         void addComponentInList(const std::shared_ptr<NGame::Component>&);
         void addUserInList(const std::shared_ptr<NGame::User>&);
         void transferPlayerToSpectators(std::shared_ptr<NGame::User> &);
