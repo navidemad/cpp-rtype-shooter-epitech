@@ -230,7 +230,7 @@ void			RTypeClient::initRtype()
 
 		backgroundSprite.addComponent(new Drawable("background"));
 		backgroundSprite.addComponent(pos);
-		backgroundSprite.addComponent(new Velocity(-1, 0, 8000));
+		backgroundSprite.addComponent(new Velocity(-1, 0, 1000));
 	}
 	//gameplay system
 	engine.addSystem(new UpSystem);

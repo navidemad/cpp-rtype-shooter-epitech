@@ -1,7 +1,7 @@
 #include "Engine/Compenent/Position.hpp"
 #include "Engine/ComponentType.h"
 
-Position::Position(float x, float y)
+Position::Position(short x, short y)
 : Component(ComponentType::MOVABLE), mX(x), mY(y)
 {
 
@@ -12,22 +12,22 @@ Position::~Position()
 
 }
 
-double	Position::getX() const
+short	Position::getX() const
 {
 	return mX;
 }
 
-double	Position::getY() const
+short	Position::getY() const
 {
 	return mY;
 }
 
-void		Position::setX(double x)
+void		Position::setX(short x)
 {
 	mX = x;
 }
 
-void		Position::setY(double y)
+void		Position::setY(short y)
 {
 	mY = y;
 }

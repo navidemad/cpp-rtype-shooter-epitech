@@ -6,20 +6,20 @@ std::string             Melee::getName(void) const {
     return "melee";
 }
 
-double                  Melee::getHeight(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Melee::getHeight(void) const {
+    return 50;
 }
 
-double                  Melee::getWidth(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Melee::getWidth(void) const {
+    return 50;
 }
 
-int                     Melee::getLife(void) const {
+short                  Melee::getLife(void) const {
 	return 1;
 }
 
 double 			        Melee::getMoveSpeed(void) const {
-    return 0.025;
+    return 0.6;
 }
 
 double                  Melee::getFireDeltaTime(void) const {
@@ -31,11 +31,11 @@ IResource::Type         Melee::getType(void) const {
 }
 
 IResource::Vec2         Melee::move(double) const {
-	return IResource::Vec2(-50., 0.);
+	return IResource::Vec2(-50, 0);
 }
 
 IResource::Vec2         Melee::fire(double) const {
-	return IResource::Vec2(0., 0.);
+	return IResource::Vec2(0, 0);
 }
 
 extern "C"

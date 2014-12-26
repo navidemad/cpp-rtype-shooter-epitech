@@ -16,8 +16,8 @@ struct MYLIB_EXPORT IResource {
 	public:
 
         struct Vec2 {
-            Vec2(double x, double y) : x(x), y(y) { }
-            double x, y;
+            Vec2(short x, short y) : x(x), y(y) { }
+            short x, y;
         };
 
 		enum class Direction : char {
@@ -41,11 +41,11 @@ struct MYLIB_EXPORT IResource {
         IResource(void) = default;
         virtual ~IResource(void) = default;
         virtual std::string                 getName(void) const = 0;
-        virtual double                      getHeight(void) const = 0;
-        virtual double                      getWidth(void) const = 0;
-        virtual int                         getLife(void) const = 0;
-        virtual double 			            getMoveSpeed(void) const = 0;
-        virtual double                      getFireDeltaTime(void) const = 0;
+        virtual short                      getHeight(void) const = 0; // height pixel of image
+        virtual short                      getWidth(void) const = 0; // width pixel of image
+        virtual short                         getLife(void) const = 0;
+        virtual double 			            getMoveSpeed(void) const = 0; // nb pixel move / update
+        virtual double                      getFireDeltaTime(void) const = 0; // nb sec between fire interval
         virtual IResource::Type             getType(void) const = 0;
         virtual IResource::Vec2             move(double deltaTime) const = 0;
         virtual IResource::Vec2             fire(double deltaTime) const = 0;

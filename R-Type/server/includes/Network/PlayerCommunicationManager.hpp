@@ -48,7 +48,7 @@ class PlayerCommunicationManager : public NoCopyable, public PlayerPacketBuilder
 
 	// send commands
 	public:
-		void	sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, double x, double y, short angle);
+        void	sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, short x, short y, short angle);
 		void	sendDestroyResource(const Peer &peer, uint64_t id);
 		void	sendUpdateScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score);
 		void	sendTimeElapsedPing(const Peer &peer, double timeElapsed);

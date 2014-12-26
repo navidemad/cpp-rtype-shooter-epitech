@@ -6,20 +6,20 @@ std::string             Super::getName(void) const {
     return "super";
 }
 
-double                  Super::getHeight(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Super::getHeight(void) const {
+    return 50;
 }
 
-double                  Super::getWidth(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Super::getWidth(void) const {
+    return 50;
 }
 
-int                     Super::getLife(void) const {
+short                     Super::getLife(void) const {
 	return 10;
 }
 
 double 			        Super::getMoveSpeed(void) const {
-    return 0.025;
+    return 0.6;
 }
 
 double                  Super::getFireDeltaTime(void) const {
@@ -31,11 +31,11 @@ IResource::Type         Super::getType(void) const {
 }
 
 IResource::Vec2         Super::move(double deltaTime) const {
-    return IResource::Vec2((deltaTime > 3 ? 64. : 0.), ((static_cast<int>(std::round(deltaTime / 2.)) % 2) * 2 - 1) * 150.);
+    return IResource::Vec2((deltaTime > 3 ? 64 : 0), ((static_cast<int>(std::round(deltaTime / 2)) % 2) * 2 - 1) * 150);
 }
 
 IResource::Vec2         Super::fire(double) const {
-	return IResource::Vec2(-300., 0.);
+	return IResource::Vec2(-300, 0);
 }
 
 extern "C"

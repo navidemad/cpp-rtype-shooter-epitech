@@ -5,7 +5,7 @@ IClientSocket::Message CommandMoveResource::getMessage(void) const {
 	CommandMoveResource::PacketFromServer packet;
 
 	packet.id = mId;
-	packet.type = static_cast<char>(mType);
+	packet.type = static_cast<char>(mType); // maybe try uint64_t because enum piped
 	// packet.type = static_cast<uint64_t>(mType);
 	packet.x = mX;
 	packet.y = mY;

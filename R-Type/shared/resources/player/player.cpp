@@ -6,20 +6,20 @@ std::string             Player::getName(void) const {
     return "player";
 }
 
-double                  Player::getHeight(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Player::getHeight(void) const {
+    return 21;
 }
 
-double                  Player::getWidth(void) const {
-    return 0.025; // 20px sprite sur une hauteur fenetre de 800 sa fait cette valeur
+short                  Player::getWidth(void) const {
+    return 33;
 }
 
-int                     Player::getLife(void) const {
+short                     Player::getLife(void) const {
 	return 4;
 }
 
 double 			        Player::getMoveSpeed(void) const {
-    return 0.03;
+    return 0.6;
 }
 
 double                  Player::getFireDeltaTime(void) const {
@@ -31,11 +31,11 @@ IResource::Type         Player::getType(void) const {
 }
 
 IResource::Vec2         Player::move(double deltaTime) const {
-	return IResource::Vec2(0., 0.);
+	return IResource::Vec2(0, 0);
 }
 
 IResource::Vec2         Player::fire(double) const {
-	return IResource::Vec2(0., 0.);
+	return IResource::Vec2(0, 0);
 }
 
 extern "C"

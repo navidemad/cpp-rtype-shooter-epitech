@@ -3,6 +3,7 @@
 #include "IResource.hpp"
 #include "IDynLib.hpp"
 #include "Timer.hpp"
+#include "User.hpp"
 #include "NoCopyable.hpp"
 
 #include <queue>
@@ -30,32 +31,32 @@ namespace NGame
 
         // setters
         public:
-            void setX(double x);
-            void setY(double y);
-            void setWidth(double width);
-            void setHeight(double height);
+            void setX(short x);
+            void setY(short y);
+            void setWidth(short width);
+            void setHeight(short height);
             void setAngle(short angle);
             void setMoveSpeed(double speed);
             void setFireDeltaTime(double speed);
-            void setLife(double life);
+            void setLife(short life);
             void setId(uint64_t id);
             void setType(IResource::Type type);
-            void setOwnerId(uint64_t ownerId);
+            void setOwner(const std::shared_ptr<User> &owner);
             void setResource(IResource*);
 
         // getters
         public:
-            double getX(void) const;
-            double getY(void) const;
-            double getWidth(void) const;
-            double getHeight(void) const;
+            short getX(void) const;
+            short getY(void) const;
+            short getWidth(void) const;
+            short getHeight(void) const;
             short getAngle(void) const;
             double getMoveSpeed(void) const;
             double getFireDeltaTime(void) const;
-            double getLife(void) const;
+            short getLife(void) const;
             uint64_t getId(void) const;
             IResource::Type getType(void) const;
-            uint64_t getOwnerId(void) const;
+            std::shared_ptr<User> &getOwner(void);
             IResource* getResource(void) const;
             const std::shared_ptr<IDynLib> &getDynLib(void) const;
 
@@ -63,16 +64,16 @@ namespace NGame
         private:
             Timer mFireTimer;
         private:
-			double mX;
-			double mY;
-			double mWidth;
-			double mHeight;
+            short mX;
+            short mY;
+            short mWidth;
+            short mHeight;
             short mAngle;
             double mMoveSpeed;
             double mFireDeltaTime;
-			double mLife;
+            short mLife;
             uint64_t mId;
-            uint64_t mOwnerId;
+            std::shared_ptr<User> mOwner;
             IResource::Type mType;
             IResource* mResource;
             std::shared_ptr<IDynLib> mDynLib;

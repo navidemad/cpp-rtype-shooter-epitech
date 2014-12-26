@@ -8,16 +8,16 @@ class Position : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
-		Position(float, float);
+        Position(short, short);
 		~Position();
 
 	public:
-        double		getX() const;
-        double		getY() const;
-        void			setX(double);
-        void			setY(double);
+        short		getX() const;
+        short		getY() const;
+        void			setX(short);
+        void			setY(short);
 
 	private:
-        double			mX;
-        double			mY;
+        short			mX;
+        short			mY;
 };

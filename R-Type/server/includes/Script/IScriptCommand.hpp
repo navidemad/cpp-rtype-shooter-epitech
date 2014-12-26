@@ -47,10 +47,10 @@ class ScriptSpawn : public IScriptCommand {
     public:
         const std::string& getSpawnName(void) const { return mSpawnName; }
         void setSpawnName(const std::string& spawnName) { mSpawnName = spawnName; }
-        double getX(void) const { return mX; }
-        void setX(double x) { mX = x; }
-        double getY(void) const { return mY; }
-        void setY(double y) { mY = y; }
+        short getX(void) const { return mX; }
+        void setX(short x) { mX = x; }
+        short getY(void) const { return mY; }
+        void setY(short y) { mY = y; }
         short getAngle(void) const { return mAngle; }
         void setAngle(short angle) { mAngle = angle; }
     private:
@@ -58,7 +58,7 @@ class ScriptSpawn : public IScriptCommand {
         IScriptCommand::Instruction mInstruction;
     private:
         std::string mSpawnName;
-        double mX;
-        double mY;
+        short mX;
+        short mY;
         short mAngle;
 };
