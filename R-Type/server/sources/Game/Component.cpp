@@ -1,5 +1,8 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
+#ifdef __linux
+# include <math.h>
+#endif
 
 NGame::Component::Component(uint64_t id) : mId(id), mTime(2500), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
 
