@@ -255,6 +255,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
         {
             ScopedLock scopedlock(mMutex);
             spawn("player", spawnX(), spawnY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
+            move(user->getPeer(), IResource::Direction::RIGHT);  // try patch display ship when new connection
         }
     }
     else if (type == NGame::USER_TYPE::SPECTATOR) {
@@ -270,21 +271,23 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
         listener->onNotifyTimeElapsedPing(peer, getCurrentFrame());
 }
 
-void NGame::Game::delUser(const Peer &peer) {
-    NGame::USER_TYPE type;
-    {
-        ScopedLock scopedlock(mMutex);
-        std::vector<std::shared_ptr<NGame::User>>::iterator user = findIteratorUserByHost(peer);
-        if (user == mUsers.end())
-            throw GameException("Try to delete an undefined address ip");
-        type = (*user)->getType();
-        mUsers.erase(user);
-    }
+void NGame::Game::cleanComponents(const std::shared_ptr<NGame::User>& user) {
+    for (auto it = mComponents.begin(); it != mComponents.end();)
+        if ((*it)->getOwner().get() == user.get())
+            it = mComponents.erase(it);
+        else
+            ++it;
+}
 
-    if (type == NGame::USER_TYPE::PLAYER)
-        getProperties().setNbPlayers(getProperties().getNbPlayers() - 1);
-    else if (type == NGame::USER_TYPE::SPECTATOR)
-        getProperties().setNbSpectators(getProperties().getNbSpectators() - 1);
+void NGame::Game::delUser(const Peer &peer) {
+    ScopedLock scopedlock(mMutex);
+    auto user = findUserByHost(peer);
+    if (user->getType() == NGame::USER_TYPE::PLAYER)
+        mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
+    else if (user->getType() == NGame::USER_TYPE::SPECTATOR)
+        mProperties.setNbSpectators(mProperties.getNbSpectators() - 1);
+    cleanComponents(user);
+    mUsers.erase(std::remove(std::begin(mUsers), std::end(mUsers), user), std::end(mUsers));
 }
 
 void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user) {
@@ -307,7 +310,7 @@ void NGame::Game::fire(const Peer &peer) {
     {
         ScopedLock scopedlock(mMutex);
         std::shared_ptr<NGame::User>& user = findUserByHost(peer);
-        component_player = findComponentByOwnerId(user->getId());
+        component_player = findComponentByUser(user);
         if (component_player->canFire())
             spawn("bullet", component_player->getX(), component_player->getY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
     }
@@ -315,7 +318,7 @@ void NGame::Game::fire(const Peer &peer) {
 
 void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
     ScopedLock scopedlock(mMutex);
-    auto component = findComponentByOwnerId(findUserByHost(peer)->getId());
+    auto component = findComponentByUser(findUserByHost(peer));
     component->setAngle(Config::Game::angleTab[direction]);
     component->updatePositions();
     if (mListener)
@@ -474,10 +477,6 @@ void NGame::Game::initTimer(void) {
 /*
 ** workflow STL
 */
-std::vector<std::shared_ptr<NGame::User>>::iterator NGame::Game::findIteratorUserByHost(const Peer &peer) {
-    return std::find_if(mUsers.begin(), mUsers.end(), [&](const std::shared_ptr<NGame::User>& user) { return user->getPeer() == peer; });
-}
-
 std::shared_ptr<NGame::User>& NGame::Game::findUserByHost(const Peer &peer) {
     std::vector<std::shared_ptr<NGame::User>>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&](const std::shared_ptr<NGame::User>& user) { return user->getPeer() == peer; });
     if (it == mUsers.end())
@@ -504,12 +503,12 @@ std::shared_ptr<NGame::Component>& NGame::Game::findComponentById(uint64_t id) {
     return *it;
 }
 
-std::shared_ptr<NGame::Component>& NGame::Game::findComponentByOwnerId(uint64_t ownerId) {
-    std::vector<std::shared_ptr<NGame::Component>>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&ownerId](const std::shared_ptr<NGame::Component>& component) {
-        return component->getOwner() && component->getOwner()->getId() == ownerId;
+std::shared_ptr<NGame::Component>& NGame::Game::findComponentByUser(const std::shared_ptr<NGame::User>& user) {
+    std::vector<std::shared_ptr<NGame::Component>>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&user](const std::shared_ptr<NGame::Component>& component) {
+        return component->getOwner().get() == user.get();
     });
     if (it == mComponents.end())
-        throw GameException("component not found for component.getOwnerId() = '" + Utils::toString<uint64_t>(ownerId) +"'");
+        throw GameException("component not found for finding by user");
 
     return *it;
 }

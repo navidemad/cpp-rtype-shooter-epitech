@@ -211,7 +211,7 @@ void NGame::Manager::onNotifyUsersComponentAdded(const std::vector<std::shared_p
 }
 
 void NGame::Manager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const std::string &pseudo, uint64_t score) {
-    std::cout << "pseudo has scored '" << score << "' pts" << std::endl;
+    std::cout << "# " << pseudo << "'s score is now " << score << " pts" << std::endl;
     mPlayerCommunicationManager.sendUpdateScore(peer, id, pseudo, score);
 }
 
@@ -259,7 +259,7 @@ std::shared_ptr<NGame::Game> NGame::Manager::findGameByHost(const Peer &peer) {
                 if (user->getPeer() == peer)
                     return game;
     }
-    throw GamesManagerException("findGameByName doesn't match", ErrorStatus(ErrorStatus::Error::KO));
+    throw GamesManagerException("findGameByHost doesn't match", ErrorStatus(ErrorStatus::Error::KO));
 }
 
 std::list<std::string> NGame::Manager::getScriptsName(void) const {

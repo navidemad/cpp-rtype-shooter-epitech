@@ -105,8 +105,7 @@ namespace NGame
         std::shared_ptr<NGame::User>& findUserByHost(const Peer &);
         std::shared_ptr<NGame::User>& findUserById(uint64_t id);
         std::shared_ptr<NGame::Component>& findComponentById(uint64_t id);
-        std::shared_ptr<NGame::Component>& findComponentByOwnerId(uint64_t id);
-        std::vector<std::shared_ptr<NGame::User>>::iterator findIteratorUserByHost(const Peer &peer);
+        std::shared_ptr<NGame::Component>& findComponentByUser(const std::shared_ptr<NGame::User>& user);
 
         // workflow internal game
     private:
@@ -120,6 +119,7 @@ namespace NGame
     public:
         void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
         void delUser(const Peer &);
+        void cleanComponents(const std::shared_ptr<NGame::User>& user);
 
         // workflow gaming fire + move
     public:
