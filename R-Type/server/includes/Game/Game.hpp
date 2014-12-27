@@ -49,6 +49,7 @@ namespace NGame
         void resolvCollisions(void);
         void broadcastMap(void);
         void moveEntities(void);
+        void fireEntities(void);
 
         // static values
     public:

@@ -6,17 +6,14 @@ NGame::Component::Component(uint64_t id) : mId(id), mTime(2500), mType(IResource
 }
 
 bool NGame::Component::canFire(void) {
-    return true;
-    /* A DEBUGER */
-    if (mFireTimer.getDelta() / 1E6 > getFireDeltaTime()) {
+    if (mFireTimer.getDelta() / 1E6f > getFireDeltaTime()) {
         mFireTimer.restart();
-        std::cout << "fire" << std::endl;
         return true;
     }
     return false;
 }
 
-bool NGame::Component::canMove(void) {
+bool NGame::Component::canMove(void) const {
     return mMoveTimer.getDelta() > mTime;
 }
 

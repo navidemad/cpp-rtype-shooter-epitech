@@ -24,7 +24,7 @@ namespace NGame
         // rate frame
         public:
             bool canFire(void);
-            bool canMove(void);
+            bool canMove(void) const;
             void updatePositions(void);
 
         // struct rectangle

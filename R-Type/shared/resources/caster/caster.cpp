@@ -23,7 +23,7 @@ float               Caster::getMoveSpeed(void) const {
 }
 
 float               Caster::getFireDeltaTime(void) const {
-    return 3.0f;
+    return 0.3f;
 }
 
 IResource::Type     Caster::getType(void) const {

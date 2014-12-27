@@ -23,7 +23,7 @@ float               Super::getMoveSpeed(void) const {
 }
 
 float               Super::getFireDeltaTime(void) const {
-    return 3.0f;
+    return 0.3f;
 }
 
 IResource::Type     Super::getType(void) const {

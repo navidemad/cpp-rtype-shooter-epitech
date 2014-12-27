@@ -49,6 +49,8 @@ void NGame::Game::pull(void) {
             resolvCollisions();
         if (getState() == NGame::Game::State::RUNNING)
             moveEntities();
+        if (getState() == NGame::Game::State::RUNNING)
+            fireEntities();
     }
     catch (const GameException& e) {
         Utils::logInfo(e.what());
@@ -98,6 +100,10 @@ bool NGame::Game::handleCollisionBullet(const std::shared_ptr<NGame::Component>&
         return false;
 
     if (c1->getType() == IResource::Type::PLAYER && c2->getOwner() != nullptr) {
+        return false;
+    }
+
+    if (c1->getType() != IResource::Type::PLAYER && c2->getOwner() == nullptr) {
         return false;
     }
 
@@ -186,14 +192,18 @@ void NGame::Game::resolvCollisions(void) {
 void NGame::Game::moveEntities(void) {
     ScopedLock scopedlock(mMutex);
 
-    for (auto component : mComponents) {
-        if (component->getType() != IResource::Type::PLAYER) {
-            if (component->canMove())
-                component->updatePositions();
-            /*
-            if (component->canFire())
-                spawn("bullet", component->getX(), component->getY(), component->getAngle(), component->getOwner());
-                */
+    for (auto component : mComponents)
+        if (component->getType() != IResource::Type::PLAYER && component->canMove())
+            component->updatePositions();
+}
+
+void NGame::Game::fireEntities(void) {
+    ScopedLock scopedlock(mMutex);
+
+    for (std::vector<std::shared_ptr<NGame::Component>>::size_type i = 0, n = mComponents.size(); i < n; ++i) {
+        if ((mComponents[i]->getType() == IResource::Type::CASTER || mComponents[i]->getType() == IResource::Type::SUPER) && mComponents[i]->canFire()) {
+            //spawn("bullet", mComponents[i]->getX(), mComponents[i]->getY(), mComponents[i]->getAngle(), mComponents[i]->getOwner());
+            //n = mComponents.size();
         }
     }
 }
@@ -337,6 +347,7 @@ void    NGame::Game::spawn(const std::string& name, float x, float y, float angl
                 component->setWidth(component->getResource()->getWidth());
                 component->setHeight(component->getResource()->getHeight());
                 component->setMoveSpeed(component->getResource()->getMoveSpeed());
+                component->setFireDeltaTime(component->getResource()->getFireDeltaTime());
                 component->setLife(component->getResource()->getLife());
                 component->setType(component->getResource()->getType());
 
