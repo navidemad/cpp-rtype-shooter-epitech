@@ -1,17 +1,3 @@
-/*
-#include "RTypeServer.hpp"
-#include "ScriptLoader.hpp"
-#include <iostream>
-
-int main(void) {
-    ScriptLoader mScriptLoader;
-    mScriptLoader.loadAll();
-    #if defined(__OS_WINDOWS__)
-        system("PAUSE");
-    #endif
-}
-*/
-
 #include "RTypeServer.hpp"
 #include "ScriptLoader.hpp"
 #include <iostream>
