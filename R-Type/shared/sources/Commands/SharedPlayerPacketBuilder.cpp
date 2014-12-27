@@ -15,8 +15,8 @@ IClientSocket::Message	PlayerPacketBuilder::getPartOfFirstDatagram(unsigned int 
 	IClientSocket::Message message;
 
 	message.msgSize = 0;
-	message.host = "";
-	message.port = 0;
+	message.host = mCurrentHost;
+	message.port = mCurrentPort;
 
 	if (mDatagrams.size() == 0)
 		return message;
@@ -62,14 +62,13 @@ void	PlayerPacketBuilder::fetchHeader(void) {
 void	PlayerPacketBuilder::fetchBody(void) {
 	cleanDatagramsList(mCurrentCommand->getSizeToRead());
 
-	if (mDatagrams.size() == 0 || mDatagrams.front().msgSize < mCurrentCommand->getSizeToRead())
+	if (mCurrentCommand->getSizeToRead() && (mDatagrams.size() == 0 || mDatagrams.front().msgSize < mCurrentCommand->getSizeToRead()))
 		return;
 
 	bool error = false;
 
 	try {
 		IClientSocket::Message message = getPartOfFirstDatagram(mCurrentCommand->getSizeToRead());
-
 		if (message.host == mCurrentHost && message.port == mCurrentPort)
 			mCurrentCommand->initFromMessage(message);
 		else
