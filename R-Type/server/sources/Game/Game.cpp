@@ -506,7 +506,7 @@ std::shared_ptr<NGame::Component>& NGame::Game::findComponentById(uint64_t id) {
 
 std::shared_ptr<NGame::Component>& NGame::Game::findComponentByOwnerId(uint64_t ownerId) {
     std::vector<std::shared_ptr<NGame::Component>>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&ownerId](const std::shared_ptr<NGame::Component>& component) {
-        return component->getOwner()->getId() == ownerId;
+        return component->getOwner() && component->getOwner()->getId() == ownerId;
     });
     if (it == mComponents.end())
         throw GameException("component not found for component.getOwnerId() = '" + Utils::toString<uint64_t>(ownerId) +"'");
