@@ -7,19 +7,19 @@ std::string         Melee::getName(void) const {
 }
 
 float               Melee::getHeight(void) const {
-    return 50.f;
+    return 30.f;
 }
 
 float               Melee::getWidth(void) const {
-    return 50.f;
+    return 33.f;
 }
 
 short               Melee::getLife(void) const {
-	return 1;
+	return 5;
 }
 
 float               Melee::getMoveSpeed(void) const {
-    return 1.0f;
+    return 0.42f;
 }
 
 float               Melee::getFireDeltaTime(void) const {

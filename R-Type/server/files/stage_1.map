@@ -1,2 +1,15 @@
 # Apparitions de 3 casters
+spawn 1 caster 1710 340 180
+spawn 1 caster 1710 540 180
+spawn 1 caster 1710 840 180
+
+spawn 3 melee 1710 140 180
+spawn 3 melee 1710 340 180
+spawn 3 melee 1710 640 180
+spawn 3 melee 1710 940 180
+
+spawn 5 super 1710 340 180
+spawn 5 super 1710 540 180
+spawn 5 super 1710 840 180
+
 spawn 200.2 caster 87 75 180

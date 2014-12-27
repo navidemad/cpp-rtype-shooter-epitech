@@ -15,15 +15,15 @@ float               Caster::getWidth(void) const {
 }
 
 short               Caster::getLife(void) const {
-	return 2;
+	return 1;
 }
 
 float               Caster::getMoveSpeed(void) const {
-    return 1.0f;
+    return 0.8f;
 }
 
 float               Caster::getFireDeltaTime(void) const {
-    return 0.3f;
+    return 1.00f;
 }
 
 IResource::Type     Caster::getType(void) const {

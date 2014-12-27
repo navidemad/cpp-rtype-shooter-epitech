@@ -101,6 +101,7 @@ void NGame::Manager::removeGame(const Peer &peer, const std::string& name) {
 void NGame::Manager::joinGame(NGame::USER_TYPE typeUser, const Peer &peer, const std::string &name, const std::string &pseudo) {
     try {
         findGameByHost(peer);
+        std::cout << "deja en partie" << std::endl;
     }
     catch (const GamesManagerException&) {
         try {
