@@ -110,7 +110,7 @@ bool NGame::Game::handleCollisionBullet(const std::shared_ptr<NGame::Component>&
             c1->getType() == IResource::Type::MELEE ||
             c1->getType() == IResource::Type::SUPER) {
             if (c2->getOwner() != nullptr) {
-                c2->getOwner()->setScore(c2->getOwner()->getScore());
+                c2->getOwner()->setScore(c2->getOwner()->getScore() + 10);
                 if (mListener)
                     mListener->onNotifyUserGainScore(c2->getOwner()->getPeer(), c2->getOwner()->getId(), c2->getOwner()->getPseudo(), c2->getOwner()->getScore());
             }
@@ -477,9 +477,7 @@ std::shared_ptr<NGame::User>& NGame::Game::findUserByHost(const Peer &peer) {
 }
 
 std::shared_ptr<NGame::User>& NGame::Game::findUserById(uint64_t id) {
-    std::cout << "findUserById for id: '" << id << "'" << std::endl;
     std::vector<std::shared_ptr<NGame::User>>::iterator it = std::find_if(mUsers.begin(), mUsers.end(), [&id](const std::shared_ptr<NGame::User>& user) {
-        std::cout << "# it  user->getId() : '" << user->getId() << "'" << std::endl;
         return user->getId() == id;
     });
     if (it == mUsers.end())
@@ -498,7 +496,6 @@ std::shared_ptr<NGame::Component>& NGame::Game::findComponentById(uint64_t id) {
 
 std::shared_ptr<NGame::Component>& NGame::Game::findComponentByOwnerId(uint64_t ownerId) {
     std::vector<std::shared_ptr<NGame::Component>>::iterator it = std::find_if(mComponents.begin(), mComponents.end(), [&ownerId](const std::shared_ptr<NGame::Component>& component) {
-        //std::cout << "component.getOwnerId(): '" << component.getOwnerId() << "' and ownerId: '" << ownerId << "'" << std::endl;
         return component->getOwner()->getId() == ownerId;
     });
     if (it == mComponents.end())
