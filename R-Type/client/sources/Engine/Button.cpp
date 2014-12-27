@@ -132,6 +132,37 @@ void	ButtonStateInput::process(Entity &entity, uint32_t delta)
 	(client->*mFct)(enable);
 }
 
+void	ButtonKeyInput::process(Entity &entity, uint32_t delta)
+{
+	updateTimer(delta);
+	if (hasTimeElapsed())
+	{
+		resetTimer();
+
+		// search current value
+		std::vector<std::string>::const_iterator it;
+		for (it = mList.begin(); it != mList.end() && *it != mFont->getText(); ++it) {}
+		if (it == mList.end())
+			it = mList.begin();
+
+		RTypeClient *client = entity.getEntityManager()->getClient();
+		if (entity.getEntityManager()->getClient()->getGui()->isPressed("left"))
+		{
+			if (it != mList.begin())
+				--it;
+			mFont->setText(*it);
+			(client->*mHandler)(mFont->getText());
+		}
+		else if (entity.getEntityManager()->getClient()->getGui()->isPressed("right"))
+		{
+			if (it != mList.end() - 1)
+				++it;
+			mFont->setText(*it);
+			(client->*mHandler)(mFont->getText());
+		}
+	}
+}
+
 void	ButtonCreateGame::process(Entity &entity, uint32_t delta)
 {
 	updateTimer(delta);

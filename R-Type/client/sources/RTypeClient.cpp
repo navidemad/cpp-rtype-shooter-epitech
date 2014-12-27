@@ -252,49 +252,44 @@ void			RTypeClient::initRtype()
 	engine.setFirstId(engine.getCurrentId());
 }
 
-void			RTypeClient::initSearchMenu()
+void			RTypeClient::initSearchMenu() // breakpoint 01
 {
 	ECSManager &engine = *mEngine[RTypeClient::SEARCH_MENU];
 
 	Entity		&menuScreen = engine.createEntity();
-
 	menuScreen.addComponent(new Position(0, 0));
 	menuScreen.addComponent(new Drawable("menu"));
 
 	Entity		&logoScreen = engine.createEntity();
-
 	logoScreen.addComponent(new Position(900, 60));
 	logoScreen.addComponent(new Drawable("logo"));
 
 	Entity		&cursorGame = engine.createEntity();
 	Cursor		*cursor = new Cursor();
-
 	cursorGame.addComponent(new Position(0, 400));
 	cursorGame.addComponent(cursor);
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	// run game
 	Entity		&runGame = engine.createEntity();
 	cursor->addEntity(runGame.getId());
-
 	runGame.addComponent(new Position(1150, 400));
 	runGame.addComponent(new Font("0", "Run game !"));
 	runGame.addComponent(new ButtonMenuGame());
 
-	Entity		&quitGame = engine.createEntity();
-	cursor->addEntity(quitGame.getId());
-
-	quitGame.addComponent(new Position(1600, 950));
-	quitGame.addComponent(new Font("0", "Quit"));
-	quitGame.addComponent(new ButtonMenuGame());
-
+	// display game(s) at run
 	Entity		&searchMenu = engine.createEntity();
-
 	searchMenu.addComponent(new Position(1000, 500));
 	searchMenu.addComponent(new List(&RTypeClient::setGame));
 	searchMenu.addComponent(new Font("0", ""));
 
-	Entity		&logoCharacter = engine.createEntity();
+	Entity		&quitGame = engine.createEntity();
+	cursor->addEntity(quitGame.getId());
+	quitGame.addComponent(new Position(1600, 950));
+	quitGame.addComponent(new Font("0", "Quit"));
+	quitGame.addComponent(new ButtonMenuGame());
 
+	Entity		&logoCharacter = engine.createEntity();
 	logoCharacter.addComponent(new Position(0, 100));
 	logoCharacter.addComponent(new Drawable("logoSearch"));
 
@@ -389,22 +384,26 @@ void			RTypeClient::initNetwork()
 	cursorGame.addComponent(new Position(0, 900));
 	cursorGame.addComponent(new Drawable("searchBar"));
 
+	// input to write port (ex: 4242)
 	Entity		inputPortGame = engine.createEntity();
 	Font	*fontPortGame = new Font("0", std::to_string(Config::Network::port));
 	inputPortGame.addComponent(new Position(1450, 400));
 	inputPortGame.addComponent(fontPortGame);
 
+	// label port
 	Entity		portGame = engine.createEntity();
 	cursor->addEntity(portGame.getId());
 	portGame.addComponent(new Position(960, 400));
 	portGame.addComponent(new Font("0", "Port server:"));
 	portGame.addComponent(new ButtonInput(fontPortGame, &RTypeClient::setPort));
 
+	// input to write ip adress (ex: 127.0.0.1)
 	Entity		inputAdressGame = engine.createEntity();
 	Font	*fontAdressGame = new Font("0", Config::Network::adress);
 	inputAdressGame.addComponent(new Position(1450, 500));
 	inputAdressGame.addComponent(fontAdressGame);
 
+	// label ip adress
 	Entity		adressGame = engine.createEntity();
 	cursor->addEntity(adressGame.getId());
 	adressGame.addComponent(new Position(960, 500));
@@ -530,14 +529,14 @@ void			RTypeClient::initAudio()
 	cursor->addEntity(music.getId());
 	music.addComponent(new Position(960, 400));
 	music.addComponent(new Font("0", "Music volume"));
-	music.addComponent(new ButtonKeyInput<uint32_t>(musicVolume, &RTypeClient::setMusicVolume, { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
+	music.addComponent(new ButtonKeyInput(musicVolume, &RTypeClient::setMusicVolume, { "0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" }));
 
 	// sound volume
 	Entity		sound = engine.createEntity();
 	cursor->addEntity(sound.getId());
 	sound.addComponent(new Position(960, 500));
 	sound.addComponent(new Font("0", "Sound volume"));
-	sound.addComponent(new ButtonKeyInput<uint32_t>(soundVolume, &RTypeClient::setSoundVolume, { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
+	sound.addComponent(new ButtonKeyInput(soundVolume, &RTypeClient::setSoundVolume, { "0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" }));
 
 	Entity		backGame = engine.createEntity();
 	cursor->addEntity(backGame.getId());
@@ -608,13 +607,13 @@ void			RTypeClient::initCreateMenu()
 	cursor->addEntity(nbPlayerMax.getId());
 	nbPlayerMax.addComponent(new Position(420, 600));
 	nbPlayerMax.addComponent(new Font("0", "Nb. player max"));
-	nbPlayerMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPlayerMax, &RTypeClient::setNbPlayerMax, {1, 2, 3, 4}));
+	nbPlayerMax.addComponent(new ButtonKeyInput(fontInputNbPlayerMax, &RTypeClient::setNbPlayerMax, {"1", "2", "3", "4"}));
 
 	Entity		nbPublicMax = engine.createEntity();
 	cursor->addEntity(nbPublicMax.getId());
 	nbPublicMax.addComponent(new Position(420, 700));
 	nbPublicMax.addComponent(new Font("0", "Nb. public max"));
-	nbPublicMax.addComponent(new ButtonKeyInput<uint32_t>(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { 0, 1, 2, 3, 4 }));
+	nbPublicMax.addComponent(new ButtonKeyInput(fontInputNbPublicMax, &RTypeClient::setNbPublicMax, { "0", "1", "2", "3", "4" }));
 
 	Entity		&createGame = engine.createEntity();
 	cursor->addEntity(createGame.getId());
