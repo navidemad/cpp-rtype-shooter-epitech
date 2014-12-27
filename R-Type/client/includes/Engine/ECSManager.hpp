@@ -4,6 +4,8 @@ class RTypeClient;
 
 #include <vector>
 #include <list>
+#include <stack>
+#include <QMutex>
 #include <stdint.h>
 #include "Entity.hpp"
 #include "Component.hpp"
@@ -69,6 +71,8 @@ class ECSManager : public NoCopyable
 		unsigned int									mFirstId;
 
 	protected:
-		std::list<unsigned int>											mRemoveId;
-		std::list < std::pair<unsigned int, std::list<Component *>>>	mAddEntity;
+		std::stack<unsigned int>										mRemoveId;
+		QMutex													mMutexRemove;
+		std::stack< std::pair<unsigned int, std::list<Component *>>>	mAddEntity;
+		QMutex													mMutexAdd;
 };

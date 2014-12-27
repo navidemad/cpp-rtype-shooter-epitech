@@ -34,7 +34,9 @@ void ECSManagerNetwork::OnDestroyResource(int id)
 
     try {
         mLivingEntity.at(id) = false;
-        mRemoveId.push_back(id);
+		mMutexRemove.lock();
+        mRemoveId.push(id);
+		mMutexRemove.unlock();
     }
     catch (std::out_of_range &/* */) {}
 }
@@ -45,13 +47,18 @@ void ECSManagerNetwork::OnEndGame(const std::string &/*name*/)
 
     try
     {
+		mMutexRemove.lock();
         for (unsigned int id = mFirstId + 1;; ++id)
         {
-            mLivingEntity.at(id) = false;
-            mRemoveId.push_back(id);
+			mLivingEntity.at(id) = false;
+            mRemoveId.push(id);
         }
+		mMutexRemove.unlock();
     }
-    catch (std::out_of_range &/* */) {}
+    catch (std::out_of_range &/* */)
+	{
+		mMutexRemove.unlock();
+	}
 }
 
 void ECSManagerNetwork::OnError(ICommand::Instruction /*instruction*/, ErrorStatus::Error err)
@@ -118,7 +125,9 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
                     float angleInRad = angle * 3.14f / 180.f;
                     elemToInsert.second.push_back(new Velocity(cos(angleInRad) * resource->getMoveSpeed(), sin(angleInRad) * resource->getMoveSpeed(), 2500));
 				}
-                mAddEntity.push_back(elemToInsert);
+				mMutexAdd.lock();
+                mAddEntity.push(elemToInsert);
+				mMutexAdd.unlock();
                 lib->libraryFree();
             }
             catch (const DynLibException& e) {

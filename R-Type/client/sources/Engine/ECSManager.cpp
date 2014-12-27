@@ -143,13 +143,15 @@ void	ECSManager::removeEntity(unsigned int id)
 
 void	ECSManager::removeAllEntity()
 {
+	mMutexRemove.lock();
 	while (!mRemoveId.empty())
 	{
-		unsigned int	id = mRemoveId.front();
-		mRemoveId.pop_front();
+		unsigned int	id = mRemoveId.top();
+		mRemoveId.pop();
 
 		removeEntity(id);
 	}
+	mMutexRemove.unlock();
 }
 
 Entity		&ECSManager::getEntityWithSpecificCompenent(ComponentType::Type typeToSearch)
@@ -171,9 +173,10 @@ void		ECSManager::setFirstId(unsigned int id)
 
 void	ECSManager::addEntity()
 {
+	mMutexAdd.lock();
 	while (!mAddEntity.empty())
 	{
-        auto pair = mAddEntity.front();
+        auto pair = mAddEntity.top();
 
         Entity &entity = createEntity(pair.first);
         for (Component *component : pair.second)
@@ -181,6 +184,7 @@ void	ECSManager::addEntity()
 			entity.addComponent(component);
 		}
 
-		mAddEntity.pop_front();
+		mAddEntity.pop();
 	}
+	mMutexAdd.unlock();
 }
