@@ -205,22 +205,19 @@ unix:SOURCES		+= ../shared/sources/DynLib/UnixDynLib.cpp \
 win32:SOURCES		+= ../shared/sources/DynLib/WindowsDynLib.cpp \
 						sources/WindowsPortabilityBuilder.cpp
 
-#CONFIG(release, debug|release): LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-main -lsfml-network-d -lsfml-window-d -lsfml-system-d
-#CONFIG(release, debug|release): LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
-
-win32:LIBS	+=	-ldependencies/libs/sfml-audio-d	\
-			-ldependencies/libs/sfml-graphics-d	\
-			-ldependencies/libs/sfml-main		\
-			-ldependencies/libs/sfml-network-d	\
-			-ldependencies/libs/sfml-system-d	\
-			-ldependencies/libs/sfml-window-d
-
-#win32:LIBS	+=	-ldependencies/libs/sfml-audio		\
-#			-ldependencies/libs/sfml-graphics	\
+#win32:LIBS	+=	-ldependencies/libs/sfml-audio-d	\
+#			-ldependencies/libs/sfml-graphics-d	\
 #			-ldependencies/libs/sfml-main		\
-#			-ldependencies/libs/sfml-network	\
-#			-ldependencies/libs/sfml-system		\
-#			-ldependencies/libs/sfml-window
+#			-ldependencies/libs/sfml-network-d	\
+#			-ldependencies/libs/sfml-system-d	\
+#			-ldependencies/libs/sfml-window-d
+
+win32:LIBS	+=	-ldependencies/libs/sfml-audio		\
+			-ldependencies/libs/sfml-graphics	\
+			-ldependencies/libs/sfml-main		\
+			-ldependencies/libs/sfml-network	\
+			-ldependencies/libs/sfml-system		\
+			-ldependencies/libs/sfml-window
 
 unix:LIBS	+=	-lsfml-audio 		\
 			-lsfml-graphics 	\
@@ -228,9 +225,9 @@ unix:LIBS	+=	-lsfml-audio 		\
 			-lsfml-window 		\
 			-lsfml-system
 
-unix:LIBS += -ldl
+unix:LIBS 	+= -ldl
 
-win32: DEFINES += __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
-unix : DEFINES += __OS_LINUX__
+win32: DEFINES 	+= __OS_WINDOWS__ _CRT_SECURE_NO_WARNINGS
+unix : DEFINES 	+= __OS_LINUX__
 
 #CONFIG(debug, debug|release): DEFINES += _DEBUG

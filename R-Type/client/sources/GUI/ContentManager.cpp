@@ -36,7 +36,7 @@ void	ContentManager::loadSprites()
 	// sprites use essentially for ingame
 	sprites->loadResources("bullet", "assets/sprites/r-typesheet1.gif", 4, 1, SpriteManager::SpriteOffset(130, 18, 136, 32), true); // tir gauche à droite
 	sprites->loadResources("bulletReverse", "assets/sprites/r-typesheet1.gif", 4, 1, SpriteManager::SpriteOffset(266, 18, 136, 32), true); // tir droite à gauche
-	sprites->loadResources("player", "assets/sprites/r-typesheet42.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 166, 20), true);
+    sprites->loadResources("player", "assets/sprites/r-typesheet42.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 166, 20), true);
     sprites->loadResources("caster", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true);
     sprites->loadResources("melee", "assets/sprites/r-typesheet20.gif", 3, 1, SpriteManager::SpriteOffset(19, 67, 99, 30), true);
     sprites->loadResources("super", "assets/sprites/r-typesheet9.gif", 3, 1, SpriteManager::SpriteOffset(0, 0, 141, 53), true);

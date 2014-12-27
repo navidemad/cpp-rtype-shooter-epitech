@@ -50,7 +50,7 @@ RTypeClient::RTypeClient()
 	{
 		engine->setClient(this);
 	}
-
+	mGui->setVolumeMusic(Config::Audio::volume);
 }
 
 void	RTypeClient::initECS()
@@ -281,7 +281,7 @@ void			RTypeClient::initSearchMenu() // breakpoint 01
 	Entity		&searchMenu = engine.createEntity();
 	searchMenu.addComponent(new Position(1000, 500));
 	searchMenu.addComponent(new List(&RTypeClient::setGame));
-	searchMenu.addComponent(new Font("0", ""));
+	searchMenu.addComponent(new Font("0", "test"));
 
 	Entity		&quitGame = engine.createEntity();
 	cursor->addEntity(quitGame.getId());
