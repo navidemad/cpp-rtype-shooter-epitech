@@ -1,3 +1,5 @@
 # Apparitions de 3 casters
-spawn 1 caster 500 500 180
+spawn 1 caster 1710 200 180
+spawn 1 caster 1710 500 180
+spawn 1 caster 1710 800 180
 spawn 200.2 caster 87 75 180

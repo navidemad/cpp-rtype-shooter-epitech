@@ -111,6 +111,8 @@ namespace NGame
     private:
         void spawn(const std::string& name, float x, float y, float angle, const std::shared_ptr<NGame::User>& owner);
         void addComponentInList(const std::shared_ptr<NGame::Component>&);
+        float spawnX(void) const;
+        float spawnY(void) const;
         void addUserInList(const std::shared_ptr<NGame::User>&);
         void transferPlayerToSpectators(std::shared_ptr<NGame::User> &);
 

@@ -19,11 +19,11 @@ short               Player::getLife(void) const {
 }
 
 float               Player::getMoveSpeed(void) const {
-    return 0.6f;
+    return 2.3f;
 }
 
 float               Player::getFireDeltaTime(void) const {
-    return 0.8f;
+    return 5.0f;
 }
 
 IResource::Type     Player::getType(void) const {

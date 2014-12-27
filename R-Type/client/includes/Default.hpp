@@ -23,7 +23,7 @@ namespace Config
 	namespace Game
 	{
 		const std::string	defaultNameGame = "de_dust2";
-		const std::string	defaultLevelGame = "stage_2";
+		const std::string	defaultLevelGame = "stage_1";
         const int		    defaultNbPlayerMax = 4;
 		const int		    defaultNbPublicMax = 4;
 	}

@@ -1,7 +1,7 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : mId(id), mTime(30000), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
+NGame::Component::Component(uint64_t id) : mId(id), mTime(2500), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
 
 }
 
@@ -22,16 +22,9 @@ bool NGame::Component::canMove(void) {
 
 void NGame::Component::updatePositions(void) {
     float angleInRad = mAngle * 3.14f / 180.f;
-    float deltaTime = mMoveTimer.getDelta() / static_cast<float>(mTime);
+    float deltaTime = mType != IResource::Type::PLAYER ? (mMoveTimer.getDelta() / static_cast<float>(mTime)) : 1;
     float dx = mMoveSpeed * cos(angleInRad) * deltaTime;
     float dy = mMoveSpeed * sin(angleInRad) * deltaTime;
-
-    /*
-    if (mType == IResource::Type::PLAYER) {
-        std::cout << "deltaTime: '" << deltaTime  << "'" << std::endl;
-        std::cout << "dx: '" << mMoveSpeed << "' * '" << cos(angleInRad) << "' * ('" << mMoveTimer.getDelta() << "' / '" << mTime << "') = " << dx << std::endl;
-    }
-    */
 
     mX += dx;
     mY += dy;

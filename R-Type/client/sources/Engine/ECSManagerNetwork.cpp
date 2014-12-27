@@ -115,7 +115,8 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 				if (type == IResource::Type::BULLET || type == IResource::Type::CASTER
 					|| type == IResource::Type::CASTER || type == IResource::Type::MELEE)
 				{
-					elemToInsert.second.push_back(new Velocity(cos(angle) * resource->getMoveSpeed(), sin(angle) * resource->getMoveSpeed(), 30000));
+                    float angleInRad = angle * 3.14f / 180.f;
+                    elemToInsert.second.push_back(new Velocity(cos(angleInRad) * resource->getMoveSpeed(), sin(angleInRad) * resource->getMoveSpeed(), 2500));
 				}
                 mAddEntity.push_back(elemToInsert);
                 lib->libraryFree();

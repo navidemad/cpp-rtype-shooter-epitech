@@ -19,11 +19,11 @@ short               Bullet::getLife(void) const {
 }
 
 float               Bullet::getMoveSpeed(void) const {
-    return 2.6f;
+    return 2.0f;
 }
 
 float               Bullet::getFireDeltaTime(void) const {
-    return 0.8f;
+    return 0.0f;
 }
 
 IResource::Type     Bullet::getType(void) const {

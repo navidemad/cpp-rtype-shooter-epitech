@@ -150,7 +150,6 @@ bool NGame::Game::handleCollision(const std::shared_ptr<NGame::Component>& c1, c
 
 bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
     if (outScreen(c1)) {
-        std::cout << "outScreen component id " << c1->getId() << " : '" << c1->getResource()->getName() << "'" << std::endl;
         return true;
     }
 
@@ -214,6 +213,14 @@ void NGame::Game::addUserInList(const std::shared_ptr<NGame::User>& user) {
     mUsers.push_back(user);
 }
 
+float NGame::Game::spawnX(void) const {
+    return Config::Window::Width * 0.1f;
+}
+
+float NGame::Game::spawnY(void) const {
+    return 200.f + mUsers.size() * 125.f;
+}
+
 void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::string& pseudo) {
     if (type != NGame::USER_TYPE::PLAYER && type != NGame::USER_TYPE::SPECTATOR)
         throw GameException("Invalid user type");
@@ -235,11 +242,9 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
             initTimer();
             setState(NGame::Game::State::RUNNING);
         }
-        float spawnX = 50.f;
-        float spawnY = 50.f + user->getId() * 60.f;
         {
             ScopedLock scopedlock(mMutex);
-            spawn("player", spawnX, spawnY, Config::Game::angleTab[IResource::Direction::RIGHT], user);
+            spawn("player", spawnX(), spawnY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
         }
     }
     else if (type == NGame::USER_TYPE::SPECTATOR) {
@@ -294,7 +299,7 @@ void NGame::Game::fire(const Peer &peer) {
         std::shared_ptr<NGame::User>& user = findUserByHost(peer);
         component_player = findComponentByOwnerId(user->getId());
         if (component_player->canFire())
-            spawn("bullet", component_player->getX(), component_player->getY(), component_player->getAngle(), user);
+            spawn("bullet", component_player->getX(), component_player->getY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
     }
 }
 
