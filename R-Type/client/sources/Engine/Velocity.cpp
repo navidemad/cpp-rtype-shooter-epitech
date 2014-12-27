@@ -1,8 +1,8 @@
 #include "Engine/Compenent/Velocity.hpp"
 #include "Engine/ComponentType.h"
 
-Velocity::Velocity(int x, int y, unsigned int time)
-: Component(ComponentType::VELOCITY), mX(x), mY(y), mTime(time)
+Velocity::Velocity(float x, float y, unsigned int time)
+: Component(ComponentType::VELOCITY), mX(x), mY(y), mTime(time), mTimeElapsed(0)
 {
 
 }
@@ -12,12 +12,12 @@ Velocity::~Velocity()
 
 }
 
-int	Velocity::getX() const
+float	Velocity::getX() const
 {
 	return mX;
 }
 
-int	Velocity::getY() const
+float	Velocity::getY() const
 {
 	return mY;
 }
@@ -25,4 +25,24 @@ int	Velocity::getY() const
 unsigned int	Velocity::getTime() const
 {
 	return mTime;
+}
+
+void	Velocity::addTimeElapsed(unsigned int timeElapsed)
+{
+	mTimeElapsed += timeElapsed;
+}
+
+bool	Velocity::hasTimeElapsed() const
+{
+	return mTimeElapsed > mTime;
+}
+
+unsigned int	Velocity::getTimeElapsed() const
+{
+	return mTimeElapsed;
+}
+
+void	Velocity::reset()
+{
+	mTimeElapsed = mTimeElapsed - ((mTimeElapsed / mTime) * mTime);
 }

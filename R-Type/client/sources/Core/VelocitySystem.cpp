@@ -13,15 +13,17 @@ VelocitySystem::~VelocitySystem()
 {
 
 }
-
+#include <iostream>
 void		VelocitySystem::process(Entity &entity, uint32_t delta)
 {
 	Velocity *velocity = static_cast<Velocity *>(entity.getSpecificComponent(ComponentType::VELOCITY));
 	Position *pos = static_cast<Position *>(entity.getSpecificComponent(ComponentType::MOVABLE));
 
-	if (velocity->getTime() != 0)
+	velocity->addTimeElapsed(delta);
+	if (velocity->getTime() != 0 && velocity->hasTimeElapsed())
 	{
-		pos->setX(pos->getX() + (velocity->getX() * (delta / velocity->getTime())));
-		pos->setY(pos->getY() + (velocity->getY() * (delta / velocity->getTime())));
+		pos->setX(pos->getX() + (velocity->getX() * (velocity->getTimeElapsed() / velocity->getTime())));
+		pos->setY(pos->getY() + (velocity->getY() * (velocity->getTimeElapsed() / velocity->getTime())));
+		velocity->reset();
 	}
 }

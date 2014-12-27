@@ -8,16 +8,22 @@ class Velocity : public NoCopyable, public Component
 {
 	// ctor - dtor
 	public:
-		Velocity(int, int, unsigned int);
+		Velocity(float, float, unsigned int);
 		~Velocity();
 
 	public:
-		int	getX() const;
-		int	getY() const;
+		float	getX() const;
+		float	getY() const;
 		unsigned int	getTime() const;
 
+		bool			hasTimeElapsed() const;
+		unsigned int	getTimeElapsed() const;
+		void			addTimeElapsed(unsigned int);
+		void			reset();
+
 	public:
-		int	mX;
-		int	mY;
+		float			mX;
+		float			mY;
 		unsigned int	mTime;
+		unsigned int	mTimeElapsed;
 };

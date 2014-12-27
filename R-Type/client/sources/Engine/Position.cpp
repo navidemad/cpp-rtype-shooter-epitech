@@ -12,22 +12,22 @@ Position::~Position()
 
 }
 
-short	Position::getX() const
+float	Position::getX() const
 {
 	return mX;
 }
 
-short	Position::getY() const
+float	Position::getY() const
 {
 	return mY;
 }
 
-void		Position::setX(short x)
+void		Position::setX(float x)
 {
 	mX = x;
 }
 
-void		Position::setY(short y)
+void		Position::setY(float y)
 {
 	mY = y;
 }
