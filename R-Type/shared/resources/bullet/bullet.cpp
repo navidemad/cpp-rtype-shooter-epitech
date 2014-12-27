@@ -19,7 +19,7 @@ short               Bullet::getLife(void) const {
 }
 
 float               Bullet::getMoveSpeed(void) const {
-    return 0.6f;
+    return 2.6f;
 }
 
 float               Bullet::getFireDeltaTime(void) const {

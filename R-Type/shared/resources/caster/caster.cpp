@@ -19,7 +19,7 @@ short               Caster::getLife(void) const {
 }
 
 float               Caster::getMoveSpeed(void) const {
-    return 0.6f;
+    return 1.6f;
 }
 
 float               Caster::getFireDeltaTime(void) const {

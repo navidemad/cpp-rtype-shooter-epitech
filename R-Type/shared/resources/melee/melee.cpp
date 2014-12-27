@@ -19,7 +19,7 @@ short               Melee::getLife(void) const {
 }
 
 float               Melee::getMoveSpeed(void) const {
-    return 0.6f;
+    return 2.6f;
 }
 
 float               Melee::getFireDeltaTime(void) const {

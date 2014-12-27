@@ -1,17 +1,42 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
 
-NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
+NGame::Component::Component(uint64_t id) : mId(id), mTime(30000), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
 
 }
 
 bool NGame::Component::canFire(void) {
-    if (mFireTimer.getDelta() / 1E3 > getFireDeltaTime()) {
+    return true;
+    /* A DEBUGER */
+    if (mFireTimer.getDelta() / 1E6 > getFireDeltaTime()) {
         mFireTimer.restart();
         std::cout << "fire" << std::endl;
         return true;
     }
     return false;
+}
+
+bool NGame::Component::canMove(void) {
+    return mMoveTimer.getDelta() > mTime;
+}
+
+void NGame::Component::updatePositions(void) {
+    float angleInRad = mAngle * 3.14f / 180.f;
+    float deltaTime = mMoveTimer.getDelta() / static_cast<float>(mTime);
+    float dx = mMoveSpeed * cos(angleInRad) * deltaTime;
+    float dy = mMoveSpeed * sin(angleInRad) * deltaTime;
+
+    /*
+    if (mType == IResource::Type::PLAYER) {
+        std::cout << "deltaTime: '" << deltaTime  << "'" << std::endl;
+        std::cout << "dx: '" << mMoveSpeed << "' * '" << cos(angleInRad) << "' * ('" << mMoveTimer.getDelta() << "' / '" << mTime << "') = " << dx << std::endl;
+    }
+    */
+
+    mX += dx;
+    mY += dy;
+
+    mMoveTimer.restart();
 }
 
 bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) const {
@@ -27,7 +52,7 @@ bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) c
 
     auto c1_bot = c1_top + this->getHeight();
     auto c2_bot = c2_top + rhs->getHeight();
-    
+
     if (c1_right >= c2_left && c1_right <= c2_right && c1_bot >= c2_top && c1_bot <= c2_bot)
         return true;
 
@@ -44,7 +69,7 @@ bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) c
 }
 
 void NGame::Component::setX(float x) {
-    mX = x; 
+    mX = x;
 }
 
 void NGame::Component::setY(float y) {

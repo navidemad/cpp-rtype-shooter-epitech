@@ -24,6 +24,8 @@ namespace NGame
         // rate frame
         public:
             bool canFire(void);
+            bool canMove(void);
+            void updatePositions(void);
 
         // struct rectangle
         public:
@@ -62,7 +64,7 @@ namespace NGame
 
         // attributes
         private:
-            Timer mFireTimer;
+            Timer mFireTimer, mMoveTimer;
         private:
             float mX;
             float mY;
@@ -73,6 +75,7 @@ namespace NGame
             float mFireDeltaTime;
             short mLife;
             uint64_t mId;
+            long long mTime;
             std::shared_ptr<User> mOwner;
             IResource::Type mType;
             IResource* mResource;

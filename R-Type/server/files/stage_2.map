@@ -4,18 +4,18 @@ spawn 3.2 caster 1653 540 180
 spawn 3.2 caster 1653 76 180
 
 # Apparitions de 2 melee
-spawn 6.2 melee 1653 270 225
-spawn 6.2 melee 1653 76 135
-spawn 6.2 melee 1653 270 225
+spawn 6.2 caster 1653 270 225
+spawn 6.2 caster 1653 76 135
+spawn 6.2 caster 1653 270 225
 
 # Apparitions de 2 super
-spawn 9.2 super 1653 432 180
-spawn 9.2 super 1653 648 180
-spawn 9.2 super 1653 432 180
+spawn 9.2 caster 1653 432 180
+spawn 9.2 caster 1653 648 180
+spawn 9.2 caster 1653 432 180
 
 # Apparitions de 2 melee
-spawn 12.6 melee 950 270 90
-spawn 12.6 melee 950 76 270
+spawn 12.6 caster 950 270 90
+spawn 12.6 caster 950 76 270
 
 # Apparitions de 3 casters
 spawn 16.2 caster 1653 270 180

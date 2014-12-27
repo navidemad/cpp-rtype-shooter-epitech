@@ -187,17 +187,16 @@ void NGame::Game::resolvCollisions(void) {
 void NGame::Game::moveEntities(void) {
     ScopedLock scopedlock(mMutex);
 
-    if (mFpsTimer.getDelta() < Config::Game::fpsLimit)
-        return;
-
-    for (auto &component : mComponents) {
+    for (auto component : mComponents) {
         if (component->getType() != IResource::Type::PLAYER) {
-            updatePositionComponent(component);
+            if (component->canMove())
+                component->updatePositions();
+            /*
             if (component->canFire())
                 spawn("bullet", component->getX(), component->getY(), component->getAngle(), component->getOwner());
+                */
         }
     }
-    mFpsTimer.restart();
 }
 
 /*
@@ -284,16 +283,6 @@ void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user)
     mProperties.setNbSpectators(mProperties.getNbSpectators() + 1);
 }
 
-void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& component) {
-    float angleInRad = component->getAngle() * 3.14f / 180.f;
-    float speed = component->getMoveSpeed();
-    float dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
-    float dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
-
-    component->setX(component->getX() + dx);
-    component->setY(component->getY() + dy);
-}
-
 /*
 ** workflow gaming fire + move
 */
@@ -313,9 +302,9 @@ void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
     ScopedLock scopedlock(mMutex);
     auto component = findComponentByOwnerId(findUserByHost(peer)->getId());
     component->setAngle(Config::Game::angleTab[direction]);
-    updatePositionComponent(component);
+    component->updatePositions();
     if (mListener)
-        mListener->onNotifyUsersComponentAdded(mUsers, component);
+       mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
 void    NGame::Game::spawn(const std::string& name, float x, float y, float angle, const std::shared_ptr<NGame::User>& owner) {
@@ -378,7 +367,7 @@ NGame::Game::OnGameEvent* NGame::Game::getListener(void) const {
 }
 
 float NGame::Game::getCurrentFrame(void) const {
-    return static_cast<float>(mScriptTimer.getDelta()) / 1E3f;
+    return static_cast<float>(mScriptTimer.getDelta()) / 1E6f;
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {

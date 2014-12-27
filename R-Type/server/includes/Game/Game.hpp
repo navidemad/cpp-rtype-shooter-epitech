@@ -100,8 +100,6 @@ namespace NGame
         bool handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
         bool handleCollisionMonster(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
 
-        bool collisionTouch(const std::shared_ptr<NGame::Component>&, const std::shared_ptr<NGame::Component>&) const;
-
     public:
         std::shared_ptr<NGame::User>& findUserByHost(const Peer &);
         std::shared_ptr<NGame::User>& findUserById(uint64_t id);
@@ -115,7 +113,6 @@ namespace NGame
         void addComponentInList(const std::shared_ptr<NGame::Component>&);
         void addUserInList(const std::shared_ptr<NGame::User>&);
         void transferPlayerToSpectators(std::shared_ptr<NGame::User> &);
-        void updatePositionComponent(std::shared_ptr<NGame::Component>&);
 
     public:
         void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
@@ -133,7 +130,7 @@ namespace NGame
         // attributes
     private:
         static std::map<IResource::Type, std::string> mDLLoader;
-        NGame::Timer mScriptTimer, mFpsTimer;
+        NGame::Timer mScriptTimer;
         NGame::Properties mProperties;
         NGame::Game::State mState;
         std::shared_ptr<NGame::Script> mScript;
