@@ -37,7 +37,7 @@ void	ContentManager::loadSprites()
 	sprites->loadResources("bullet", "assets/sprites/r-typesheet1.gif", 4, 1, SpriteManager::SpriteOffset(130, 18, 136, 32), true); // tir gauche à droite
 	sprites->loadResources("bulletReverse", "assets/sprites/r-typesheet1.gif", 4, 1, SpriteManager::SpriteOffset(266, 18, 136, 32), true); // tir droite à gauche
 	sprites->loadResources("player", "assets/sprites/r-typesheet42.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 166, 21), true);
-    sprites->loadResources("caster", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true);
+    sprites->loadResources("caster", "assets/sprites/r-typesheet5.gif", 8, 1, SpriteManager::SpriteOffset(0, 0, 266, 36), true);
     sprites->loadResources("melee", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true); // a changer
     sprites->loadResources("super", "assets/sprites/r-typesheet14.gif", 5, 1, SpriteManager::SpriteOffset(0, 0, 250, 50), true); // a changer
     sprites->loadResources("satellite", "assets/sprites/r-typesheet2.gif", 12, 1, SpriteManager::SpriteOffset(157, 34, 288, 24), true);
