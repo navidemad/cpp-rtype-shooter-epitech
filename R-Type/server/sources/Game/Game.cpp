@@ -255,6 +255,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
         {
             ScopedLock scopedlock(mMutex);
             spawn("player", spawnX(), spawnY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
+            move(user->getPeer(), IResource::Direction::RIGHT);  // try patch display ship when new connection
         }
     }
     else if (type == NGame::USER_TYPE::SPECTATOR) {
@@ -270,6 +271,14 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
         listener->onNotifyTimeElapsedPing(peer, getCurrentFrame());
 }
 
+void NGame::Game::cleanComponents(const std::shared_ptr<NGame::User>& user) {
+    for (auto it = mComponents.begin(); it != mComponents.end();)
+        if ((*it)->getOwner().get() == user.get())
+            it = mComponents.erase(it);
+        else
+            ++it;
+}
+
 void NGame::Game::delUser(const Peer &peer) {
     NGame::USER_TYPE type;
     {
@@ -278,6 +287,7 @@ void NGame::Game::delUser(const Peer &peer) {
         if (user == mUsers.end())
             throw GameException("Try to delete an undefined address ip");
         type = (*user)->getType();
+        cleanComponents(*user); // try patch clean ressource when die
         mUsers.erase(user);
     }
 
