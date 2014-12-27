@@ -3,15 +3,13 @@
 #include "IResource.hpp"
 
 struct MYLIB_EXPORT Super : public IResource {
-   								    Super(void) = default;
-    virtual 					    ~Super(void) = default;
-    virtual std::string             getName(void) const;
-    virtual short                  getHeight(void) const;
-    virtual short                  getWidth(void) const;
-    virtual short                     getLife(void) const;
-    virtual double 			        getMoveSpeed(void) const;
-    virtual double                  getFireDeltaTime(void) const;
-    virtual IResource::Type         getType(void) const;
-	virtual IResource::Vec2         move(double deltaTime) const;
-	virtual IResource::Vec2         fire(double deltaTime) const;
+                            Super(void) = default;
+    virtual                 ~Super(void) = default;
+    virtual std::string     getName(void) const;
+    virtual float           getHeight(void) const;
+    virtual float           getWidth(void) const;
+    virtual short           getLife(void) const;
+    virtual float           getMoveSpeed(void) const;
+    virtual float           getFireDeltaTime(void) const;
+    virtual IResource::Type getType(void) const;
 };

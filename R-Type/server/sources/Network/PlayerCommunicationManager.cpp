@@ -102,7 +102,7 @@ void PlayerCommunicationManager::setListener(PlayerCommunicationManager::OnPlaye
 	mListener = listener;
 }
 
-void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, short x, short y, short angle) {
+void PlayerCommunicationManager::sendMoveResource(const Peer &peer, uint64_t id, IResource::Type type, float x, float y, float angle) {
 	logInfo(peer, "SEND sendMoveResource " + Utils::toString<uint64_t>(id));
 	CommandMoveResource commandMoveResource;
 
@@ -132,8 +132,8 @@ void PlayerCommunicationManager::sendUpdateScore(const Peer &peer, uint64_t id, 
 	mPlayerPacketBuilder.sendCommand(&commandUpdateScore, peer);
 }
 
-void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, double timeElapsed) {
-	logInfo(peer, "SEND sendTimeElapsedPing " + Utils::toString<double>(timeElapsed));
+void PlayerCommunicationManager::sendTimeElapsedPing(const Peer &peer, float timeElapsed) {
+    logInfo(peer, "SEND sendTimeElapsedPing " + Utils::toString<float>(timeElapsed));
 	CommandTimeElapsedPing commandTimeElapsedPing;
 
 	commandTimeElapsedPing.setTimeElapsed(timeElapsed);

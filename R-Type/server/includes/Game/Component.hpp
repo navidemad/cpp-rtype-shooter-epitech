@@ -31,13 +31,13 @@ namespace NGame
 
         // setters
         public:
-            void setX(short x);
-            void setY(short y);
-            void setWidth(short width);
-            void setHeight(short height);
-            void setAngle(short angle);
-            void setMoveSpeed(double speed);
-            void setFireDeltaTime(double speed);
+            void setX(float x);
+            void setY(float y);
+            void setWidth(float width);
+            void setHeight(float height);
+            void setAngle(float angle);
+            void setMoveSpeed(float speed);
+            void setFireDeltaTime(float speed);
             void setLife(short life);
             void setId(uint64_t id);
             void setType(IResource::Type type);
@@ -46,13 +46,13 @@ namespace NGame
 
         // getters
         public:
-            short getX(void) const;
-            short getY(void) const;
-            short getWidth(void) const;
-            short getHeight(void) const;
-            short getAngle(void) const;
-            double getMoveSpeed(void) const;
-            double getFireDeltaTime(void) const;
+            float getX(void) const;
+            float getY(void) const;
+            float getWidth(void) const;
+            float getHeight(void) const;
+            float getAngle(void) const;
+            float getMoveSpeed(void) const;
+            float getFireDeltaTime(void) const;
             short getLife(void) const;
             uint64_t getId(void) const;
             IResource::Type getType(void) const;
@@ -64,13 +64,13 @@ namespace NGame
         private:
             Timer mFireTimer;
         private:
-            short mX;
-            short mY;
-            short mWidth;
-            short mHeight;
-            short mAngle;
-            double mMoveSpeed;
-            double mFireDeltaTime;
+            float mX;
+            float mY;
+            float mWidth;
+            float mHeight;
+            float mAngle;
+            float mMoveSpeed;
+            float mFireDeltaTime;
             short mLife;
             uint64_t mId;
             std::shared_ptr<User> mOwner;

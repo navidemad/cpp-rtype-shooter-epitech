@@ -2,40 +2,32 @@
 #include <cstdlib>
 #include "player.hpp"
 
-std::string             Player::getName(void) const {
+std::string         Player::getName(void) const {
     return "player";
 }
 
-short                  Player::getHeight(void) const {
-    return 21;
+float               Player::getHeight(void) const {
+    return 21.f;
 }
 
-short                  Player::getWidth(void) const {
-    return 33;
+float               Player::getWidth(void) const {
+    return 33.f;
 }
 
-short                     Player::getLife(void) const {
+short               Player::getLife(void) const {
 	return 4;
 }
 
-double 			        Player::getMoveSpeed(void) const {
-    return 0.6;
+float               Player::getMoveSpeed(void) const {
+    return 0.6f;
 }
 
-double                  Player::getFireDeltaTime(void) const {
-    return 0.8;
+float               Player::getFireDeltaTime(void) const {
+    return 0.8f;
 }
 
-IResource::Type         Player::getType(void) const {
+IResource::Type     Player::getType(void) const {
     return IResource::Type::PLAYER;
-}
-
-IResource::Vec2         Player::move(double deltaTime) const {
-	return IResource::Vec2(0, 0);
-}
-
-IResource::Vec2         Player::fire(double) const {
-	return IResource::Vec2(0, 0);
 }
 
 extern "C"

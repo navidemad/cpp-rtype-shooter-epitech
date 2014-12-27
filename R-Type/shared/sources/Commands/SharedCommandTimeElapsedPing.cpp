@@ -1,16 +1,16 @@
 #include "CommandTimeElapsedPing.hpp"
 
-CommandTimeElapsedPing::CommandTimeElapsedPing(void) : mTimeElapsed(0) {
+CommandTimeElapsedPing::CommandTimeElapsedPing(void) : mTimeElapsed(0.f) {
 }
 
 CommandTimeElapsedPing::~CommandTimeElapsedPing(void) {
 }
 
-double CommandTimeElapsedPing::getTimeElapsed(void) const {
+float CommandTimeElapsedPing::getTimeElapsed(void) const {
 	return mTimeElapsed;
 }
 
-void CommandTimeElapsedPing::setTimeElapsed(double timeElapsed) {
+void CommandTimeElapsedPing::setTimeElapsed(float timeElapsed) {
 	mTimeElapsed = timeElapsed;
 }
 

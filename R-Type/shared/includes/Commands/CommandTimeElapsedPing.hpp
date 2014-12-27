@@ -9,7 +9,7 @@ class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 	public:
 		#pragma pack(push, 1)
 		struct PacketFromServer {
-			double timeElapsed;
+            float timeElapsed;
 		};
 		#pragma pack(pop)
 
@@ -20,8 +20,8 @@ class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 
 	// getter - setters
 	public:
-		double		getTimeElapsed(void) const;
-		void		setTimeElapsed(double timeElapsed);
+        float		getTimeElapsed(void) const;
+        void		setTimeElapsed(float timeElapsed);
 
 	// public pure methods
 	public:
@@ -32,6 +32,6 @@ class CommandTimeElapsedPing : public NoCopyable, public ICommand {
 
 	// attributes
 	private:
-		double mTimeElapsed;
+        float mTimeElapsed;
 
 };

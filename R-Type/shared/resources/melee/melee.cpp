@@ -2,40 +2,32 @@
 #include <cstdlib>
 #include "melee.hpp"
 
-std::string             Melee::getName(void) const {
+std::string         Melee::getName(void) const {
     return "melee";
 }
 
-short                  Melee::getHeight(void) const {
-    return 50;
+float               Melee::getHeight(void) const {
+    return 50.f;
 }
 
-short                  Melee::getWidth(void) const {
-    return 50;
+float               Melee::getWidth(void) const {
+    return 50.f;
 }
 
-short                  Melee::getLife(void) const {
+short               Melee::getLife(void) const {
 	return 1;
 }
 
-double 			        Melee::getMoveSpeed(void) const {
-    return 0.6;
+float               Melee::getMoveSpeed(void) const {
+    return 0.6f;
 }
 
-double                  Melee::getFireDeltaTime(void) const {
-    return 0.8;
+float               Melee::getFireDeltaTime(void) const {
+    return 0.8f;
 }
 
-IResource::Type         Melee::getType(void) const {
+IResource::Type     Melee::getType(void) const {
     return IResource::Type::MELEE;
-}
-
-IResource::Vec2         Melee::move(double) const {
-	return IResource::Vec2(-50, 0);
-}
-
-IResource::Vec2         Melee::fire(double) const {
-	return IResource::Vec2(0, 0);
 }
 
 extern "C"

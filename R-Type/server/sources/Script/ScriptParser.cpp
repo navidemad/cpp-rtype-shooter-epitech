@@ -45,11 +45,11 @@ std::shared_ptr<NGame::Script> ScriptParser::createScriptFromFile(std::ifstream 
 
 const IScriptCommand* ScriptParser::commandScriptSpawn(void) {
 	auto command = new ScriptSpawn;
-	command->setFrame(mParser.extractValue<double>());
+    command->setFrame(mParser.extractValue<float>());
 	command->setInstruction(IScriptCommand::Instruction::SPAWN);
 	command->setSpawnName(mParser.extractWord());
-    command->setX(mParser.extractValue<short>());
-    command->setY(mParser.extractValue<short>());
-    command->setAngle(mParser.extractValue<short>());
+    command->setX(mParser.extractValue<float>());
+    command->setY(mParser.extractValue<float>());
+    command->setAngle(mParser.extractValue<float>());
 	return command;
 }

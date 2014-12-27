@@ -12,9 +12,9 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 		struct PacketFromServer {
 			uint64_t	id;
 			char		type;
-			short		x;
-            short		y;
-			short		angle;
+            float		x;
+            float		y;
+            float		angle;
 		};
 		#pragma pack(pop)
 
@@ -27,15 +27,15 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 	public:
 		uint64_t 					getId(void) const;
 		IResource::Type				getType(void) const;
-        short						getX(void) const;
-        short						getY(void) const;
-		short						getAngle(void) const;
+        float						getX(void) const;
+        float						getY(void) const;
+        float						getAngle(void) const;
 
 		void	setId(uint64_t id);
 		void	setType(IResource::Type type);
-        void	setX(short x);
-        void	setY(short y);
-		void	setAngle(short angle);
+        void	setX(float x);
+        void	setY(float y);
+        void	setAngle(float angle);
 
 	// public pure methods
 	public:
@@ -48,8 +48,8 @@ class CommandMoveResource : public NoCopyable, public ICommand {
 	private:
 		uint64_t		mId;
 		IResource::Type mType;
-        short			mX;
-        short			mY;
-		short			mAngle;
+        float			mX;
+        float			mY;
+        float			mAngle;
 
 };

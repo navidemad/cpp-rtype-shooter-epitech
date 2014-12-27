@@ -14,15 +14,15 @@ IResource::Type CommandMoveResource::getType(void) const {
 	return mType;
 }
 
-short CommandMoveResource::getX(void) const {
+float CommandMoveResource::getX(void) const {
 	return mX;
 }
 
-short CommandMoveResource::getY(void) const {
+float CommandMoveResource::getY(void) const {
 	return mY;
 }
 
-short CommandMoveResource::getAngle(void) const {
+float CommandMoveResource::getAngle(void) const {
 	return mAngle;
 }
 
@@ -34,15 +34,15 @@ void	CommandMoveResource::setType(IResource::Type type) {
 	mType = type;
 }
 
-void	CommandMoveResource::setX(short x) {
+void	CommandMoveResource::setX(float x) {
 	mX = x;
 }
 
-void	CommandMoveResource::setY(short y) {
+void	CommandMoveResource::setY(float y) {
 	mY = y;
 }
 
-void	CommandMoveResource::setAngle(short angle) {
+void	CommandMoveResource::setAngle(float angle) {
 	mAngle = angle;
 }
 

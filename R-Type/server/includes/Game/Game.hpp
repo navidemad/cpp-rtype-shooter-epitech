@@ -39,7 +39,7 @@ namespace NGame
             virtual void onNotifyUsersComponentRemoved(const std::vector<std::shared_ptr<NGame::User>> &, uint64_t) = 0;
             virtual void onNotifyUsersComponentAdded(const std::vector<std::shared_ptr<NGame::User>> &, const std::shared_ptr<NGame::Component>&) = 0;
             virtual void onNotifyUserGainScore(const Peer &, uint64_t, const std::string &, uint64_t) = 0;
-            virtual void onNotifyTimeElapsedPing(const Peer &, double) = 0;
+            virtual void onNotifyTimeElapsedPing(const Peer &, float) = 0;
         };
 
         // pull function called by threadPool
@@ -68,7 +68,7 @@ namespace NGame
         // getters
     public:
         NGame::Game::OnGameEvent* getListener(void) const;
-        double getCurrentFrame() const;
+        float getCurrentFrame() const;
         NGame::Properties& getProperties(void);
         std::vector<std::shared_ptr<NGame::User>>& getUsers(void);
         NGame::Game::State getState(void) const;
@@ -111,7 +111,7 @@ namespace NGame
 
         // workflow internal game
     private:
-        void spawn(const std::string& name, short x, short y, short angle, const std::shared_ptr<NGame::User>& owner);
+        void spawn(const std::string& name, float x, float y, float angle, const std::shared_ptr<NGame::User>& owner);
         void addComponentInList(const std::shared_ptr<NGame::Component>&);
         void addUserInList(const std::shared_ptr<NGame::User>&);
         void transferPlayerToSpectators(std::shared_ptr<NGame::User> &);

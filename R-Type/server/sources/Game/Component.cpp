@@ -8,6 +8,7 @@ NGame::Component::Component(uint64_t id) : mId(id), mType(IResource::Type::UNKNO
 bool NGame::Component::canFire(void) {
     if (mFireTimer.getDelta() / 1E3 > getFireDeltaTime()) {
         mFireTimer.restart();
+        std::cout << "fire" << std::endl;
         return true;
     }
     return false;
@@ -42,31 +43,31 @@ bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) c
     return false;
 }
 
-void NGame::Component::setX(short x) {
+void NGame::Component::setX(float x) {
     mX = x; 
 }
 
-void NGame::Component::setY(short y) {
+void NGame::Component::setY(float y) {
     mY = y;
 }
 
-void NGame::Component::setWidth(short width) {
+void NGame::Component::setWidth(float width) {
     mWidth = width;
 }
 
-void NGame::Component::setHeight(short height) {
+void NGame::Component::setHeight(float height) {
     mHeight = height;
 }
 
-void NGame::Component::setAngle(short angle) {
+void NGame::Component::setAngle(float angle) {
     mAngle = angle;
 }
 
-void NGame::Component::setMoveSpeed(double moveSpeed) {
+void NGame::Component::setMoveSpeed(float moveSpeed) {
     mMoveSpeed = moveSpeed;
 }
 
-void NGame::Component::setFireDeltaTime(double fireDeltaTime) {
+void NGame::Component::setFireDeltaTime(float fireDeltaTime) {
     mFireDeltaTime = fireDeltaTime;
 }
 
@@ -90,30 +91,30 @@ void NGame::Component::setResource(IResource* resource) {
     mResource = resource;
 }
 
-short NGame::Component::getX(void) const {
+float NGame::Component::getX(void) const {
     return mX;
 }
-short NGame::Component::getY(void) const {
+float NGame::Component::getY(void) const {
     return mY;
 }
 
-short NGame::Component::getWidth(void) const {
+float NGame::Component::getWidth(void) const {
     return mWidth;
 }
 
-short NGame::Component::getHeight(void) const {
+float NGame::Component::getHeight(void) const {
     return mHeight;
 }
 
-short NGame::Component::getAngle(void) const {
+float NGame::Component::getAngle(void) const {
     return mAngle;
 }
 
-double NGame::Component::getMoveSpeed(void) const {
+float NGame::Component::getMoveSpeed(void) const {
     return mMoveSpeed;
 }
 
-double NGame::Component::getFireDeltaTime(void) const {
+float NGame::Component::getFireDeltaTime(void) const {
     return mFireDeltaTime;
 }
 

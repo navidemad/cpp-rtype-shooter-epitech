@@ -9,21 +9,21 @@ namespace Config
 {
 	namespace Window
 	{
-        static const short Width = 1920;
-        static const short Height = 1080;
+        static const float Width = 1920.f;
+        static const float Height = 1080.f;
 	}
 
 	namespace Game
 	{
-        static const double	                            fpsLimit = 30.0;
+        static const float	                            fpsLimit = 30.f;
         static const uint64_t	                        minIdComponent = 6;
         static const int                                maxPlayersInAGame = 4;
         static const int                                maxSpectatorsInAGame = 4;
-        static std::map<IResource::Direction, short>    angleTab = {
-            { IResource::Direction::RIGHT, 0 },
-            { IResource::Direction::BOTTOM, 90 },
-            { IResource::Direction::LEFT, 180 },
-            { IResource::Direction::TOP, 270 }
+        static std::map<IResource::Direction, float>    angleTab = {
+            { IResource::Direction::RIGHT, 0.f },
+            { IResource::Direction::BOTTOM, 90.f },
+            { IResource::Direction::LEFT, 180.f },
+            { IResource::Direction::TOP, 270.f }
         };
         enum class Owner                                { P1, P2, P3, P4, IA };
 	}

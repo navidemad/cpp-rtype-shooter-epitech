@@ -215,7 +215,7 @@ void NGame::Manager::onNotifyUserGainScore(const Peer &peer, uint64_t id, const 
     mPlayerCommunicationManager.sendUpdateScore(peer, id, pseudo, score);
 }
 
-void NGame::Manager::onNotifyTimeElapsedPing(const Peer &peer, double elapsedPing) {
+void NGame::Manager::onNotifyTimeElapsedPing(const Peer &peer, float elapsedPing) {
     mPlayerCommunicationManager.sendTimeElapsedPing(peer, elapsedPing);
 }
 

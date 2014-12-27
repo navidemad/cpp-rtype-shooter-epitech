@@ -190,9 +190,13 @@ void NGame::Game::moveEntities(void) {
     if (mFpsTimer.getDelta() < Config::Game::fpsLimit)
         return;
 
-    for (auto &component : mComponents)
-    if (component->getType() != IResource::Type::PLAYER)
-        updatePositionComponent(component);
+    for (auto &component : mComponents) {
+        if (component->getType() != IResource::Type::PLAYER) {
+            updatePositionComponent(component);
+            if (component->canFire())
+                spawn("bullet", component->getX(), component->getY(), component->getAngle(), component->getOwner());
+        }
+    }
     mFpsTimer.restart();
 }
 
@@ -232,8 +236,8 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
             initTimer();
             setState(NGame::Game::State::RUNNING);
         }
-        short spawnX = 50;
-        short spawnY = 50 + static_cast<short>(user->getId()) * 60;
+        float spawnX = 50.f;
+        float spawnY = 50.f + user->getId() * 60.f;
         {
             ScopedLock scopedlock(mMutex);
             spawn("player", spawnX, spawnY, Config::Game::angleTab[IResource::Direction::RIGHT], user);
@@ -281,13 +285,13 @@ void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user)
 }
 
 void NGame::Game::updatePositionComponent(std::shared_ptr<NGame::Component>& component) {
-    auto angleInRad = component->getAngle() * 3.14 / 180;
-    auto speed = component->getMoveSpeed();
-    auto dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
-    auto dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
+    float angleInRad = component->getAngle() * 3.14f / 180.f;
+    float speed = component->getMoveSpeed();
+    float dx = speed * cos(angleInRad) * mFpsTimer.getDelta();
+    float dy = speed * sin(angleInRad) * mFpsTimer.getDelta();
 
-    component->setX(component->getX() + static_cast<short>(dx));
-    component->setY(component->getY() + static_cast<short>(dy));
+    component->setX(component->getX() + dx);
+    component->setY(component->getY() + dy);
 }
 
 /*
@@ -300,7 +304,8 @@ void NGame::Game::fire(const Peer &peer) {
         ScopedLock scopedlock(mMutex);
         std::shared_ptr<NGame::User>& user = findUserByHost(peer);
         component_player = findComponentByOwnerId(user->getId());
-        spawn("bullet", component_player->getX(), component_player->getY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
+        if (component_player->canFire())
+            spawn("bullet", component_player->getX(), component_player->getY(), component_player->getAngle(), user);
     }
 }
 
@@ -313,7 +318,7 @@ void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
         mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
-void    NGame::Game::spawn(const std::string& name, short x, short y, short angle, const std::shared_ptr<NGame::User>& owner) {
+void    NGame::Game::spawn(const std::string& name, float x, float y, float angle, const std::shared_ptr<NGame::User>& owner) {
     for (const auto& path : mDLLoader) {
         if (name == Utils::basename(path.second)) {
             try {
@@ -372,8 +377,8 @@ NGame::Game::OnGameEvent* NGame::Game::getListener(void) const {
     return mListener;
 }
 
-double NGame::Game::getCurrentFrame(void) const {
-    return (static_cast<double>(mScriptTimer.getDelta() / 1E3));
+float NGame::Game::getCurrentFrame(void) const {
+    return static_cast<float>(mScriptTimer.getDelta()) / 1E3f;
 }
 
 NGame::Properties& NGame::Game::getProperties(void) {
