@@ -75,7 +75,7 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 {
     id += mFirstId + 1;
 
-    try
+	try
     {
         std::string pathDll = "";
         for (auto pair : mDLLoader)
@@ -107,19 +107,16 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
 
                 elemToInsert.first = id;
                 elemToInsert.second.push_back(new Drawable(resource->getName()));
-                /*
-                auto sizeScreen = SFMLGraphic::getInstance()->getWindow().getSize();
-                elemToInsert.second.push_back(new Position(
-                (static_cast<float>(sizeScreen.x) / 1920.f) * x,
-                (static_cast<float>(sizeScreen.y) / 1080) * y
-                );
-                */
                 elemToInsert.second.push_back(new Position(x, y));
-                if (type == IResource::Type::BULLET)
+                if (type == IResource::Type::BULLET )
                 {
-                    elemToInsert.second.push_back(new Velocity(cos(angle), sin(angle), 200));
                     getClient()->getGui()->playSound("shot");
                 }
+				if (type == IResource::Type::BULLET || type == IResource::Type::CASTER
+					|| type == IResource::Type::CASTER || type == IResource::Type::MELEE)
+				{
+					elemToInsert.second.push_back(new Velocity(sin(angle) * resource->getMoveSpeed(), -cos(angle) * resource->getMoveSpeed(), 300));
+				}
                 mAddEntity.push_back(elemToInsert);
                 lib->libraryFree();
             }

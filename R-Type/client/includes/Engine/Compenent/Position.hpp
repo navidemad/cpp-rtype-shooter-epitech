@@ -12,12 +12,12 @@ class Position : public NoCopyable, public Component
 		~Position();
 
 	public:
-        short		getX() const;
-        short		getY() const;
-        void			setX(short);
-        void			setY(short);
+        float			getX() const;
+        float			getY() const;
+        void			setX(float);
+        void			setY(float);
 
 	private:
-        short			mX;
-        short			mY;
+        float			mX;
+        float			mY;
 };
