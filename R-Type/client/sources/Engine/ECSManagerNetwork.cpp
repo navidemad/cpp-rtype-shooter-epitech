@@ -108,11 +108,11 @@ void ECSManagerNetwork::OnMoveResource(IResource::Type type, float x, float y, s
                 elemToInsert.first = id;
                 elemToInsert.second.push_back(new Drawable(resource->getName()));
                 elemToInsert.second.push_back(new Position(x, y));
-                if (type == IResource::Type::BULLET )
+                if (type == IResource::Type::BULLET)
                 {
                     getClient()->getGui()->playSound("shot");
                 }
-				if (type == IResource::Type::BULLET || type == IResource::Type::CASTER
+				if (type == IResource::Type::BULLET || type == IResource::Type::SUPER
 					|| type == IResource::Type::CASTER || type == IResource::Type::MELEE)
 				{
                     float angleInRad = angle * 3.14f / 180.f;

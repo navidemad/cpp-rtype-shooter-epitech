@@ -200,10 +200,10 @@ void NGame::Game::moveEntities(void) {
 void NGame::Game::fireEntities(void) {
     ScopedLock scopedlock(mMutex);
 
-    for (std::vector<std::shared_ptr<NGame::Component>>::size_type i = 0, n = mComponents.size(); i < n; ++i) {
-        if ((mComponents[i]->getType() == IResource::Type::CASTER || mComponents[i]->getType() == IResource::Type::SUPER) && mComponents[i]->canFire()) {
-            //spawn("bullet", mComponents[i]->getX(), mComponents[i]->getY(), mComponents[i]->getAngle(), mComponents[i]->getOwner());
-            //n = mComponents.size();
+    std::vector<std::shared_ptr<NGame::Component>> components = mComponents;
+    for (auto component : components) {
+        if ((component->getType() == IResource::Type::CASTER || component->getType() == IResource::Type::SUPER) && component->canFire()) {
+            spawn("bullet", component->getX(), component->getY(), Config::Game::angleTab[IResource::Direction::LEFT], nullptr);
         }
     }
 }
@@ -242,6 +242,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
     user->setType(type);
     user->setScore(0);
 
+    std::cout << "add User" << std::endl;
     if (type == NGame::USER_TYPE::PLAYER) {
         if (getProperties().getNbPlayers() >= getProperties().getMaxPlayers())
             throw GameException("No place for new players");
@@ -255,7 +256,7 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
         {
             ScopedLock scopedlock(mMutex);
             spawn("player", spawnX(), spawnY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
-            move(user->getPeer(), IResource::Direction::RIGHT);  // try patch display ship when new connection
+            currentComponents();
         }
     }
     else if (type == NGame::USER_TYPE::SPECTATOR) {
@@ -264,6 +265,10 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
         user->setId(0);
         addUserInList(user);
         getProperties().setNbSpectators(getProperties().getNbSpectators() + 1);
+        {
+            ScopedLock scopedlock(mMutex);
+            currentComponents();
+        }
     }
 
     auto listener = getListener();
@@ -277,6 +282,13 @@ void NGame::Game::cleanComponents(const std::shared_ptr<NGame::User>& user) {
             it = mComponents.erase(it);
         else
             ++it;
+}
+
+void NGame::Game::currentComponents(void) const {
+    std::cout << "nb component: " << mComponents.size() << std::endl;
+    for (auto component : mComponents)
+        if (mListener)
+            mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
 void NGame::Game::delUser(const Peer &peer) {

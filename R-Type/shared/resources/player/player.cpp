@@ -7,7 +7,7 @@ std::string         Player::getName(void) const {
 }
 
 float               Player::getHeight(void) const {
-    return 21.f;
+    return 20.f;
 }
 
 float               Player::getWidth(void) const {

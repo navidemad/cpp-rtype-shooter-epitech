@@ -120,6 +120,7 @@ namespace NGame
         void addUser(NGame::USER_TYPE type, const Peer &, const std::string&);
         void delUser(const Peer &);
         void cleanComponents(const std::shared_ptr<NGame::User>& user);
+        void currentComponents(void) const;
 
         // workflow gaming fire + move
     public:

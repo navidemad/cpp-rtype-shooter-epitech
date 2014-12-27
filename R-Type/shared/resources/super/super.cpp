@@ -7,23 +7,23 @@ std::string         Super::getName(void) const {
 }
 
 float               Super::getHeight(void) const {
-    return 50.f;
+    return 53.f;
 }
 
 float               Super::getWidth(void) const {
-    return 50.f;
+    return 47.f;
 }
 
 short               Super::getLife(void) const {
-	return 10;
+	return 2;
 }
 
 float               Super::getMoveSpeed(void) const {
-    return 1.0f;
+    return 0.8f;
 }
 
 float               Super::getFireDeltaTime(void) const {
-    return 0.3f;
+    return 1.0f;
 }
 
 IResource::Type     Super::getType(void) const {
