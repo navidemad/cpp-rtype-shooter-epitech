@@ -12,9 +12,9 @@ spawn 6.2 melee 1653 676 180
 spawn 6.2 melee 1653 870 180
 
 # Apparitions de 2 super
-spawn 9.2 super 1653 432 200
+spawn 9.2 super 1653 432 170
 spawn 9.2 super 1653 848 180
-spawn 9.2 super 1653 632 160
+spawn 9.2 super 1653 632 190
 
 # Apparitions de 2 melee
 spawn 12.6 melee 950 570 180
@@ -54,9 +54,9 @@ spawn 32.2 melee 1653 676 180
 spawn 32.2 melee 1653 870 180
 
 # Apparitions de 2 super
-spawn 35.2 super 1653 432 200
+spawn 35.2 super 1653 432 170
 spawn 35.2 super 1653 848 180
-spawn 35.2 super 1653 632 160
+spawn 35.2 super 1653 632 190
 
 # Apparitions de 2 melee
 spawn 37.6 melee 950 570 180
@@ -89,9 +89,9 @@ spawn 50 caster 1653 710 200
 spawn 50.2 melee 1653 270 180
 spawn 50.2 melee 1653 594 180
 spawn 50.2 melee 1653 918 180
-spawn 52.2 super 1653 432 200
+spawn 52.2 super 1653 432 170
 spawn 52.2 super 1653 848 180
-spawn 52.2 super 1653 632 160
+spawn 52.2 super 1653 632 190
 spawn 54.2 caster 1653 470 190
 spawn 54.2 caster 1653 540 180
 spawn 54.2 caster 1653 610 170
@@ -99,6 +99,6 @@ spawn 54.2 super 1653 800 190
 spawn 54.2 melee 1653 470 180
 spawn 54.2 melee 1653 676 180
 spawn 54.2 melee 1653 870 180
-spawn 57.2 super 1653 432 200
+spawn 57.2 super 1653 432 170
 spawn 57.2 super 1653 848 180
-spawn 57.2 super 1653 632 160
+spawn 57.2 super 1653 632 190
