@@ -1,6 +1,6 @@
 #include "Component.hpp"
 #include "PortabilityBuilder.hpp"
-#ifdef __OS__LINUX__
+#ifdef __OS_LINUX__
 # include <math.h>
 #endif
 
