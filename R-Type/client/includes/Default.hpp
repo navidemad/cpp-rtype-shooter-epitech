@@ -23,7 +23,7 @@ namespace Config
 	namespace Game
 	{
 		const std::string	defaultNameGame = "de_dust2";
-		const std::string	defaultLevelGame = "stage_1";
+		const std::string	defaultLevelGame = "stage_2";
         const int		    defaultNbPlayerMax = 4;
 		const int		    defaultNbPublicMax = 4;
 	}
@@ -37,6 +37,6 @@ namespace Config
 
 	namespace Audio
 	{
-		const float			volume = 50.f;
+		const float			volume = 12.f;
 	}
 }

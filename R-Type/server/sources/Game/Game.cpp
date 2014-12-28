@@ -94,9 +94,13 @@ bool NGame::Game::handleCollisionBullet(const std::shared_ptr<NGame::Component>&
         if (c->getType() == IResource::Type::CASTER || c->getType() == IResource::Type::MELEE || c->getType() == IResource::Type::SUPER) {
             c->setLife(c->getLife() - 1);
             if (c->getLife() <= 0) {
-                std::cout << "[handleCollisionBullet] player killed a monster with one of his bullet" << std::endl; // add score to c->getOwner()->setScore()
+                std::cout << "[handleCollisionBullet] player killed a monster with one of his bullet" << std::endl;
+                obstacle->getOwner()->setScore(obstacle->getOwner()->getScore() + 10);
+                if (mListener)
+                    mListener->onNotifyUserGainScore(obstacle->getOwner()->getPeer(), obstacle->getOwner()->getId(), obstacle->getOwner()->getPseudo(), obstacle->getOwner()->getScore());
                 return true;
             }
+            obstacle->setToBeRemoved(true);
         }
     }
     else {
@@ -106,6 +110,7 @@ bool NGame::Game::handleCollisionBullet(const std::shared_ptr<NGame::Component>&
                 std::cout << "[handleCollisionBullet] player was killed by a bullet monster" << std::endl;
                 return true;
             }
+            obstacle->setToBeRemoved(true);
         }
     }
 
@@ -124,8 +129,9 @@ bool NGame::Game::handleCollisionPlayer(const std::shared_ptr<NGame::Component>&
         obstacle->setLife(obstacle->getLife() - 1);
         if (obstacle->getLife() <= 0) {
             std::cout << "[handleCollisionPlayer] player was killed by a bullet monster" << std::endl;
-            return true;
+            obstacle->setToBeRemoved(true);
         }
+        return true;
     }
 
     return false;
@@ -144,7 +150,11 @@ bool NGame::Game::handleCollisionMonster(const std::shared_ptr<NGame::Component>
     if (c->getType() == IResource::Type::BULLET && c->getOwner()) {
         obstacle->setLife(obstacle->getLife() - 1);
         if (obstacle->getLife() <= 0) {
-            std::cout << "[handleCollisionMonster] player killed a monster with one of his bullet" << std::endl; // add score to c->getOwner()->setScore()
+            std::cout << "[handleCollisionMonster] player killed a monster with one of his bullet" << std::endl;
+            c->getOwner()->setScore(c->getOwner()->getScore() + 10);
+            if (mListener)
+                mListener->onNotifyUserGainScore(c->getOwner()->getPeer(), c->getOwner()->getId(), c->getOwner()->getPseudo(), c->getOwner()->getScore());
+            obstacle->setToBeRemoved(true);
         }
         return true;
     }
@@ -154,23 +164,21 @@ bool NGame::Game::handleCollisionMonster(const std::shared_ptr<NGame::Component>
 
 bool NGame::Game::handleCollision(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2) {
     switch (c2->getType()) {
-    case IResource::Type::BULLET: return handleCollisionBullet(c1, c2);
-    case IResource::Type::PLAYER: return handleCollisionPlayer(c1, c2);
-    case IResource::Type::CASTER: return handleCollisionMonster(c1, c2);
-    case IResource::Type::MELEE: return handleCollisionMonster(c1, c2);
-    case IResource::Type::SUPER: return handleCollisionMonster(c1, c2);
-    default: std::cout << "handleCollision with unknown type" << std::endl; return false;
+        case IResource::Type::BULLET: return handleCollisionBullet(c1, c2); break;
+        case IResource::Type::PLAYER: return handleCollisionPlayer(c1, c2); break;
+        case IResource::Type::CASTER: return handleCollisionMonster(c1, c2); break;
+        case IResource::Type::MELEE: return handleCollisionMonster(c1, c2); break;
+        case IResource::Type::SUPER: return handleCollisionMonster(c1, c2); break;
+        default: std::cout << "handleCollision with unknown type" << std::endl; return false; break;
     }
 }
 
 bool NGame::Game::needRemove(const std::shared_ptr<NGame::Component>& c1) {
-    if (outScreen(c1))
-        return true;
-    if (c1->getLife() <= 0)
+    if (outScreen(c1) || c1->getLife() <= 0 || c1->getToBeRemoved())
         return true;
 
-    for (const auto& c2 : mComponents) {
-        if (c1->getId() == c2->getId())
+    for (auto&& c2 : mComponents) {
+        if (c1->getId() == c2->getId() || c2->getToBeRemoved())
             continue;
         if (c1->intersect(c2))
             return handleCollision(c1, c2);
@@ -203,16 +211,16 @@ void NGame::Game::moveEntities(void) {
     ScopedLock scopedlock(mMutex);
 
     for (auto&& component : mComponents)
-    if (component->getType() != IResource::Type::PLAYER && component->canMove())
-        component->updatePositions();
+        if (component->getType() != IResource::Type::PLAYER && component->canMove())
+            component->updatePositions();
 }
 
 void NGame::Game::fireEntities(void) {
     ScopedLock scopedlock(mMutex);
 
     std::vector<std::shared_ptr<NGame::Component>> components = mComponents;
-    for (const auto& component : components) {
-        if ((component->getType() == IResource::Type::CASTER || component->getType() == IResource::Type::SUPER) && component->canFire()) {
+    for (auto&& component : components) {
+        if (component->getType() != IResource::Type::PLAYER && component->canFire()) {
             spawn("bullet", component->getX(), component->getY(), Config::Game::angleTab[IResource::Direction::LEFT], nullptr);
         }
     }
@@ -287,21 +295,21 @@ void NGame::Game::addUser(NGame::USER_TYPE type, const Peer &peer, const std::st
 
 void NGame::Game::cleanComponents(const std::shared_ptr<NGame::User>& user) {
     for (auto&& it = mComponents.begin(); it != mComponents.end();)
-    if ((*it)->getOwner() && (*it)->getOwner().get() == user.get())
-        it = mComponents.erase(it);
-    else
-        ++it;
+        if ((*it)->getOwner() && (*it)->getOwner().get() == user.get())
+            it = mComponents.erase(it);
+        else
+            ++it;
 }
 
 void NGame::Game::currentComponents(void) const {
     for (const auto& component : mComponents)
-    if (mListener)
-        mListener->onNotifyUsersComponentAdded(mUsers, component);
+        if (mListener)
+            mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
 void NGame::Game::delUser(const Peer &peer) {
     ScopedLock scopedlock(mMutex);
-    auto user = findUserByHost(peer);
+    auto& user = findUserByHost(peer);
     if (user->getType() == NGame::USER_TYPE::PLAYER)
         mProperties.setNbPlayers(mProperties.getNbPlayers() - 1);
     else if (user->getType() == NGame::USER_TYPE::SPECTATOR)
@@ -327,7 +335,7 @@ void NGame::Game::transferPlayerToSpectators(std::shared_ptr<NGame::User>& user)
 
 void NGame::Game::fire(const Peer &peer) {
     ScopedLock scopedlock(mMutex);
-    const auto& user = findUserByHost(peer);
+    auto& user = findUserByHost(peer);
     auto& component_player = findComponentByUser(user);
     if (component_player->canFire())
         spawn("bullet", component_player->getX(), component_player->getY(), Config::Game::angleTab[IResource::Direction::RIGHT], user);
@@ -342,7 +350,7 @@ void NGame::Game::move(const Peer &peer, IResource::Direction direction) {
         mListener->onNotifyUsersComponentAdded(mUsers, component);
 }
 
-void    NGame::Game::spawn(const std::string& name, float x, float y, float angle, const std::shared_ptr<NGame::User>& owner) {
+void    NGame::Game::spawn(const std::string& name, float x, float y, float angle, std::shared_ptr<NGame::User> owner) {
     for (const auto& path : mDLLoader) {
         if (name == Utils::basename(path.second)) {
             try {

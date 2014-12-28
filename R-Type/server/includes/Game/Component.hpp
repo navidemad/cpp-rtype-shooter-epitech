@@ -33,6 +33,7 @@ namespace NGame
 
         // setters
         public:
+            void setToBeRemoved(bool have);
             void setX(float x);
             void setY(float y);
             void setWidth(float width);
@@ -43,11 +44,12 @@ namespace NGame
             void setLife(short life);
             void setId(uint64_t id);
             void setType(IResource::Type type);
-            void setOwner(const std::shared_ptr<User> &owner);
+            void setOwner(std::shared_ptr<User> &owner);
             void setResource(IResource*);
 
         // getters
         public:
+            bool getToBeRemoved(void) const;
             float getX(void) const;
             float getY(void) const;
             float getWidth(void) const;
@@ -66,6 +68,7 @@ namespace NGame
         private:
             Timer mFireTimer, mMoveTimer;
         private:
+            bool mToBeRemoved;
             float mX;
             float mY;
             float mWidth;

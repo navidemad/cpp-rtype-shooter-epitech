@@ -107,7 +107,7 @@ namespace NGame
 
         // workflow internal game
     private:
-        void spawn(const std::string& name, float x, float y, float angle, const std::shared_ptr<NGame::User>& owner);
+        void spawn(const std::string& name, float x, float y, float angle, std::shared_ptr<NGame::User> owner);
         void addComponentInList(const std::shared_ptr<NGame::Component>&);
         float spawnX(void) const;
         float spawnY(void) const;

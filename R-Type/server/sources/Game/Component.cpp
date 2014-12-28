@@ -4,12 +4,15 @@
 # include <math.h>
 #endif
 
-NGame::Component::Component(uint64_t id) : mId(id), mTime(2500), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
+NGame::Component::Component(uint64_t id) : mToBeRemoved(false), mId(id), mTime(2500), mType(IResource::Type::UNKNOWN), mDynLib(PortabilityBuilder::getDynLib()) {
 
 }
 
 bool NGame::Component::canFire(void) {
-    if (mFireTimer.getDelta() / 1E6f > getFireDeltaTime()) {
+    if (mType != IResource::Type::CASTER && mType != IResource::Type::SUPER && mType != IResource::Type::PLAYER)
+        return false;
+
+    if (mFireTimer.getDelta() / 1E6f > mFireDeltaTime) {
         mFireTimer.restart();
         return true;
     }
@@ -61,6 +64,14 @@ bool NGame::Component::intersect(const std::shared_ptr<NGame::Component>& rhs) c
     return false;
 }
 
+bool NGame::Component::getToBeRemoved(void) const {
+    return mToBeRemoved;
+}
+
+void NGame::Component::setToBeRemoved(bool have) {
+    mToBeRemoved = have;
+}
+
 void NGame::Component::setX(float x) {
     mX = x;
 }
@@ -101,7 +112,7 @@ void NGame::Component::setType(IResource::Type type) {
     mType = type;
 }
 
-void NGame::Component::setOwner(const std::shared_ptr<NGame::User>& owner) {
+void NGame::Component::setOwner(std::shared_ptr<NGame::User>& owner) {
     mOwner = owner;
 }
 
