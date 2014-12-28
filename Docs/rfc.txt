@@ -211,10 +211,10 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    The header is composed of a magic_code and of an instruction code.
 
-   |-------------------------------|
-   | magic_code | instruction_code |
-   |   int32_t  |      int32_t     |
-   |-------------------------------|
+   |--------------------------------|
+   | magic_code  | instruction_code |
+   |   uint64_t  |      int32_t     |
+   |--------------------------------|
 
 
 
@@ -682,17 +682,12 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command is composed of the following body:
 
-   |-------------------------------------|
-   | levelName | scriptSize |   script   |
-   |  char[64] |   int32_t  | char[4096] |
-   |-------------------------------------|
+   |------------|
+   |   name     |
+   |  char[64]  |
+   |------------|
 
-   The levelName attribute is the name of the level script.
-
-   The scriptSize attribute is the size, in bytes, of the script
-   contained by the script attribute.
-
-   The script attribute contains the level script data.
+   The name attribute is the name of the level script.
 
    The server must send a showLevel command for all the available levels
    to a new client.
@@ -722,6 +717,11 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    o  RIGHT: 0x01
 
+   o  TOP: 0x02
+
+   o  BOTTOM: 0x03
+
+
 
 
 
@@ -729,10 +729,6 @@ Ninon                      Expires May 5, 2015                 [Page 13]
 
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
-
-   o  TOP: 0x02
-
-   o  BOTTOM: 0x03
 
 5.1.2.  From Server
 
@@ -769,7 +765,7 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    |----------------------------------------|
    |    id   | type |   x   |   y   | angle |
-   | int32_t | char | float | float | short |
+   | int32_t | char | float | float | float |
    |----------------------------------------|
 
    The id attribute is the id of the element.  Each element has a unique
@@ -777,6 +773,10 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    The type attribute is the type of the resource.  The type must have
    one of the following value:
+
+   o  PLAYER: 0x01
+
+   o  BULLET: 0x02
 
 
 
@@ -786,13 +786,11 @@ Ninon                      Expires May 5, 2015                 [Page 14]
 Internet-Draft        R-Type Network Game Protocol         November 2014
 
 
-   o  PLAYER: 0x00
+   o  CASTER: 0x04
 
-   o  BULLER: 0x01
+   o  MELEE: 0x08
 
-   o  ENNEMY: 0x02
-
-   o  BONUS: 0x03
+   o  SUPER: 0x16
 
    The x and y attributes give the new position of the resource on the
    map.
@@ -814,23 +812,25 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command is composed of the following body:
 
-   |----------------|
-   |    id   | type |
-   | int32_t | char |
-   |----------------|
+   |-----------------|
+   |    id    | type |
+   | uint64_t | char |
+   |-----------------|
 
    The id attribute is the unique id of the destroyed resource.
 
    The type is the type of the destroyed resource.  It must have one of
    the following values:
 
-   o  PLAYER: 0x00
+   o  PLAYER: 0x01
 
-   o  BULLER: 0x01
+   o  BULLET: 0x02
 
-   o  ENNEMY: 0x02
+   o  CASTER: 0x04
 
-   o  BONUS: 0x03
+   o  MELEE: 0x08
+
+   o  SUPER: 0x16
 
    Once the resource has been destroyed, its unique id may be reused for
    a newly created resource.
@@ -856,10 +856,10 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
    This command is composed of the following body:
 
-   |------------------------------|
-   |    id   |  pseudo  |  score  |
-   | int32_t | char[64] | int32_t |
-   |------------------------------|
+   |--------------------------------|
+   |    id    |  pseudo  |  score   |
+   | uint64_t | char[64] | uint64_t |
+   |--------------------------------|
 
    The id attribute is the id of the concerned player.
 
@@ -972,13 +972,15 @@ Internet-Draft        R-Type Network Game Protocol         November 2014
 
 6.4.  enum ResourceType
 
-   o  PLAYER: 0x00
+   o  PLAYER: 0x01
 
-   o  BULLER: 0x01
+   o  BULLET: 0x02
 
-   o  ENNEMY: 0x02
+   o  CASTER: 0x04
 
-   o  BONUS: 0x03
+   o  MELEE: 0x08
+
+   o  SUPER: 0x16
 
 7.  References
 
@@ -989,8 +991,6 @@ Author's Address
 
    Simon Ninon
    Epitech
-
-
 
 
 
