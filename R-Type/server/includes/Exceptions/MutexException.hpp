@@ -7,7 +7,7 @@ class MutexException : public std::runtime_error {
 	// use std::runtime_error functions
 	public:
 		explicit MutexException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
-		~MutexException(void) {}
+        ~MutexException(void) = default;
 
 	// copy - move operators
 	public:

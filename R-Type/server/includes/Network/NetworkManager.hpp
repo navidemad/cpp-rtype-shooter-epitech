@@ -14,7 +14,7 @@ class NetworkManager : public NoCopyable {
 	public:
 		class OnSocketEvent {
 			public:
-				virtual	~OnSocketEvent(void) {}
+                virtual	~OnSocketEvent(void) = default;
 				virtual void	onSocketReadable(int socketFd) = 0;
 				virtual	void	onSocketWritable(int socketFd) = 0;
 		};

@@ -39,7 +39,7 @@ class Client : public NoCopyable, public ClientPacketBuilder::OnClientPacketBuil
 	public:
 		class OnClientEvent {
 			public:
-				virtual ~OnClientEvent(void) {}
+                virtual ~OnClientEvent(void) = default;
 				virtual void	onClientCreateGame(const Client &client, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
 				virtual void	onClientJoinGame(const Client &client, const std::string &name) = 0;
 				virtual void	onClientShowGame(const Client &client, const std::string &name) = 0;

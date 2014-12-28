@@ -118,7 +118,7 @@ bool NGame::Game::handleCollisionBullet(const std::shared_ptr<NGame::Component>&
 }
 
 // collision avec un joueur
-bool NGame::Game::handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c, const std::shared_ptr<NGame::Component>& obstacle) {
+bool NGame::Game::handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c, const std::shared_ptr<NGame::Component>& obstacle) const {
     if (c->getType() == IResource::Type::PLAYER)
         return false;
 
@@ -483,7 +483,7 @@ void NGame::Game::setCurrentComponentMaxId(uint64_t currentComponentMaxId) {
 void NGame::Game::logInfo(const std::string &log) const {
     std::stringstream ss;
 
-    ss << Utils::RED << "[GAME]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
+    ss << Utils::RED << "[GAME]" << Utils::YELLOW << "> " << Utils::WHITE << log;
     Utils::logInfo(ss.str());
 }
 

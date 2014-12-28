@@ -7,7 +7,7 @@ class IReaddir {
 
 	// ctor dtor
 	public:
-		virtual ~IReaddir(void) {}
+        virtual ~IReaddir(void) = default;
 
 	// interface implementation
 	public:

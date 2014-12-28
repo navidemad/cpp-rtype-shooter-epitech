@@ -45,7 +45,7 @@ class ICommand {
 
 	// virtual destructor
 	public:
-		virtual ~ICommand(void) {}
+        virtual ~ICommand(void) = default;
 
 	// public pure methods
 	public:

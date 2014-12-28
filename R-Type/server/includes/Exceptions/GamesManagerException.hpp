@@ -7,7 +7,7 @@ class GamesManagerException : public std::runtime_error {
 	// use std::runtime_error functions
 	public:
 		GamesManagerException(const std::string & error, const ErrorStatus &errorStatus) throw() : std::runtime_error(error), mWhat(error), mErrorStatus(errorStatus) {}
-		~GamesManagerException(void) {}
+        ~GamesManagerException(void) = default;
 
 	// copy - move operators
 	public:

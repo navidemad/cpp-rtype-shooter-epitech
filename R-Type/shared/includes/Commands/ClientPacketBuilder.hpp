@@ -23,7 +23,7 @@ class ClientPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEve
 	public:
 		class OnClientPacketBuilderEvent {
 			public:
-				virtual ~OnClientPacketBuilderEvent(void) {}
+                virtual ~OnClientPacketBuilderEvent(void) = default;
 				virtual void	onPacketAvailable(const ClientPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command) = 0;
 				virtual void	onSocketClosed(const ClientPacketBuilder &clientPacketBuilder) = 0;
 		};

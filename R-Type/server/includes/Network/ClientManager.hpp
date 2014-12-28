@@ -24,7 +24,7 @@ class ClientManager : public NoCopyable, public IServerSocket::OnSocketEvent, pu
 	public:
 		class OnClientManagerEvent {
 			public:
-				virtual ~OnClientManagerEvent(void) {}
+                virtual ~OnClientManagerEvent(void) = default;
 				virtual void onClientDisconnected(const Peer &peer) = 0;
 				virtual void onClientCreateGame(const Peer &peer, const std::string &name, const std::string &levelName, int nbPlayers, int nbObservers) = 0;
 				virtual void onClientJoinGame(const Peer &peer, const std::string &name, const std::string &pseudo) = 0;

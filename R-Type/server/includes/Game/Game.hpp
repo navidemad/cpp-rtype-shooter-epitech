@@ -96,7 +96,7 @@ namespace NGame
         bool outScreen(const std::shared_ptr<NGame::Component>& c1) const;
         bool handleCollision(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
         bool handleCollisionBullet(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
-        bool handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
+        bool handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2) const;
         bool handleCollisionMonster(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
 
     public:

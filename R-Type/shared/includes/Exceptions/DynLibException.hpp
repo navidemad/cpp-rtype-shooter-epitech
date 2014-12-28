@@ -7,7 +7,7 @@ class DynLibException : public std::runtime_error {
 	// use std::runtime_error functions
 	public:
         DynLibException(const std::string & error) throw() : std::runtime_error(error), mWhat(error)  { }
-		~DynLibException(void) {}
+        ~DynLibException(void) = default;
 
 	// copy - move operators
 	public:

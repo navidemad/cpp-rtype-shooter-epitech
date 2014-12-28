@@ -7,7 +7,7 @@ class CommandException : public std::runtime_error {
 	// use std::runtime_error functions
 	public:
 		explicit CommandException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) { }
-		~CommandException(void) {}
+        ~CommandException(void) = default;
 
 	// copy - move operators
 	public:

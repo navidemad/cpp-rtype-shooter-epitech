@@ -7,7 +7,7 @@ class ThreadException : public std::runtime_error {
 	// use std::runtime_error functions
 	public:
 		explicit ThreadException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
-		~ThreadException(void) {}
+        ~ThreadException(void) = default;
 
 	// copy - move operators
 	public:

@@ -7,7 +7,7 @@ class ScriptException : public std::runtime_error {
 	// use std::runtime_error functions
 	public:
 		ScriptException(const std::string & error) throw() : std::runtime_error(error), mWhat(error) {}
-		~ScriptException(void) {}
+        ~ScriptException(void) = default;
 
 	// copy - move operators
 	public:

@@ -10,13 +10,13 @@ class IServerSocket {
 	public:
 		class OnSocketEvent {
 			public:
-				virtual	~OnSocketEvent() {}
+                virtual	~OnSocketEvent() = default;
 				virtual void	onNewConnection(IServerSocket *socket) = 0;
 		};
 
 	// virtual destructor
 	public:
-		virtual ~IServerSocket(void) {}
+        virtual ~IServerSocket(void) = default;
 
 	// init
 	public:

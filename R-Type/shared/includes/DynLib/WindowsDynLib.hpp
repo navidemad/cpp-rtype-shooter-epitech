@@ -4,8 +4,6 @@
 #include "IDynLib.hpp"
 #include "NoCopyable.hpp"
 
-#define DLL_IMPORT __declspec(dllimport)
-
 class WindowsDynLib : public NoCopyable, public IDynLib {
 
 	// ctor dtor

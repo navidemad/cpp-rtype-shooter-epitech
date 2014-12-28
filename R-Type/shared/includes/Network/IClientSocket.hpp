@@ -18,7 +18,7 @@ class IClientSocket {
 	public:
 		class OnSocketEvent {
 			public:
-				virtual	~OnSocketEvent(void) {}
+                virtual	~OnSocketEvent(void) = default;
 				virtual	void	onBytesWritten(IClientSocket *socket, unsigned int nbBytes) = 0;
 				virtual void	onSocketReadable(IClientSocket *socket, unsigned int nbBytesToRead) = 0;
 				virtual void	onSocketClosed(IClientSocket *socket) = 0;
@@ -26,7 +26,7 @@ class IClientSocket {
 
 	// virtual destructor
 	public:
-		virtual ~IClientSocket(void) {}
+        virtual ~IClientSocket(void) = default;
 
 	// start - stop
 	public:

@@ -4,7 +4,7 @@ class IMutex {
 
 	// ctor dtor
 	public:
-		virtual ~IMutex(void) {}
+        virtual ~IMutex(void) = default;
 
 	// interface implementation
 	public:

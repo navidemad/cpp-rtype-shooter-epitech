@@ -5,7 +5,7 @@
 
 class IScriptCommand {
 	public:
-		enum class Instruction : char { NAME = 0, REQUIRE, SPAWN };
+		enum class Instruction : char { SPAWN = 0 };
 	public:
         virtual ~IScriptCommand() = default;
     public:

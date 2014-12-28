@@ -8,7 +8,7 @@ class ICondVar {
 
 	// ctor dtor
 	public:
-		virtual ~ICondVar(void) {}
+        virtual ~ICondVar(void) = default;
 
 	// interface implementation
 	public:

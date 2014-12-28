@@ -15,7 +15,6 @@ namespace Config
 
 	namespace Game
 	{
-        static const float	                            fpsLimit = 30.f;
         static const uint64_t	                        minIdComponent = 6;
         static const int                                maxPlayersInAGame = 4;
         static const int                                maxSpectatorsInAGame = 4;
@@ -25,7 +24,6 @@ namespace Config
             { IResource::Direction::LEFT, 180.f },
             { IResource::Direction::TOP, 270.f }
         };
-        enum class Owner                                { P1, P2, P3, P4, IA };
 	}
 
     namespace ThreadPool

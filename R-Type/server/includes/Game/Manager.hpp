@@ -42,7 +42,7 @@ namespace NGame
         public:
             class OnManagerEvent {
                 public:
-                    virtual ~OnManagerEvent(void) {}
+                    virtual ~OnManagerEvent(void) = default;
                     virtual void onEndGame(const std::string &gameName, const std::list<Peer> &gameUsers) = 0;
             };
 

@@ -19,7 +19,7 @@ template <typename U, typename T>
 class IThread
 {
 public:
-  virtual ~IThread() {}
+  virtual ~IThread() = default;
   virtual void create(U callObj, T fctParam) = 0;
   virtual void wait(void) = 0;
   virtual void *start(void) = 0;

@@ -49,6 +49,6 @@ bool ScriptLoader::loadAll(void) {
 void ScriptLoader::logInfo(const std::string &log) const {
     std::stringstream ss;
 
-    ss << Utils::RED << "[ScriptLoader]" << Utils::YELLOW << "[" << "]> " << Utils::WHITE << log;
+    ss << Utils::RED << "[ScriptLoader]" << Utils::YELLOW << "> " << Utils::WHITE << log;
     Utils::logInfo(ss.str());
 }

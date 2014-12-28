@@ -29,7 +29,7 @@ class PlayerPacketBuilder : public NoCopyable, public IClientSocket::OnSocketEve
 	public:
 		class OnPlayerPacketBuilderEvent {
 			public:
-				virtual ~OnPlayerPacketBuilderEvent(void) {}
+                virtual ~OnPlayerPacketBuilderEvent(void) = default;
 				virtual void onPacketAvailable(const PlayerPacketBuilder &clientPacketBuilder, const std::shared_ptr<ICommand> &command, const Peer &peer) = 0;
 		};
 

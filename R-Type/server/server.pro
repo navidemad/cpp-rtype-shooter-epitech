@@ -51,7 +51,6 @@ HEADERS			+=	includes/RTypeServer.hpp								\
 				includes/Exceptions/GamesManagerException.hpp				\
 				../shared/includes/Config.hpp								\
 				../shared/includes/Utils.hpp    							\
-				../shared/includes/Vertex.hpp								\
 				../shared/includes/IResource.hpp							\
 				../shared/includes/NoCopyable.hpp							\
 				../shared/includes/Exceptions/DynLibException.hpp			\
