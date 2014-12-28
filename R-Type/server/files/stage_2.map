@@ -1,110 +1,104 @@
 # Apparitions de 3 casters
-spawn 3.2 caster 1653 270 180
-spawn 3.2 caster 1653 540 180
-spawn 3.2 caster 1653 76 180
+spawn 1.2 caster 1653 470 190
+spawn 1.2 caster 1653 540 180
+spawn 1.2 caster 1653 610 170
+
+#Apparitions 1 super
+spawn 3.2 super 1653 800 190
 
 # Apparitions de 2 melee
-spawn 6.2 melee 1653 270 225
-spawn 6.2 melee 1653 76 135
-spawn 6.2 melee 1653 270 225
+spawn 6.2 melee 1653 470 180
+spawn 6.2 melee 1653 676 180
+spawn 6.2 melee 1653 870 180
 
 # Apparitions de 2 super
-spawn 9.2 super 1653 432 180
-spawn 9.2 super 1653 648 180
-spawn 9.2 super 1653 432 180
+spawn 9.2 super 1653 432 200
+spawn 9.2 super 1653 848 180
+spawn 9.2 super 1653 632 160
 
 # Apparitions de 2 melee
-spawn 12.6 melee 950 270 90
-spawn 12.6 melee 950 76 270
+spawn 12.6 melee 950 570 180
+spawn 12.6 melee 950 776 180
 
 # Apparitions de 3 casters
-spawn 16.2 caster 1653 270 180
-spawn 16.2 caster 1653 540 180
-spawn 16.2 caster 1653 76 180
+spawn 16.2 caster 1653 170 90
+spawn 16.2 caster 1653 240 100
+spawn 16.2 caster 1653 306 110
 
 # Apparitions de 5 casters
-spawn 20.0 caster 1653 270 180
-spawn 20.0 caster 1653 540 180
-spawn 20.0 caster 1653 810 180
-spawn 21.0 caster 1653 270 180
-spawn 22.0 caster 1653 594 180
+spawn 20.0 caster 1653 200 180
+spawn 20.0 caster 1653 500 180
+spawn 20.0 caster 1653 800 180
+spawn 20.0 caster 1653 350 180
+spawn 20.0 caster 1653 650 180
 
 # Apparitions de 3 casters + 3 melee
-spawn 25 caster 1653 270 180
+spawn 25 caster 1653 350 160
 spawn 25 caster 1653 540 180
-spawn 25 caster 1653 810 180
-spawn 27.2 melee 1653 270 225
-spawn 27.2 melee 1653 594 225
-spawn 27.2 melee 1653 918 225
-
-
-# Apparitions de 3 casters + 3 super
-spawn 30.0 caster 1653 270 180
-spawn 30.0 caster 1653 594 180
-spawn 30.0 caster 1653 648 180
-spawn 31.2 super 1653 432 180
-spawn 31.2 super 1653 864 180
-spawn 31.2 super 1653 648 180
-
-
-# Apparitions de 3 melee + 3 super
-spawn 35.2 melee 1653 432 225
-spawn 35.2 melee 1653 540 225
-spawn 35.2 melee 1653 648 225
-spawn 36.2 super 1653 432 180
-spawn 36.2 super 1653 648 180
-spawn 36.2 super 1653 864 180
-
-# Apparitions de 3 caster + 3 melee + 3 super
-spawn 40.2 melee 1653 432 225
-spawn 40.2 melee 1653 540 225
-spawn 40.2 melee 1653 648 225
-spawn 40.2 super 1653 432 180
-spawn 40.2 super 1653 648 180
-spawn 41.2 super 1653 864 180
-spawn 41.0 caster 1653 270 180
-spawn 41.0 caster 1653 594 180
-spawn 41.0 caster 1653 648 180
+spawn 25 caster 1653 710 200
+spawn 27.2 melee 1653 270 180
+spawn 27.2 melee 1653 594 180
+spawn 27.2 melee 1653 918 180
 
 # Apparitions de 3 casters
-spawn 46.2 caster 1653 270 180
-spawn 46.2 caster 1653 540 180
-spawn 46.2 caster 1653 76 180
+spawn 29.2 caster 1653 470 190
+spawn 29.2 caster 1653 540 180
+spawn 29.2 caster 1653 610 170
 
-# Apparitions de 3 super
-spawn 48.2 super 1653 432 180
-spawn 48.2 super 1653 648 180
-spawn 48.2 super 1653 432 180
+#Apparitions 1 super
+spawn 30.2 super 1653 800 190
 
 # Apparitions de 2 melee
-spawn 52.6 melee 950 270 90
-spawn 52.6 melee 950 76 270
+spawn 32.2 melee 1653 470 180
+spawn 32.2 melee 1653 676 180
+spawn 32.2 melee 1653 870 180
+
+# Apparitions de 2 super
+spawn 35.2 super 1653 432 200
+spawn 35.2 super 1653 848 180
+spawn 35.2 super 1653 632 160
+
+# Apparitions de 2 melee
+spawn 37.6 melee 950 570 180
+spawn 37.6 melee 950 776 180
+
+# Apparitions de 3 casters
+spawn 39.2 caster 1653 170 90
+spawn 39.2 caster 1653 240 100
+spawn 39.2 caster 1653 306 110
+
+# Apparitions de 5 casters
+spawn 41.0 caster 1653 200 170
+spawn 41.0 caster 1653 500 170
+spawn 41.0 caster 1653 800 180
+spawn 41.0 caster 1653 350 190
+spawn 41.0 caster 1653 650 190
+
+# Apparitions de 3 casters + 3 melee
+spawn 44 caster 1653 350 170
+spawn 44 caster 1653 540 180
+spawn 44 caster 1653 710 190
+spawn 44.2 melee 1653 270 180
+spawn 44.2 melee 1653 594 180
+spawn 44.2 melee 1653 918 180
 
 # Apparitions de la mort
-spawn 54.2 melee 1653 432 225
-spawn 54.2 melee 1653 540 225
-spawn 54.2 melee 1653 648 225
-spawn 55.2 super 1653 432 180
-spawn 55.2 super 1653 648 180
-spawn 55.2 super 1653 864 180
-spawn 55.0 caster 1653 270 180
-spawn 55.0 caster 1653 594 180
-spawn 55.0 caster 1653 648 180
-spawn 56.2 melee 1653 432 225
-spawn 56.2 melee 1653 540 225
-spawn 56.2 melee 1653 648 225
-spawn 58.2 super 1653 432 180
-spawn 58.2 super 1653 648 180
-spawn 58.2 super 1653 864 180
-spawn 59.0 caster 1653 270 180
-spawn 59.0 caster 1653 594 180
-spawn 59.0 caster 1653 648 180
-spawn 60.2 melee 1653 432 225
-spawn 60.2 melee 1653 540 225
-spawn 60.2 melee 1653 648 225
-spawn 63.2 super 1653 432 180
-spawn 63.2 super 1653 648 180
-spawn 63.2 super 1653 864 180
-spawn 63.0 caster 1653 270 180
-spawn 63.0 caster 1653 594 180
-spawn 63.0 caster 1653 648 180
+spawn 50 caster 1653 350 160
+spawn 50 caster 1653 540 180
+spawn 50 caster 1653 710 200
+spawn 50.2 melee 1653 270 180
+spawn 50.2 melee 1653 594 180
+spawn 50.2 melee 1653 918 180
+spawn 52.2 super 1653 432 200
+spawn 52.2 super 1653 848 180
+spawn 52.2 super 1653 632 160
+spawn 54.2 caster 1653 470 190
+spawn 54.2 caster 1653 540 180
+spawn 54.2 caster 1653 610 170
+spawn 54.2 super 1653 800 190
+spawn 54.2 melee 1653 470 180
+spawn 54.2 melee 1653 676 180
+spawn 54.2 melee 1653 870 180
+spawn 57.2 super 1653 432 200
+spawn 57.2 super 1653 848 180
+spawn 57.2 super 1653 632 160
