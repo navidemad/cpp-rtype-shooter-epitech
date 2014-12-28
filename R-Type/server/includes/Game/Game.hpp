@@ -75,7 +75,6 @@ namespace NGame
         NGame::Game::State getState(void) const;
         const Peer& getOwner(void) const;
         bool getPullEnded(void) const;
-        uint64_t getCurrentComponentMaxId(void) const;
 
         // setters
     public:
@@ -96,7 +95,6 @@ namespace NGame
         bool needRemove(const std::shared_ptr<NGame::Component>& c1);
         bool outScreen(const std::shared_ptr<NGame::Component>& c1) const;
         bool handleCollision(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
-        bool handleCollisionBonus(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
         bool handleCollisionBullet(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
         bool handleCollisionPlayer(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);
         bool handleCollisionMonster(const std::shared_ptr<NGame::Component>& c1, const std::shared_ptr<NGame::Component>& c2);

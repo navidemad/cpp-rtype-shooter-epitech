@@ -26,11 +26,10 @@ struct MYLIB_EXPORT IResource {
 		enum Type {
             PLAYER      = 1 << 0,
             BULLET      = 1 << 1,
-            BONUS       = 1 << 2,
-            CASTER      = 1 << 3,
-            MELEE       = 1 << 4,
-            SUPER       = 1 << 5,
-	        UNKNOWN     = 1 << 6
+            CASTER      = 1 << 2,
+            MELEE       = 1 << 3,
+            SUPER       = 1 << 4,
+	        UNKNOWN     = 1 << 5
 		};
 
                                     IResource(void) = default;
